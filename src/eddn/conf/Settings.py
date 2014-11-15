@@ -4,7 +4,7 @@ Created on 15 Nov 2014
 @author: james
 '''
 
-import logging.config
+# import logging.config
 
 ###############################################################################
 # Relay settings
@@ -56,4 +56,4 @@ LOGGING = {
     },
 }
 
-logging.config.dictConfig(LOGGING)
+# logging.config.dictConfig(LOGGING) # Sigh - this is Python 2.7 only
