@@ -10,9 +10,9 @@ Created on 15 Nov 2014
 # Relay settings
 ###############################################################################
 
-RELAY_RECEIVER_BINDINGS = ["tcp://127.0.0.1:8500"]
+RELAY_RECEIVER_BINDINGS = ["tcp://*:8500"]
 
-RELAY_SENDER_BINDINGS = ["tcp://127.0.0.1:9500"]
+RELAY_SENDER_BINDINGS = ["tcp://*:9500"]
 
 RELAY_DECOMPRESS_MESSAGES = False
 
@@ -20,7 +20,7 @@ RELAY_DECOMPRESS_MESSAGES = False
 #  Gateway settings
 ###############################################################################
 
-GATEWAY_SENDER_BINDINGS = ["tcp://127.0.0.1:8500"]
+GATEWAY_SENDER_BINDINGS = ["tcp://*:8500"]
 
 ###############################################################################
 # Logging Settings
