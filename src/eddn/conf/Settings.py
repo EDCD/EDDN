@@ -22,6 +22,8 @@ RELAY_DECOMPRESS_MESSAGES = False
 
 GATEWAY_SENDER_BINDINGS = ["tcp://*:8500"]
 
+GATEWAY_IP_KEY_SALT = None
+
 ###############################################################################
 # Logging Settings
 ###############################################################################
