@@ -8,8 +8,8 @@ def main():
     context = zmq.Context()
     subscriber = context.socket(zmq.SUB)
 
-    subscriber.connect('tcp://localhost:9500')
     subscriber.setsockopt(zmq.SUBSCRIBE, "")
+    subscriber.connect('tcp://eddn-gateway.elite-markets.net:9500')
 
     while True:
         market_json = zlib.decompress(subscriber.recv())
