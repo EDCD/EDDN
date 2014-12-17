@@ -11,6 +11,7 @@ import zlib
 import zmq.green as zmq
 from eddn import __version__ as EDDN_VERSION
 from eddn.conf import Settings
+from eddn.Validator import validate, ValidationSeverity
 
 from gevent import monkey
 monkey.patch_all()
@@ -109,20 +110,26 @@ def parse_and_error_handle(data):
         logger.error("Error to %s: %s" % (get_remote_address(), exc.message))
         return exc.message
 
-    ip_hash_salt = Settings.GATEWAY_IP_KEY_SALT
-    if ip_hash_salt:
-        # If an IP hash is set, salt+hash the uploader's IP address and set
-        # it as the EMDR upload key value.
-        ip_hash = hashlib.sha1(ip_hash_salt + get_remote_address()).hexdigest()
-        parsed_message.upload_keys.append({'name': 'EMDR', 'key': ip_hash})
+    validationResults = validate(parsed_message)
 
-    # Sends the parsed MarketOrderList or MarketHistoryList to the Announcers
-    # as compressed JSON.
-    gevent.spawn(push_message, simplejson.dumps(parsed_message))
-    logger.info("Accepted %s upload from %s" % (
-        parsed_message, get_remote_address()
-    ))
-    return 'OK'
+    if validationResults.severity <= ValidationSeverity.WARN:
+
+        ip_hash_salt = Settings.GATEWAY_IP_KEY_SALT
+        if ip_hash_salt:
+            # If an IP hash is set, salt+hash the uploader's IP address and set
+            # it as the EMDR upload key value.
+            ip_hash = hashlib.sha1(ip_hash_salt + get_remote_address()).hexdigest()
+            parsed_message.upload_keys.append({'name': 'EMDR', 'key': ip_hash})
+
+        # Sends the parsed MarketOrderList or MarketHistoryList to the Announcers
+        # as compressed JSON.
+        gevent.spawn(push_message, simplejson.dumps(parsed_message))
+        logger.info("Accepted %s upload from %s" % (
+            parsed_message, get_remote_address()
+        ))
+        return 'OK'
+    else:
+        return "FAIL: " + str(parsed_message) + str(validationResults.messages)
 
 
 @post('/upload/')
