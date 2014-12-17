@@ -91,7 +91,7 @@
   },
   "required": [
     "$schemaRef",
-    "header".
+    "header",
     "message"
   ]
 }
