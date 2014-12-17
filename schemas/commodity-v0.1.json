@@ -12,7 +12,7 @@
     "header": {
       "id": "#header",
       "type": "object",
-      "additionalProperties": false,
+      "additionalProperties": true,
       "properties": {
         "uploaderID": {
           "id": "#uploaderID",
@@ -29,20 +29,25 @@
           "type": "string",
           "additionalProperties": false
         }
-      },
-      "required": [
-        "uploaderID",
-        "softwareName",
-        "softwareVersion"
-      ]
+      }
     },
     "message": {
       "id": "#message",
       "type": "object",
-      "additionalProperties": false,
+      "additionalProperties": true,
       "properties": {
-        "categoryName": {
-          "id": "#categoryName",
+        "systemName": {
+          "id": "#systemName",
+          "type": "string",
+          "additionalProperties": false
+        },
+        "stationName": {
+          "id": "#stationName",
+          "type": "string",
+          "additionalProperties": false
+        },
+        "itemName": {
+          "id": "#itemName",
           "type": "string",
           "additionalProperties": false
         },
@@ -51,28 +56,8 @@
           "type": "integer",
           "additionalProperties": false
         },
-        "timestamp": {
-          "id": "#timestamp",
-          "type": "string",
-          "additionalProperties": false
-        },
         "stationStock": {
           "id": "#stationStock",
-          "type": "integer",
-          "additionalProperties": false
-        },
-        "stationName": {
-          "id": "#stationName",
-          "type": "string",
-          "additionalProperties": false
-        },
-        "systemName": {
-          "id": "#systemName",
-          "type": "string",
-          "additionalProperties": false
-        },
-        "demand": {
-          "id": "#demand",
           "type": "integer",
           "additionalProperties": false
         },
@@ -81,28 +66,32 @@
           "type": "integer",
           "additionalProperties": false
         },
-        "itemName": {
-          "id": "#itemName",
+        "demand": {
+          "id": "#demand",
+          "type": "integer",
+          "additionalProperties": false
+        },
+        "timestamp": {
+          "id": "#timestamp",
           "type": "string",
           "additionalProperties": false
         }
       },
       "required": [
-        "categoryName",
-        "buyPrice",
-        "timestamp",
-        "stationStock",
-        "stationName",
         "systemName",
-        "demand",
+        "stationName",
+        "itemName",
+        "buyPrice",
+        "stationStock",
         "sellPrice",
-        "itemName"
+        "demand",
+        "timestamp"
       ]
     }
   },
   "required": [
     "$schemaRef",
-    "header",
+    "header".
     "message"
   ]
 }
