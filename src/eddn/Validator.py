@@ -1,13 +1,15 @@
 from enum import IntEnum
 
 
-def validate(json_object):
-    results = ValidationResults()
+class Validator(object):
 
-    if "$schemaRef" not in json_object:
-        results.add(ValidationSeverity.FATAL, JsonValidationException("No $schemaRef found, unable to validate."))
+    def validate(self, json_object):
+        results = ValidationResults()
 
-    return results
+        if "$schemaRef" not in json_object:
+            results.add(ValidationSeverity.FATAL, JsonValidationException("No $schemaRef found, unable to validate."))
+
+        return results
 
 
 class ValidationSeverity(IntEnum):

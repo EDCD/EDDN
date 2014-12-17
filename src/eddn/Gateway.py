@@ -11,7 +11,7 @@ import zlib
 import zmq.green as zmq
 from eddn import __version__ as EDDN_VERSION
 from eddn.conf import Settings
-from eddn.Validator import validate, ValidationSeverity
+from eddn.Validator import Validator, ValidationSeverity
 
 from gevent import monkey
 monkey.patch_all()
@@ -27,6 +27,8 @@ sender = context.socket(zmq.PUB)
 # (UNIX sockets and/or TCP sockets).
 for binding in Settings.GATEWAY_SENDER_BINDINGS:
     sender.bind(binding)
+
+validator = Validator()
 
 
 def push_message(string_message):
@@ -110,7 +112,7 @@ def parse_and_error_handle(data):
         logger.error("Error to %s: %s" % (get_remote_address(), exc.message))
         return exc.message
 
-    validationResults = validate(parsed_message)
+    validationResults = validator.validate(parsed_message)
 
     if validationResults.severity <= ValidationSeverity.WARN:
 
