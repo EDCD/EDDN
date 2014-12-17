@@ -3,7 +3,7 @@ from enum import IntEnum
 
 class Validator(object):
 
-    schemas = {}
+    schemas = {"http://example.com": {}}
 
     def validate(self, json_object):
         results = ValidationResults()
