@@ -44,8 +44,9 @@ class ValidationSeverity(IntEnum):
 
 class ValidationResults(object):
 
-    severity = ValidationSeverity.OK
-    messages = []
+    def __init__(self):
+        self.severity = ValidationSeverity.OK
+        self.messages = []
 
     def add(self, severity, exception):
         self.severity = max(severity, self.severity)
