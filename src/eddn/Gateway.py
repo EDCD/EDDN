@@ -131,6 +131,7 @@ def parse_and_error_handle(data):
         ))
         return 'OK'
     else:
+        response.status = 400
         return "FAIL: " + str(parsed_message) + str(validationResults.messages)
 
 
