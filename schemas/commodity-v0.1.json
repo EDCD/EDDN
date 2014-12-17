@@ -4,6 +4,11 @@
   "type": "object",
   "additionalProperties": false,
   "properties": {
+  "$schemaRef": {
+      "id": "#$schemaRef",
+      "type": "string",
+      "additionalProperties": false
+    },
     "header": {
       "id": "#header",
       "type": "object",

@@ -1,5 +1,6 @@
 import simplejson
 from enum import IntEnum
+from jsonschema import validate as jsValidate, ValidationError
 
 
 class Validator(object):
@@ -23,6 +24,13 @@ class Validator(object):
         if schemaRef not in self.schemas.keys():
             #  We don't want to go out to the Internet and retrieve unknown schemas.
             results.add(ValidationSeverity.FATAL, JsonValidationException("Schema " + schemaRef + " is unknown, unable to validate."))
+            return results
+
+        schema = self.schemas[schemaRef]
+        try:
+            jsValidate(json_object, schema)
+        except ValidationError as e:
+            results.add(ValidationSeverity.ERROR, e)
 
         return results
 
