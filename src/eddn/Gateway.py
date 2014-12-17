@@ -9,6 +9,7 @@ import simplejson
 import urlparse
 import zlib
 import zmq.green as zmq
+from datetime import datetime
 from eddn import __version__ as EDDN_VERSION
 from eddn.conf import Settings
 from eddn.Validator import Validator, ValidationSeverity
@@ -118,6 +119,8 @@ def parse_and_error_handle(data):
     validationResults = validator.validate(parsed_message)
 
     if validationResults.severity <= ValidationSeverity.WARN:
+
+        parsed_message['header']['gatewayTimestamp'] = datetime.now().isoformat()
 
         ip_hash_salt = Settings.GATEWAY_IP_KEY_SALT
         if ip_hash_salt:
