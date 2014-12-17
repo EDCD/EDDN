@@ -1,9 +1,16 @@
+import simplejson
 from enum import IntEnum
 
 
 class Validator(object):
 
     schemas = {"http://example.com": {}}
+
+    def addSchemaResource(self, schemaRef, schemaFile):
+        if schemaRef in self.schemas.keys():
+            raise Exception("Attempted to redefine schema for " + schemaRef)
+        schema = simplejson.load(open(schemaFile, "r"))
+        self.schemas[schemaRef] = schema
 
     def validate(self, json_object):
         results = ValidationResults()

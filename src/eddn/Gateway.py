@@ -30,6 +30,9 @@ for binding in Settings.GATEWAY_SENDER_BINDINGS:
 
 validator = Validator()
 
+for schemaRef, schemaFile in Settings.GATEWAY_JSON_SCHEMAS.iteritems():
+    validator.addSchemaResource(schemaRef, schemaFile)
+
 
 def push_message(string_message):
     """

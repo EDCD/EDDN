@@ -1,0 +1,103 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://schemas.elite-markets.net/eddn/commodity/1#",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "header": {
+      "id": "#header",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "uploaderID": {
+          "id": "#uploaderID",
+          "type": "string",
+          "additionalProperties": false
+        },
+        "softwareName": {
+          "id": "#softwareName",
+          "type": "string",
+          "additionalProperties": false
+        },
+        "softwareVersion": {
+          "id": "#softwareVersion",
+          "type": "string",
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "uploaderID",
+        "softwareName",
+        "softwareVersion"
+      ]
+    },
+    "message": {
+      "id": "#message",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "categoryName": {
+          "id": "#categoryName",
+          "type": "string",
+          "additionalProperties": false
+        },
+        "buyPrice": {
+          "id": "#buyPrice",
+          "type": "integer",
+          "additionalProperties": false
+        },
+        "timestamp": {
+          "id": "#timestamp",
+          "type": "string",
+          "additionalProperties": false
+        },
+        "stationStock": {
+          "id": "#stationStock",
+          "type": "integer",
+          "additionalProperties": false
+        },
+        "stationName": {
+          "id": "#stationName",
+          "type": "string",
+          "additionalProperties": false
+        },
+        "systemName": {
+          "id": "#systemName",
+          "type": "string",
+          "additionalProperties": false
+        },
+        "demand": {
+          "id": "#demand",
+          "type": "integer",
+          "additionalProperties": false
+        },
+        "sellPrice": {
+          "id": "#sellPrice",
+          "type": "integer",
+          "additionalProperties": false
+        },
+        "itemName": {
+          "id": "#itemName",
+          "type": "string",
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "categoryName",
+        "buyPrice",
+        "timestamp",
+        "stationStock",
+        "stationName",
+        "systemName",
+        "demand",
+        "sellPrice",
+        "itemName"
+      ]
+    }
+  },
+  "required": [
+    "$schemaRef",
+    "header",
+    "message"
+  ]
+}
