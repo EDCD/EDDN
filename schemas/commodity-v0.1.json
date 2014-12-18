@@ -54,6 +54,7 @@
         "buyPrice": {
           "id": "#buyPrice",
           "type": "integer",
+          "description": "Price to buy from the market",
           "additionalProperties": false
         },
         "stationStock": {
@@ -61,9 +62,13 @@
           "type": "integer",
           "additionalProperties": false
         },
+        "supplyLevel": {
+          "$ref": "#/definitions/levelType"
+        },
         "sellPrice": {
           "id": "#sellPrice",
           "type": "integer",
+          "description": "Price to sell to the market",
           "additionalProperties": false
         },
         "demand": {
@@ -71,9 +76,13 @@
           "type": "integer",
           "additionalProperties": false
         },
+        "demandLevel": {
+          "$ref": "#/definitions/levelType"
+        },
         "timestamp": {
           "id": "#timestamp",
           "type": "string",
+          "format": "date-time",
           "additionalProperties": false
         }
       },
@@ -93,5 +102,10 @@
     "$schemaRef",
     "header",
     "message"
-  ]
+  ],
+  "definitions" : {
+    "levelType" : {
+      "enum": ["Low", "Med", "High"]
+    }
+  }
 }
