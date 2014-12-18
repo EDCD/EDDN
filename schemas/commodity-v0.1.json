@@ -28,6 +28,13 @@
           "id": "#softwareVersion",
           "type": "string",
           "additionalProperties": false
+        },
+        "gatewayTimestamp": {
+          "id": "#gatewayTimestamp",
+          "type": "string",
+          "format": "date-time",
+          "description": "Timestamp upon receipt at the gateway. If present, this property will be overwritten by the gateway; submitters are not intended to populate this property.",
+          "additionalProperties": false
         }
       }
     },
