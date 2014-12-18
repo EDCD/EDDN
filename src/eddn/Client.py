@@ -9,7 +9,7 @@ def main():
     subscriber = context.socket(zmq.SUB)
 
     subscriber.setsockopt(zmq.SUBSCRIBE, "")
-    subscriber.connect('tcp://eddn-gateway.elite-markets.net:9500')
+    subscriber.connect('tcp://eddn-relay.elite-markets.net:9500')
 
     while True:
         market_json = zlib.decompress(subscriber.recv())
