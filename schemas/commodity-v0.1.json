@@ -90,7 +90,6 @@
         "systemName",
         "stationName",
         "itemName",
-        "buyPrice",
         "stationStock",
         "sellPrice",
         "demand",
