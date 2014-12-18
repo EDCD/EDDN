@@ -22,7 +22,7 @@ RELAY_DECOMPRESS_MESSAGES = False
 
 GATEWAY_SENDER_BINDINGS = ["tcp://*:8500"]
 
-GATEWAY_IP_KEY_SALT = "AASDFG"
+GATEWAY_IP_KEY_SALT = None
 
 GATEWAY_JSON_SCHEMAS = {
                         "http://schemas.elite-markets.net/eddn/commodity/1": "../schemas/commodity-v0.1.json",
