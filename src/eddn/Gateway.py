@@ -120,7 +120,7 @@ def parse_and_error_handle(data):
 
     if validationResults.severity <= ValidationSeverity.WARN:
 
-        parsed_message['header']['gatewayTimestamp'] = datetime.now().isoformat()
+        parsed_message['header']['gatewayTimestamp'] = datetime.utcnow().isoformat()
 
         ip_hash_salt = Settings.GATEWAY_IP_KEY_SALT
         if ip_hash_salt:
