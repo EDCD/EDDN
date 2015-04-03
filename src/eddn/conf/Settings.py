@@ -4,6 +4,11 @@ Created on 15 Nov 2014
 @author: james
 '''
 
+from eddn import __version__ as version
+
+EDDN_VERSION = version
+
+
 # import logging.config
 
 ###############################################################################
