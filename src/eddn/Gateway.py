@@ -10,7 +10,6 @@ import urlparse
 import zlib
 import zmq.green as zmq
 from datetime import datetime
-from eddn import __version__ as EDDN_VERSION
 from eddn.conf import Settings
 from eddn.Validator import Validator, ValidationSeverity
 
@@ -169,7 +168,7 @@ def health_check():
     to detect whether the gateway is still alive, and whether it should remain
     in the DNS rotation.
     """
-    return EDDN_VERSION
+    return Settings.EDDN_VERSION
 
 
 class MalformedUploadError(Exception):
@@ -181,5 +180,9 @@ class MalformedUploadError(Exception):
     pass
 
 
-if __name__ == '__main__':
+def main():
     run(host='0.0.0.0', port=8080, server='gevent')
+
+
+if __name__ == '__main__':
+    main()
