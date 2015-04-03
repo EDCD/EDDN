@@ -31,6 +31,7 @@ setup(
     entry_points={
         'console_scripts': [
             'eddn-gateway = eddn.Gateway:main',
+            'eddn-relay = eddn.Relay:run',
             ],
         }
       )
