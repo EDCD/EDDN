@@ -38,7 +38,7 @@ def run():
         :param str message: A JSON string to re-broadcast.
         """
         # if is_message_duped(message):
-            # We've already seen this message recently. Discard it.
+    # We've already seen this message recently. Discard it.
         #    return
 
         if Settings.RELAY_DECOMPRESS_MESSAGES:
