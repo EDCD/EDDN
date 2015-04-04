@@ -113,7 +113,7 @@ def parse_and_error_handle(data):
         # semi-useful error message, so do so.
         response.status = 400
         logger.error("Error to %s: %s" % (get_remote_address(), exc.message))
-        return exc.message
+        return str(exc)
 
     validationResults = validator.validate(parsed_message)
 
