@@ -33,6 +33,11 @@ validator = Validator()
 for schemaRef, schemaFile in Settings.GATEWAY_JSON_SCHEMAS.iteritems():
     validator.addSchemaResource(schemaRef, schemaFile)
 
+# This import must be done post-monkey-patching!
+from eddn.StatsCollector import StatsCollector
+statsCollector = StatsCollector()
+statsCollector.start()
+
 
 def push_message(string_message):
     """
@@ -45,6 +50,7 @@ def push_message(string_message):
     # announcers.
     compressed_msg = zlib.compress(string_message)
     sender.send(compressed_msg)
+    statsCollector.tallyOutbound()
 
 
 def get_remote_address():
@@ -158,6 +164,7 @@ def upload():
         logger.error("Error to %s: %s" % (get_remote_address(), exc.message))
         return exc.message
 
+    statsCollector.tallyInbound()
     return parse_and_error_handle(message_body)
 
 
@@ -169,6 +176,24 @@ def health_check():
     in the DNS rotation.
     """
     return Settings.EDDN_VERSION
+
+
+@get('/stats/')
+def stats():
+    return simplejson.dumps(
+        {
+            "inbound": {
+                "1min": statsCollector.getInboundCount(1),
+                "5min": statsCollector.getInboundCount(5),
+                "60min": statsCollector.getInboundCount(60)
+            },
+            "outbound": {
+                "1min": statsCollector.getOutboundCount(1),
+                "5min": statsCollector.getOutboundCount(5),
+                "60min": statsCollector.getOutboundCount(60)
+            },
+        }
+    )
 
 
 class MalformedUploadError(Exception):
