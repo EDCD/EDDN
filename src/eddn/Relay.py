@@ -26,20 +26,7 @@ statsCollector.start()
 
 @get('/stats/')
 def stats():
-    return simplejson.dumps(
-        {
-            "inbound": {
-                "1min": statsCollector.getInboundCount(1),
-                "5min": statsCollector.getInboundCount(5),
-                "60min": statsCollector.getInboundCount(60)
-            },
-            "outbound": {
-                "1min": statsCollector.getOutboundCount(1),
-                "5min": statsCollector.getOutboundCount(5),
-                "60min": statsCollector.getOutboundCount(60)
-            },
-        }
-    )
+    return simplejson.dumps(statsCollector.getSummary())
 
 
 class Relay(Thread):

@@ -46,3 +46,17 @@ class StatsCollector(Thread):
 
     def getOutboundCount(self, minutes):
         return sum(islice(self.outboundHistory, 0, max(minutes, self.max_minutes)))
+
+    def getSummary(self):
+        return {
+            "inbound": {
+                "1min": self.getInboundCount(1),
+                "5min": self.getInboundCount(5),
+                "60min": self.getInboundCount(60)
+            },
+            "outbound": {
+                "1min": self.getOutboundCount(1),
+                "5min": self.getOutboundCount(5),
+                "60min": self.getOutboundCount(60)
+            },
+        }
