@@ -28,8 +28,8 @@ class StatsCollector(Thread):
         while True:
             sleep(60)
             with self.lock:
-                self.inboundHistory.append(self.inboundMessages)
-                self.outboundHistory.append(self.outboundMessages)
+                self.inboundHistory.appendleft(self.inboundMessages)
+                self.outboundHistory.appendleft(self.outboundMessages)
                 self.inboundMessages = 0
                 self.outboundMessages = 0
 
@@ -42,17 +42,17 @@ class StatsCollector(Thread):
             self.outboundMessages += 1
 
     def getInboundCount(self, minutes):
-        return sum(islice(self.inboundHistory, 0, max(minutes, self.max_minutes)))
+        return sum(islice(self.inboundHistory, 0, min(minutes, self.max_minutes)))
 
     def getOutboundCount(self, minutes):
-        return sum(islice(self.outboundHistory, 0, max(minutes, self.max_minutes)))
+        return sum(islice(self.outboundHistory, 0, min(minutes, self.max_minutes)))
 
     def getSummary(self):
         return {
             "inbound": {
                 "1min": self.getInboundCount(1),
                 "5min": self.getInboundCount(5),
-                "60min": self.getInboundCount(60)
+                "60min": self.getInboundCount(60),
             },
             "outbound": {
                 "1min": self.getOutboundCount(1),
