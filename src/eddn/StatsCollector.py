@@ -51,10 +51,11 @@ class StatsCollector(Thread):
             self.outboundMessages += 1
 
     def tally(self, key):
-        if key not in self.current:
-            self.current[key] = 1
-        else:
-            self.current[key] += 1
+        with self.lock:
+            if key not in self.current:
+                self.current[key] = 1
+            else:
+                self.current[key] += 1
 
     def getInboundCount(self, minutes):
         return sum(islice(self.inboundHistory, 0, min(minutes, self.max_minutes)))
