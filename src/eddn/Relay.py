@@ -13,7 +13,7 @@ import gevent
 import simplejson
 import zmq.green as zmq
 from bottle import get, run as bottle_run
-from eddn.conf import Settings
+from eddn.conf.Settings import Settings
 
 from gevent import monkey
 monkey.patch_all()
