@@ -4,6 +4,7 @@ Created on 15 Nov 2014
 @author: james
 '''
 
+import simplejson
 from eddn import __version__ as version
 
 
@@ -33,5 +34,12 @@ class _Settings(object):
         "http://schemas.elite-markets.net/eddn/commodity/1": "../schemas/commodity-v0.1.json",
         "http://schemas.elite-markets.net/eddn/commodity/1/test": "../schemas/commodity-v0.1.json"
     }
+
+    def loadFrom(self, fileName):
+        f = open(fileName, 'r')
+        conf = simplejson.load(f)
+        for key, value in conf:
+            if key in self.__dict__:
+                self.__dict__[key] = value
 
 Settings = _Settings()
