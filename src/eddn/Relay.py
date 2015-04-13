@@ -63,7 +63,7 @@ class Relay(Thread):
                 message = zlib.decompress(message)
 
             sender.send(message)
-            statsCollector.tallyOutbound()
+            statsCollector.tally("outbound")
 
         logger.info("Relay is now listening for order data.")
 
@@ -71,7 +71,7 @@ class Relay(Thread):
             # For each incoming message, spawn a greenlet using the relay_worker
             # function.
             inboundMessage = receiver.recv()
-            statsCollector.tallyInbound()
+            statsCollector.tally("inbound")
             gevent.spawn(relay_worker, inboundMessage)
 
 

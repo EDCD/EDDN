@@ -50,7 +50,7 @@ def push_message(string_message):
     # announcers.
     compressed_msg = zlib.compress(string_message)
     sender.send(compressed_msg)
-    statsCollector.tallyOutbound()
+    statsCollector.tally("outbound")
 
 
 def get_remote_address():
@@ -164,7 +164,7 @@ def upload():
         logger.error("Error to %s: %s" % (get_remote_address(), exc.message))
         return exc.message
 
-    statsCollector.tallyInbound()
+    statsCollector.tally("inbound")
     return parse_and_error_handle(message_body)
 
 

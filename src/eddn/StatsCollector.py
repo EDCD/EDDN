@@ -6,21 +6,14 @@ from time import sleep
 
 class StatsCollector(Thread):
     '''
-    Collects simple statistics - number of inbound vs. outbound messages - and
-    aggregates them over the number of minutes you choose, up to one hour.
+    Collects simple statistics and aggregates them over the number of minutes
+    you choose, up to one hour.
     '''
 
     max_minutes = 60
 
-    inboundMessages = 0
-    outboundMessages = 0
-
     current = {}
-
     history = {}
-
-    inboundHistory = deque(maxlen=max_minutes)
-    outboundHistory = deque(maxlen=max_minutes)
 
     lock = Lock()
 
@@ -32,23 +25,11 @@ class StatsCollector(Thread):
         while True:
             sleep(60)
             with self.lock:
-                self.inboundHistory.appendleft(self.inboundMessages)
-                self.outboundHistory.appendleft(self.outboundMessages)
-                self.inboundMessages = 0
-                self.outboundMessages = 0
                 for key in self.current.keys():
                     if key not in self.history:
                         self.history[key] = deque(maxlen=self.max_minutes)
                     self.history[key].appendleft(self.current[key])
                     self.current[key] = 0
-
-    def tallyInbound(self):
-        with self.lock:
-            self.inboundMessages += 1
-
-    def tallyOutbound(self):
-        with self.lock:
-            self.outboundMessages += 1
 
     def tally(self, key):
         with self.lock:
@@ -69,18 +50,7 @@ class StatsCollector(Thread):
         return 0
 
     def getSummary(self):
-        summary = {
-            "inbound": {
-                "1min": self.getInboundCount(1),
-                "5min": self.getInboundCount(5),
-                "60min": self.getInboundCount(60),
-            },
-            "outbound": {
-                "1min": self.getOutboundCount(1),
-                "5min": self.getOutboundCount(5),
-                "60min": self.getOutboundCount(60)
-            }
-        }
+        summary = {}
 
         for key in self.current.keys():
             summary[key] = {
