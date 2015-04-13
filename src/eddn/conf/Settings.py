@@ -5,6 +5,7 @@ Created on 15 Nov 2014
 '''
 
 import simplejson
+import argparse
 from eddn import __version__ as version
 
 
@@ -38,8 +39,17 @@ class _Settings(object):
     def loadFrom(self, fileName):
         f = open(fileName, 'r')
         conf = simplejson.load(f)
-        for key, value in conf:
+        for key, value in conf.iteritems():
             if key in self.__dict__:
                 self.__dict__[key] = value
+            else:
+                print "Ignoring unknown setting {0}".format(key)
 
 Settings = _Settings()
+
+parser = argparse.ArgumentParser()
+parser.add_argument("-c", "--config", nargs="?", default=None)
+args = parser.parse_args()
+
+if args.config:
+    Settings.loadFrom(args.config)
