@@ -40,8 +40,8 @@ class _Settings(object):
         f = open(fileName, 'r')
         conf = simplejson.load(f)
         for key, value in conf.iteritems():
-            if key in self.__dict__:
-                self.__dict__[key] = value
+            if key in dir(self):
+                self.__setattr__(key, value)
             else:
                 print "Ignoring unknown setting {0}".format(key)
 
