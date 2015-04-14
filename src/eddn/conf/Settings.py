@@ -35,7 +35,8 @@ class _Settings(object):
 
     GATEWAY_JSON_SCHEMAS = {
         "http://schemas.elite-markets.net/eddn/commodity/1": "schemas/commodity-v0.1.json",
-        "http://schemas.elite-markets.net/eddn/commodity/1/test": "schemas/commodity-v0.1.json"
+        "http://schemas.elite-markets.net/eddn/commodity/1/test": "schemas/commodity-v0.1.json",
+        "http://schemas.elite-markets.net/eddn/commodity/2": "schemas/commodity-v2.0-draft.json"
     }
 
     def loadFrom(self, fileName):
