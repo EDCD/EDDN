@@ -200,7 +200,7 @@ def main():
     loadConfig()
 
     configure()
-    run(host='0.0.0.0', port=8080, server='gevent')
+    run(host='0.0.0.0', port=Settings.GATEWAY_HTTP_PORT, server='gevent')
 
 
 if __name__ == '__main__':

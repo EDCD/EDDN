@@ -27,6 +27,8 @@ class _Settings(object):
     #  Gateway settings
     ###############################################################################
 
+    GATEWAY_HTTP_PORT = 8080
+
     GATEWAY_SENDER_BINDINGS = ["tcp://*:8500"]
 
     GATEWAY_IP_KEY_SALT = None
