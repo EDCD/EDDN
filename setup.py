@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 import re
 
 
-VERSIONFILE = "src/eddn/__init__.py"
+VERSIONFILE = "src/eddn/_version.py"
 verstr = "unknown"
 try:
     verstrline = open(VERSIONFILE, "rt").read()
