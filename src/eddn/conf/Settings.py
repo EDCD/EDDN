@@ -4,8 +4,8 @@ Created on 15 Nov 2014
 @author: james
 '''
 
-import simplejson
 import argparse
+import simplejson
 from eddn._version import __version__ as version
 
 
@@ -32,8 +32,8 @@ class _Settings(object):
     GATEWAY_IP_KEY_SALT = None
 
     GATEWAY_JSON_SCHEMAS = {
-        "http://schemas.elite-markets.net/eddn/commodity/1": "../schemas/commodity-v0.1.json",
-        "http://schemas.elite-markets.net/eddn/commodity/1/test": "../schemas/commodity-v0.1.json"
+        "http://schemas.elite-markets.net/eddn/commodity/1": "schemas/commodity-v0.1.json",
+        "http://schemas.elite-markets.net/eddn/commodity/1/test": "schemas/commodity-v0.1.json"
     }
 
     def loadFrom(self, fileName):
@@ -47,9 +47,16 @@ class _Settings(object):
 
 Settings = _Settings()
 
-parser = argparse.ArgumentParser()
-parser.add_argument("-c", "--config", nargs="?", default=None)
-args = parser.parse_args()
 
-if args.config:
-    Settings.loadFrom(args.config)
+def loadConfig():
+    '''
+    Loads in a settings file specified on the commandline if one has been specified.
+    A convenience method if you don't need other things specified as commandline
+    options. Otherwise, point the filename to Settings.loadFrom().
+    '''
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-c", "--config", nargs="?", default=None)
+    args = parser.parse_args()
+
+    if args.config:
+        Settings.loadFrom(args.config)

@@ -2,6 +2,7 @@
 Contains the necessary ZeroMQ socket and a helper function to publish
 market data to the Announcer daemons.
 """
+import argparse
 import gevent
 import hashlib
 import logging
@@ -10,7 +11,7 @@ import urlparse
 import zlib
 import zmq.green as zmq
 from datetime import datetime
-from eddn.conf.Settings import Settings
+from eddn.conf.Settings import Settings, loadConfig
 from eddn.Validator import Validator, ValidationSeverity
 
 from gevent import monkey
@@ -22,21 +23,24 @@ logger = logging.getLogger(__name__)
 # This socket is used to push market data out to the Announcers over ZeroMQ.
 context = zmq.Context()
 sender = context.socket(zmq.PUB)
-# Get the list of transports to bind from settings. This allows us to PUB
-# messages to multiple announcers over a variety of socket types
-# (UNIX sockets and/or TCP sockets).
-for binding in Settings.GATEWAY_SENDER_BINDINGS:
-    sender.bind(binding)
 
 validator = Validator()
-
-for schemaRef, schemaFile in Settings.GATEWAY_JSON_SCHEMAS.iteritems():
-    validator.addSchemaResource(schemaRef, schemaFile)
 
 # This import must be done post-monkey-patching!
 from eddn.StatsCollector import StatsCollector
 statsCollector = StatsCollector()
 statsCollector.start()
+
+
+def configure():
+    # Get the list of transports to bind from settings. This allows us to PUB
+    # messages to multiple announcers over a variety of socket types
+    # (UNIX sockets and/or TCP sockets).
+    for binding in Settings.GATEWAY_SENDER_BINDINGS:
+        sender.bind(binding)
+
+    for schemaRef, schemaFile in Settings.GATEWAY_JSON_SCHEMAS.iteritems():
+        validator.addSchemaResource(schemaRef, schemaFile)
 
 
 def push_message(string_message):
@@ -193,6 +197,9 @@ class MalformedUploadError(Exception):
 
 
 def main():
+    loadConfig()
+
+    configure()
     run(host='0.0.0.0', port=8080, server='gevent')
 
 

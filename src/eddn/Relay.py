@@ -13,7 +13,7 @@ import gevent
 import simplejson
 import zmq.green as zmq
 from bottle import get, run as bottle_run
-from eddn.conf.Settings import Settings
+from eddn.conf.Settings import Settings, loadConfig
 
 from gevent import monkey
 monkey.patch_all()
@@ -76,6 +76,7 @@ class Relay(Thread):
 
 
 def main():
+    loadConfig()
     r = Relay()
     r.start()
     bottle_run(host='0.0.0.0', port=9090, server='gevent')
