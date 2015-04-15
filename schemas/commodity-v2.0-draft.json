@@ -1,119 +1,108 @@
 {
-  "$schema": "http://json-schema.org/draft-04/schema#",
-  "id": "http://schemas.elite-markets.net/eddn/commodity/2#",
-  "type": "object",
-  "additionalProperties": false,
-  "properties": {
-    "$schemaRef": {
-      "type": "string",
-      "additionalProperties": false
+  "$schema"                 : "http://json-schema.org/draft-04/schema#",
+  "id"                      : "http://schemas.elite-markets.net/eddn/commodity/2#",
+  "type"                    : "object",
+  "additionalProperties"    : false,
+  "required"                : [ "$schemaRef", "header", "message" ],
+  "properties"              : {
+    "$schemaRef"    : {
+      "type"                    : "string"
     },
-    "header": {
-      "type": "object",
-      "additionalProperties": true,
-      "properties": {
-        "uploaderID": {
-          "type": "string",
-          "additionalProperties": false
-        },
-        "softwareName": {
-          "type": "string",
-          "additionalProperties": false
-        },
-        "softwareVersion": {
-          "type": "string",
-          "additionalProperties": false
-        },
+    
+    "header"        : {
+      "type"                    : "object",
+      "additionalProperties"    : true,
+      "properties"  : {
+        "uploaderID"        : { "type": "string" },
+        "softwareName"      : { "type": "string" },
+        "softwareVersion"   : { "type": "string" },
         "gatewayTimestamp": {
           "type": "string",
           "format": "date-time",
-          "description": "Timestamp upon receipt at the gateway. If present, this property will be overwritten by the gateway; submitters are not intended to populate this property.",
-          "additionalProperties": false
+          "description": "Timestamp upon receipt at the gateway. If present, this property will be overwritten by the gateway; submitters are not intended to populate this property."
         }
       }
     },
+    
     "message": {
       "type": "object",
       "additionalProperties": false,
+      "required": [ "systemName", "stationName", "timestamp", "commodities" ],
       "properties": {
         "systemName": {
-          "type": "string",
-          "additionalProperties": false
+          "type": "string"
         },
         "stationName": {
-          "type": "string",
-          "additionalProperties": false
+          "type": "string"
         },
         "timestamp": {
           "type": "string",
-          "format": "date-time",
-          "additionalProperties": false
+          "format": "date-time"
         },
         "commodities": {
           "type": "array",
-          "additionalProperties": false,
           "items": {
             "oneOf": [
-                      {
-                        "type" : "object",
-                        "properties": {
-                          "name": {
-                            "type": "string",
-                            "additionalProperties": false
-                          },
-                          "buyPrice": {
-                            "type": "integer",
-                            "description": "Price to buy from the market",
-                            "additionalProperties": false
-                          },
-                          "supply": {
-                            "type": "integer",
-                            "additionalProperties": false
-                          },
-                          "supplyLevel": {
-                            "$ref": "#/definitions/levelType"
-                          },
-                          "sellPrice": {
-                            "type": "integer",
-                            "description": "Price to sell to the market",
-                            "additionalProperties": false
-                          },
-                          "demand": {
-                            "type": "integer",
-                            "additionalProperties": false
-                          },
-                          "demandLevel": {
-                            "$ref": "#/definitions/levelType"
-                          }   
-                        },
-                        "required": [
-                                     "name",
-                                     "buyPrice",
-                                     "supply",
-                                     "sellPrice",
-                                     "demand"
-                                     ]
-                      }
-                      ]   
+              {
+                "type"                  : "object",
+                "additionalProperties"  : false,
+                "required"              : [ "name", "buyPrice", "supply", "sellPrice", "demand" ],
+                "properties"            : {
+                    "name": {
+                        "$ref": "#/definitions/commoditiesName"
+                    },
+                  "buyPrice": {
+                    "type": "integer",
+                    "description": "Price to buy from the market"
+                  },
+                  "supply": {
+                    "type": "integer"
+                  },
+                  "supplyLevel": {
+                    "$ref": "#/definitions/levelType"
+                  },
+                  "sellPrice": {
+                    "type": "integer",
+                    "description": "Price to sell to the market"
+                  },
+                  "demand": {
+                    "type": "integer"
+                  },
+                  "demandLevel": {
+                    "$ref": "#/definitions/levelType"
+                  }   
+                }
+              }
+            ]   
           }
         }
-      },
-      "required": [
-                   "systemName",
-                   "stationName",
-                   "commodities",
-                   "timestamp"
-                   ]
+      }
     }
   },
-  "required": [
-               "$schemaRef",
-               "header",
-               "message"
-               ],
-               "definitions" : {
-                 "levelType" : {
-                   "enum": ["Low", "Med", "High"]
-                 }
-               }
+  
+  "definitions" : {
+    "levelType" : {
+      "enum": ["Low", "Med", "High"]
+    },
+    "commoditiesName" : {
+      "enum": [
+        "explosives", "hydrogen fuel", "mineral oil", "pesticides",
+        "clothing", "consumer technology", "domestic appliances",
+        "beer", "liquor", "narcotics", "tobacco", "wine",
+        "algae", "animal meat", "coffee", "fish", "food cartridges", "fruit and vegetables", "grain", "synthetic meat", "tea",
+        "polymers", "semiconductors", "superconductors",
+        "atmospheric processors", "crop harvesters", "marine equipment", "microbial furnaces", "mineral extractors", "power generators", "water purifiers",
+        "agri-medicines", "basic medicines", "combat stabilisers", "performance enhancers", "progenitor cells",
+        "aluminium", "beryllium", "cobalt", "copper", "gallium", "gold", "indium", "lithium", "palladium", "platinum", "silver", "tantalum", "titanium", "uranium",
+        "bauxite", "bertrandite", "coltan", "gallite", "indite", "lepidolite", "painite", "rutile", "uraninite",
+        "imperial slaves", "slaves",
+        "advanced catalysers", "animal monitors", "aquaponic systems", "auto-fabricators", "bioreducing lichen", "computer components", "h.e. suits",
+        "land enrichment systems", "resonating separators", "robotics", "terrain enrichment systems",
+        "leather", "natural fabrics", "synthetic fabrics",
+        "biowaste", "chemical waste", "scrap", "toxic waste",
+        "battle weapons", "non-lethal weapons", "personal weapons", "reactive armour"
+      ],
+      "description": "Valid commodities names. Have to be lowercase."
+    }
+  }
 }
