@@ -84,7 +84,7 @@
   
   "definitions" : {
     "levelType" : {
-      "enum": [null, "Low", "Med", "High"]
+      "enum": ["Low", "Med", "High"]
     }
   }
 }
