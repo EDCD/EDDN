@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>EDDN Status</title>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/eddn.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/date.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+        <h1>EDDN Status</h1>
+        </div>
+        <div class="panel-body">
+          <h2>Gateway</h2>
+          <table class="table">
+            <thead>
+              <tr>
+                <td>eddn-gateway.elite-markets.net</td>
+                <th>1 min</th>
+                <th>5 min</th>
+                <th>60 min</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th>Messages received</th>
+                <td id="gateway_inbound_1min">0</td>
+                <td id="gateway_inbound_5min">0</td>
+                <td id="gateway_inbound_60min">0</td>
+              </tr>
+              <tr>
+                <th>Invalid messages</th>
+                <td id="gateway_invalid_1min">0</td>
+                <td id="gateway_invalid_5min">0</td>
+                <td id="gateway_invalid_60min">0</td>
+              </tr>
+              <tr>
+                <th>Messages passed to relay</th>
+                <td id="gateway_outbound_1min">0</td>
+                <td id="gateway_outbound_5min">0</td>
+                <td id="gateway_outbound_60min">0</td>
+              </tr>
+            </tbody>
+          </table>
+          <h2>Relay</h2>
+                    <table class="table">
+            <thead>
+              <tr>
+                <td>eddn-relay.elite-markets.net</td>
+                <th>1 min</th>
+                <th>5 min</th>
+                <th>60 min</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th>Messages received</th>
+                <td id="relay_inbound_1min">0</td>
+                <td id="relay_inbound_5min">0</td>
+                <td id="relay_inbound_60min">0</td>
+              </tr>
+              <tr>
+                <th>Messages passed to relay</th>
+                <td id="relay_outbound_1min">0</td>
+                <td id="relay_outbound_5min">0</td>
+                <td id="relay_outbound_60min">0</td>
+              </tr>
+            </tbody>
+          </table>
+          <hr />
+          <p>Last updated <span id="update_timestamp">N/A</span></p>
+        </div>
+        <div class="panel-footer">
+          <p>The <em>Elite: Dangerous Data Network</em> is volunteer-run and not affiliated with Frontier Developments.</p>
+        </div>
+      </div>
+    </div>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/eddn.js"></script>
+  </body>
+
+</html>
