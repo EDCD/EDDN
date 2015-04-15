@@ -12,7 +12,7 @@ import zlib
 import gevent
 import simplejson
 import zmq.green as zmq
-from bottle import get, run as bottle_run
+from bottle import get, response, run as bottle_run
 from eddn.conf.Settings import Settings, loadConfig
 
 from gevent import monkey
@@ -26,6 +26,7 @@ statsCollector.start()
 
 @get('/stats/')
 def stats():
+    response.set_header("Access-Control-Allow-Origin", "*")
     return simplejson.dumps(statsCollector.getSummary())
 
 
