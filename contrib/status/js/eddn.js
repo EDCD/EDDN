@@ -11,7 +11,7 @@ displayGatewayStats = function(stats) {
   $("#gateway_outbound_5min").html((stats["outbound"] || {})["5min"] || 0);
   $("#gateway_outbound_60min").html((stats["outbound"] || {})["60min"] || 0);
   d = new Date();
-  $("#update_timestamp").html(d.toString("yyyy-MM-dd HH:mm:ss"));
+  $("#update_gateway_timestamp").html(d.toString("yyyy-MM-dd HH:mm:ss"));
   formatStats();
 }
 
@@ -24,7 +24,7 @@ displayRelayStats = function(stats) {
   $("#relay_outbound_5min").html((stats["outbound"] || {})["5min"] || 0);
   $("#relay_outbound_60min").html((stats["outbound"] || {})["60min"] || 0);
   d = new Date();
-  $("#update_timestamp").html(d.toString("yyyy-MM-dd HH:mm:ss"));
+  $("#update_relay_timestamp").html(d.toString("yyyy-MM-dd HH:mm:ss"));
   formatStats();
 }
 
