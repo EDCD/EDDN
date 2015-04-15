@@ -42,7 +42,7 @@ formatStats = function() {
   });
 }
 
-function doUpdate(url, success, failure) {
+doUpdate = function(url, success, failure) {
   $.ajax({
     dataType: "json",
     url: url,
