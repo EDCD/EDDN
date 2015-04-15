@@ -1,6 +1,3 @@
-gateway_status_url = "http://eddn-gateway.elite-markets.net:8080/stats/";
-relay_status_url = "http://eddn-relay.elite-markets.net:9090/stats/";
-
 displayGatewayStats = function(stats) {
   $("#gateway_inbound_1min").html((stats["inbound"] || {})["1min"] || 0);
   $("#gateway_inbound_5min").html((stats["inbound"] || {})["5min"] || 0);
@@ -50,6 +47,18 @@ doUpdate = function(url, success, failure) {
     failure: failure
   });
 }
-doUpdate(gateway_status_url, displayGatewayStats);
-doUpdate(relay_status_url, displayRelayStats);
-setInterval(function() {doUpdate(gateway_status_url, displayGatewayStats); doUpdate(relay_status_url, displayRelayStats)}, 60000);
+
+getGatewayUrl = function() {
+  return $("#gateway").val();
+}
+
+getRelayUrl = function() {
+  return $("#relay").val();
+}
+
+$("#gateway").change(function() {alert(); doUpdate(getGatewayUrl(), displayGatewayStats);})
+$("#relay").change(function() {doUpdate(getRelayUrl(), displayRelayStats);})
+
+doUpdate(getGatewayUrl(), displayGatewayStats);
+doUpdate(getRelayUrl(), displayRelayStats);
+setInterval(function() {doUpdate(getGatewayUrl(), displayGatewayStats); doUpdate(getRelayUrl(), displayRelayStats)}, 60000);
