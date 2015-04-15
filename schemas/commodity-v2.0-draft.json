@@ -28,10 +28,12 @@
       "required": [ "systemName", "stationName", "timestamp", "commodities" ],
       "properties": {
         "systemName": {
-          "type"        : "string"
+          "type"        : "string",
+          "minLength"   : 1
         },
         "stationName": {
-          "type"        : "string"
+          "type"        : "string",
+          "minLength"   : 1
         },
         "timestamp": {
           "type"        : "string",
@@ -47,10 +49,10 @@
                 "additionalProperties"  : false,
                 "required"              : [ "name", "buyPrice", "supply", "sellPrice", "demand" ],
                 "properties"            : {
-                    "name": {
-                        "type"        : "string",
-                        "minLength"   : 1
-                    },
+                  "name": {
+                    "type"        : "string",
+                    "minLength"   : 1
+                  },
                   "buyPrice": {
                     "type": "integer",
                     "description": "Price to buy from the market"
