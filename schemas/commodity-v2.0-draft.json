@@ -5,9 +5,7 @@
   "additionalProperties"    : false,
   "required"                : [ "$schemaRef", "header", "message" ],
   "properties"              : {
-    "$schemaRef"    : {
-      "type"                    : "string"
-    },
+    "$schemaRef"    : { "type": "string" },
     
     "header"        : {
       "type"                    : "object",
@@ -16,7 +14,7 @@
         "uploaderID"        : { "type": "string" },
         "softwareName"      : { "type": "string" },
         "softwareVersion"   : { "type": "string" },
-        "gatewayTimestamp": {
+        "gatewayTimestamp"  : {
           "type": "string",
           "format": "date-time",
           "description": "Timestamp upon receipt at the gateway. If present, this property will be overwritten by the gateway; submitters are not intended to populate this property."
@@ -102,7 +100,7 @@
         "biowaste", "chemical waste", "scrap", "toxic waste",
         "battle weapons", "non-lethal weapons", "personal weapons", "reactive armour"
       ],
-      "description": "Valid commodities names. Have to be lowercase."
+      "description": "Valid commodities names. Have to be lowercase (JSON schema doesn't propose insensitive validation)."
     }
   }
 }
