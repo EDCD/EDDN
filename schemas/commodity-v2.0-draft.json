@@ -28,18 +28,19 @@
       "required": [ "systemName", "stationName", "timestamp", "commodities" ],
       "properties": {
         "systemName": {
-          "type": "string"
+          "type"        : "string"
         },
         "stationName": {
-          "type": "string"
+          "type"        : "string"
         },
         "timestamp": {
-          "type": "string",
-          "format": "date-time"
+          "type"        : "string",
+          "format"      : "date-time"
         },
         "commodities": {
-          "type": "array",
-          "items": {
+          "type"        : "array",
+          "minItems"    : 1,
+          "items"       : {
             "oneOf": [
               {
                 "type"                  : "object",
@@ -47,7 +48,8 @@
                 "required"              : [ "name", "buyPrice", "supply", "sellPrice", "demand" ],
                 "properties"            : {
                     "name": {
-                        "$ref": "#/definitions/commoditiesName"
+                        "type"        : "string",
+                        "minLength"   : 1
                     },
                   "buyPrice": {
                     "type": "integer",
@@ -81,26 +83,6 @@
   "definitions" : {
     "levelType" : {
       "enum": ["Low", "Med", "High"]
-    },
-    "commoditiesName" : {
-      "enum": [
-        "explosives", "hydrogen fuel", "mineral oil", "pesticides",
-        "clothing", "consumer technology", "domestic appliances",
-        "beer", "liquor", "narcotics", "tobacco", "wine",
-        "algae", "animal meat", "coffee", "fish", "food cartridges", "fruit and vegetables", "grain", "synthetic meat", "tea",
-        "polymers", "semiconductors", "superconductors",
-        "atmospheric processors", "crop harvesters", "marine equipment", "microbial furnaces", "mineral extractors", "power generators", "water purifiers",
-        "agri-medicines", "basic medicines", "combat stabilisers", "performance enhancers", "progenitor cells",
-        "aluminium", "beryllium", "cobalt", "copper", "gallium", "gold", "indium", "lithium", "palladium", "platinum", "silver", "tantalum", "titanium", "uranium",
-        "bauxite", "bertrandite", "coltan", "gallite", "indite", "lepidolite", "painite", "rutile", "uraninite",
-        "imperial slaves", "slaves",
-        "advanced catalysers", "animal monitors", "aquaponic systems", "auto-fabricators", "bioreducing lichen", "computer components", "h.e. suits",
-        "land enrichment systems", "resonating separators", "robotics", "terrain enrichment systems",
-        "leather", "natural fabrics", "synthetic fabrics",
-        "biowaste", "chemical waste", "scrap", "toxic waste",
-        "battle weapons", "non-lethal weapons", "personal weapons", "reactive armour"
-      ],
-      "description": "Valid commodities names. Have to be lowercase (JSON schema doesn't propose insensitive validation)."
     }
   }
 }
