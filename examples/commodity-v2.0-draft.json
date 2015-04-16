@@ -1,0 +1,32 @@
+{
+    "$schemaRef": "http://schemas.elite-markets.net/eddn/commodity/2",
+    "header": {
+        "uploaderID": "abcdef0123456789",
+        "softwareName": "My Awesome Market Uploader",
+        "softwareVersion": "v3.14"
+    },
+    "message": {
+        "systemName": "Eranin",
+        "stationName": "Azeban Orbital",
+        "timestamp": "2014-11-17T12:34:56+00:00"
+        "commodities" : [
+          {
+            "name": "Gold",
+            "buyPrice": 1024,
+            "supply": 7,
+            "supplyLevel": "Low",
+            "sellPrice": 1138,
+            "demand": 42,
+            "demandLevel": "Med"
+          },
+          {
+            "name": "Explosives",
+            "buyPrice": 999,
+            "supply": 1500,
+            "supplyLevel": "Low",
+            "sellPrice": 0,
+            "demand": 0
+          }
+        ]
+    }
+}

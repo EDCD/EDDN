@@ -1,0 +1,18 @@
+{
+    "$schemaRef": "http://schemas.elite-markets.net/eddn/commodity/1",
+    "header": {
+        "uploaderID": "abcdef0123456789",
+        "softwareName": "My Awesome Market Uploader",
+        "softwareVersion": "v3.14"
+    },
+    "message": {
+        "systemName": "Eranin",
+        "stationName": "Azeban Orbital",
+        "itemName": "Gold",
+        "buyPrice": 1024,
+        "stationStock": 7,
+        "sellPrice": 1138,
+        "demand": 42,
+        "timestamp": "2014-11-17T12:34:56+00:00"
+    }
+}
