@@ -7,6 +7,22 @@
  *     'softwareVersion'   => 'v3.14'
  * ));
  * 
+ * $result = $eddn->publishCommodityV1(
+ *     'Eranin',
+ *     'Azeban Orbital',
+ *     time(),
+ *     array(
+ *         "itemName"      => "Gold",
+ *         "buyPrice"      => 1024,
+ *         "supply"        => 7,
+ *         "stationStock"  => "Low",
+ *         "sellPrice"     => 1138,
+ *         "demand"        => 42,
+ *         "demandLevel"   => "Med"
+ *     )
+ * ); // return true;
+ *
+ *
  * $result = $eddn->publishCommodityV2(
  *     'Eranin',
  *     'Azeban Orbital',
@@ -73,6 +89,21 @@ class EDDN
             $this->setSoftwareVersion($options['softwareVersion']);
         else
             throw new Exception('Option "softwareVersion" is required.');
+    }
+    
+    public function publishCommodityV1($systemName, $stationName, $timestamp, array $commodity)
+    {
+        $schema                 = self::$_schemas['commodity-v1'][((self::$_debug === true) ? 'test' : 'production')];
+        
+        $message                = array();
+        $message['systemName']  = $systemName;
+        $message['stationName'] = $stationName;
+        $message['timestamp']   = date('c', $timestamp);
+        
+        foreach($commodity AS $key => $value)
+            $message[$key] = $value;
+        
+        return $this->_postToEDDN($schema, $message);
     }
     
     public function publishCommodityV2($systemName, $stationName, $timestamp, array $commodities)
