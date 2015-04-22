@@ -11,8 +11,10 @@
         "itemName": "Gold",
         "buyPrice": 1024,
         "stationStock": 7,
+        "supplyLevel": "Low",
         "sellPrice": 1138,
         "demand": 42,
+        "demandLevel": "Med"
         "timestamp": "2014-11-17T12:34:56+00:00"
     }
 }
