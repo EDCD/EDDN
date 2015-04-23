@@ -7,6 +7,7 @@ $relayEDDN              = 'tcp://eddn-relay.elite-markets.net:9500';
 // A sample list of authorised softwares
 $authorisedSoftwares    = array(
     "EliteOCR",
+    "RegulatedNoise",
     "Maddavo's Market Share"
 );
 
