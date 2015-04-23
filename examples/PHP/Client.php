@@ -76,7 +76,7 @@ while (true)
                 $temp['message']['stationName'] = $array['message']['stationName'];
                 $temp['message']['timestamp']   = $array['message']['timestamp'];
                 
-                $temp['commodities']            = array();
+                $temp['message']['commodities'] = array();
                 
                 $commodity                      = array();
                 
@@ -97,8 +97,8 @@ while (true)
                 if(array_key_exists('demandLevel', $temp['message']))
                     $commodity['demandLevel'] = $temp['message']['demandLevel'];
                 
-                $temp['commodities'][]          = $commodity;
-                $array                          = $temp;
+                $temp['message']['commodities'][]   = $commodity;
+                $array                              = $temp;
                 unset($temp, $commodity);
                 
                 $converted = true;
