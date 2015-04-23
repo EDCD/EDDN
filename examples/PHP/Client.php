@@ -80,22 +80,22 @@ while (true)
                 
                 $commodity                      = array();
                 
-                if(array_key_exists('itemName', $temp['message']))
-                    $commodity['name'] = $temp['message']['itemName'];
+                if(array_key_exists('itemName', $array['message']))
+                    $commodity['name'] = $array['message']['itemName'];
                     
-                if(array_key_exists('buyPrice', $temp['message']))
-                    $commodity['buyPrice'] = $temp['message']['buyPrice'];
-                if(array_key_exists('stationStock', $temp['message']))
-                    $commodity['supply'] = $temp['message']['stationStock'];
-                if(array_key_exists('supplyLevel', $temp['message']))
-                    $commodity['supplyLevel'] = $temp['message']['supplyLevel'];
+                if(array_key_exists('buyPrice', $array['message']))
+                    $commodity['buyPrice'] = $array['message']['buyPrice'];
+                if(array_key_exists('stationStock', $array['message']))
+                    $commodity['supply'] = $array['message']['stationStock'];
+                if(array_key_exists('supplyLevel', $array['message']))
+                    $commodity['supplyLevel'] = $array['message']['supplyLevel'];
                 
-                if(array_key_exists('sellPrice', $temp['message']))
-                    $commodity['sellPrice'] = $temp['message']['sellPrice'];
-                if(array_key_exists('demand', $temp['message']))
-                    $commodity['demand'] = $temp['message']['demand'];
-                if(array_key_exists('demandLevel', $temp['message']))
-                    $commodity['demandLevel'] = $temp['message']['demandLevel'];
+                if(array_key_exists('sellPrice', $array['message']))
+                    $commodity['sellPrice'] = $array['message']['sellPrice'];
+                if(array_key_exists('demand', $array['message']))
+                    $commodity['demand'] = $array['message']['demand'];
+                if(array_key_exists('demandLevel', $array['message']))
+                    $commodity['demandLevel'] = $array['message']['demandLevel'];
                 
                 $temp['message']['commodities'][]   = $commodity;
                 $array                              = $temp;
