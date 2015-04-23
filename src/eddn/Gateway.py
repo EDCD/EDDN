@@ -185,7 +185,9 @@ def health_check():
 @get('/stats/')
 def stats():
     response.set_header("Access-Control-Allow-Origin", "*")
-    return simplejson.dumps(statsCollector.getSummary())
+    stats = statsCollector.getSummary()
+    stats["version"] = Settings.EDDN_VERSION
+    return simplejson.dumps(stats)
 
 
 class MalformedUploadError(Exception):

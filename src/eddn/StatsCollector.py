@@ -1,4 +1,5 @@
 from collections import deque
+from datetime import datetime
 from itertools import islice
 from threading import Lock, Thread
 from time import sleep
@@ -17,11 +18,14 @@ class StatsCollector(Thread):
 
     lock = Lock()
 
+    starttime = 0
+
     def __init__(self):
         super(StatsCollector, self).__init__()
         self.daemon = True
 
     def run(self):
+        self.starttime = datetime.utcnow()
         while True:
             sleep(60)
             with self.lock:
@@ -58,5 +62,7 @@ class StatsCollector(Thread):
                 "5min": self.getCount(key, 5),
                 "60min": self.getCount(key, 60)
             }
+
+        summary['uptime'] = int((datetime.utcnow() - self.starttime).total_seconds())
 
         return summary
