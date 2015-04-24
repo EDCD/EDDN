@@ -95,13 +95,13 @@ class EDDN
     {
         $schema                 = self::$_schemas['commodity-v1'][((self::$_debug === true) ? 'test' : 'production')];
         
-        $message              = new stdClass();
-        $message->systemName  = $systemName;
-        $message->stationName = $stationName;
-        $message->timestamp   = date('c', $timestamp);
+        $message                = array();
+        $message['systemName']  = $systemName;
+        $message['stationName'] = $stationName;
+        $message['timestamp']   = date('c', $timestamp);
         
         foreach($commodity AS $key => $value)
-            $message->{$key} = $value;
+            $message[$key] = $value;
         
         return $this->_postToEDDN($schema, $message);
     }
@@ -110,12 +110,12 @@ class EDDN
     {
         $schema                 = self::$_schemas['commodity-v2'][((self::$_debug === true) ? 'test' : 'production')];
         
-        $message              = new stdClass();
-        $message->systemName  = $systemName;
-        $message->stationName = $stationName;
-        $message->timestamp   = date('c', $timestamp);
+        $message                = array();
+        $message['systemName']  = $systemName;
+        $message['stationName'] = $stationName;
+        $message['timestamp']   = date('c', $timestamp);
         
-        $message->commodities = $commodities;
+        $message['commodities'] = $commodities;
         
         return $this->_postToEDDN($schema, $message);
     }
@@ -123,22 +123,23 @@ class EDDN
     
     private function _generateHeader()
     {
-        $header                  = new stdClass();
-        $header->uploaderID      = $this->getUploaderID();
-        $header->softwareName    = $this->getSoftwareName();
-        $header->softwareVersion = $this->getSoftwareVersion();
+        $header = array();
+        
+        $header['uploaderID']       = $this->getUploaderID();
+        $header['softwareName']     = $this->getSoftwareName();
+        $header['softwareVersion']  = $this->getSoftwareVersion();
         
         return $header;
     }
     
-    private function _postToEDDN($schema, stdClass $message)
+    private function _postToEDDN($schema, array $message)
     {
-        $object                 = new stdClass();
-        $object->{'$schemaRef'} = $schema;
-        $object->header         = $this->_generateHeader();
-        $object->message        = $message;
+        $array                  = array();
+        $array['$schemaRef']    = $schema;
+        $array['header']        = $this->_generateHeader();
+        $array['message']       = $message;
         
-        $json                   = json_encode($object);
+        $json                   = json_encode($array);
         
         if(function_exists('curl_version'))
         {
