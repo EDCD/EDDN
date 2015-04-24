@@ -87,7 +87,7 @@ getRelayUrl = function() {
   return $("#relay").val();
 }
 
-$("#gateway").change(function() {alert(); doUpdate(getGatewayUrl(), displayGatewayStats);})
+$("#gateway").change(function() {doUpdate(getGatewayUrl(), displayGatewayStats);})
 $("#relay").change(function() {doUpdate(getRelayUrl(), displayRelayStats);})
 
 doUpdate(getGatewayUrl(), displayGatewayStats);
