@@ -3,29 +3,51 @@
  *  Configuration
  */
 $relayEDDN              = 'tcp://eddn-relay.elite-markets.net:9500';
+$logFile                = dirname(__FILE__) . '/Logs_EDDN_' . date('Y-m-d') . '.htm';
 
 // A sample list of authorised softwares
 $authorisedSoftwares    = array(
+    "ED-TD.SPACE",
     "EliteOCR",
     "RegulatedNoise",
+    "RegulatedNoise__DJ",
     "Maddavo's Market Share"
 );
 
 // Used this to excludes yourself for example has you don't want to handle your own messages ^^
 $excludedSoftwares      = array(
-    'ED-TD.SPACE'
+    'My Awesome Market Uploader'
 );
 
 /**
  * START
  */
+$oldTime = false;
 function echoLog($str)
 {
+    global $oldTime, $logFile;
+    
+    if(!file_exists($logFile))
+    {
+        file_put_contents(
+            $logFile, 
+            '<style type="text/css">html { white-space: pre; font-family: Courier New,Courier,Lucida Sans Typewriter,Lucida Typewriter,monospace; }</style>'
+        );
+    }
+        
+    if($oldTime != date('H:i:s') || $oldTime === false)
+    {
+        $oldTime = date('H:i:s');
+        $str     = $oldTime . ' | ' . $str;
+    }
+    else
+        $str = '        '  . ' | ' . $str;
+    
     fwrite(STDOUT, $str . PHP_EOL);
     
     file_put_contents(
-        dirname(__FILE__) . '/Log_EDDN_' . date('Y-m-d') . '.htm',
-        $str . '<br />',
+        $logFile,
+        $str . PHP_EOL,
         FILE_APPEND
     );
 }
