@@ -3,7 +3,7 @@
  *  Configuration
  */
 $relayEDDN              = 'tcp://eddn-relay.elite-markets.net:9500';
-$logFile                = dirname(__FILE__) . '/Logs_EDDN_' . date('Y-m-d') . '.htm';
+$logFile                = dirname(__FILE__) . '/Logs_EDDN_%DATE%.htm';
 
 // A sample list of authorised softwares
 $authorisedSoftwares    = array(
@@ -27,10 +27,13 @@ function echoLog($str)
 {
     global $oldTime, $logFile;
     
-    if(!file_exists($logFile))
+    $logFileParsed = str_replace('%DATE%', date('Y-m-d'), $logFile);
+    
+    
+    if(!file_exists($logFileParsed))
     {
         file_put_contents(
-            $logFile, 
+            $logFileParsed, 
             '<style type="text/css">html { white-space: pre; font-family: Courier New,Courier,Lucida Sans Typewriter,Lucida Typewriter,monospace; }</style>'
         );
     }
@@ -46,7 +49,7 @@ function echoLog($str)
     fwrite(STDOUT, $str . PHP_EOL);
     
     file_put_contents(
-        $logFile,
+        $logFileParsed,
         $str . PHP_EOL,
         FILE_APPEND
     );
@@ -153,6 +156,24 @@ while (true)
                     // Do what you want with the data...
                     // Have fun !
                     
+                    // For example
+                    echoLog('    - Timestamp: ' . $array['message']['timestamp']);
+                    echoLog('        - System Name: ' . $array['message']['systemName']);
+                    echoLog('        - Station Name: ' . $array['message']['stationName']);
+                    
+                    foreach($array['message']['commodities'] AS $commodity)
+                    {
+                        echoLog('            - Name: ' . $commodity['name']);
+                        echoLog('                - Buy Price: ' . $commodity['buyPrice']);
+                        echoLog('                - Supply: ' . $commodity['supply'] . (
+                            (array_key_exists('supplyLevel', $commodity)) ? ' (' . $commodity['supplyLevel'] . ')' : ''
+                        ));
+                        echoLog('                - Sell Price: ' . $commodity['sellPrice']);
+                        echoLog('                - Demand: ' . $commodity['demand'] . (
+                            (array_key_exists('demandLevel', $commodity)) ? ' (' . $commodity['demandLevel'] . ')' : ''
+                        ));
+                    }
+                    // End example
                 }
                 
                 unset($authorised, $excluded);
