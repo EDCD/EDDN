@@ -128,6 +128,8 @@ def parse_and_error_handle(data):
 
     if validationResults.severity <= ValidationSeverity.WARN:
 
+        statsCollector.tally(parsed_message["$schemaRef"])
+
         parsed_message['header']['gatewayTimestamp'] = datetime.utcnow().isoformat()
 
         ip_hash_salt = Settings.GATEWAY_IP_KEY_SALT
