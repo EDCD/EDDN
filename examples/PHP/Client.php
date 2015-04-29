@@ -193,6 +193,7 @@ while (true)
                     
                     // For example
                     echoLog('    - Timestamp: ' . $json['message']['timestamp']);
+                    echoLog('    - Uploader ID: ' . $json['header']['uploaderID']);
                     echoLog('        - System Name: ' . $json['message']['systemName']);
                     echoLog('        - Station Name: ' . $json['message']['stationName']);
                     

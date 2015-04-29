@@ -176,6 +176,7 @@ def main():
                         
                         # For example
                         echoLog('    - Timestamp: ' + __json['message']['timestamp'])
+                        echoLog('    - Uploader ID: ' + __json['header']['uploaderID'])
                         echoLog('        - System Name: ' + __json['message']['systemName'])
                         echoLog('        - Station Name: ' + __json['message']['stationName'])
                         
