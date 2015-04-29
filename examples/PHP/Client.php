@@ -212,11 +212,12 @@ while (true)
                 }
                 
                 unset($authorised, $excluded);
+                
+                echoLog('');
+                echoLog('');
             }
             
             unset($converted);
-            echoLog('');
-            echoLog('');
         }
     }
     catch (ZMQSocketException $e)

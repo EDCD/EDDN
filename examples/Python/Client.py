@@ -191,12 +191,12 @@ def main():
                             )
                         # End example
                         
-                    
                     del __authorised, __excluded
+                    
+                    echoLog('')
+                    echoLog('')
                 
                 del __converted
-                echoLog('')
-                echoLog('')
                 
                 
         except zmq.ZMQError, e:
