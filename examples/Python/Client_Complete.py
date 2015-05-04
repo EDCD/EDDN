@@ -9,6 +9,9 @@ import sys, os, datetime, time
 __relayEDDN             = 'tcp://eddn-relay.elite-markets.net:9500'
 __timeoutEDDN           = 600000
 
+# Set False to listen to production stream
+__debugEDDN             = True;
+
 # Set to False if you do not want verbose logging
 __logVerboseFile        = os.path.dirname(__file__) + '/Logs_Verbose_EDDN_%DATE%.htm'
 #__logVerboseFile        = False
@@ -19,11 +22,12 @@ __logJSONFile           = os.path.dirname(__file__) + '/Logs_JSON_EDDN_%DATE%.lo
 
 # A sample list of authorised softwares
 __authorisedSoftwares   = [
+    "EDCE",
     "ED-TD.SPACE",
     "EliteOCR",
+    "Maddavo's Market Share",
     "RegulatedNoise",
-    "RegulatedNoise__DJ",
-    "Maddavo's Market Share"
+    "RegulatedNoise__DJ"
 ]
 
 # Used this to excludes yourself for example has you don't want to handle your own messages ^^
@@ -106,13 +110,13 @@ def main():
                 
                 
                 # Handle commodity v1
-                if __json['$schemaRef'] == 'http://schemas.elite-markets.net/eddn/commodity/1':
+                if __json['$schemaRef'] == 'http://schemas.elite-markets.net/eddn/commodity/1' + ('/test' if (__debugEDDN == True) else ''):
                     echoLogJSON(__message)
                     echoLog('Receiving commodity-v1 message...');
                     echoLog('    - Converting to v2...');
                     
                     __temp                              = {}
-                    __temp['$schemaRef']                = 'http://schemas.elite-markets.net/eddn/commodity/2'
+                    __temp['$schemaRef']                = 'http://schemas.elite-markets.net/eddn/commodity/2' + ('/test' if (__debugEDDN == True) else '')
                     __temp['header']                    = __json['header']
                     
                     __temp['message']                   = {}
@@ -148,7 +152,7 @@ def main():
                     __converted = True
                 
                 # Handle commodity v2
-                if __json['$schemaRef'] == 'http://schemas.elite-markets.net/eddn/commodity/2':
+                if __json['$schemaRef'] == 'http://schemas.elite-markets.net/eddn/commodity/2' + ('/test' if (__debugEDDN == True) else ''):
                     if __converted == False:
                         echoLogJSON(__message)
                         echoLog('Receiving commodity-v2 message...')
@@ -172,6 +176,7 @@ def main():
                         
                         # For example
                         echoLog('    - Timestamp: ' + __json['message']['timestamp'])
+                        echoLog('    - Uploader ID: ' + __json['header']['uploaderID'])
                         echoLog('        - System Name: ' + __json['message']['systemName'])
                         echoLog('        - Station Name: ' + __json['message']['stationName'])
                         
@@ -187,12 +192,12 @@ def main():
                             )
                         # End example
                         
-                    
                     del __authorised, __excluded
+                    
+                    echoLog('')
+                    echoLog('')
                 
                 del __converted
-                echoLog('')
-                echoLog('')
                 
                 
         except zmq.ZMQError, e:

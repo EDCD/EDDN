@@ -5,6 +5,9 @@
 $relayEDDN              = 'tcp://eddn-relay.elite-markets.net:9500';
 $timeoutEDDN            = 600000;
 
+// Set false to listen to production stream
+$debugEDDN              = true;
+
 // Set to false if you do not want verbose logging
 $logVerboseFile         = dirname(__FILE__) . '/Logs_Verbose_EDDN_%DATE%.htm';
 //$logVerboseFile         = false;
@@ -15,11 +18,12 @@ $logJSONFile            = dirname(__FILE__) . '/Logs_JSON_EDDN_%DATE%.log';
 
 // A sample list of authorised softwares
 $authorisedSoftwares    = array(
+    "EDCE",
     "ED-TD.SPACE",
     "EliteOCR",
+    "Maddavo's Market Share",
     "RegulatedNoise",
-    "RegulatedNoise__DJ",
-    "Maddavo's Market Share"
+    "RegulatedNoise__DJ"
 );
 
 // Used this to excludes yourself for example has you don't want to handle your own messages ^^
@@ -115,14 +119,14 @@ while (true)
             $converted  = false;
             
             // Handle commodity v1
-            if($json['$schemaRef'] == 'http://schemas.elite-markets.net/eddn/commodity/1')
+            if($json['$schemaRef'] == 'http://schemas.elite-markets.net/eddn/commodity/1' . (($debugEDDN === true) ? '/test' : ''))
             {
                 echoLogJSON($message);
                 echoLog('Receiving commodity-v1 message...');
                 echoLog('    - Converting to v2...');
                 
                 $temp                           = array();
-                $temp['$schemaRef']             = 'http://schemas.elite-markets.net/eddn/commodity/2';
+                $temp['$schemaRef']             = 'http://schemas.elite-markets.net/eddn/commodity/2' . (($debugEDDN === true) ? '/test' : '');
                 $temp['header']                 = $json['header'];
                 
                 $temp['message']                = array();
@@ -160,7 +164,7 @@ while (true)
             
             
             // Handle commodity v2
-            if($json['$schemaRef'] == 'http://schemas.elite-markets.net/eddn/commodity/2')
+            if($json['$schemaRef'] == 'http://schemas.elite-markets.net/eddn/commodity/2' . (($debugEDDN === true) ? '/test' : ''))
             {
                 if($converted === false)
                 {
@@ -189,6 +193,7 @@ while (true)
                     
                     // For example
                     echoLog('    - Timestamp: ' . $json['message']['timestamp']);
+                    echoLog('    - Uploader ID: ' . $json['header']['uploaderID']);
                     echoLog('        - System Name: ' . $json['message']['systemName']);
                     echoLog('        - Station Name: ' . $json['message']['stationName']);
                     
@@ -208,11 +213,12 @@ while (true)
                 }
                 
                 unset($authorised, $excluded);
+                
+                echoLog('');
+                echoLog('');
             }
             
             unset($converted);
-            echoLog('');
-            echoLog('');
         }
     }
     catch (ZMQSocketException $e)
