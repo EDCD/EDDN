@@ -33,7 +33,7 @@ while (true)
             }
             
             $message    = zlib_decode($message);
-            $json      = json_decode($message, true);
+            $json       = $message;
             
             fwrite(STDOUT, $json . PHP_EOL);
         }
