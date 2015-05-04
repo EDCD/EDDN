@@ -34,6 +34,7 @@ setup(
         'console_scripts': [
             'eddn-gateway = eddn.Gateway:main',
             'eddn-relay = eddn.Relay:main',
+            'eddn-monitor = eddn.Monitor:main',
             ],
         }
       )
