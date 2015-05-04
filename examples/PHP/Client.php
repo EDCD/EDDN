@@ -3,15 +3,27 @@
  *  Configuration
  */
 $relayEDDN              = 'tcp://eddn-relay.elite-markets.net:9500';
-$logFile                = dirname(__FILE__) . '/Logs_EDDN_' . date('Y-m-d') . '.htm';
+$timeoutEDDN            = 600000;
+
+// Set false to listen to production stream
+$debugEDDN              = true;
+
+// Set to false if you do not want verbose logging
+$logVerboseFile         = dirname(__FILE__) . '/Logs_Verbose_EDDN_%DATE%.htm';
+//$logVerboseFile         = false;
+
+// Set to false if you do not want JSON logging
+$logJSONFile            = dirname(__FILE__) . '/Logs_JSON_EDDN_%DATE%.log';
+//$logJSONFile            = false;
 
 // A sample list of authorised softwares
 $authorisedSoftwares    = array(
+    "EDCE",
     "ED-TD.SPACE",
     "EliteOCR",
+    "Maddavo's Market Share",
     "RegulatedNoise",
-    "RegulatedNoise__DJ",
-    "Maddavo's Market Share"
+    "RegulatedNoise__DJ"
 );
 
 // Used this to excludes yourself for example has you don't want to handle your own messages ^^
@@ -19,18 +31,23 @@ $excludedSoftwares      = array(
     'My Awesome Market Uploader'
 );
 
+
+
 /**
  * START
  */
 $oldTime = false;
 function echoLog($str)
 {
-    global $oldTime, $logFile;
+    global $oldTime, $logVerboseFile;
     
-    if(!file_exists($logFile))
+    if($logVerboseFile !== false)
+        $logVerboseFileParsed = str_replace('%DATE%', date('Y-m-d'), $logVerboseFile);
+    
+    if($logVerboseFile !== false && !file_exists($logVerboseFileParsed))
     {
         file_put_contents(
-            $logFile, 
+            $logVerboseFileParsed, 
             '<style type="text/css">html { white-space: pre; font-family: Courier New,Courier,Lucida Sans Typewriter,Lucida Typewriter,monospace; }</style>'
         );
     }
@@ -45,82 +62,101 @@ function echoLog($str)
     
     fwrite(STDOUT, $str . PHP_EOL);
     
-    file_put_contents(
-        $logFile,
-        $str . PHP_EOL,
-        FILE_APPEND
-    );
+    if($logVerboseFile !== false)
+        file_put_contents(
+            $logVerboseFileParsed,
+            $str . PHP_EOL,
+            FILE_APPEND
+        );
+}
+
+function echoLogJSON($json)
+{
+    global $logJSONFile;
+    
+    if($logJSONFile !== false)
+    {
+        $logJSONFileParsed = str_replace('%DATE%', date('Y-m-d'), $logJSONFile);
+        
+        file_put_contents(
+            $logJSONFileParsed,
+            $json . PHP_EOL,
+            FILE_APPEND
+        );
+    }
 }
 
 // UTC
 date_default_timezone_set('UTC');
 
-echoLog('Starting EDDN Subscribe');
+echoLog('Starting EDDN Subscriber');
 echoLog('');
 
-$context = new ZMQContext();
-$socket = $context->getSocket(ZMQ::SOCKET_SUB);
-$socket->setSockOpt(ZMQ::SOCKOPT_SUBSCRIBE, "");
-$socket->setSockOpt(ZMQ::SOCKOPT_RCVTIMEO, 600000);
+$context    = new ZMQContext();
+$subscriber = $context->getSocket(ZMQ::SOCKET_SUB);
+
+$subscriber->setSockOpt(ZMQ::SOCKOPT_SUBSCRIBE, "");
+$subscriber->setSockOpt(ZMQ::SOCKOPT_RCVTIMEO, $timeoutEDDN);
 
 while (true)
 {
     try
     {
-        $socket->connect($relayEDDN);
+        $subscriber->connect($relayEDDN);
+        
         while (true)
         {
-            $message = $socket->recv();
+            $message = $subscriber->recv();
             
             if ($message === false)
             {
-                $socket->disconnect($relayEDDN);
+                $subscriber->disconnect($relayEDDN);
                 break;
             }
             
-            $json       = zlib_decode($message);
-            $array      = json_decode($json, true);
+            $message    = zlib_decode($message);
+            $json      = json_decode($message, true);
             $converted  = false;
             
-            
             // Handle commodity v1
-            if($array['$schemaRef'] == 'http://schemas.elite-markets.net/eddn/commodity/1')
+            if($json['$schemaRef'] == 'http://schemas.elite-markets.net/eddn/commodity/1' . (($debugEDDN === true) ? '/test' : ''))
             {
+                echoLogJSON($message);
                 echoLog('Receiving commodity-v1 message...');
                 echoLog('    - Converting to v2...');
                 
                 $temp                           = array();
-                $temp['$schemaRef']             = 'http://schemas.elite-markets.net/eddn/commodity/2';
-                $temp['header']                 = $array['header'];
+                $temp['$schemaRef']             = 'http://schemas.elite-markets.net/eddn/commodity/2' . (($debugEDDN === true) ? '/test' : '');
+                $temp['header']                 = $json['header'];
                 
                 $temp['message']                = array();
-                $temp['message']['systemName']  = $array['message']['systemName'];
-                $temp['message']['stationName'] = $array['message']['stationName'];
-                $temp['message']['timestamp']   = $array['message']['timestamp'];
+                $temp['message']['systemName']  = $json['message']['systemName'];
+                $temp['message']['stationName'] = $json['message']['stationName'];
+                $temp['message']['timestamp']   = $json['message']['timestamp'];
                 
                 $temp['message']['commodities'] = array();
                 
                 $commodity                      = array();
                 
-                if(array_key_exists('itemName', $array['message']))
-                    $commodity['name'] = $array['message']['itemName'];
+                if(array_key_exists('itemName', $json['message']))
+                    $commodity['name'] = $json['message']['itemName'];
                     
-                if(array_key_exists('buyPrice', $array['message']))
-                    $commodity['buyPrice'] = $array['message']['buyPrice'];
-                if(array_key_exists('stationStock', $array['message']))
-                    $commodity['supply'] = $array['message']['stationStock'];
-                if(array_key_exists('supplyLevel', $array['message']))
-                    $commodity['supplyLevel'] = $array['message']['supplyLevel'];
+                if(array_key_exists('buyPrice', $json['message']))
+                    $commodity['buyPrice'] = $json['message']['buyPrice'];
+                if(array_key_exists('stationStock', $json['message']))
+                    $commodity['supply'] = $json['message']['stationStock'];
+                if(array_key_exists('supplyLevel', $json['message']))
+                    $commodity['supplyLevel'] = $json['message']['supplyLevel'];
                 
-                if(array_key_exists('sellPrice', $array['message']))
-                    $commodity['sellPrice'] = $array['message']['sellPrice'];
-                if(array_key_exists('demand', $array['message']))
-                    $commodity['demand'] = $array['message']['demand'];
-                if(array_key_exists('demandLevel', $array['message']))
-                    $commodity['demandLevel'] = $array['message']['demandLevel'];
+                if(array_key_exists('sellPrice', $json['message']))
+                    $commodity['sellPrice'] = $json['message']['sellPrice'];
+                if(array_key_exists('demand', $json['message']))
+                    $commodity['demand'] = $json['message']['demand'];
+                if(array_key_exists('demandLevel', $json['message']))
+                    $commodity['demandLevel'] = $json['message']['demandLevel'];
                 
                 $temp['message']['commodities'][]   = $commodity;
-                $array                              = $temp;
+                $json                               = $temp;
                 unset($temp, $commodity);
                 
                 $converted = true;
@@ -128,21 +164,23 @@ while (true)
             
             
             // Handle commodity v2
-            if($array['$schemaRef'] == 'http://schemas.elite-markets.net/eddn/commodity/2')
+            if($json['$schemaRef'] == 'http://schemas.elite-markets.net/eddn/commodity/2' . (($debugEDDN === true) ? '/test' : ''))
             {
                 if($converted === false)
+                {
+                    echoLogJSON($message);
                     echoLog('Receiving commodity-v2 message...');
-                unset($converted);
+                }
                 
                 $authorised = false;
                 $excluded   = false;
                 
-                if(in_array($array['header']['softwareName'], $authorisedSoftwares))
+                if(in_array($json['header']['softwareName'], $authorisedSoftwares))
                     $authorised = true;
-                if(in_array($array['header']['softwareName'], $excludedSoftwares))
+                if(in_array($json['header']['softwareName'], $excludedSoftwares))
                     $excluded = true;
                 
-                echoLog('    - Software: ' . $array['header']['softwareName'] . ' / ' . $array['header']['softwareVersion']);
+                echoLog('    - Software: ' . $json['header']['softwareName'] . ' / ' . $json['header']['softwareVersion']);
                 echoLog('        - ' . (($authorised === true) 
                                             ? 'AUTHORISED' 
                                             : (( $excluded === true) ? 'EXCLUDED' : 'UNAUTHORISED')
@@ -153,18 +191,41 @@ while (true)
                     // Do what you want with the data...
                     // Have fun !
                     
+                    // For example
+                    echoLog('    - Timestamp: ' . $json['message']['timestamp']);
+                    echoLog('    - Uploader ID: ' . $json['header']['uploaderID']);
+                    echoLog('        - System Name: ' . $json['message']['systemName']);
+                    echoLog('        - Station Name: ' . $json['message']['stationName']);
+                    
+                    foreach($json['message']['commodities'] AS $commodity)
+                    {
+                        echoLog('            - Name: ' . $commodity['name']);
+                        echoLog('                - Buy Price: ' . $commodity['buyPrice']);
+                        echoLog('                - Supply: ' . $commodity['supply']
+                            . ((array_key_exists('supplyLevel', $commodity)) ? ' (' . $commodity['supplyLevel'] . ')' : '')
+                        );
+                        echoLog('                - Sell Price: ' . $commodity['sellPrice']);
+                        echoLog('                - Demand: ' . $commodity['demand']
+                            . ((array_key_exists('demandLevel', $commodity)) ? ' (' . $commodity['demandLevel'] . ')' : '')
+                        );
+                    }
+                    // End example
                 }
                 
                 unset($authorised, $excluded);
+                
+                echoLog('');
+                echoLog('');
             }
             
-            echoLog('');
-            echoLog('');
+            unset($converted);
         }
     }
     catch (ZMQSocketException $e)
     {
+        echoLog('');
         echoLog('ZMQSocketException: ' . $e);
+        echoLog('');
         sleep(10);
     }
 }
