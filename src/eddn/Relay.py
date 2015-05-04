@@ -18,7 +18,7 @@ from eddn._Conf.Settings import Settings, loadConfig
 from gevent import monkey
 monkey.patch_all()
 
-from eddn.StatsCollector import StatsCollector
+from eddn._Core.StatsCollector import StatsCollector
 
 statsCollector = StatsCollector()
 statsCollector.start()
