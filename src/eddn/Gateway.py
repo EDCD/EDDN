@@ -10,6 +10,9 @@ import urlparse
 import zlib
 import zmq.green as zmq
 from datetime import datetime
+
+import os
+
 from eddn._Conf.Settings import Settings, loadConfig
 from eddn.Validator import Validator, ValidationSeverity
 
@@ -39,7 +42,8 @@ def configure():
         sender.bind(binding)
 
     for schemaRef, schemaFile in Settings.GATEWAY_JSON_SCHEMAS.iteritems():
-        validator.addSchemaResource(schemaRef, schemaFile)
+        #filename = resource_filename(Requirement.parse("eddn"), schemaFile)
+        validator.addSchemaResource(schemaRef, os.path.dirname(__file__) + '/' + schemaFile)
 
 
 def push_message(string_message):
