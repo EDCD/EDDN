@@ -10,7 +10,7 @@ import urlparse
 import zlib
 import zmq.green as zmq
 from datetime import datetime
-from eddn.conf.Settings import Settings, loadConfig
+from eddn._Conf.Settings import Settings, loadConfig
 from eddn.Validator import Validator, ValidationSeverity
 
 from gevent import monkey
