@@ -42,7 +42,6 @@ def configure():
         sender.bind(binding)
 
     for schemaRef, schemaFile in Settings.GATEWAY_JSON_SCHEMAS.iteritems():
-        #filename = resource_filename(Requirement.parse("eddn"), schemaFile)
         validator.addSchemaResource(schemaRef, os.path.dirname(__file__) + '/' + schemaFile)
 
 
