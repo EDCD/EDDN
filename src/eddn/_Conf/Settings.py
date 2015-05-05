@@ -6,7 +6,7 @@ Created on 15 Nov 2014
 
 import argparse
 import simplejson
-from eddn._Conf._version import __version__ as version
+from eddn._Conf.Version import __version__ as version
 
 
 class _Settings(object):
