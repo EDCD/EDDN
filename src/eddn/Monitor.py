@@ -18,6 +18,14 @@ from eddn._Conf.Settings import Settings, loadConfig
 from gevent import monkey
 monkey.patch_all()
 
+import sqlite3
+import sys
+import datetime
+
+def date(__format):
+    d = datetime.datetime.utcnow()
+    return d.strftime(__format)
+
 class Monitor(Thread):
 
     def run(self):
@@ -26,19 +34,47 @@ class Monitor(Thread):
         receiver = context.socket(zmq.SUB)
         receiver.setsockopt(zmq.SUBSCRIBE, '')
         
-        for binding in Settings.RELAY_RECEIVER_BINDINGS:
+        for binding in Settings.MONITOR_RECEIVER_BINDINGS:
             receiver.connect(binding)
 
         def monitor_worker(message):
-            if Settings.RELAY_DECOMPRESS_MESSAGES:
-                message = zlib.decompress(message)
-
-            # Here we monitor different types of messages
+            db          = sqlite3.connect(Settings.MONITOR_DB)
+            currentDate = str(date('%Y-%m-%d'))
             
+        
+            if Settings.MONITOR_DECOMPRESS_MESSAGES:
+                message = zlib.decompress(message)
+            
+            json    = simplejson.loads(message)
+            
+            # Update software count
+            softwareID = json['header']['softwareName'] + ' | ' + json['header']['softwareVersion']
+            
+            c = db.cursor()
+            c.execute('UPDATE uploaders SET hits = hits + 1 WHERE `name` = ? AND `dateStats` = ?', (softwareID, currentDate))
+            c.execute('INSERT OR IGNORE INTO uploaders (name, dateStats) VALUES (?, ?)', (softwareID, currentDate))
+            db.commit()
+            
+            
+            # Update schemas count 
+            schemaID = json['$schemaRef']
+            
+            c = db.cursor()
+            c.execute('UPDATE schemas SET hits = hits + 1 WHERE `name` = ? AND `dateStats` = ?', (schemaID, currentDate))
+            c.execute('INSERT OR IGNORE INTO schemas (name, dateStats) VALUES (?, ?)', (schemaID, currentDate))
+            db.commit()
+            
+            
+            print softwareID
+            print schemaID
+            print currentDate
+            sys.stdout.flush()
+            
+            db.close()
 
         while True:
             inboundMessage = receiver.recv()
-            gevent.spawn(relay_monitor, inboundMessage)
+            gevent.spawn(monitor_worker, inboundMessage)
 
 
 def main():

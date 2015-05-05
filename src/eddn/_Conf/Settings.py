@@ -40,6 +40,18 @@ class _Settings(object):
         "http://schemas.elite-markets.net/eddn/commodity/2/test": "schemas/commodity-v2.0-draft.json"
     }
 
+    ###############################################################################
+    #  Monitor settings
+    ###############################################################################
+    
+    MONITOR_RECEIVER_BINDINGS = ["tcp://eddn-gateway.elite-markets.net:8500", "tcp://eddn-gateway.ed-td.space:8500"]
+    
+    MONITOR_DB = "D:\EDDN_Monitor.s3db"
+    
+    MONITOR_DECOMPRESS_MESSAGES = True
+    
+    
+
     def loadFrom(self, fileName):
         f = open(fileName, 'r')
         conf = simplejson.load(f)
