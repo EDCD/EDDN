@@ -17,11 +17,19 @@ class _Settings(object):
     # Relay settings
     ###############################################################################
 
-    RELAY_RECEIVER_BINDINGS = ["tcp://localhost:8500"]
+    #RELAY_RECEIVER_BINDINGS = ["tcp://localhost:8500"]
+    RELAY_RECEIVER_BINDINGS = ["tcp://eddn-gateway.elite-markets.net:8500", "tcp://eddn-gateway.ed-td.space:8500"]
 
     RELAY_SENDER_BINDINGS = ["tcp://*:9500"]
 
     RELAY_DECOMPRESS_MESSAGES = False
+    
+    # If set to false, don't listen to topic and accept all incoming messages
+    RELAY_RECEIVE_ONLY_GATEWAY_EXTRA_JSON = False
+    
+    RELAY_EXTRA_JSON_SCHEMAS = {
+        
+    }
 
     ###############################################################################
     #  Gateway settings
