@@ -51,8 +51,17 @@ class Monitor(Thread):
             softwareID = json['header']['softwareName'] + ' | ' + json['header']['softwareVersion']
             
             c = db.cursor()
-            c.execute('UPDATE uploaders SET hits = hits + 1 WHERE `name` = ? AND `dateStats` = ?', (softwareID, currentDate))
-            c.execute('INSERT OR IGNORE INTO uploaders (name, dateStats) VALUES (?, ?)', (softwareID, currentDate))
+            c.execute('UPDATE softwares SET hits = hits + 1 WHERE `name` = ? AND `dateStats` = ?', (softwareID, currentDate))
+            c.execute('INSERT OR IGNORE INTO softwares (name, dateStats) VALUES (?, ?)', (softwareID, currentDate))
+            db.commit()
+            
+            
+            # Update uploader count
+            uploaderID = json['header']['uploaderID']
+            
+            c = db.cursor()
+            c.execute('UPDATE uploaders SET hits = hits + 1 WHERE `name` = ? AND `dateStats` = ?', (uploaderID, currentDate))
+            c.execute('INSERT OR IGNORE INTO uploaders (name, dateStats) VALUES (?, ?)', (uploaderID, currentDate))
             db.commit()
             
             
@@ -66,6 +75,7 @@ class Monitor(Thread):
             
             
             print softwareID
+            print uploaderID
             print schemaID
             print currentDate
             sys.stdout.flush()

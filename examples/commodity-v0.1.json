@@ -14,7 +14,7 @@
         "supplyLevel": "Low",
         "sellPrice": 1138,
         "demand": 42,
-        "demandLevel": "Med"
+        "demandLevel": "Med",
         "timestamp": "2014-11-17T12:34:56+00:00"
     }
 }
