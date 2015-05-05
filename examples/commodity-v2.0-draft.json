@@ -8,7 +8,7 @@
     "message": {
         "systemName": "Eranin",
         "stationName": "Azeban Orbital",
-        "timestamp": "2014-11-17T12:34:56+00:00"
+        "timestamp": "2014-11-17T12:34:56+00:00",
         "commodities": [
             {
                 "name": "Gold",
