@@ -42,12 +42,23 @@ class Relay(Thread):
         context = zmq.Context()
 
         receiver = context.socket(zmq.SUB)
-        receiver.setsockopt(zmq.SUBSCRIBE, '')
+        
+        # Filters on topics or not...
+        if Settings.RELAY_RECEIVE_ONLY_GATEWAY_EXTRA_JSON == True:
+            for schemaRef, schemaFile in Settings.GATEWAY_JSON_SCHEMAS.iteritems():
+                receiver.setsockopt(zmq.SUBSCRIBE, schemaRef)
+            for schemaRef, schemaFile in Settings.RELAY_EXTRA_JSON_SCHEMAS.iteritems():
+                receiver.setsockopt(zmq.SUBSCRIBE, schemaRef)
+        else:
+            receiver.setsockopt(zmq.SUBSCRIBE, '')
+        
+        
         for binding in Settings.RELAY_RECEIVER_BINDINGS:
             # Relays bind upstream to an Announcer, or another Relay.
             receiver.connect(binding)
 
         sender = context.socket(zmq.PUB)
+        
         for binding in Settings.RELAY_SENDER_BINDINGS:
             # End users, or other relays, may attach here.
             sender.bind(binding)
@@ -58,8 +69,17 @@ class Relay(Thread):
             to any subscribers.
             :param str message: A JSON string to re-broadcast.
             """
+             # Separate topic from message
+            message = message.split(' |-| ')
+            
+            # Handle gateway not sending topic
+            if len(message) > 1:
+                message = message[1]
+            else:
+                message = message[0]
+
             # if is_message_duped(message):
-        # We've already seen this message recently. Discard it.
+            # We've already seen this message recently. Discard it.
             #    return
 
             if Settings.RELAY_DECOMPRESS_MESSAGES:
