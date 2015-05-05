@@ -6,7 +6,7 @@ Created on 15 Nov 2014
 
 import argparse
 import simplejson
-from eddn._version import __version__ as version
+from eddn._Conf._version import __version__ as version
 
 
 class _Settings(object):
@@ -54,7 +54,7 @@ class _Settings(object):
     
     MONITOR_RECEIVER_BINDINGS = RELAY_RECEIVER_BINDINGS
     
-    MONITOR_DB = "D:\EDDN_Monitor.s3db"
+    MONITOR_DB = "/home/EDDN_Monitor.s3db"
     
     MONITOR_DECOMPRESS_MESSAGES = True
     
