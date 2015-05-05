@@ -1,30 +1,102 @@
 """
-Relays sit below an announcer, or another relay, and simply repeat what
-they receive over PUB/SUB.
+Monitor sit below gateways, or another relay, and simply parse what it receives over SUB.
 """
-# Logging has to be configured first before we do anything.
-import logging
 from threading import Thread
-
-logger = logging.getLogger(__name__)
 import zlib
-
 import gevent
 import simplejson
+import sqlite3
+import datetime
+import collections
 import zmq.green as zmq
-from bottle import get, response, run as bottle_run
+from bottle import get, request, response, run as bottle_run
 from eddn._Conf.Settings import Settings, loadConfig
 
 from gevent import monkey
 monkey.patch_all()
 
-import sqlite3
-import sys
-import datetime
-
 def date(__format):
     d = datetime.datetime.utcnow()
     return d.strftime(__format)
+
+
+@get('/getGateways/')
+def getGateways():
+    response.set_header("Access-Control-Allow-Origin", "*")
+    gateways            = []
+    
+    for gateway in Settings.RELAY_RECEIVER_BINDINGS:
+        gateways.append(gateway) 
+    
+    return simplejson.dumps(gateways)
+    
+@get('/getSoftwares/')
+def getSoftwares():
+    response.set_header("Access-Control-Allow-Origin", "*")
+    db          = sqlite3.connect(Settings.MONITOR_DB)
+    softwares   = collections.OrderedDict()
+    
+    dateStart   = request.GET.get('dateStart', str(date('%Y-%m-%d'))).strip()
+    dateEnd     = request.GET.get('dateEnd', str(date('%Y-%m-%d'))).strip()
+    
+    query       = 'SELECT * FROM softwares WHERE dateStats BETWEEN ? AND ? ORDER BY hits DESC, dateStats ASC'
+    results     = db.execute(query, (dateStart, dateEnd))
+    
+    for row in results:
+        if not str(row[2]) in softwares.keys():
+            softwares[str(row[2])] = collections.OrderedDict()
+         
+        softwares[str(row[2])][str(row[0])] = str(row[1])
+    
+    db.close()
+    
+    return simplejson.dumps(softwares)
+    
+@get('/getUploaders/')
+def getUploaders():
+    response.set_header("Access-Control-Allow-Origin", "*")
+    db          = sqlite3.connect(Settings.MONITOR_DB)
+    uploaders   = collections.OrderedDict()
+    
+    dateStart   = request.GET.get('dateStart', str(date('%Y-%m-%d'))).strip()
+    dateEnd     = request.GET.get('dateEnd', str(date('%Y-%m-%d'))).strip()
+    
+    query       = 'SELECT * FROM uploaders WHERE dateStats BETWEEN ? AND ? ORDER BY hits DESC, dateStats ASC'
+    results     = db.execute(query, (dateStart, dateEnd))
+    
+    for row in results:
+        if not str(row[2]) in uploaders.keys():
+            uploaders[str(row[2])] = collections.OrderedDict()
+         
+        uploaders[str(row[2])][str(row[0])] = str(row[1])
+    
+    db.close()
+    
+    return simplejson.dumps(uploaders)
+    
+@get('/getSchemas/')
+def getSchemas():
+    response.set_header("Access-Control-Allow-Origin", "*")
+    db          = sqlite3.connect(Settings.MONITOR_DB)
+    schemas     = collections.OrderedDict()
+    
+    dateStart   = request.GET.get('dateStart', str(date('%Y-%m-%d'))).strip()
+    dateEnd     = request.GET.get('dateEnd', str(date('%Y-%m-%d'))).strip()
+    
+    query       = 'SELECT * FROM schemas WHERE dateStats BETWEEN ? AND ? ORDER BY hits DESC, dateStats ASC'
+    results     = db.execute(query, (dateStart, dateEnd))
+    
+    for row in results:
+        if not str(row[2]) in schemas.keys():
+            schemas[str(row[2])] = collections.OrderedDict()
+         
+        schemas[str(row[2])][str(row[0])] = str(row[1])
+    
+    db.close()
+    
+    return simplejson.dumps(schemas)
+
+
 
 class Monitor(Thread):
 
@@ -39,9 +111,7 @@ class Monitor(Thread):
 
         def monitor_worker(message):
             db          = sqlite3.connect(Settings.MONITOR_DB)
-            currentDate = str(date('%Y-%m-%d'))
             
-        
             if Settings.MONITOR_DECOMPRESS_MESSAGES:
                 message = zlib.decompress(message)
             
@@ -51,8 +121,8 @@ class Monitor(Thread):
             softwareID = json['header']['softwareName'] + ' | ' + json['header']['softwareVersion']
             
             c = db.cursor()
-            c.execute('UPDATE softwares SET hits = hits + 1 WHERE `name` = ? AND `dateStats` = ?', (softwareID, currentDate))
-            c.execute('INSERT OR IGNORE INTO softwares (name, dateStats) VALUES (?, ?)', (softwareID, currentDate))
+            c.execute('UPDATE softwares SET hits = hits + 1 WHERE `name` = ? AND `dateStats` = DATE("now", "utc")', (softwareID, ))
+            c.execute('INSERT OR IGNORE INTO softwares (name, dateStats) VALUES (?, DATE("now", "utc"))', (softwareID, ))
             db.commit()
             
             
@@ -60,8 +130,8 @@ class Monitor(Thread):
             uploaderID = json['header']['uploaderID']
             
             c = db.cursor()
-            c.execute('UPDATE uploaders SET hits = hits + 1 WHERE `name` = ? AND `dateStats` = ?', (uploaderID, currentDate))
-            c.execute('INSERT OR IGNORE INTO uploaders (name, dateStats) VALUES (?, ?)', (uploaderID, currentDate))
+            c.execute('UPDATE uploaders SET hits = hits + 1 WHERE `name` = ? AND `dateStats` = DATE("now", "utc")', (uploaderID, ))
+            c.execute('INSERT OR IGNORE INTO uploaders (name, dateStats) VALUES (?, DATE("now", "utc"))', (uploaderID, ))
             db.commit()
             
             
@@ -69,16 +139,9 @@ class Monitor(Thread):
             schemaID = json['$schemaRef']
             
             c = db.cursor()
-            c.execute('UPDATE schemas SET hits = hits + 1 WHERE `name` = ? AND `dateStats` = ?', (schemaID, currentDate))
-            c.execute('INSERT OR IGNORE INTO schemas (name, dateStats) VALUES (?, ?)', (schemaID, currentDate))
+            c.execute('UPDATE schemas SET hits = hits + 1 WHERE `name` = ? AND `dateStats` = DATE("now", "utc")', (schemaID, ))
+            c.execute('INSERT OR IGNORE INTO schemas (name, dateStats) VALUES (?, DATE("now", "utc"))', (schemaID, ))
             db.commit()
-            
-            
-            print softwareID
-            print uploaderID
-            print schemaID
-            print currentDate
-            sys.stdout.flush()
             
             db.close()
 
