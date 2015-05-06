@@ -54,7 +54,8 @@ class _Settings(object):
     
     MONITOR_RECEIVER_BINDINGS = RELAY_RECEIVER_BINDINGS
     
-    MONITOR_DB = "/home/EDDN_Monitor.s3db"
+    #MONITOR_DB = "/home/EDDN_Monitor.s3db"
+    MONITOR_DB = "D:\EDDN_Monitor.s3db"        
     
     MONITOR_DECOMPRESS_MESSAGES = True
     
