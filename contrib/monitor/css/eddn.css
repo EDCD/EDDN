@@ -4,8 +4,19 @@ body {
 
 section.container {
     margin-bottom: 20px;
+    
+    /* FIX ANCHORS */
+    padding-top:70px;
+    margin-top:-70px;
 }
     
     .container h2 {
         margin-top: 0;
     }
+    
+    .container .chart {
+        height: 200px;
+        margin-bottom: 10px;
+    }
+    
+.highcharts-container{width:100% !important; height:100% !important;}
