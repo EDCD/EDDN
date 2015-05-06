@@ -30,6 +30,22 @@ def getGateways():
     
     return simplejson.dumps(gateways)
     
+@get('/getTotalSoftwares/')
+def getTotalSoftwares():
+    response.set_header("Access-Control-Allow-Origin", "*")
+    db          = sqlite3.connect(Settings.MONITOR_DB)
+    softwares   = collections.OrderedDict()
+    
+    query       = 'SELECT name, SUM(hits) AS total FROM softwares GROUP BY name ORDER BY total DESC'
+    results     = db.execute(query)
+    
+    for row in results:
+        softwares[str(row[0])] = str(row[1])
+    
+    db.close()
+    
+    return simplejson.dumps(softwares)
+    
 @get('/getSoftwares/')
 def getSoftwares():
     response.set_header("Access-Control-Allow-Origin", "*")
