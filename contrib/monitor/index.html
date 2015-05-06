@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>EDDN Status</title>
 
     <!-- Bootstrap -->
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/eddn.css" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="./css/eddn.css" rel="stylesheet" />
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -18,92 +18,220 @@
     <![endif]-->
 
     <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
-    <script src="js/date.js"></script>
-  </head>
-  <body>
-    <div class="container">
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <h1>EDDN Status</h1>
+    <script src="./js/date.js"></script>
+</head>
+<body data-spy="scroll" data-target="#header-nav">
+    <header>
+        <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#header-nav">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="">EDDN Status</a>
+            </div>
+            
+            <div class="collapse navbar-collapse" id="header-nav">
+                <ul class="nav navbar-nav">
+                    <li><a href="#gateway">Gateway</a></li>
+                    <li><a href="#relay">Relay</a></li>
+                    <li><a href="#software">Software</a></li>
+                    <li><a href="#uploader">Uploader</a></li>
+                </ul>
+            </div>
+            
         </div>
-        <div class="panel-body">
-          <p>This page shows transaction information (messages sent/received) for key points of the EDDN, over a one-, five- and sixty-minute period. Values automatically update every minute.</p>
-          <h2>Gateway</h2>
-          <table class="table">
-            <thead>
-              <tr>
-                <td class="form-inline">
-                  <select id="gateway" class="form-control">
-                    <option value="http://eddn-gateway.elite-markets.net:8080/stats/">eddn-gateway.elite-markets.net</option>
-                  </select>
-                </td>
-                <th>1 min</th>
-                <th>5 min</th>
-                <th>60 min</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th>Messages received</th>
-                <td id="gateway_inbound_1min" class="stat">-</td>
-                <td id="gateway_inbound_5min" class="stat">-</td>
-                <td id="gateway_inbound_60min" class="stat">-</td>
-              </tr>
-              <tr>
-                <th>Invalid messages</th>
-                <td id="gateway_invalid_1min" class="stat">-</td>
-                <td id="gateway_invalid_5min" class="stat">-</td>
-                <td id="gateway_invalid_60min" class="stat">-</td>
-              </tr>
-              <tr>
-                <th>Messages passed to relay</th>
-                <td id="gateway_outbound_1min" class="stat">-</td>
-                <td id="gateway_outbound_5min" class="stat">-</td>
-                <td id="gateway_outbound_60min" class="stat">-</td>
-              </tr>
-            </tbody>
-          </table>
-          <p class="text-muted small">EDDN version <span id="gateway_version">N/A</span>. Uptime: <span id="gateway_uptime">N/A</span>. Last updated <span id="update_gateway_timestamp">N/A</span></p>
-          <h2>Relay</h2>
-          <table class="table">
-            <thead>
-              <tr>
-                <td class="form-inline">
-                  <select id="relay" class="form-control">
-                    <option value="http://eddn-relay.elite-markets.net:9090/stats/">eddn-relay.elite-markets.net</option>
-                  </select>
-                </td>
-                <th>1 min</th>
-                <th>5 min</th>
-                <th>60 min</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th>Messages received</th>
-                <td id="relay_inbound_1min" class="stat">-</td>
-                <td id="relay_inbound_5min" class="stat">-</td>
-                <td id="relay_inbound_60min" class="stat">-</td>
-              </tr>
-              <tr>
-                <th>Messages passed to subscribers</th>
-                <td id="relay_outbound_1min" class="stat">-</td>
-                <td id="relay_outbound_5min" class="stat">-</td>
-                <td id="relay_outbound_60min" class="stat">-</td>
-              </tr>
-            </tbody>
-          </table>
-          <p class="text-muted small">EDDN version <span id="relay_version">N/A</span>. Uptime: <span id="relay_uptime">N/A</span>. Last updated <span id="update_relay_timestamp">N/A</span></p>
+        </nav>
+    </header>
+    
+    <section class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <p>
+                    This page shows transaction information (messages sent/received) for key points of the EDDN, over a one-, five- and sixty-minute period.<br />
+                    Values automatically update every minute.
+                </p>
+            </div>
         </div>
-        <div class="panel-footer">
-          <p>The <em>Elite: Dangerous Data Network</em> is volunteer-run and not affiliated with Frontier Developments.</p>
+    </section>
+  
+    <section id="gateway" class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <h2>Gateway</h2>
+            </div>
+            <div class="col-md-6">
+                <div class="text-right form-inline">
+                    <select name="gateway" class="form-control"></select>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 50%;"></th>
+                                            <th>1 min</th>
+                                            <th>5 min</th>
+                                            <th>60 min</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <th>Messages received</th>
+                                            <td class="inbound_1min stat">-</td>
+                                            <td class="inbound_5min stat">-</td>
+                                            <td class="inbound_60min stat">-</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Invalid messages</th>
+                                            <td class="invalid_1min stat">-</td>
+                                            <td class="invalid_5min stat">-</td>
+                                            <td class="invalid_60min stat">-</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Messages passed to relay</th>
+                                            <td class="outbound_1min stat">-</td>
+                                            <td class="outbound_5min stat">-</td>
+                                            <td class="outbound_60min stat">-</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-4">
+                                <p class="text-muted small">
+                                    EDDN version <strong><span class="version">N/A</span></strong>.
+                                </p>
+                            </div>
+                            <div class="col-md-4">
+                                <p class="text-muted small">
+                                    Uptime: <strong><span class="uptime">N/A</span></strong>.
+                                </p>
+                            </div>
+                            <div class="col-md-4">
+                                <p class="text-muted small">
+                                    Last updated <strong><span class="update_timestamp">N/A</span></strong>.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>    
+        </div>
+    </section>
+    
+    <section id="relay" class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <h2>Relay</h2>
+            </div>
+            <div class="col-md-6">
+                <div class="text-right form-inline">
+                    <select name="relay" class="form-control"></select>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        
+                        <div class="row">
+                            <div class="col-md-12">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 50%;"></th>
+                                            <th>1 min</th>
+                                            <th>5 min</th>
+                                            <th>60 min</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <th>Messages received</th>
+                                            <td class="inbound_1min stat">-</td>
+                                            <td class="inbound_5min stat">-</td>
+                                            <td class="inbound_60min stat">-</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Messages passed to subscribers</th>
+                                            <td class="outbound_1min stat">-</td>
+                                            <td class="outbound_5min stat">-</td>
+                                            <td class="outbound_60min stat">-</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-4">
+                                <p class="text-muted small">
+                                    EDDN version <strong><span class="version">N/A</span></strong>.
+                                </p>
+                            </div>
+                            <div class="col-md-4">
+                                <p class="text-muted small">
+                                    Uptime: <strong><span class="uptime">N/A</span></strong>.
+                                </p>
+                            </div>
+                            <div class="col-md-4">
+                                <p class="text-muted small">
+                                    Last updated <strong><span class="update_timestamp">N/A</span></strong>.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="software" class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <h2>Software</h2>
+            </div>
+        </div>
+    </section>
+    
+    <section id="uploader" class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <h2>Uploader</h2>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <nav class="navbar navbar-default navbar-fixed-bottom">
+            <div class="container">
+                <p>
+                    The <em>Elite: Dangerous Data Network</em> is volunteer-run and not affiliated with Frontier Developments.
+                </p>
+            </div>
+        </nav>
+    </footer>
+    
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-    <script src="js/eddn.js"></script>
-  </body>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
+    <script src="./js/eddn.js"></script>
+</body>
 </html>
