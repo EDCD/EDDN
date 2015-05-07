@@ -68,6 +68,22 @@ def getSoftwares():
     
     return simplejson.dumps(softwares)
     
+@get('/getTotalUploaders/')
+def getTotalUploaders():
+    response.set_header("Access-Control-Allow-Origin", "*")
+    db          = sqlite3.connect(Settings.MONITOR_DB)
+    uploaders   = collections.OrderedDict()
+    
+    query       = 'SELECT name, SUM(hits) AS total FROM uploaders GROUP BY name ORDER BY total DESC'
+    results     = db.execute(query)
+    
+    for row in results:
+        uploaders[str(row[0])] = str(row[1])
+    
+    db.close()
+    
+    return simplejson.dumps(uploaders)
+    
 @get('/getUploaders/')
 def getUploaders():
     response.set_header("Access-Control-Allow-Origin", "*")
