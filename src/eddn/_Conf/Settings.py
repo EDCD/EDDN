@@ -52,10 +52,10 @@ class _Settings(object):
     #  Monitor settings
     ###############################################################################
     
-    MONITOR_RECEIVER_BINDINGS = RELAY_RECEIVER_BINDINGS
+    MONITOR_RECEIVER_BINDINGS = ["tcp://eddn-gateway.elite-markets.net:8500", "tcp://eddn-gateway.ed-td.space:8500"]
     
-    #MONITOR_DB = "/home/EDDN_Monitor.s3db"
-    MONITOR_DB = "D:\EDDN_Monitor.s3db"        
+    MONITOR_DB = "/home/EDDN_Monitor.s3db"
+    #MONITOR_DB = "D:\EDDN_Monitor.s3db"        
     
     MONITOR_DECOMPRESS_MESSAGES = True
     
