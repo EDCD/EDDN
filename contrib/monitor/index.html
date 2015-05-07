@@ -37,10 +37,11 @@
             
             <div class="collapse navbar-collapse" id="header-nav">
                 <ul class="nav navbar-nav">
-                    <li><a href="#gateway">Gateway</a></li>
-                    <li><a href="#relay">Relay</a></li>
-                    <li><a href="#software">Software</a></li>
-                    <li><a href="#uploader">Uploader</a></li>
+                    <li><a href="#gateways">Gateways</a></li>
+                    <li><a href="#relays">Relays</a></li>
+                    <li><a href="#softwares">Softwares</a></li>
+                    <li><a href="#uploaders">Uploaders</a></li>
+                    <li><a href="#schemas">Schemas</a></li>
                 </ul>
             </div>
             
@@ -59,14 +60,14 @@
         </div>
     </section>
   
-    <section id="gateway" class="container">
+    <section id="gateways" class="container">
         <div class="row">
             <div class="col-md-6">
-                <h2>Gateway</h2>
+                <h2>Gateways</h2>
             </div>
             <div class="col-md-6">
                 <div class="text-right form-inline">
-                    <select name="gateway" class="form-control"></select>
+                    <select name="gateways" class="form-control"></select>
                 </div>
             </div>
         </div>
@@ -119,7 +120,7 @@
                         <div class="row">
                             <div class="col-md-4">
                                 <p class="text-muted small">
-                                    EDDN version <strong><span class="version">N/A</span></strong>.
+                                    EDDN version: <strong><span class="version">N/A</span></strong>.
                                 </p>
                             </div>
                             <div class="col-md-4">
@@ -129,24 +130,25 @@
                             </div>
                             <div class="col-md-4">
                                 <p class="text-muted small">
-                                    Last updated <strong><span class="update_timestamp">N/A</span></strong>.
+                                    Last updated: <strong><span class="update_timestamp">N/A</span></strong>.
                                 </p>
                             </div>
                         </div>
+                        
                     </div>
                 </div>
             </div>    
         </div>
     </section>
     
-    <section id="relay" class="container">
+    <section id="relays" class="container">
         <div class="row">
             <div class="col-md-6">
-                <h2>Relay</h2>
+                <h2>Relays</h2>
             </div>
             <div class="col-md-6">
                 <div class="text-right form-inline">
-                    <select name="relay" class="form-control"></select>
+                    <select name="relays" class="form-control"></select>
                 </div>
             </div>
         </div>
@@ -194,7 +196,7 @@
                         <div class="row">
                             <div class="col-md-4">
                                 <p class="text-muted small">
-                                    EDDN version <strong><span class="version">N/A</span></strong>.
+                                    EDDN version: <strong><span class="version">N/A</span></strong>.
                                 </p>
                             </div>
                             <div class="col-md-4">
@@ -204,20 +206,21 @@
                             </div>
                             <div class="col-md-4">
                                 <p class="text-muted small">
-                                    Last updated <strong><span class="update_timestamp">N/A</span></strong>.
+                                    Last updated: <strong><span class="update_timestamp">N/A</span></strong>.
                                 </p>
                             </div>
                         </div>
+                        
                     </div>
                 </div>
             </div>
         </div>
     </section>
     
-    <section id="software" class="container">
+    <section id="softwares" class="container">
         <div class="row">
             <div class="col-md-6">
-                <h2>Software</h2>
+                <h2>Softwares</h2>
             </div>
         </div>
         
@@ -225,17 +228,38 @@
             <div class="col-md-12">
                 <div class="panel panel-default">
                     <div class="panel-body">
-                    
+                        
+                        <div class="row">
+                            <div class="col-md-7">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 50%;"></th>
+                                            <th>Today hits</th>
+                                            <th>Yesterday hits</th>
+                                            <th>Total hits</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="chart" style="height: 450px;"></div>
+                            </div>
+                        </div>
+                        
                     </div>
                 </div>
             </div>
         </div>
     </section>
     
-    <section id="uploader" class="container">
+    <section id="uploaders" class="container">
         <div class="row">
             <div class="col-md-6">
-                <h2>Uploader</h2>
+                <h2>Uploaders (Top 20)</h2>
             </div>
         </div>
         
@@ -243,7 +267,67 @@
             <div class="col-md-12">
                 <div class="panel panel-default">
                     <div class="panel-body">
-                    
+                        
+                        <div class="row">
+                            <div class="col-md-7">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 50%;"></th>
+                                            <th>Today hits</th>
+                                            <th>Yesterday hits</th>
+                                            <th>Total hits</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="chart" style="height: 450px;"></div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section id="schemas" class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <h2>Schemas</h2>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        
+                        <div class="row">
+                            <div class="col-md-7">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 50%;"></th>
+                                            <th>Today hits</th>
+                                            <th>Yesterday hits</th>
+                                            <th>Total hits</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="chart" style="height: 450px;"></div>
+                            </div>
+                        </div>
+                        
                     </div>
                 </div>
             </div>

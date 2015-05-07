@@ -6,14 +6,18 @@ var updateInterval      = 60000,
     relayBottlePort     = 9090,
     
     relays              = [
-        'eddn-gateway.elite-markets.net',
-        'eddn-gateway.ed-td.space'
+        'eddn-relay.elite-markets.net',
+        'eddn-relay.ed-td.space'
     ]; // Must find a way to bind them to monitor
     
 var stats = {
-    'gateway' : {},
-    'relay'   : {}
+    'gateways' : {},
+    'relays'   : {}
 }; // Stats placeholder
+
+formatNumber = function(num) {
+    return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+}
 
 
 secondsToDurationString = function(seconds) {
@@ -37,6 +41,192 @@ secondsToDurationString = function(seconds) {
   else {
     return hours + ":" + minutes + ":" + seconds;
   }
+}
+
+
+var doUpdateSoftwares = function()
+{
+    var yesterday   = Date.parse('yesterday').toString("yyyy-MM-dd")
+    var today       = Date.parse('today').toString("yyyy-MM-dd")
+    
+    $.ajax({
+        dataType: "json",
+        url: monitorEndPoint + 'getSoftwares/?dateStart=' + yesterday + '&dateEnd = ' + today,
+        success: function(softwares){
+            $.ajax({
+                dataType: "json",
+                url: monitorEndPoint + 'getTotalSoftwares/',
+                success: function(softwaresTotal){
+                    var chart   = $('#softwares .chart').highcharts(),
+                        series  = chart.get('softwares');
+                    
+                    $('#softwares .table tbody').empty();
+                    
+                    $.each(softwaresTotal, function(software, hits){
+                        $('#softwares .table tbody').append(
+                            $('<tr>').attr('data-name', software).append(
+                                $('<td>').html('<strong>' + software + '</strong>')
+                            )
+                            .append(
+                                $('<td>').addClass('stat today').html(formatNumber(softwares[today][software] || 0))
+                            )
+                            .append(
+                                $('<td>').addClass('stat yesterday').html(formatNumber(softwares[yesterday][software] || 0))
+                            )
+                            .append(
+                                $('<td>').addClass('stat total').html('<strong>' + formatNumber(hits) + '</strong>')
+                            )
+                        );
+                        
+                        var alreadyInChart = false;
+                        for( var i = 0, len = chart.get('softwares').data.length; i < len; i++ )
+                        {
+                            if(chart.get('softwares').data[i]['name'] == software)
+                            {
+                                chart.get('softwares').data[i].update(parseInt(hits), false);
+                                alreadyInChart = true;
+                                break;
+                            }
+                        }
+                        
+                        if(alreadyInChart === false)
+                            series.addPoint({name: software, y: parseInt(hits)}, false);
+                    });
+                    
+                    chart.redraw();
+                    
+                    $('#softwares').find(".stat").removeClass("warning").each(function() {
+                        if ($(this).html() == "0")
+                            $(this).addClass("warning");
+                    });
+                }
+            });
+        }
+    });
+}
+
+
+var doUpdateUploaders = function()
+{
+    var yesterday   = Date.parse('yesterday').toString("yyyy-MM-dd")
+    var today       = Date.parse('today').toString("yyyy-MM-dd")
+    
+    $.ajax({
+        dataType: "json",
+        url: monitorEndPoint + 'getUploaders/?dateStart=' + yesterday + '&dateEnd = ' + today,
+        success: function(uploaders){
+            $.ajax({
+                dataType: "json",
+                url: monitorEndPoint + 'getTotalUploaders/',
+                success: function(uploadersTotal){
+                    var chart   = $('#uploaders .chart').highcharts(),
+                        series  = chart.get('uploaders');
+                    
+                    $('#uploaders .table tbody').empty();
+                    
+                    $.each(uploadersTotal, function(uploader, hits){
+                        $('#uploaders .table tbody').append(
+                            $('<tr>').attr('data-name', uploader).append(
+                                $('<td>').html('<strong>' + uploader + '</strong>')
+                            )
+                            .append(
+                                $('<td>').addClass('stat today').html(formatNumber(uploaders[today][uploader] || 0))
+                            )
+                            .append(
+                                $('<td>').addClass('stat yesterday').html(formatNumber(uploaders[yesterday][uploader] || 0))
+                            )
+                            .append(
+                                $('<td>').addClass('stat total').html('<strong>' + formatNumber(hits) + '</strong>')
+                            )
+                        );
+                        
+                        var alreadyInChart = false;
+                        for( var i = 0, len = chart.get('uploaders').data.length; i < len; i++ )
+                        {
+                            if(chart.get('uploaders').data[i]['name'] == uploader)
+                            {
+                                chart.get('uploaders').data[i].update(parseInt(hits), false);
+                                alreadyInChart = true;
+                                break;
+                            }
+                        }
+                        
+                        if(alreadyInChart === false)
+                            series.addPoint({name: uploader, y: parseInt(hits)}, false);
+                    });
+                    
+                    chart.redraw();
+                    
+                    $('#uploaders').find(".stat").removeClass("warning").each(function() {
+                        if ($(this).html() == "0")
+                            $(this).addClass("warning");
+                    });
+                }
+            });
+        }
+    });
+}
+
+
+var doUpdateSchemas = function()
+{
+    var yesterday   = Date.parse('yesterday').toString("yyyy-MM-dd")
+    var today       = Date.parse('today').toString("yyyy-MM-dd")
+    
+    $.ajax({
+        dataType: "json",
+        url: monitorEndPoint + 'getSchemas/?dateStart=' + yesterday + '&dateEnd = ' + today,
+        success: function(schemas){
+            $.ajax({
+                dataType: "json",
+                url: monitorEndPoint + 'getTotalSchemas/',
+                success: function(schemasTotal){
+                    var chart   = $('#schemas .chart').highcharts(),
+                        series  = chart.get('schemas');
+                    
+                    $('#schemas .table tbody').empty();
+                    
+                    $.each(schemasTotal, function(schema, hits){
+                        $('#schemas .table tbody').append(
+                            $('<tr>').attr('data-name', schema).append(
+                                $('<td>').html('<strong>' + schema + '</strong>')
+                            )
+                            .append(
+                                $('<td>').addClass('stat today').html(formatNumber(schemas[today][schema] || 0))
+                            )
+                            .append(
+                                $('<td>').addClass('stat yesterday').html(formatNumber(schemas[yesterday][schema] || 0))
+                            )
+                            .append(
+                                $('<td>').addClass('stat total').html('<strong>' + formatNumber(hits) + '</strong>')
+                            )
+                        );
+                        
+                        var alreadyInChart = false;
+                        for( var i = 0, len = chart.get('schemas').data.length; i < len; i++ )
+                        {
+                            if(chart.get('schemas').data[i]['name'] == schema)
+                            {
+                                chart.get('schemas').data[i].update(parseInt(hits), false);
+                                alreadyInChart = true;
+                                break;
+                            }
+                        }
+                        
+                        if(alreadyInChart === false)
+                            series.addPoint({name: schema, y: parseInt(hits)}, false);
+                    });
+                    
+                    chart.redraw();
+                    
+                    $('#schemas').find(".stat").removeClass("warning").each(function() {
+                        if ($(this).html() == "0")
+                            $(this).addClass("warning");
+                    });
+                }
+            });
+        }
+    });
 }
 
 
@@ -65,7 +255,7 @@ var doUpdates = function(type){
                 shift = chart.get('outbound').data.length > 60;
                 chart.get('outbound').addPoint([d.getTime(), (data['outbound'] || {})['1min'] || 0], true, shift);
                 
-                if(type == 'gateway')
+                if(type == 'gateways')
                 {
                     shift = chart.get('invalid').data.length > 60;
                     chart.get('invalid').addPoint([d.getTime(), (data['invalid'] || {})['1min'] || 0], true, shift);
@@ -83,7 +273,7 @@ var showStats = function(type, currentItem){
     el.find(".inbound_5min").html((currentItemStats["inbound"] || {})['5min'] || 0);
     el.find(".inbound_60min").html((currentItemStats["inbound"] || {})['60min'] || 0);
     
-    if(type == 'gateway')
+    if(type == 'gateways')
     {
         el.find(".invalid_1min").html((currentItemStats["invalid"] || {})['1min'] || 0);
         el.find(".invalid_5min").html((currentItemStats["invalid"] || {})['5min'] || 0);
@@ -130,21 +320,20 @@ var start       = function(){
                 gateway = gateway.replace('tcp://', '');
                 gateway = gateway.replace(':8500', '');
                 
-                $("select[name=gateway]").append($('<option>', { 
+                $("select[name=gateways]").append($('<option>', { 
                     value: 'http://' + gateway + ':' + gatewayBottlePort + '/stats/',
                     text : gateway
                 }));
                 
-                $('#gateway .charts').append(
+                $('#gateways .charts').append(
                                         $('<div>').addClass('chart')
                                                   .css('width', '100%')
                                                   .attr('data-name', gateway)
                                      );
                                      
-                $("#gateway .chart[data-name='" + gateway + "']").highcharts({
+                $("#gateways .chart[data-name='" + gateway + "']").highcharts({
                     chart: {
-                        type: 'spline', animation: Highcharts.svg,
-                        height: 200
+                        type: 'spline', animation: Highcharts.svg
                     },
                     title: { text: '', style: {display: 'none'} },
                     xAxis: {
@@ -160,18 +349,18 @@ var start       = function(){
                     credits: { enabled: false },
                     exporting: { enabled: false },
                     series: [
-                        {id: 'inbound', data: [], name: 'Messages received'}, 
-                        {id: 'outbound', data: [], name: 'Messages passed to relay'}, 
-                        {id: 'invalid', data: [], name: 'Invalid messages'}
+                        {id: 'inbound', data: [], name: 'Messages received', zIndex: 300}, 
+                        {id: 'outbound', data: [], name: 'Messages passed to relay', zIndex: 200}, 
+                        {id: 'invalid', data: [], name: 'Invalid messages', zIndex: 1}
                     ]
                 }).hide();
                 
-                stats['gateway'][gateway] = {};
+                stats['gateways'][gateway] = {};
             });
             
-            doUpdates('gateway');
+            doUpdates('gateways');
             setInterval(function(){
-                doUpdates('gateway');
+                doUpdates('gateways');
             }, updateInterval);
         }
     });
@@ -179,21 +368,20 @@ var start       = function(){
     // Grab relays
     relays = relays.sort();
     $.each(relays, function(k, relay){
-        $("select[name=relay]").append($('<option>', { 
+        $("select[name=relays]").append($('<option>', { 
             value: 'http://' + relay + ':' + relayBottlePort + '/stats/',
             text : relay
         }));
                 
-        $('#relay .charts').append(
+        $('#relays .charts').append(
                                 $('<div>').addClass('chart')
                                           .css('width', '100%')
                                           .attr('data-name', relay)
                              );
                              
-        $("#relay .chart[data-name='" + relay + "']").highcharts({
+        $("#relays .chart[data-name='" + relay + "']").highcharts({
             chart: {
                 type: 'spline', animation: Highcharts.svg,
-                height: 200,
                 events: {
                     load: function(){ setTimeout(function(){$(window).trigger('resize');}, 250); }
                 },
@@ -213,25 +401,91 @@ var start       = function(){
             credits: { enabled: false },
             exporting: { enabled: false },
             series: [
-                {id: 'inbound', data: [], name: 'Messages received'}, 
-                {id: 'outbound', data: [], name: 'Messages passed to subscribers'}
+                {id: 'inbound', data: [], name: 'Messages received', zIndex: 300}, 
+                {id: 'outbound', data: [], name: 'Messages passed to subscribers', zIndex: 200}
             ]
         }).hide();
         
-        stats['relay'][relay] = {};
+        stats['relays'][relay] = {};
     });
     
-    doUpdates('relay');
+    doUpdates('relays');
     setInterval(function(){
-        doUpdates('relay');
+        doUpdates('relays');
     }, updateInterval);
     
-    // Attach events
-    $("select[name=gateway]").change(function(){
-        showStats('gateway', $(this).find('option:selected').html());
+    // Grab software from monitor
+    $('#softwares .chart').highcharts({
+        chart: {
+            type: 'pie', animation: Highcharts.svg
+        },
+        title: { text: '', style: {display: 'none'} },
+        credits: { enabled: false },
+        tooltip: { headerFormat: '', pointFormat: '{point.name}: <b>{point.percentage:.1f}%</b>' },
+        legend: { enabled: false },
+        plotOptions: {pie: {allowPointSelect: false,dataLabels: { enabled: false }}},
+        series: [{
+            id: 'softwares',
+            type: 'pie',
+            data: []
+        }]
     });
-    $("select[name=relay]").change(function(){
-        showStats('relay', $(this).find('option:selected').html());
+    
+    doUpdateSoftwares();
+    setInterval(function(){
+        doUpdateSoftwares();
+    }, updateInterval);
+    
+    // Grab uploader from monitor
+    $('#uploaders .chart').highcharts({
+        chart: {
+            type: 'pie', animation: Highcharts.svg
+        },
+        title: { text: '', style: {display: 'none'} },
+        credits: { enabled: false },
+        tooltip: { headerFormat: '', pointFormat: '{point.name}: <b>{point.percentage:.1f}%</b>' },
+        legend: { enabled: false },
+        plotOptions: {pie: {allowPointSelect: false,dataLabels: { enabled: false }}},
+        series: [{
+            id: 'uploaders',
+            type: 'pie',
+            data: []
+        }]
+    });
+    
+    doUpdateUploaders();
+    setInterval(function(){
+        doUpdateUploaders();
+    }, updateInterval);
+    
+    // Grab schema from monitor
+    $('#schemas .chart').highcharts({
+        chart: {
+            type: 'pie', animation: Highcharts.svg
+        },
+        title: { text: '', style: {display: 'none'} },
+        credits: { enabled: false },
+        tooltip: { headerFormat: '', pointFormat: '{point.name}: <b>{point.percentage:.1f}%</b>' },
+        legend: { enabled: false },
+        plotOptions: {pie: {allowPointSelect: false,dataLabels: { enabled: false }}},
+        series: [{
+            id: 'schemas',
+            type: 'pie',
+            data: []
+        }]
+    });
+    
+    doUpdateSchemas();
+    setInterval(function(){
+        doUpdateSchemas();
+    }, updateInterval); 
+    
+    // Attach events
+    $("select[name=gateways]").change(function(){
+        showStats('gateways', $(this).find('option:selected').html());
+    });
+    $("select[name=relays]").change(function(){
+        showStats('relays', $(this).find('option:selected').html());
     });    
 }
 
