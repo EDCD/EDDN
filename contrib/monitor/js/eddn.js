@@ -5,6 +5,11 @@ var updateInterval      = 60000,
     gatewayBottlePort   = 8080,
     relayBottlePort     = 9090,
     
+    gateways            = [
+        'eddn-gateway.elite-markets.net',
+        'eddn-gateway.ed-td.space'
+    ]; // Must find a way to bind them to monitor,
+    
     relays              = [
         'eddn-relay.elite-markets.net',
         'eddn-relay.ed-td.space'
@@ -306,60 +311,54 @@ var showStats = function(type, currentItem){
 var start       = function(){
     Highcharts.setOptions({global: {useUTC: false}});
     
-    // Grab gateways from monitor
-    $.ajax({
-        dataType: "json",
-        url: monitorEndPoint + 'getGateways/',
-        success: function(gateways){
-            gateways = gateways.sort();
-            $.each(gateways, function(k, gateway){
-                gateway = gateway.replace('tcp://', '');
-                gateway = gateway.replace(':8500', '');
-                
-                $("select[name=gateways]").append($('<option>', { 
-                    value: 'http://' + gateway + ':' + gatewayBottlePort + '/stats/',
-                    text : gateway
-                }));
-                
-                $('#gateways .charts').append(
-                                        $('<div>').addClass('chart')
-                                                  .css('width', '100%')
-                                                  .attr('data-name', gateway)
-                                     );
-                                     
-                $("#gateways .chart[data-name='" + gateway + "']").highcharts({
-                    chart: {
-                        type: 'spline', animation: Highcharts.svg
-                    },
-                    title: { text: '', style: {display: 'none'} },
-                    xAxis: {
-                        type: 'datetime',
-                        tickPixelInterval: 150
-                    },
-                    yAxis: {
-                        title: {text: ''},
-                        plotLines: [{value: 0, width: 1, color: '#808080'}],
-                        min: 0
-                    },
-                    tooltip: { enabled: false },
-                    credits: { enabled: false },
-                    exporting: { enabled: false },
-                    series: [
-                        {id: 'inbound', data: [], name: 'Messages received', zIndex: 300}, 
-                        {id: 'outbound', data: [], name: 'Messages passed to relay', zIndex: 200}, 
-                        {id: 'invalid', data: [], name: 'Invalid messages', zIndex: 1}
-                    ]
-                }).hide();
-                
-                stats['gateways'][gateway] = {};
-            });
-            
-            doUpdates('gateways');
-            setInterval(function(){
-                doUpdates('gateways');
-            }, updateInterval);
-        }
+    // Grab gateways
+    gateways = gateways.sort();
+    $.each(gateways, function(k, gateway){
+        gateway = gateway.replace('tcp://', '');
+        gateway = gateway.replace(':8500', '');
+        
+        $("select[name=gateways]").append($('<option>', { 
+            value: 'http://' + gateway + ':' + gatewayBottlePort + '/stats/',
+            text : gateway
+        }));
+        
+        $('#gateways .charts').append(
+                                $('<div>').addClass('chart')
+                                          .css('width', '100%')
+                                          .attr('data-name', gateway)
+                             );
+                             
+        $("#gateways .chart[data-name='" + gateway + "']").highcharts({
+            chart: {
+                type: 'spline', animation: Highcharts.svg
+            },
+            title: { text: '', style: {display: 'none'} },
+            xAxis: {
+                type: 'datetime',
+                tickPixelInterval: 150
+            },
+            yAxis: {
+                title: {text: ''},
+                plotLines: [{value: 0, width: 1, color: '#808080'}],
+                min: 0
+            },
+            tooltip: { enabled: false },
+            credits: { enabled: false },
+            exporting: { enabled: false },
+            series: [
+                {id: 'inbound', data: [], name: 'Messages received', zIndex: 300}, 
+                {id: 'outbound', data: [], name: 'Messages passed to relay', zIndex: 200}, 
+                {id: 'invalid', data: [], name: 'Invalid messages', zIndex: 1}
+            ]
+        }).hide();
+        
+        stats['gateways'][gateway] = {};
     });
+    
+    doUpdates('gateways');
+    setInterval(function(){
+        doUpdates('gateways');
+    }, updateInterval);
     
     // Grab relays
     relays = relays.sort();
