@@ -36,7 +36,14 @@ def getTotalSoftwares():
     db          = sqlite3.connect(Settings.MONITOR_DB)
     softwares   = collections.OrderedDict()
     
-    query       = 'SELECT name, SUM(hits) AS total FROM softwares GROUP BY name ORDER BY total DESC'
+    maxDays     = request.GET.get('maxDays', '31').strip()
+    maxDays     = int(maxDays) -1;
+    
+    query       = """SELECT name, SUM(hits) AS total, MAX(dateStats) AS maxDate 
+                     FROM softwares 
+                     GROUP BY name 
+                     HAVING maxDate >= DATE('now', '""" + '-' + str(maxDays) + """ day')
+                     ORDER BY total DESC"""
     results     = db.execute(query)
     
     for row in results:
@@ -55,7 +62,10 @@ def getSoftwares():
     dateStart   = request.GET.get('dateStart', str(date('%Y-%m-%d'))).strip()
     dateEnd     = request.GET.get('dateEnd', str(date('%Y-%m-%d'))).strip()
     
-    query       = 'SELECT * FROM softwares WHERE dateStats BETWEEN ? AND ? ORDER BY hits DESC, dateStats ASC'
+    query       = """SELECT * 
+                     FROM softwares 
+                     WHERE dateStats BETWEEN ? AND ? 
+                     ORDER BY hits DESC, dateStats ASC"""
     results     = db.execute(query, (dateStart, dateEnd))
     
     for row in results:
@@ -74,7 +84,13 @@ def getTotalUploaders():
     db          = sqlite3.connect(Settings.MONITOR_DB)
     uploaders   = collections.OrderedDict()
     
-    query       = 'SELECT name, SUM(hits) AS total FROM uploaders GROUP BY name ORDER BY total DESC'
+    limit       = request.GET.get('limit', '20').strip()
+    
+    query       = """SELECT name, SUM(hits) AS total
+                     FROM uploaders 
+                     GROUP BY name 
+                     ORDER BY total DESC
+                     LIMIT """ + limit
     results     = db.execute(query)
     
     for row in results:
@@ -93,7 +109,10 @@ def getUploaders():
     dateStart   = request.GET.get('dateStart', str(date('%Y-%m-%d'))).strip()
     dateEnd     = request.GET.get('dateEnd', str(date('%Y-%m-%d'))).strip()
     
-    query       = 'SELECT * FROM uploaders WHERE dateStats BETWEEN ? AND ? ORDER BY hits DESC, dateStats ASC'
+    query       = """SELECT * 
+                     FROM uploaders 
+                     WHERE dateStats BETWEEN ? AND ? 
+                     ORDER BY hits DESC, dateStats ASC"""
     results     = db.execute(query, (dateStart, dateEnd))
     
     for row in results:
@@ -112,7 +131,10 @@ def getTotalSchemas():
     db          = sqlite3.connect(Settings.MONITOR_DB)
     schemas     = collections.OrderedDict()
     
-    query       = 'SELECT name, SUM(hits) AS total FROM schemas GROUP BY name ORDER BY total DESC'
+    query       = """SELECT name, SUM(hits) AS total 
+                     FROM schemas 
+                     GROUP BY name 
+                     ORDER BY total DESC"""
     results     = db.execute(query)
     
     for row in results:
@@ -131,7 +153,10 @@ def getSchemas():
     dateStart   = request.GET.get('dateStart', str(date('%Y-%m-%d'))).strip()
     dateEnd     = request.GET.get('dateEnd', str(date('%Y-%m-%d'))).strip()
     
-    query       = 'SELECT * FROM schemas WHERE dateStats BETWEEN ? AND ? ORDER BY hits DESC, dateStats ASC'
+    query       = """SELECT * 
+                     FROM schemas 
+                     WHERE dateStats BETWEEN ? AND ? 
+                     ORDER BY hits DESC, dateStats ASC"""
     results     = db.execute(query, (dateStart, dateEnd))
     
     for row in results:
