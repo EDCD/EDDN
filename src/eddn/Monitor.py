@@ -90,6 +90,22 @@ def getUploaders():
     
     return simplejson.dumps(uploaders)
     
+@get('/getTotalSchemas/')
+def getTotalSchemas():
+    response.set_header("Access-Control-Allow-Origin", "*")
+    db          = sqlite3.connect(Settings.MONITOR_DB)
+    schemas     = collections.OrderedDict()
+    
+    query       = 'SELECT name, SUM(hits) AS total FROM schemas GROUP BY name ORDER BY total DESC'
+    results     = db.execute(query)
+    
+    for row in results:
+        schemas[str(row[0])] = str(row[1])
+    
+    db.close()
+    
+    return simplejson.dumps(schemas)
+    
 @get('/getSchemas/')
 def getSchemas():
     response.set_header("Access-Control-Allow-Origin", "*")
