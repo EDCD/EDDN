@@ -20,16 +20,6 @@ def date(__format):
     return d.strftime(__format)
 
 
-@get('/getGateways/')
-def getGateways():
-    response.set_header("Access-Control-Allow-Origin", "*")
-    gateways            = []
-    
-    for gateway in Settings.RELAY_RECEIVER_BINDINGS:
-        gateways.append(gateway) 
-    
-    return simplejson.dumps(gateways)
-    
 @get('/getTotalSoftwares/')
 def getTotalSoftwares():
     response.set_header("Access-Control-Allow-Origin", "*")
@@ -185,6 +175,15 @@ class Monitor(Thread):
         def monitor_worker(message):
             db          = sqlite3.connect(Settings.MONITOR_DB)
             
+            # Separate topic from message
+            message = message.split(' |-| ')
+            
+            # Handle gateway not sending topic
+            if len(message) > 1:
+                message = message[1]
+            else:
+                message = message[0]
+            
             if Settings.MONITOR_DECOMPRESS_MESSAGES:
                 message = zlib.decompress(message)
             
@@ -202,10 +201,11 @@ class Monitor(Thread):
             # Update uploader count
             uploaderID = json['header']['uploaderID']
             
-            c = db.cursor()
-            c.execute('UPDATE uploaders SET hits = hits + 1 WHERE `name` = ? AND `dateStats` = DATE("now", "utc")', (uploaderID, ))
-            c.execute('INSERT OR IGNORE INTO uploaders (name, dateStats) VALUES (?, DATE("now", "utc"))', (uploaderID, ))
-            db.commit()
+            if uploaderID: # Don't get empty uploaderID
+                c = db.cursor()
+                c.execute('UPDATE uploaders SET hits = hits + 1 WHERE `name` = ? AND `dateStats` = DATE("now", "utc")', (uploaderID, ))
+                c.execute('INSERT OR IGNORE INTO uploaders (name, dateStats) VALUES (?, DATE("now", "utc"))', (uploaderID, ))
+                db.commit()
             
             
             # Update schemas count 
