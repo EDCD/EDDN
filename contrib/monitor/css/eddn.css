@@ -15,8 +15,13 @@ section.container {
     }
     
     .container .chart {
-        height: 200px;
+        height: 300px;
         margin-bottom: 10px;
     }
+    
+footer .navbar-default {
+    border-width: 1px 0 0;
+    margin-bottom: 0;
+}
     
 .highcharts-container{width:100% !important; height:100% !important;}

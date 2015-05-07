@@ -19,6 +19,11 @@ formatNumber = function(num) {
     return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
 }
 
+makeSlug = function(str) {
+	var slugcontent_hyphens = str.replace(/\s/g,'-');
+	var finishedslug = slugcontent_hyphens.replace(/[^a-zA-Z0-9\-]/g,'');
+	return finishedslug.toLowerCase();
+}
 
 secondsToDurationString = function(seconds) {
   var hours   = Math.floor(seconds / 3600);
@@ -64,7 +69,13 @@ var doUpdateSoftwares = function()
                     
                     $.each(softwaresTotal, function(software, hits){
                         $('#softwares .table tbody').append(
-                            $('<tr>').attr('data-name', software).append(
+                            $('<tr>').attr('data-name', software).on('mouseover', function(){
+                                chart.get('software-' + makeSlug(software)).setState('hover');
+                                chart.tooltip.refresh(chart.get('software-' + makeSlug(software)));
+                            }).on('mouseout', function(){
+                                chart.get('software-' + makeSlug(software)).setState('');
+                                chart.tooltip.hide();
+                            }).append(
                                 $('<td>').html('<strong>' + software + '</strong>')
                             )
                             .append(
@@ -78,19 +89,10 @@ var doUpdateSoftwares = function()
                             )
                         );
                         
-                        var alreadyInChart = false;
-                        for( var i = 0, len = chart.get('softwares').data.length; i < len; i++ )
-                        {
-                            if(chart.get('softwares').data[i]['name'] == software)
-                            {
-                                chart.get('softwares').data[i].update(parseInt(hits), false);
-                                alreadyInChart = true;
-                                break;
-                            }
-                        }
-                        
-                        if(alreadyInChart === false)
-                            series.addPoint({name: software, y: parseInt(hits)}, false);
+                        if(!chart.get('software-' + makeSlug(software)))
+                            series.addPoint({id: 'software-' + makeSlug(software), name: software, y: parseInt(hits)}, false);
+                        else
+                            chart.get('software-' + makeSlug(software)).update(parseInt(hits), false);
                     });
                     
                     chart.redraw();
@@ -126,7 +128,13 @@ var doUpdateUploaders = function()
                     
                     $.each(uploadersTotal, function(uploader, hits){
                         $('#uploaders .table tbody').append(
-                            $('<tr>').attr('data-name', uploader).append(
+                            $('<tr>').attr('data-name', uploader).on('mouseover', function(){
+                                chart.get('uploader-' + makeSlug(uploader)).setState('hover');
+                                chart.tooltip.refresh(chart.get('uploader-' + makeSlug(uploader)));
+                            }).on('mouseout', function(){
+                                chart.get('uploader-' + makeSlug(uploader)).setState('');
+                                chart.tooltip.hide();
+                            }).append(
                                 $('<td>').html('<strong>' + uploader + '</strong>')
                             )
                             .append(
@@ -140,19 +148,10 @@ var doUpdateUploaders = function()
                             )
                         );
                         
-                        var alreadyInChart = false;
-                        for( var i = 0, len = chart.get('uploaders').data.length; i < len; i++ )
-                        {
-                            if(chart.get('uploaders').data[i]['name'] == uploader)
-                            {
-                                chart.get('uploaders').data[i].update(parseInt(hits), false);
-                                alreadyInChart = true;
-                                break;
-                            }
-                        }
-                        
-                        if(alreadyInChart === false)
-                            series.addPoint({name: uploader, y: parseInt(hits)}, false);
+                        if(!chart.get('uploader-' + makeSlug(uploader)))
+                            series.addPoint({id: 'uploader-' + makeSlug(uploader), name: uploader, y: parseInt(hits)}, false);
+                        else
+                            chart.get('uploader-' + makeSlug(uploader)).update(parseInt(hits), false);
                     });
                     
                     chart.redraw();
@@ -188,7 +187,13 @@ var doUpdateSchemas = function()
                     
                     $.each(schemasTotal, function(schema, hits){
                         $('#schemas .table tbody').append(
-                            $('<tr>').attr('data-name', schema).append(
+                            $('<tr>').attr('data-name', schema).on('mouseover', function(){
+                                chart.get('schema-' + makeSlug(schema)).setState('hover');
+                                chart.tooltip.refresh(chart.get('schema-' + makeSlug(schema)));
+                            }).on('mouseout', function(){
+                                chart.get('schema-' + makeSlug(schema)).setState('');
+                                chart.tooltip.hide();
+                            }).append(
                                 $('<td>').html('<strong>' + schema + '</strong>')
                             )
                             .append(
@@ -202,19 +207,10 @@ var doUpdateSchemas = function()
                             )
                         );
                         
-                        var alreadyInChart = false;
-                        for( var i = 0, len = chart.get('schemas').data.length; i < len; i++ )
-                        {
-                            if(chart.get('schemas').data[i]['name'] == schema)
-                            {
-                                chart.get('schemas').data[i].update(parseInt(hits), false);
-                                alreadyInChart = true;
-                                break;
-                            }
-                        }
-                        
-                        if(alreadyInChart === false)
-                            series.addPoint({name: schema, y: parseInt(hits)}, false);
+                        if(!chart.get('schema-' + makeSlug(schema)))
+                            series.addPoint({id: 'schema-' + makeSlug(schema), name: schema, y: parseInt(hits)}, false);
+                        else
+                            chart.get('schema-' + makeSlug(schema)).update(parseInt(hits), false);
                     });
                     
                     chart.redraw();
@@ -486,7 +482,11 @@ var start       = function(){
     });
     $("select[name=relays]").change(function(){
         showStats('relays', $(this).find('option:selected').html());
-    });    
+    });
+    
+    $('#schemas .table tbody tr').on('', function(){
+        
+    });
 }
 
 $(document).ready(function(){
