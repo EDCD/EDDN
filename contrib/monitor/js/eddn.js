@@ -106,6 +106,8 @@ var doUpdateSoftwares = function()
                         if ($(this).html() == "0")
                             $(this).addClass("warning");
                     });
+                    
+                    $('#softwares').find(".update_timestamp").html(d.toString("yyyy-MM-dd HH:mm:ss"));
                 }
             });
         }
@@ -165,6 +167,8 @@ var doUpdateUploaders = function()
                         if ($(this).html() == "0")
                             $(this).addClass("warning");
                     });
+                    
+                    $('#uploaders').find(".update_timestamp").html(d.toString("yyyy-MM-dd HH:mm:ss"));
                 }
             });
         }
@@ -224,6 +228,8 @@ var doUpdateSchemas = function()
                         if ($(this).html() == "0")
                             $(this).addClass("warning");
                     });
+                    
+                    $('#schemas').find(".update_timestamp").html(d.toString("yyyy-MM-dd HH:mm:ss"));
                 }
             });
         }
