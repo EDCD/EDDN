@@ -23,6 +23,11 @@ from eddn._Core.StatsCollector import StatsCollector
 statsCollector = StatsCollector()
 statsCollector.start()
 
+if Settings.RELAY_DUPLICATE_MAX_MINUTES:
+    from eddn._Core.DuplicateMessages import DuplicateMessages
+    duplicateMessages = DuplicateMessages()
+    duplicateMessages.start()
+
 
 @get('/stats/')
 def stats():
@@ -78,9 +83,11 @@ class Relay(Thread):
             else:
                 message = message[0]
 
-            # if is_message_duped(message):
-            # We've already seen this message recently. Discard it.
-            #    return
+            if Settings.RELAY_DUPLICATE_MAX_MINUTES:
+                if duplicateMessages.isDuplicated(message):
+                    # We've already seen this message recently. Discard it.
+                    statsCollector.tally("duplicate")
+                    return
 
             if Settings.RELAY_DECOMPRESS_MESSAGES:
                 message = zlib.decompress(message)

@@ -24,6 +24,9 @@ class _Settings(object):
 
     RELAY_DECOMPRESS_MESSAGES = False
     
+    # If set to False, no deduplicate is made
+    RELAY_DUPLICATE_MAX_MINUTES = 15
+    
     # If set to false, don't listen to topic and accept all incoming messages
     RELAY_RECEIVE_ONLY_GATEWAY_EXTRA_JSON = False
     
@@ -54,8 +57,7 @@ class _Settings(object):
     
     MONITOR_RECEIVER_BINDINGS = ["tcp://eddn-gateway.elite-markets.net:8500", "tcp://eddn-gateway.ed-td.space:8500"]
     
-    MONITOR_DB = "/home/EDDN_Monitor.s3db"
-    #MONITOR_DB = "D:\EDDN_Monitor.s3db"        
+    MONITOR_DB = "/home/EDDN_Monitor.s3db"     
     
     MONITOR_DECOMPRESS_MESSAGES = True
     

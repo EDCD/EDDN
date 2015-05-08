@@ -134,6 +134,11 @@ var doUpdateUploaders = function()
                     $('#uploaders .table tbody').empty();
                     
                     $.each(uploadersTotal, function(uploader, hits){
+                        if(uploader.length > 32)
+                            truncateUploader = jQuery.trim(uploader).substring(0, 32)/*.split(" ").slice(0, -1).join(" ")*/ + "..."
+                        else
+                            truncateUploader = uploader
+                        
                         $('#uploaders .table tbody').append(
                             $('<tr>').attr('data-name', uploader).on('mouseover', function(){
                                 chart.get('uploader-' + makeSlug(uploader)).setState('hover');
@@ -142,7 +147,7 @@ var doUpdateUploaders = function()
                                 chart.get('uploader-' + makeSlug(uploader)).setState('');
                                 chart.tooltip.hide();
                             }).append(
-                                $('<td>').html('<strong>' + uploader + '</strong>')
+                                $('<td>').html('<strong>' + truncateUploader + '</strong>')
                             )
                             .append(
                                 $('<td>').addClass('stat today').html(formatNumber(uploaders[today][uploader] || 0))
@@ -259,14 +264,20 @@ var doUpdates = function(type){
                 shift = chart.get('inbound').data.length > 60;
                 chart.get('inbound').addPoint([d.getTime(), (data['inbound'] || {})['1min'] || 0], true, shift);
                 
-                shift = chart.get('outbound').data.length > 60;
-                chart.get('outbound').addPoint([d.getTime(), (data['outbound'] || {})['1min'] || 0], true, shift);
-                
                 if(type == 'gateways')
                 {
                     shift = chart.get('invalid').data.length > 60;
                     chart.get('invalid').addPoint([d.getTime(), (data['invalid'] || {})['1min'] || 0], true, shift);
                 }
+                
+                if(type == 'relays')
+                {
+                    shift = chart.get('duplicate').data.length > 60;
+                    chart.get('duplicate').addPoint([d.getTime(), (data['duplicate'] || {})['1min'] || 0], true, shift);
+                }
+                
+                shift = chart.get('outbound').data.length > 60;
+                chart.get('outbound').addPoint([d.getTime(), (data['outbound'] || {})['1min'] || 0], true, shift);
             }
         });
     });
@@ -285,6 +296,13 @@ var showStats = function(type, currentItem){
         el.find(".invalid_1min").html((currentItemStats["invalid"] || {})['1min'] || 0);
         el.find(".invalid_5min").html((currentItemStats["invalid"] || {})['5min'] || 0);
         el.find(".invalid_60min").html((currentItemStats["invalid"] || {})['60min'] || 0);
+    }
+    
+    if(type == 'relays')
+    {
+        el.find(".duplicate_1min").html((currentItemStats["duplicate"] || {})['1min'] || 0);
+        el.find(".duplicate_5min").html((currentItemStats["duplicate"] || {})['5min'] || 0);
+        el.find(".duplicate_60min").html((currentItemStats["duplicate"] || {})['60min'] || 0);
     }
     
     el.find(".outbound_1min").html((currentItemStats["outbound"] || {})['1min'] || 0);
@@ -353,8 +371,8 @@ var start       = function(){
             exporting: { enabled: false },
             series: [
                 {id: 'inbound', data: [], name: 'Messages received', zIndex: 300}, 
-                {id: 'outbound', data: [], name: 'Messages passed to relay', zIndex: 200}, 
-                {id: 'invalid', data: [], name: 'Invalid messages', zIndex: 1}
+                {id: 'invalid', data: [], name: 'Invalid messages', zIndex: 1}, 
+                {id: 'outbound', data: [], name: 'Messages passed to relay', zIndex: 200}
             ]
         }).hide();
         
@@ -403,6 +421,7 @@ var start       = function(){
             exporting: { enabled: false },
             series: [
                 {id: 'inbound', data: [], name: 'Messages received', zIndex: 300}, 
+                {id: 'duplicate', data: [], name: 'Messages duplicate', zIndex: 1}, 
                 {id: 'outbound', data: [], name: 'Messages passed to subscribers', zIndex: 200}
             ]
         }).hide();

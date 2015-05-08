@@ -15,6 +15,11 @@ from eddn._Conf.Settings import Settings, loadConfig
 from gevent import monkey
 monkey.patch_all()
 
+if Settings.RELAY_DUPLICATE_MAX_MINUTES:
+    from eddn._Core.DuplicateMessages import DuplicateMessages
+    duplicateMessages = DuplicateMessages()
+    duplicateMessages.start()
+
 def date(__format):
     d = datetime.datetime.utcnow()
     return d.strftime(__format)
@@ -183,6 +188,18 @@ class Monitor(Thread):
                 message = message[1]
             else:
                 message = message[0]
+                
+
+            if Settings.RELAY_DUPLICATE_MAX_MINUTES:
+                if duplicateMessages.isDuplicated(message):
+                    schemaID = 'DUPLICATE MESSAGE'
+            
+                    c = db.cursor()
+                    c.execute('UPDATE schemas SET hits = hits + 1 WHERE `name` = ? AND `dateStats` = DATE("now", "utc")', (schemaID, ))
+                    c.execute('INSERT OR IGNORE INTO schemas (name, dateStats) VALUES (?, DATE("now", "utc"))', (schemaID, ))
+                    db.commit()
+                    
+                    return
             
             if Settings.MONITOR_DECOMPRESS_MESSAGES:
                 message = zlib.decompress(message)
