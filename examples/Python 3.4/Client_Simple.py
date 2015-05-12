@@ -1,5 +1,5 @@
 import zlib
-import zmq.green as zmq
+import zmq
 import simplejson
 import sys
 
@@ -18,7 +18,7 @@ def main():
     context     = zmq.Context()
     subscriber  = context.socket(zmq.SUB)
     
-    subscriber.setsockopt(zmq.SUBSCRIBE, "")
+    subscriber.setsockopt(zmq.SUBSCRIBE, b"")
     subscriber.setsockopt(zmq.RCVTIMEO, __timeoutEDDN)
 
     while True:
