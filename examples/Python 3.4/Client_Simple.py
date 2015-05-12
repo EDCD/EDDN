@@ -36,11 +36,11 @@ def main():
                 __json      = simplejson.loads(__message)
                 
                 
-                print __json
+                print (__json)
                 sys.stdout.flush()
                 
-        except zmq.ZMQError, e:
-            print 'ZMQSocketException: ' + str(e)
+        except zmq.ZMQError as e:
+            print ('ZMQSocketException: ' + str(e))
             sys.stdout.flush()
             time.sleep(10)
             
