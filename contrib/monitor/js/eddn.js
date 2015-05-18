@@ -77,13 +77,15 @@ var doUpdateSoftwares = function()
                     
                     $.each(softwaresTotal, function(software, hits){
                         $('#softwares .table tbody').append(
-                            $('<tr>').attr('data-name', software).on('mouseover', function(){
+                            newTr = $('<tr>').attr('data-name', software).on('mouseover', function(){
                                 chart.get('software-' + makeSlug(software)).setState('hover');
                                 chart.tooltip.refresh(chart.get('software-' + makeSlug(software)));
                             }).on('mouseout', function(){
                                 chart.get('software-' + makeSlug(software)).setState('');
                                 chart.tooltip.hide();
                             }).append(
+                                $('<td>').addClass('square')
+                            ).append(
                                 $('<td>').html('<strong>' + software + '</strong>')
                             )
                             .append(
@@ -101,6 +103,8 @@ var doUpdateSoftwares = function()
                             series.addPoint({id: 'software-' + makeSlug(software), name: software, y: parseInt(hits)}, false);
                         else
                             chart.get('software-' + makeSlug(software)).update(parseInt(hits), false);
+                        
+                        newTr.find('.square').css('background', chart.get('software-' + makeSlug(software)).color);
                     });
                     
                     chart.redraw();
@@ -146,13 +150,15 @@ var doUpdateUploaders = function()
                             truncateUploader = uploader
                         
                         $('#uploaders .table tbody').append(
-                            $('<tr>').attr('data-name', uploader).on('mouseover', function(){
+                            newTr = $('<tr>').attr('data-name', uploader).on('mouseover', function(){
                                 chart.get('uploader-' + makeSlug(uploader)).setState('hover');
                                 chart.tooltip.refresh(chart.get('uploader-' + makeSlug(uploader)));
                             }).on('mouseout', function(){
                                 chart.get('uploader-' + makeSlug(uploader)).setState('');
                                 chart.tooltip.hide();
                             }).append(
+                                $('<td>').addClass('square')
+                            ).append(
                                 $('<td>').html('<strong>' + truncateUploader + '</strong>')
                             )
                             .append(
@@ -170,6 +176,8 @@ var doUpdateUploaders = function()
                             series.addPoint({id: 'uploader-' + makeSlug(uploader), name: uploader, y: parseInt(hits)}, false);
                         else
                             chart.get('uploader-' + makeSlug(uploader)).update(parseInt(hits), false);
+                            
+                        newTr.find('.square').css('background', chart.get('uploader-' + makeSlug(uploader)).color);
                     });
                     
                     chart.redraw();
@@ -210,13 +218,15 @@ var doUpdateSchemas = function()
                     
                     $.each(schemasTotal, function(schema, hits){
                         $('#schemas .table tbody').append(
-                            $('<tr>').attr('data-name', schema).on('mouseover', function(){
+                            newTr = $('<tr>').attr('data-name', schema).on('mouseover', function(){
                                 chart.get('schema-' + makeSlug(schema)).setState('hover');
                                 chart.tooltip.refresh(chart.get('schema-' + makeSlug(schema)));
                             }).on('mouseout', function(){
                                 chart.get('schema-' + makeSlug(schema)).setState('');
                                 chart.tooltip.hide();
                             }).append(
+                                $('<td>').addClass('square')
+                            ).append(
                                 $('<td>').html('<strong>' + schema + '</strong>')
                             )
                             .append(
@@ -234,6 +244,8 @@ var doUpdateSchemas = function()
                             series.addPoint({id: 'schema-' + makeSlug(schema), name: schema, y: parseInt(hits)}, false);
                         else
                             chart.get('schema-' + makeSlug(schema)).update(parseInt(hits), false);
+                            
+                        newTr.find('.square').css('background', chart.get('schema-' + makeSlug(schema)).color);
                     });
                     
                     chart.redraw();
@@ -515,10 +527,6 @@ var start       = function(){
     });
     $("select[name=relays]").change(function(){
         showStats('relays', $(this).find('option:selected').html());
-    });
-    
-    $('#schemas .table tbody tr').on('', function(){
-        
     });
 }
 
