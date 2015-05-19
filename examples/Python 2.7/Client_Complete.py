@@ -1,5 +1,5 @@
 import zlib
-import zmq.green as zmq
+import zmq
 import simplejson
 import sys, os, datetime, time
 
@@ -96,12 +96,18 @@ def main():
     while True:
         try:
             subscriber.connect(__relayEDDN)
+            echoLog('Connect to ' + __relayEDDN)
+            echoLog('')
+            echoLog('')
             
             while True:
                 __message   = subscriber.recv()
                 
                 if __message == False:
                     subscriber.disconnect(__relayEDDN)
+                    echoLog('Disconnect from ' + __relayEDDN)
+                    echoLog('')
+                    echoLog('')
                     break
                 
                 __message   = zlib.decompress(__message)
@@ -112,8 +118,8 @@ def main():
                 # Handle commodity v1
                 if __json['$schemaRef'] == 'http://schemas.elite-markets.net/eddn/commodity/1' + ('/test' if (__debugEDDN == True) else ''):
                     echoLogJSON(__message)
-                    echoLog('Receiving commodity-v1 message...');
-                    echoLog('    - Converting to v2...');
+                    echoLog('Receiving commodity-v1 message...')
+                    echoLog('    - Converting to v2...')
                     
                     __temp                              = {}
                     __temp['$schemaRef']                = 'http://schemas.elite-markets.net/eddn/commodity/2' + ('/test' if (__debugEDDN == True) else '')

@@ -3,7 +3,7 @@ import re
 import glob
 
 
-VERSIONFILE = "src/eddn/_version.py"
+VERSIONFILE = "src/eddn/_Conf/Version.py"
 verstr      = "unknown"
 try:
     verstrline = open(VERSIONFILE, "rt").read()
@@ -34,6 +34,7 @@ setup(
         'console_scripts': [
             'eddn-gateway = eddn.Gateway:main',
             'eddn-relay = eddn.Relay:main',
+            'eddn-monitor = eddn.Monitor:main',
             ],
         }
       )

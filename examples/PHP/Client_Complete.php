@@ -103,6 +103,9 @@ while (true)
     try
     {
         $subscriber->connect($relayEDDN);
+        echoLog('Connect to ' . $relayEDDN);
+        echoLog('');
+        echoLog('');
         
         while (true)
         {
@@ -111,6 +114,9 @@ while (true)
             if ($message === false)
             {
                 $subscriber->disconnect($relayEDDN);
+                echoLog('Disconnect from ' . $relayEDDN);
+                echoLog('');
+                echoLog('');
                 break;
             }
             

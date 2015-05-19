@@ -52,13 +52,14 @@
 
 class EDDN
 {
-    static private $_debug    = true;
+    private static $_debug    = true;
     
-    static private $_gateways = array(
-        'http://eddn-gateway.elite-markets.net:8080/upload/'
+    private static $_gateways = array(
+        'http://eddn-gateway.elite-markets.net:8080/upload/',
+        'http://eddn-gateway.ed-td.space:8080/upload/'
     );
     
-    static private $_schemas   = array(
+    private static $_schemas   = array(
         'commodity-v1' => array(
             'production'    => 'http://schemas.elite-markets.net/eddn/commodity/1',
             'test'          => 'http://schemas.elite-markets.net/eddn/commodity/1/test'
@@ -176,6 +177,8 @@ class EDDN
     {
         return $this->_uploaderID;
     }
+    
+    
     public function setSoftwareName($value)
     {
         $this->_softwareName = $value;
@@ -185,6 +188,8 @@ class EDDN
     {
         return $this->_softwareName;
     }
+    
+    
     public function setSoftwareVersion($value)
     {
         $this->_softwareVersion = $value;
@@ -193,5 +198,16 @@ class EDDN
     public function getSoftwareVersion()
     {
         return $this->_softwareVersion;
+    }
+    
+    
+    public function setDebug($value)
+    {
+        self::$_debug = $value;
+    }
+    
+    public function getDebug()
+    {
+        return self::$_debug;
     }
 }

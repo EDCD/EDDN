@@ -14,7 +14,7 @@ from datetime import datetime
 import os
 
 from eddn._Conf.Settings import Settings, loadConfig
-from eddn.Validator import Validator, ValidationSeverity
+from eddn._Core.Validator import Validator, ValidationSeverity
 
 from gevent import monkey
 monkey.patch_all()
@@ -29,7 +29,7 @@ sender = context.socket(zmq.PUB)
 validator = Validator()
 
 # This import must be done post-monkey-patching!
-from eddn.StatsCollector import StatsCollector
+from eddn._Core.StatsCollector import StatsCollector
 statsCollector = StatsCollector()
 statsCollector.start()
 
@@ -42,11 +42,10 @@ def configure():
         sender.bind(binding)
 
     for schemaRef, schemaFile in Settings.GATEWAY_JSON_SCHEMAS.iteritems():
-        #filename = resource_filename(Requirement.parse("eddn"), schemaFile)
         validator.addSchemaResource(schemaRef, os.path.dirname(__file__) + '/' + schemaFile)
 
 
-def push_message(string_message):
+def push_message(string_message, topic):
     """
     Spawned as a greenlet to push messages (strings) through ZeroMQ.
     This is a dumb method that just pushes strings; it assumes you've already validated
@@ -54,9 +53,9 @@ def push_message(string_message):
     """
 
     # Push a zlib compressed JSON representation of the message to
-    # announcers.
+    # announcers with schema as topic    
     compressed_msg = zlib.compress(string_message)
-    sender.send(compressed_msg)
+    sender.send("%s |-| %s" % (topic, compressed_msg))
     statsCollector.tally("outbound")
 
 
@@ -143,7 +142,7 @@ def parse_and_error_handle(data):
 
         # Sends the parsed MarketOrderList or MarketHistoryList to the Announcers
         # as compressed JSON.
-        gevent.spawn(push_message, simplejson.dumps(parsed_message))
+        gevent.spawn(push_message, simplejson.dumps(parsed_message), parsed_message['$schemaRef'])
         logger.info("Accepted %s upload from %s" % (
             parsed_message, get_remote_address()
         ))
