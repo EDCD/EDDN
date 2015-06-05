@@ -23,16 +23,14 @@ class _Settings(object):
     RELAY_SENDER_BINDINGS = ["tcp://*:9500"]
 
     RELAY_DECOMPRESS_MESSAGES = False
-    
+
     # If set to False, no deduplicate is made
     RELAY_DUPLICATE_MAX_MINUTES = 15
-    
+
     # If set to false, don't listen to topic and accept all incoming messages
     RELAY_RECEIVE_ONLY_GATEWAY_EXTRA_JSON = True
-    
-    RELAY_EXTRA_JSON_SCHEMAS = {
-        
-    }
+
+    RELAY_EXTRA_JSON_SCHEMAS = {}
 
     ###############################################################################
     #  Gateway settings
@@ -47,7 +45,7 @@ class _Settings(object):
     GATEWAY_JSON_SCHEMAS = {
         "http://schemas.elite-markets.net/eddn/commodity/1": "schemas/commodity-v0.1.json",
         "http://schemas.elite-markets.net/eddn/commodity/1/test": "schemas/commodity-v0.1.json",
-        
+
         "http://schemas.elite-markets.net/eddn/commodity/2": "schemas/commodity-v2.0.json",
         "http://schemas.elite-markets.net/eddn/commodity/2/test": "schemas/commodity-v2.0.json"
     }
@@ -55,14 +53,13 @@ class _Settings(object):
     ###############################################################################
     #  Monitor settings
     ###############################################################################
-    
+
     MONITOR_RECEIVER_BINDINGS = ["tcp://eddn-gateway.elite-markets.net:8500", "tcp://eddn-gateway.ed-td.space:8500"]
-    
+
     MONITOR_DB = "/home/EDDN_Monitor.s3db"     
-    
+
     MONITOR_DECOMPRESS_MESSAGES = True
-    
-    
+
 
     def loadFrom(self, fileName):
         f = open(fileName, 'r')

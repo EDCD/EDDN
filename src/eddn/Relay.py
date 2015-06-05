@@ -47,23 +47,22 @@ class Relay(Thread):
         context = zmq.Context()
 
         receiver = context.socket(zmq.SUB)
-        
+
         # Filters on topics or not...
-        if Settings.RELAY_RECEIVE_ONLY_GATEWAY_EXTRA_JSON == True:
+        if Settings.RELAY_RECEIVE_ONLY_GATEWAY_EXTRA_JSON is True:
             for schemaRef, schemaFile in Settings.GATEWAY_JSON_SCHEMAS.iteritems():
                 receiver.setsockopt(zmq.SUBSCRIBE, schemaRef)
             for schemaRef, schemaFile in Settings.RELAY_EXTRA_JSON_SCHEMAS.iteritems():
                 receiver.setsockopt(zmq.SUBSCRIBE, schemaRef)
         else:
             receiver.setsockopt(zmq.SUBSCRIBE, '')
-        
-        
+
         for binding in Settings.RELAY_RECEIVER_BINDINGS:
             # Relays bind upstream to an Announcer, or another Relay.
             receiver.connect(binding)
 
         sender = context.socket(zmq.PUB)
-        
+
         for binding in Settings.RELAY_SENDER_BINDINGS:
             # End users, or other relays, may attach here.
             sender.bind(binding)
@@ -76,7 +75,7 @@ class Relay(Thread):
             """
              # Separate topic from message
             message = message.split(' |-| ')
-            
+
             # Handle gateway not sending topic
             if len(message) > 1:
                 message = message[1]
