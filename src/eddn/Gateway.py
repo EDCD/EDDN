@@ -55,7 +55,7 @@ def push_message(string_message, topic):
     """
 
     # Push a zlib compressed JSON representation of the message to
-    # announcers with schema as topic    
+    # announcers with schema as topic
     compressed_msg = zlib.compress(string_message)
     sender.send("%s |-| %s" % (topic, compressed_msg))
     statsCollector.tally("outbound")

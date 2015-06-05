@@ -20,11 +20,12 @@ from eddn.conf.Settings import Settings, loadConfig
 from gevent import monkey
 monkey.patch_all()
 
+# This import must be done post-monkey-patching!
 from eddn.core.StatsCollector import StatsCollector
-
 statsCollector = StatsCollector()
 statsCollector.start()
 
+# This import must be done post-monkey-patching!
 if Settings.RELAY_DUPLICATE_MAX_MINUTES:
     from eddn.core.DuplicateMessages import DuplicateMessages
     duplicateMessages = DuplicateMessages()
@@ -71,11 +72,11 @@ class Relay(Thread):
 
         def relay_worker(message):
             """
-            This is the worker function that re-sends the incoming messages out
-            to any subscribers.
-            :param str message: A JSON string to re-broadcast.
+                This is the worker function that re-sends the incoming messages out
+                to any subscribers.
+                :param str message: A JSON string to re-broadcast.
             """
-             # Separate topic from message
+            # Separate topic from message
             message = message.split(' |-| ')
 
             # Handle gateway not sending topic

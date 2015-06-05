@@ -12,7 +12,7 @@ from eddn.conf.Settings import Settings, loadConfig
 class DuplicateMessages(Thread):
     max_minutes = Settings.RELAY_DUPLICATE_MAX_MINUTES
 
-    caches  = {}
+    caches = {}
 
     lock = Lock()
 
