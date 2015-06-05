@@ -28,7 +28,7 @@ class _Settings(object):
     RELAY_DUPLICATE_MAX_MINUTES = 15
     
     # If set to false, don't listen to topic and accept all incoming messages
-    RELAY_RECEIVE_ONLY_GATEWAY_EXTRA_JSON = False
+    RELAY_RECEIVE_ONLY_GATEWAY_EXTRA_JSON = True
     
     RELAY_EXTRA_JSON_SCHEMAS = {
         
