@@ -1,13 +1,14 @@
 from setuptools import setup, find_packages
 import re
+import glob
 
 
-VERSIONFILE = "src/eddn/_version.py"
-verstr = "unknown"
+VERSIONFILE = "src/eddn/_Conf/Version.py"
+verstr      = "unknown"
 try:
     verstrline = open(VERSIONFILE, "rt").read()
-    VSRE = r"^__version__ = ['\"]([^'\"]*)['\"]"
-    mo = re.search(VSRE, verstrline, re.M)
+    VSRE       = r"^__version__ = ['\"]([^'\"]*)['\"]"
+    mo         = re.search(VSRE, verstrline, re.M)
     if mo:
         verstr = mo.group(1)
 except EnvironmentError:
@@ -24,6 +25,7 @@ setup(
     url='https://github.com/jamesremuscat/eddn',
     packages=find_packages('src', exclude=["*.tests"]),
     package_dir = {'':'src'},
+    data_files=[('eddn/schemas', glob.glob("schemas/*.json"))],
     long_description="""\
       The Elite: Dangerous Data Network allows E:D players to share data. Not affiliated with Frontier Developments.
       """,
@@ -32,6 +34,7 @@ setup(
         'console_scripts': [
             'eddn-gateway = eddn.Gateway:main',
             'eddn-relay = eddn.Relay:main',
+            'eddn-monitor = eddn.Monitor:main',
             ],
         }
       )
