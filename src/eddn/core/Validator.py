@@ -1,3 +1,5 @@
+# coding: utf8
+
 import simplejson
 from enum import IntEnum
 from jsonschema import validate as jsValidate, ValidationError

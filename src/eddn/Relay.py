@@ -1,3 +1,5 @@
+# coding: utf8
+
 """
 Relays sit below an announcer, or another relay, and simply repeat what
 they receive over PUB/SUB.
@@ -13,18 +15,18 @@ import gevent
 import simplejson
 import zmq.green as zmq
 from bottle import get, response, run as bottle_run
-from eddn._Conf.Settings import Settings, loadConfig
+from eddn.conf.Settings import Settings, loadConfig
 
 from gevent import monkey
 monkey.patch_all()
 
-from eddn._Core.StatsCollector import StatsCollector
+from eddn.core.StatsCollector import StatsCollector
 
 statsCollector = StatsCollector()
 statsCollector.start()
 
 if Settings.RELAY_DUPLICATE_MAX_MINUTES:
-    from eddn._Core.DuplicateMessages import DuplicateMessages
+    from eddn.core.DuplicateMessages import DuplicateMessages
     duplicateMessages = DuplicateMessages()
     duplicateMessages.start()
 

@@ -1,3 +1,5 @@
+# coding: utf8
+
 """
 Contains the necessary ZeroMQ socket and a helper function to publish
 market data to the Announcer daemons.
@@ -13,8 +15,8 @@ from datetime import datetime
 
 import os
 
-from eddn._Conf.Settings import Settings, loadConfig
-from eddn._Core.Validator import Validator, ValidationSeverity
+from eddn.conf.Settings import Settings, loadConfig
+from eddn.core.Validator import Validator, ValidationSeverity
 
 from gevent import monkey
 monkey.patch_all()
@@ -29,7 +31,7 @@ sender = context.socket(zmq.PUB)
 validator = Validator()
 
 # This import must be done post-monkey-patching!
-from eddn._Core.StatsCollector import StatsCollector
+from eddn.core.StatsCollector import StatsCollector
 statsCollector = StatsCollector()
 statsCollector.start()
 

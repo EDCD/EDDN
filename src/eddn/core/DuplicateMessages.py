@@ -1,10 +1,12 @@
+# coding: utf8
+
 from datetime import datetime, timedelta
 from threading import Lock, Thread
 from time import sleep
 import hashlib
 import zlib
 import simplejson
-from eddn._Conf.Settings import Settings, loadConfig
+from eddn.conf.Settings import Settings, loadConfig
 
 
 class DuplicateMessages(Thread):

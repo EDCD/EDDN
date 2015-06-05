@@ -3,7 +3,7 @@ import re
 import glob
 
 
-VERSIONFILE = "src/eddn/_Conf/Version.py"
+VERSIONFILE = "src/eddn/conf/Version.py"
 verstr      = "unknown"
 try:
     verstrline = open(VERSIONFILE, "rt").read()

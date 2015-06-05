@@ -1,12 +1,8 @@
-'''
-Created on 15 Nov 2014
-
-@author: james
-'''
+# coding: utf8
 
 import argparse
 import simplejson
-from eddn._Conf.Version import __version__ as version
+from eddn.conf.Version import __version__ as version
 
 
 class _Settings(object):

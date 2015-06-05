@@ -52,5 +52,5 @@ docs/_build/
 
 # PyBuilder
 target/
-*.prices
+
 *.prices

@@ -1,3 +1,5 @@
+# coding: utf8
+
 from collections import deque
 from datetime import datetime
 from itertools import islice
