@@ -1,3 +1,5 @@
+# coding: utf8
+
 """
 Contains the necessary ZeroMQ socket and a helper function to publish
 market data to the Announcer daemons.
@@ -11,10 +13,11 @@ import zlib
 import zmq.green as zmq
 from datetime import datetime
 
-import os
+from pkg_resources import resource_string
+# import os
 
-from eddn._Conf.Settings import Settings, loadConfig
-from eddn._Core.Validator import Validator, ValidationSeverity
+from eddn.conf.Settings import Settings, loadConfig
+from eddn.core.Validator import Validator, ValidationSeverity
 
 from gevent import monkey
 monkey.patch_all()
@@ -29,7 +32,7 @@ sender = context.socket(zmq.PUB)
 validator = Validator()
 
 # This import must be done post-monkey-patching!
-from eddn._Core.StatsCollector import StatsCollector
+from eddn.core.StatsCollector import StatsCollector
 statsCollector = StatsCollector()
 statsCollector.start()
 
@@ -42,7 +45,7 @@ def configure():
         sender.bind(binding)
 
     for schemaRef, schemaFile in Settings.GATEWAY_JSON_SCHEMAS.iteritems():
-        validator.addSchemaResource(schemaRef, os.path.dirname(__file__) + '/' + schemaFile)
+        validator.addSchemaResource(schemaRef, resource_string(__name__, schemaFile))
 
 
 def push_message(string_message, topic):
@@ -53,7 +56,7 @@ def push_message(string_message, topic):
     """
 
     # Push a zlib compressed JSON representation of the message to
-    # announcers with schema as topic    
+    # announcers with schema as topic
     compressed_msg = zlib.compress(string_message)
     sender.send("%s |-| %s" % (topic, compressed_msg))
     statsCollector.tally("outbound")
@@ -130,16 +133,12 @@ def parse_and_error_handle(data):
     validationResults = validator.validate(parsed_message)
 
     if validationResults.severity <= ValidationSeverity.WARN:
-
-        statsCollector.tally(parsed_message["$schemaRef"])
-        statsCollector.tally(parsed_message['header']['softwareName'] + " " + parsed_message['header']['softwareVersion'])
-
         parsed_message['header']['gatewayTimestamp'] = datetime.utcnow().isoformat()
 
         ip_hash_salt = Settings.GATEWAY_IP_KEY_SALT
         if ip_hash_salt:
             # If an IP hash is set, salt+hash the uploader's IP address and set
-            # it as the EMDR upload key value.
+            # it as the EDDN upload key value.
             ip_hash = hashlib.sha1(ip_hash_salt + get_remote_address()).hexdigest()
             parsed_message['header']['uploaderKey'] = ip_hash
 

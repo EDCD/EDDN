@@ -209,8 +209,10 @@ def main():
         except zmq.ZMQError, e:
             echoLog('')
             echoLog('ZMQSocketException: ' + str(e))
+            subscriber.disconnect(__relayEDDN)
+            echoLog('Disconnect from ' + __relayEDDN)
             echoLog('')
-            time.sleep(10)
+            time.sleep(5)
             
         
 

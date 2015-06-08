@@ -357,7 +357,7 @@ var start       = function(){
     Highcharts.setOptions({global: {useUTC: false}});
     
     // Grab gateways
-    gateways = gateways.sort();
+    //gateways = gateways.sort();
     $.each(gateways, function(k, gateway){
         gateway = gateway.replace('tcp://', '');
         gateway = gateway.replace(':8500', '');
@@ -406,7 +406,7 @@ var start       = function(){
     }, updateInterval);
     
     // Grab relays
-    relays = relays.sort();
+    //relays = relays.sort();
     $.each(relays, function(k, relay){
         $("select[name=relays]").append($('<option>', { 
             value: 'http://' + relay + ':' + relayBottlePort + '/stats/',

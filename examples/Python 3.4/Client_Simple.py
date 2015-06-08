@@ -2,6 +2,7 @@ import zlib
 import zmq
 import simplejson
 import sys
+import time
 
 """
  "  Configuration
@@ -42,7 +43,8 @@ def main():
         except zmq.ZMQError as e:
             print ('ZMQSocketException: ' + str(e))
             sys.stdout.flush()
-            time.sleep(10)
+            subscriber.disconnect(__relayEDDN)
+            time.sleep(5)
             
         
 

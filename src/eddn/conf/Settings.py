@@ -1,12 +1,8 @@
-'''
-Created on 15 Nov 2014
-
-@author: james
-'''
+# coding: utf8
 
 import argparse
 import simplejson
-from eddn._Conf.Version import __version__ as version
+from eddn.conf.Version import __version__ as version
 
 
 class _Settings(object):
@@ -17,7 +13,6 @@ class _Settings(object):
     # Relay settings
     ###############################################################################
 
-    #RELAY_RECEIVER_BINDINGS = ["tcp://localhost:8500"]
     RELAY_RECEIVER_BINDINGS = ["tcp://eddn-gateway.elite-markets.net:8500", "tcp://eddn-gateway.ed-td.space:8500"]
 
     RELAY_SENDER_BINDINGS = ["tcp://*:9500"]
@@ -56,10 +51,9 @@ class _Settings(object):
 
     MONITOR_RECEIVER_BINDINGS = ["tcp://eddn-gateway.elite-markets.net:8500", "tcp://eddn-gateway.ed-td.space:8500"]
 
-    MONITOR_DB = "/home/EDDN_Monitor.s3db"     
+    MONITOR_DB = "/home/EDDN_Monitor.s3db"
 
     MONITOR_DECOMPRESS_MESSAGES = True
-
 
     def loadFrom(self, fileName):
         f = open(fileName, 'r')
