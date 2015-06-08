@@ -5,6 +5,8 @@ from threading import Lock, Thread
 from time import sleep
 import hashlib
 import zlib
+import re
+
 import simplejson
 from eddn.conf.Settings import Settings, loadConfig
 
@@ -34,6 +36,10 @@ class DuplicateMessages(Thread):
         with self.lock:
             message = zlib.decompress(message)
             message = simplejson.loads(message)
+
+            # Test messages are not duplicate
+            if re.search('test', message['$schemaRef'], re.I):
+                return False
 
             if message['header']['gatewayTimestamp']:
                 del message['header']['gatewayTimestamp']  # Prevent dupe with new timestamp ^^
