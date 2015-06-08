@@ -13,7 +13,8 @@ import zlib
 import zmq.green as zmq
 from datetime import datetime
 
-import os
+from pkg_resources import resource_string
+# import os
 
 from eddn.conf.Settings import Settings, loadConfig
 from eddn.core.Validator import Validator, ValidationSeverity
@@ -44,7 +45,8 @@ def configure():
         sender.bind(binding)
 
     for schemaRef, schemaFile in Settings.GATEWAY_JSON_SCHEMAS.iteritems():
-        validator.addSchemaResource(schemaRef, os.path.dirname(__file__) + '/' + schemaFile)
+        validator.addSchemaResource(schemaRef, resource_string(__name__, schemaFile))
+        # validator.addSchemaResource(schemaRef, os.path.dirname(__file__) + '/' + schemaFile)
 
 
 def push_message(string_message, topic):
@@ -137,7 +139,7 @@ def parse_and_error_handle(data):
         ip_hash_salt = Settings.GATEWAY_IP_KEY_SALT
         if ip_hash_salt:
             # If an IP hash is set, salt+hash the uploader's IP address and set
-            # it as the EMDR upload key value.
+            # it as the EDDN upload key value.
             ip_hash = hashlib.sha1(ip_hash_salt + get_remote_address()).hexdigest()
             parsed_message['header']['uploaderKey'] = ip_hash
 

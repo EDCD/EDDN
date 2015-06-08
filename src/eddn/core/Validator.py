@@ -9,10 +9,10 @@ class Validator(object):
 
     schemas = {"http://example.com": {}}
 
-    def addSchemaResource(self, schemaRef, schemaFile):
+    def addSchemaResource(self, schemaRef, schema):
         if schemaRef in self.schemas.keys():
             raise Exception("Attempted to redefine schema for " + schemaRef)
-        schema = simplejson.load(open(schemaFile, "r"))
+        schema = simplejson.loads(schema)
         self.schemas[schemaRef] = schema
 
     def validate(self, json_object):
