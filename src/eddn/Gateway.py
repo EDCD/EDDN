@@ -46,7 +46,6 @@ def configure():
 
     for schemaRef, schemaFile in Settings.GATEWAY_JSON_SCHEMAS.iteritems():
         validator.addSchemaResource(schemaRef, resource_string(__name__, schemaFile))
-        # validator.addSchemaResource(schemaRef, os.path.dirname(__file__) + '/' + schemaFile)
 
 
 def push_message(string_message, topic):
