@@ -6,10 +6,10 @@
 EDDN Status: http://eddn-gateway.elite-markets.net/ | http://eddn.ed-td.space/
 
 ### Known tools using EDDN
-| Tool  | Commander |  URI | Subscriber | Publisher |
-| ------------- | ------------- | ------------- | ------------- |
-| **EDDB** | themroc | http://eddb.io/ | **Yes** (v1) | No |
-| **ED-TD** | AnthorNet | http://ed-tb.space/ | **Yes** (v1/v2) | **Yes** (v2) |
-| **EliteOCR** | seeebek | https://forums.frontier.co.uk/showthread.php?t=68771 | No | **Yes** (v1) |
-| **Maddavo's Market Data** | maddavo | http://www.davek.com.au/td/ | **Yes** (v1) | **Yes** (v1) |
-| **RegulatedNoise DJ-version** | Duke | https://forums.frontier.co.uk/showthread.php?t=137732 | **Yes** (v1) | **Yes** (v1) |
+| Tool                                                                                   | Commander     | Subscriber      | Publisher    |
+| -------------------------------------------------------------------------------------- | ------------- | --------------- | ------------ |
+| [**EDDB**](http://eddb.io/)                                                            | themroc       | **Yes** (v1)    | No           |
+| [**ED-TD**](http://ed-tb.space/)                                                       | AnthorNet     | **Yes** (v1/v2) | **Yes** (v2) |
+| [**EliteOCR**](https://forums.frontier.co.uk/showthread.php?t=68771)                   | seeebek       | No              | **Yes** (v1) |
+| [**Maddavo's Market Data**](http://www.davek.com.au/td/)                               | maddavo       | **Yes** (v1)    | **Yes** (v1) |
+| [**RegulatedNoise DJ-version**](https://forums.frontier.co.uk/showthread.php?t=137732) | Duke          | **Yes** (v1)    | **Yes** (v1) |
