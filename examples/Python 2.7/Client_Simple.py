@@ -43,7 +43,8 @@ def main():
         except zmq.ZMQError, e:
             print 'ZMQSocketException: ' + str(e)
             sys.stdout.flush()
-            time.sleep(10)
+            subscriber.disconnect(__relayEDDN)
+            time.sleep(5)
             
         
 
