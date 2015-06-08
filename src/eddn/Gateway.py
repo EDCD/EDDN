@@ -132,10 +132,6 @@ def parse_and_error_handle(data):
     validationResults = validator.validate(parsed_message)
 
     if validationResults.severity <= ValidationSeverity.WARN:
-
-        statsCollector.tally(parsed_message["$schemaRef"])
-        statsCollector.tally(parsed_message['header']['softwareName'] + " " + parsed_message['header']['softwareVersion'])
-
         parsed_message['header']['gatewayTimestamp'] = datetime.utcnow().isoformat()
 
         ip_hash_salt = Settings.GATEWAY_IP_KEY_SALT
