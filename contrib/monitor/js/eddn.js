@@ -157,7 +157,7 @@ var doUpdateSoftwares = function()
                                                                          });
                                     $('#softwares .table thead th:eq(1)').html(currentSoftware);
                                     $('#softwares .table tbody tr[data-type=parent]').hide();
-                                    $('#softwares .table tbody tr[data-type=drilldown][data-parent="' + currentSoftware + '"').show();
+                                    $('#softwares .table tbody tr[data-type=drilldown][data-parent="' + currentSoftware + '"]').show();
                                     
                                     var currentData = [];
                                     
@@ -180,7 +180,7 @@ var doUpdateSoftwares = function()
                                     if(chart.drillUpButton)
                                         chart.drillUpButton = chart.drillUpButton.destroy();
                                     
-                                    $('#softwares .table tbody tr[data-type=drilldown][data-parent="' + currentSoftware + '"').each(function(){
+                                    $('#softwares .table tbody tr[data-type=drilldown][data-parent="' + currentSoftware + '"]').each(function(){
                                         $(this).find('.square').css('background', chart.get('software-' + makeSlug($(this).attr('data-name'))).color);
                                     });
                                 }
