@@ -55,9 +55,10 @@
                     "minLength"   : 1
                   },
                   "fdId": {
-                    "type"        : "string",
-                    "minLength"   : 1
-                  }  
+                    "type"       : "number",
+                    "multipleOf" : 1.0,
+                    "minimum": 1
+                  }
                 }
               }
             ]   
