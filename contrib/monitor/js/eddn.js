@@ -55,6 +55,7 @@ secondsToDurationString = function(seconds) {
 
 
 var drillDownSoftware = false;
+var currentDrillDown  = false;
 
 var softwaresTotal    = {};
 var softwaresVersion  = {};
@@ -124,8 +125,14 @@ var doUpdateSoftwares = function()
                             )
                             .append(
                                 $('<td>').addClass('stat total').html('<strong>' + formatNumber(hits) + '</strong>')
-                            ).hide()
+                            )
                         );
+                        
+                        if(!drillDownSoftware)
+                            newTr.hide();
+                        else
+                            if(softwareSplit[0] != currentDrillDown)
+                                newTr.hide();
                         
                         if(!softwaresVersion[softwareSplit[0]])
                             softwaresVersion[softwareSplit[0]] = {};
@@ -144,15 +151,19 @@ var doUpdateSoftwares = function()
                                 
                                 if(!drillDownSoftware)
                                 {
+                                    currentDrillDown = currentSoftware;
+                                    
                                     $('#softwares .table thead th:eq(0)').html('<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>')
                                                                          .css('cursor','pointer')
                                                                          .on('click', function(){
+                                                                             currentDrillDown = false;
                                                                              chart.showDrillUpButton();
                                                                              $('#softwares .table thead th:eq(0)').html('');
                                                                              $('#softwares .table thead th:eq(1)').html('');
                                                                              $('#softwares .table tbody tr[data-type=parent]').show();
                                                                              $('#softwares .table tbody tr[data-type=drilldown]').hide();
                                                                              drillDownSoftware = !drillDownSoftware;
+                                                                             doUpdateSoftwares();
                                                                              chart.drillUp();
                                                                          });
                                     $('#softwares .table thead th:eq(1)').html(currentSoftware);
@@ -209,15 +220,26 @@ var doUpdateSoftwares = function()
                             )
                         );
                         
-                        if(!chart.get('software-' + makeSlug(values.name)))
+                        if(!drillDownSoftware)
                         {
-                            series.addPoint({id: 'software-' + makeSlug(values.name), name: values.name, y: parseInt(values.total), drilldown: true}, false);
+                            if(!chart.get('software-' + makeSlug(values.name)))
+                            {
+                                series.addPoint({id: 'software-' + makeSlug(values.name), name: values.name, y: parseInt(values.total), drilldown: true}, false);
+                            }
+                            else
+                                chart.get('software-' + makeSlug(values.name)).update(parseInt(values.total), false);
+                                
+                            newTr.find('.square').css('background', chart.get('software-' + makeSlug(values.name)).color);
                         }
-                        else
-                            chart.get('software-' + makeSlug(values.name)).update(parseInt(values.total), false);
                         
-                        newTr.find('.square').css('background', chart.get('software-' + makeSlug(values.name)).color);
+                        if(drillDownSoftware)
+                            newTr.hide();
                     });
+                    
+                    if(drillDownSoftware)
+                        $('#softwares .table tbody tr[data-type=drilldown][data-parent="' + currentDrillDown + '"]').each(function(){
+                            $(this).find('.square').css('background', chart.get('software-' + makeSlug($(this).attr('data-name'))).color);
+                        });
                     
                     chart.redraw();
                     
