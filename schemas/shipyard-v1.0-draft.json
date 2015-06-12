@@ -42,7 +42,6 @@
         },
         "ships": {
           "type"        : "array",
-          "minItems"    : 1,
           "items"       : {
             "oneOf": [
               {
@@ -51,8 +50,7 @@
                 "required"              : [ "name" ],
                 "properties"            : {
                   "name": {
-                    "type"        : "string",
-                    "minLength"   : 1
+                    "$ref": "#/definitions/shipsName"
                   },
                   "fdId": {
                     "type"       : "number",
@@ -65,6 +63,30 @@
           }
         }
       }
+    }
+  },
+  
+  "definitions" : {
+    "shipsName" : {
+      "enum": [
+        "SideWinder",
+        "Eagle",
+        "Hauler",
+        "Adder",
+        "Viper",
+        "Cobra Mk III",
+        "Type-6 Transporter",
+        "Type-7 Transporter",
+        "Asp",
+        "Vulture",
+        "Orca",
+        "Type-9 Heavy",
+        "Python",
+        "Fer-de-Lance",
+        "Anaconda",
+        "DiamondBack Scout",
+        "Diamondback Explorer",
+      ]
     }
   }
 }
