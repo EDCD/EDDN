@@ -42,29 +42,79 @@
         },
         "modules": {
           "type"        : "array",
-          "minItems"    : 1,
+          "uniqueItems" : true,
           "items"       : {
             "oneOf": [
               {
                 "type"                  : "object",
-                "additionalProperties"  : false,
-                "required"              : [ "name" ],
                 "properties"            : {
-                  "name": {
-                    "type"        : "string",
-                    "minLength"   : 1
-                  },
-                  "fdId": {
-                    "type"       : "number",
-                    "multipleOf" : 1.0,
-                    "minimum": 1
-                  }
-                }
+                  "category"            : { "enum": [ "hardpoint" ] },
+                  "name"                : { "type": "string", "minLength": 1 },
+                  "mount"               : { "$ref": "#/definitions/mount" },
+                  "guidance"            : { "$ref": "#/definitions/guidance" },
+                  "class"               : { "$ref": "#/definitions/class" },
+                  "rating"              : { "$ref": "#/definitions/rating" }
+                },
+                "required"              : [ "category", "name", "class", "rating" ],
+                "additionalProperties"  : false
+              },
+              {
+                "type"                  : "object",
+                "properties"            : {
+                  "category"            : { "enum": [ "utility" ] },
+                  "name"                : { "type": "string", "minLength": 1 },
+                  "class"               : { "$ref": "#/definitions/class" },
+                  "rating"              : { "$ref": "#/definitions/rating" }
+                },
+                "required"              : [ "category", "name", "class", "rating" ],
+                "additionalProperties"  : false
+              },
+              {
+                "type"                  : "object",
+                "properties"            : {
+                  "category"            : { "enum": [ "standard" ] },
+                  "name"                : { "type": "string", "minLength": 1 },
+                  "ship"                : { "type": "string",
+                                            "minLength"   : 1,
+                                            "description" : "For ship-specific modules (e.g. armour) must be one of the ship names defined in http://schemas.elite-markets.net/eddn/shipyard/1" },
+                  "class"               : { "$ref": "#/definitions/class" },
+                  "rating"              : { "$ref": "#/definitions/rating" }
+                },
+                "required"              : [ "category", "name", "class", "rating" ],
+                "additionalProperties"  : false
+              },
+              {
+                "type"                  : "object",
+                "properties"            : {
+                  "category"            : { "enum": [ "internal" ] },
+                  "name"                : { "type": "string", "minLength": 1 },
+                  "class"               : { "$ref": "#/definitions/class" },
+                  "rating"              : { "$ref": "#/definitions/rating" }
+                },
+                "required"              : [ "category", "name", "class", "rating" ],
+                "additionalProperties"  : false
               }
-            ]   
+            ]
           }
         }
       }
+    }
+  },
+
+  "definitions": {
+    "class": {
+      "enum": [ "0", "1", "2", "3", "4", "5", "6", "7", "8" ]
+    },
+    "rating": {
+      "enum": [ "I", "A", "B", "C", "D", "E", "F", "G" ]
+    },
+    "mount": {
+      "enum": [ "Fixed", "Gimballed", "Turreted" ],
+      "description": "Thermic and Kinetic weapon mounting mode"
+    },
+    "guidance": {
+      "enum": [ "Dumbfire", "Seeker" ],
+      "description": "Missile and Torpedo weapon guidance mode"
     }
   }
 }
