@@ -50,20 +50,9 @@
                     "type"          : "array",
                     "uniqueItems"   : true,
                     "items"         : {
-                        "oneOf" : [
-                            {
-                                "type"                  : "object",
-                                "additionalProperties"  : false,
-                                "required"              : [ "name" ],
-                                "properties"            : {
-                                    "name":{
-                                        "type"          : "string",
-                                        "minLength"     : 1,
-                                        "description"   : "Must be one of: Sidewinder (128049249), Eagle (128049255), Hauler (128049261), Adder (128049267), Viper (128049273), Cobra Mk III (128049279), Type-6 Transporter (128049285), Type-7 Transporter (128049297), Asp (128049303), Vulture (128049309), Imperial Clipper (128049315), Federal Dropship (128049321), Orca (128049327), Type-9 Heavy (128049333), Python (128049339), Fer-de-Lance (128049351), Anaconda (128049363), DiamondBack Scout (128671217), Imperial Courier (128671223), Diamondback Explorer (128671831)"
-                                    }
-                                }
-                            }
-                        ]
+                        "type"          : "string",
+                        "minLength"     : 1,
+                        "description"   : "Ship name in English as displayed in-game. i.e. one of: Adder, Anaconda, Asp, Cobra Mk III, DiamondBack Scout, Diamondback Explorer, Eagle, Federal Dropship, Fer-de-Lance, Hauler, Imperial Clipper, Imperial Courier, Orca, Python, Sidewinder, Type-6 Transporter, Type-7 Transporter, Type-9 Heavy, Viper, Vulture"
                     }
                 }
             }
