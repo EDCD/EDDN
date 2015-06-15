@@ -1,91 +1,96 @@
 {
-  "$schema"                 : "http://json-schema.org/draft-04/schema#",
-  "id"                      : "http://schemas.elite-markets.net/eddn/commodity/2#",
-  "type"                    : "object",
-  "additionalProperties"    : false,
-  "required"                : [ "$schemaRef", "header", "message" ],
-  "properties"              : {
-    "$schemaRef"    : { "type": "string" },
-    
-    "header"        : {
-      "type"                    : "object",
-      "additionalProperties"    : true,
-      "required": [ "uploaderID", "softwareName", "softwareVersion" ],
-      "properties"  : {
-        "uploaderID"        : { "type": "string" },
-        "softwareName"      : { "type": "string" },
-        "softwareVersion"   : { "type": "string" },
-        "gatewayTimestamp"  : {
-          "type": "string",
-          "format": "date-time",
-          "description": "Timestamp upon receipt at the gateway. If present, this property will be overwritten by the gateway; submitters are not intended to populate this property."
-        }
-      }
-    },
-    
-    "message": {
-      "type": "object",
-      "additionalProperties": false,
-      "required": [ "systemName", "stationName", "timestamp", "commodities" ],
-      "properties": {
-        "systemName": {
-          "type"        : "string",
-          "minLength"   : 1
+    "$schema"               : "http://json-schema.org/draft-04/schema#",
+    "id"                    : "http://schemas.elite-markets.net/eddn/commodity/2#",
+    "type"                  : "object",
+    "additionalProperties"  : false,
+    "required": [ "$schemaRef", "header", "message" ],
+    "properties": {
+        "$schemaRef": {
+            "type"                  : "string"
         },
-        "stationName": {
-          "type"        : "string",
-          "minLength"   : 1
-        },
-        "timestamp": {
-          "type"        : "string",
-          "format"      : "date-time"
-        },
-        "commodities": {
-          "type"        : "array",
-          "minItems"    : 1,
-          "items"       : {
-            "oneOf": [
-              {
-                "type"                  : "object",
-                "additionalProperties"  : false,
-                "required"              : [ "name", "buyPrice", "supply", "sellPrice", "demand" ],
-                "properties"            : {
-                  "name": {
-                    "type"        : "string",
-                    "minLength"   : 1
-                  },
-                  "buyPrice": {
-                    "type": "integer",
-                    "description": "Price to buy from the market"
-                  },
-                  "supply": {
-                    "type": "integer"
-                  },
-                  "supplyLevel": {
-                    "$ref": "#/definitions/levelType"
-                  },
-                  "sellPrice": {
-                    "type": "integer",
-                    "description": "Price to sell to the market"
-                  },
-                  "demand": {
-                    "type": "integer"
-                  },
-                  "demandLevel": {
-                    "$ref": "#/definitions/levelType"
-                  }   
+        "header": {
+            "type"                  : "object",
+            "additionalProperties"  : true,
+            "required"              : [ "uploaderID", "softwareName", "softwareVersion" ],
+            "properties"            : {
+                "uploaderID": {
+                    "type"          : "string"
+                },
+                "softwareName": {
+                    "type"          : "string"
+                },
+                "softwareVersion": {
+                    "type"          : "string"
+                },
+                "gatewayTimestamp": {
+                    "type"          : "string",
+                    "format"        : "date-time",
+                    "description"   : "Timestamp upon receipt at the gateway. If present, this property will be overwritten by the gateway; submitters are not intended to populate this property."
                 }
-              }
-            ]   
-          }
+            }
+        },
+        "message": {
+            "type"                  : "object",
+            "additionalProperties"  : false,
+            "required"              : [ "systemName", "stationName", "timestamp", "commodities" ],
+            "properties"            : {
+                "systemName": {
+                    "type"      : "string",
+                    "minLength" : 1
+                },
+                "stationName": {
+                    "type"      : "string",
+                    "minLength" : 1
+                },
+                "timestamp": {
+                    "type"      : "string",
+                    "format"    : "date-time"
+                },
+                "commodities": {
+                    "type"      : "array",
+                    "minItems"  : 1,
+                    "items"     : {
+                        "oneOf" : [
+                            {
+                                "type"                  : "object",
+                                "additionalProperties"  : false,
+                                "required"              : [ "name", "buyPrice", "supply", "sellPrice", "demand" ],
+                                "properties"            : {
+                                    "name": {
+                                        "type"          :"string",
+                                        "minLength"     :1
+                                    },
+                                    "buyPrice": {
+                                        "type"          :"integer",
+                                        "description"   :"Price to buy from the market"
+                                    },
+                                    "supply": {
+                                        "type"          : "integer"
+                                    },
+                                    "supplyLevel": {
+                                        "$ref"          : "#/definitions/levelType"
+                                    },
+                                    "sellPrice": {
+                                        "type"          : "integer",
+                                        "description"   : "Price to sell to the market"
+                                    },
+                                    "demand":{
+                                        "type":"integer"
+                                    },
+                                    "demandLevel":{
+                                        "$ref":"#/definitions/levelType"
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                }
+            }
         }
-      }
+    },
+    "definitions": {
+        "levelType": {
+            "enum": [ "Low", "Med", "High" ]
+        }
     }
-  },
-  
-  "definitions" : {
-    "levelType" : {
-      "enum": ["Low", "Med", "High"]
-    }
-  }
 }
