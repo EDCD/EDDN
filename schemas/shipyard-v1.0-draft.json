@@ -47,8 +47,9 @@
                     "format"    : "date-time"
                 },
                 "ships": {
-                    "type"      : "array",
-                    "items"     : {
+                    "type"          : "array",
+                    "uniqueItems"   : true,
+                    "items"         : {
                         "oneOf" : [
                             {
                                 "type"                  : "object",
