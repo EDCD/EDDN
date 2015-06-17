@@ -55,7 +55,7 @@
                   "class"               : { "$ref": "#/definitions/class" },
                   "rating"              : { "$ref": "#/definitions/rating" }
                 },
-                "required"              : [ "category", "name", "class", "rating" ],
+                "required"              : [ "category", "name", "mount", "class", "rating" ],
                 "additionalProperties"  : false
               },
               {
@@ -110,7 +110,7 @@
     },
     "mount": {
       "enum": [ "Fixed", "Gimballed", "Turreted" ],
-      "description": "Thermic and Kinetic weapon mounting mode"
+      "description": "Weapon mounting mode"
     },
     "guidance": {
       "enum": [ "Dumbfire", "Seeker" ],
