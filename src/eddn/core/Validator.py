@@ -7,12 +7,13 @@ from jsonschema import validate as jsValidate, ValidationError
 
 class Validator(object):
 
-    schemas = {"http://example.com": {}}
+    schemas = {}	# { schemaRef: schema_dict }. schema_dict is None if the schemaRef is recognised but unsupported.
 
     def addSchemaResource(self, schemaRef, schema):
         if schemaRef in self.schemas.keys():
             raise Exception("Attempted to redefine schema for " + schemaRef)
-        schema = simplejson.loads(schema)
+        if schema:
+            schema = simplejson.loads(schema)
         self.schemas[schemaRef] = schema
 
     def validate(self, json_object):
@@ -29,19 +30,19 @@ class Validator(object):
             return results
 
         schema = self.schemas[schemaRef]
-        try:
-            jsValidate(json_object, schema)
-        except ValidationError as e:
-            results.add(ValidationSeverity.ERROR, e)
+        if not schema:
+            results.add(ValidationSeverity.RETIRED, JsonValidationException("Schema " + schemaRef + " is retired, please upgrade your client."))
+        else:
+            try:
+                jsValidate(json_object, schema)
+            except ValidationError as e:
+                results.add(ValidationSeverity.ERROR, e)
 
         return results
 
 
 class ValidationSeverity(IntEnum):
-    OK = 0,
-    WARN = 1,
-    ERROR = 2,
-    FATAL = 3
+    OK, WARN, RETIRED, ERROR, FATAL = range(5)
 
 
 class ValidationResults(object):

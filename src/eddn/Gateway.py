@@ -45,7 +45,7 @@ def configure():
         sender.bind(binding)
 
     for schemaRef, schemaFile in Settings.GATEWAY_JSON_SCHEMAS.iteritems():
-        validator.addSchemaResource(schemaRef, resource_string(__name__, schemaFile))
+        validator.addSchemaResource(schemaRef, schemaFile and resource_string(__name__, schemaFile))
 
 
 def push_message(string_message, topic):
@@ -149,6 +149,10 @@ def parse_and_error_handle(data):
             parsed_message, get_remote_address()
         ))
         return 'OK'
+    elif validationResults.severity == ValidationSeverity.RETIRED:
+        response.status = '426 Upgrade Required'	# Bottle (and underlying httplib) don't know this one
+        statsCollector.tally("retired")
+        return "FAIL: " + str(validationResults.messages)
     else:
         response.status = 400
         statsCollector.tally("invalid")
