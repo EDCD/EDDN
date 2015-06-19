@@ -451,6 +451,10 @@ var showStats = function(type, currentItem){
         el.find(".invalid_1min").html((currentItemStats["invalid"] || {})['1min'] || 0);
         el.find(".invalid_5min").html((currentItemStats["invalid"] || {})['5min'] || 0);
         el.find(".invalid_60min").html((currentItemStats["invalid"] || {})['60min'] || 0);
+        
+        el.find(".outdated_1min").html((currentItemStats["outdated"] || {})['1min'] || 0);
+        el.find(".outdated_5min").html((currentItemStats["outdated"] || {})['5min'] || 0);
+        el.find(".outdated_60min").html((currentItemStats["outdated"] || {})['60min'] || 0);
     }
     
     if(type == 'relays')
@@ -525,8 +529,9 @@ var start       = function(){
             credits: { enabled: false },
             exporting: { enabled: false },
             series: [
-                {id: 'inbound', data: [], name: 'Messages received', zIndex: 300}, 
-                {id: 'invalid', data: [], name: 'Invalid messages', zIndex: 1}, 
+                {id: 'inbound', data: [], name: 'Messages received', zIndex: 300},
+                {id: 'invalid', data: [], name: 'Invalid messages', zIndex: 1},
+                {id: 'outdated', data: [], name: 'Outdated messages', zIndex: 1},
                 {id: 'outbound', data: [], name: 'Messages passed to relay', zIndex: 200}
             ]
         }).hide();

@@ -130,6 +130,12 @@ def parse_and_error_handle(data):
         logger.error("Error to %s: %s" % (get_remote_address(), exc.message))
         return str(exc)
 
+    # Here we check if an outdated schema has been passed
+    if parsed_message["$schemaRef"] in Settings.GATEWAY_OUTDATED_SCHEMAS.keys():
+        response.status = 426
+        statsCollector.tally("outdated")
+        return "FAIL: The schema you have used need an upgrade. Update your software."
+
     validationResults = validator.validate(parsed_message)
 
     if validationResults.severity <= ValidationSeverity.WARN:
