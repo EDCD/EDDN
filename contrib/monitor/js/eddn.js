@@ -76,7 +76,7 @@ var doUpdateSoftwares = function()
                 dataType: "json",
                 url: monitorEndPoint + 'getTotalSoftwares/',
                 success: function(softwaresTotalData){
-                    var chart   = $('#softwares .chart').highcharts(),
+                    var chart   = $('#software .chart').highcharts(),
                         series  = chart.get('softwares');
                     
                     // Count total by software, all versions included
@@ -99,13 +99,13 @@ var doUpdateSoftwares = function()
                     tmp.sort(function(a,b) { return b.total - a.total; });
                     softwaresTotal = tmp;
                     
-                    $('#softwares .table tbody').empty();
+                    $('#software .table tbody').empty();
                     
                     // Prepare drilldowns
                     $.each(softwaresTotalData, function(software, hits){
                         softwareSplit = software.split(' | ');
                         
-                        $('#softwares .table tbody').append(
+                        $('#software .table tbody').append(
                             newTr = $('<tr>').attr('data-type', 'drilldown').attr('data-parent', softwareSplit[0]).attr('data-name', software).on('mouseover', function(){
                                 chart.get('software-' + makeSlug(software)).setState('hover');
                                 chart.tooltip.refresh(chart.get('software-' + makeSlug(software)));
@@ -144,7 +144,7 @@ var doUpdateSoftwares = function()
                     
                     // Add main softwares
                     $.each(softwaresTotal, function(key, values){
-                        $('#softwares .table tbody').append(
+                        $('#software .table tbody').append(
                             newTr = $('<tr>').attr('data-type', 'parent').attr('data-name', values.name).on('click', function(event){
                                 event.stopImmediatePropagation();
                                 currentSoftware = $(this).attr('data-name');
@@ -153,22 +153,22 @@ var doUpdateSoftwares = function()
                                 {
                                     currentDrillDown = currentSoftware;
                                     
-                                    $('#softwares .table thead th:eq(0)').html('<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>')
+                                    $('#software .table thead th:eq(0)').html('<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>')
                                                                          .css('cursor','pointer')
                                                                          .on('click', function(){
                                                                              currentDrillDown = false;
                                                                              chart.showDrillUpButton();
-                                                                             $('#softwares .table thead th:eq(0)').html('');
-                                                                             $('#softwares .table thead th:eq(1)').html('');
-                                                                             $('#softwares .table tbody tr[data-type=parent]').show();
-                                                                             $('#softwares .table tbody tr[data-type=drilldown]').hide();
+                                                                             $('#software .table thead th:eq(0)').html('');
+                                                                             $('#software .table thead th:eq(1)').html('');
+                                                                             $('#software .table tbody tr[data-type=parent]').show();
+                                                                             $('#software .table tbody tr[data-type=drilldown]').hide();
                                                                              drillDownSoftware = !drillDownSoftware;
                                                                              doUpdateSoftwares();
                                                                              chart.drillUp();
                                                                          });
-                                    $('#softwares .table thead th:eq(1)').html(currentSoftware);
-                                    $('#softwares .table tbody tr[data-type=parent]').hide();
-                                    $('#softwares .table tbody tr[data-type=drilldown][data-parent="' + currentSoftware + '"]').show();
+                                    $('#software .table thead th:eq(1)').html(currentSoftware);
+                                    $('#software .table tbody tr[data-type=parent]').hide();
+                                    $('#software .table tbody tr[data-type=drilldown][data-parent="' + currentSoftware + '"]').show();
                                     
                                     var currentData = [];
                                     
@@ -191,7 +191,7 @@ var doUpdateSoftwares = function()
                                     if(chart.drillUpButton)
                                         chart.drillUpButton = chart.drillUpButton.destroy();
                                     
-                                    $('#softwares .table tbody tr[data-type=drilldown][data-parent="' + currentSoftware + '"]').each(function(){
+                                    $('#software .table tbody tr[data-type=drilldown][data-parent="' + currentSoftware + '"]').each(function(){
                                         $(this).find('.square').css('background', chart.get('software-' + makeSlug($(this).attr('data-name'))).color);
                                     });
                                 }
@@ -237,18 +237,18 @@ var doUpdateSoftwares = function()
                     });
                     
                     if(drillDownSoftware)
-                        $('#softwares .table tbody tr[data-type=drilldown][data-parent="' + currentDrillDown + '"]').each(function(){
+                        $('#software .table tbody tr[data-type=drilldown][data-parent="' + currentDrillDown + '"]').each(function(){
                             $(this).find('.square').css('background', chart.get('software-' + makeSlug($(this).attr('data-name'))).color);
                         });
                     
                     chart.redraw();
                     
-                    $('#softwares').find(".stat").removeClass("warning").each(function() {
+                    $('#software').find(".stat").removeClass("warning").each(function() {
                         if ($(this).html() == "0")
                             $(this).addClass("warning");
                     });
                     
-                    $('#softwares').find(".update_timestamp").html(d.toString("yyyy-MM-dd HH:mm:ss"));
+                    $('#software').find(".update_timestamp").html(d.toString("yyyy-MM-dd HH:mm:ss"));
                 }
             });
         }
@@ -595,7 +595,7 @@ var start       = function(){
     }, updateInterval);
     
     // Grab software from monitor
-    $('#softwares .chart').highcharts({
+    $('#software .chart').highcharts({
         chart: {
             type: 'pie', animation: Highcharts.svg
         },
