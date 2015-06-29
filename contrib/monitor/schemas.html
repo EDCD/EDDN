@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>EDDN Status - Schemas</title>
+
+    <!-- Bootstrap -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="./css/eddn.css" rel="stylesheet" />
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="./js/date.js"></script>
+</head>
+<body data-spy="scroll" data-target="#header-nav" data-offset="70">
+    <header>
+        <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#header-nav">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="">EDDN Status - Schemas</a>
+            </div>
+            
+            <div class="collapse navbar-collapse" id="header-nav">
+                <ul class="nav navbar-nav">
+                    <li><a href="./#schemas">Back to EDDN Status</a></li>
+                </ul>
+            </div>
+            
+        </div>
+        </nav>
+    </header>
+    
+    <section id="schemas" class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>Schemas (Last 60 days)</h2>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                                                
+                        <div class="row">
+                            <div class="col-md-12 charts" style="height: 500px;">
+                                
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>    
+        </div>
+    </section>
+    
+    <section id="schemasStacked" class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>Schemas in percent (Last 60 days)</h2>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                                                
+                        <div class="row">
+                            <div class="col-md-12 charts" style="height: 500px;">
+                                
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>    
+        </div>
+    </section>
+    
+    <footer>
+        <nav class="navbar navbar-default">
+            <div class="container">
+                <p class="navbar-text">
+                    The <em>Elite: Dangerous Data Network</em> is volunteer-run and not affiliated with <a href="https://frontier.co.uk/" target="_blank">Frontier Developments</a>.
+                     | 
+                    Charts by <a href="http://www.highcharts.com/" target="_blank">HighCharts</a>
+                </p>
+            </div>
+        </nav>
+    </footer>
+    
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <script src="http://code.highcharts.com/4.1.5/highcharts.js"></script>
+    
+    <script type="text/javascript">
+    makeSlug = function(str) {
+    	var slugcontent_hyphens = str.replace(/\s/g,'-');
+    	var finishedslug = slugcontent_hyphens.replace(/[^a-zA-Z0-9\-]/g,'');
+    	return finishedslug.toLowerCase();
+    }
+
+    $(document).ready(function(){
+        var monitorEndPoint     = 'http://eddn-monitor.ed-td.space:9091/';
+        
+        var chartContainer = $('#schemas .charts');
+        
+        chartContainer.highcharts({
+            chart: {
+                type: 'spline', animation: Highcharts.svg,
+                events: {
+                    load: function(){ setTimeout(function(){$(window).trigger('resize');}, 250); }
+                },
+                marginRight: 10
+            },
+            title: { text: '', style: {display: 'none'} },
+            xAxis: {
+                type: 'datetime',
+                //tickPixelInterval: 24 * 3600 * 1000
+            },
+            yAxis: {
+                title: {text: ''},
+                plotLines: [{value: 0, width: 1, color: '#808080'}],
+                min: 0
+            },
+            //tooltip: { enabled: false },
+            credits: { enabled: false },
+            exporting: { enabled: false },
+            series: [
+                {id: 'duplicate-message', data: [], name: 'Messages duplicate', zIndex: 1}
+            ]
+        });
+        
+        var chartStackedContainer = $('#schemasStacked .charts');
+        
+        chartStackedContainer.highcharts({
+            chart: {
+                type: 'area', animation: Highcharts.svg,
+                events: {
+                    load: function(){ setTimeout(function(){$(window).trigger('resize');}, 250); }
+                },
+                marginRight: 10
+            },
+            colors: ['#000000', '#7cb5ec', '#2b908f', '#f7a35c', '#f15c80', '#e4d354', '#2b908f', '#f45b5b', '#91e8e1'],
+            title: { text: '', style: {display: 'none'} },
+            xAxis: {
+                type: 'datetime',
+                //tickPixelInterval: 24 * 3600 * 1000
+            },
+            yAxis: {
+                title: {text: ''},
+                plotLines: [{value: 0, width: 1, color: '#808080'}],
+                min: 0
+            },
+            plotOptions: {
+                area: {
+                    stacking: 'percent',
+                    lineColor: '#ffffff',
+                    lineWidth: 1,
+                    marker: {
+                        lineWidth: 1,
+                        lineColor: '#ffffff'
+                    }
+                }
+            },
+            tooltip: { 
+                pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.percentage:.1f}%</b> ({point.y:,.0f})<br/>',
+                shared: true
+            },
+            credits: { enabled: false },
+            exporting: { enabled: false },
+            series: [
+                {id: 'duplicate-message', data: [], name: 'Messages duplicate', zIndex: 1}
+            ]
+        });
+        
+        var dYesterday  = new (function(d){ d.setDate(d.getDate()-1); return d})(new Date),
+            d60         = new (function(d){ d.setDate(d.getDate()-60); return d})(new Date),
+        
+        day60           = d60.getUTCFullYear() + '-' + ("0" + (d60.getUTCMonth() +　1)).slice(-2) + '-' + ("0" + (d60.getUTCDate())).slice(-2),
+        yesterday       = dYesterday.getUTCFullYear() + '-' + ("0" + (dYesterday.getUTCMonth() +　1)).slice(-2) + '-' + ("0" + (dYesterday.getUTCDate())).slice(-2);
+    
+        $.ajax({
+            dataType: "json",
+            url: monitorEndPoint + 'getSchemas/?dateStart=' + day60 + '&dateEnd = ' + yesterday,
+            success: function(schemas){
+                var chart = chartContainer.highcharts();
+                var chartStacked = chartStackedContainer.highcharts();
+                
+                
+                $.each(schemas, function(date, schemasCount){
+                    // Convert date for highcharts
+                    date = date.split('-')
+                    date = Date.UTC(date[0], date[1] - 1, date[2]);
+                    
+                    $.each(schemasCount, function(schema, hits){
+                        // IF TEST CONTINUE
+                        if(schema.substr(schema.length - 4) == 'test')
+                            return;
+                            
+                        // Check series exists
+                        if(!chart.get(makeSlug(schema)))
+                        {
+                            // Format name
+                            if(makeSlug(schema) == 'httpschemaselite-marketsneteddncommodity1')
+                                name = 'Commodity v1';
+                            else if(makeSlug(schema) == 'httpschemaselite-marketsneteddncommodity2')
+                                name = 'Commodity v2';
+                            else if(makeSlug(schema) == 'httpschemaselite-marketsneteddnshipyard1')
+                                name = 'Shipyard v1';
+                            else
+                                name = schema;
+                            
+                            chart.addSeries({
+                                id: makeSlug(schema),
+                                name: name,
+                                data: []
+                            });
+                            
+                            if(name == 'Commodity v2')
+                                chart.addSeries({
+                                    id: makeSlug(schema + '(Projected)'),
+                                    name: name + ' (Projected * 55.0287)',
+                                    data: []
+                                });
+                        }
+                        
+                        // Add data
+                        serie  = chart.get(makeSlug(schema));
+                        
+                        serie.addPoint({x: date, y: parseInt(hits)}, false);
+                        
+                        // Add projected
+                        if(makeSlug(schema) == 'httpschemaselite-marketsneteddncommodity2')
+                        {
+                            serie  = chart.get(makeSlug(schema + '(Projected)'));
+                            serie.addPoint({x: date, y: Math.round(parseInt(hits)*55.0287)}, false);
+                        }
+                        
+                        // Check series exists
+                        if(!chartStacked.get(makeSlug(schema)))
+                        {
+                            // Format name
+                            if(makeSlug(schema) == 'httpschemaselite-marketsneteddncommodity1')
+                                name = 'Commodity v1';
+                            else if(makeSlug(schema) == 'httpschemaselite-marketsneteddncommodity2')
+                                name = 'Commodity v2';
+                            else if(makeSlug(schema) == 'httpschemaselite-marketsneteddnshipyard1')
+                                name = 'Shipyard v1';
+                            else
+                                name = schema;
+                            
+                            if(name == 'Commodity v2' && !chartStacked.get(makeSlug(schema + '(Projected)')))
+                                chartStacked.addSeries({
+                                    id: makeSlug(schema + '(Projected)'),
+                                    name: name + ' (Projected * 55.0287)',
+                                    data: []
+                                });
+                            else
+                            {
+                                if(name != 'Commodity v2')
+                                    chartStacked.addSeries({
+                                        id: makeSlug(schema),
+                                        name: name,
+                                        data: []
+                                    });
+                            }
+                        }
+                        
+                        
+                        
+                        // Add projected
+                        if(makeSlug(schema) == 'httpschemaselite-marketsneteddncommodity2')
+                        {
+                            serie  = chartStacked.get(makeSlug(schema + '(Projected)'));
+                            serie.addPoint({x: date, y: Math.round(parseInt(hits)*55.0287)}, false);
+                        }
+                        // Add data
+                        else
+                        {
+                            serie  = chartStacked.get(makeSlug(schema));
+                            
+                            serie.addPoint({x: date, y: parseInt(hits)}, false);
+                        }
+                    });
+                });
+                
+                chart.redraw();
+                chartStacked.redraw();
+            }
+        });
+    });
+    </script>
+</body>
+</html>
