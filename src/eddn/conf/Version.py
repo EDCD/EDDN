@@ -1,3 +1,2 @@
-# coding: utf8
-
-__version__ = "0.4"
+# This should be a version number as understood by setuptools
+__version__ = "0.5"

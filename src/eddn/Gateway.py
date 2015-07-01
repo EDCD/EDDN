@@ -45,7 +45,7 @@ def configure():
         sender.bind(binding)
 
     for schemaRef, schemaFile in Settings.GATEWAY_JSON_SCHEMAS.iteritems():
-        validator.addSchemaResource(schemaRef, resource_string(__name__, schemaFile))
+        validator.addSchemaResource(schemaRef, resource_string('eddn.Gateway', schemaFile))
 
 
 def push_message(string_message, topic):
@@ -130,6 +130,12 @@ def parse_and_error_handle(data):
         logger.error("Error to %s: %s" % (get_remote_address(), exc.message))
         return str(exc)
 
+    # Here we check if an outdated schema has been passed
+    if parsed_message["$schemaRef"] in Settings.GATEWAY_OUTDATED_SCHEMAS:
+        response.status = '426 Upgrade Required'  # Bottle (and underlying httplib) don't know this one
+        statsCollector.tally("outdated")
+        return "FAIL: The schema you have used is no longer supported. Please check for an updated version of your application."
+
     validationResults = validator.validate(parsed_message)
 
     if validationResults.severity <= ValidationSeverity.WARN:
@@ -206,7 +212,6 @@ class MalformedUploadError(Exception):
 
 def main():
     loadConfig()
-
     configure()
     run(host='0.0.0.0', port=Settings.GATEWAY_HTTP_PORT, server='gevent')
 
