@@ -21,7 +21,7 @@ from eddn.core.Validator import Validator, ValidationSeverity
 
 from gevent import monkey
 monkey.patch_all()
-from bottle import run, request, response, get, post
+from bottle import default_app, run, request, response, get, post
 
 logger = logging.getLogger(__name__)
 
@@ -219,3 +219,5 @@ def main():
 
 if __name__ == '__main__':
     main()
+else:
+    application = app = default_app()
