@@ -134,7 +134,7 @@ def parse_and_error_handle(data):
     if parsed_message["$schemaRef"] in Settings.GATEWAY_OUTDATED_SCHEMAS.keys():
         response.status = '426 Upgrade Required'  # Bottle (and underlying httplib) don't know this one
         statsCollector.tally("outdated")
-        return "FAIL: The schema you have used need an upgrade. Update your software."
+        return "FAIL: The schema you have used is no longer supported. Please check for an updated version of your application."
 
     validationResults = validator.validate(parsed_message)
 
