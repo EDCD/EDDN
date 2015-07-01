@@ -21,7 +21,7 @@ from eddn.core.Validator import Validator, ValidationSeverity
 
 from gevent import monkey
 monkey.patch_all()
-from bottle import default_app, run, request, response, get, post
+from bottle import run, request, response, get, post
 
 logger = logging.getLogger(__name__)
 
@@ -211,12 +211,10 @@ class MalformedUploadError(Exception):
 
 
 def main():
+    loadConfig()
+    configure()
     run(host='0.0.0.0', port=Settings.GATEWAY_HTTP_PORT, server='gevent')
 
 
-loadConfig()
-configure()
 if __name__ == '__main__':
     main()
-else:
-    application = app = default_app()
