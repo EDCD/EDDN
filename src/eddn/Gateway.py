@@ -45,7 +45,7 @@ def configure():
         sender.bind(binding)
 
     for schemaRef, schemaFile in Settings.GATEWAY_JSON_SCHEMAS.iteritems():
-        validator.addSchemaResource(schemaRef, resource_string(__name__, schemaFile))
+        validator.addSchemaResource(schemaRef, resource_string('eddn.Gateway', schemaFile))
 
 
 def push_message(string_message, topic):
@@ -211,12 +211,11 @@ class MalformedUploadError(Exception):
 
 
 def main():
-    loadConfig()
-
-    configure()
     run(host='0.0.0.0', port=Settings.GATEWAY_HTTP_PORT, server='gevent')
 
 
+loadConfig()
+configure()
 if __name__ == '__main__':
     main()
 else:
