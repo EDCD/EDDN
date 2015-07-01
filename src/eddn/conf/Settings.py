@@ -45,10 +45,10 @@ class _Settings(object):
         "http://schemas.elite-markets.net/eddn/shipyard/1/test": "schemas/shipyard-v1.0.json"
     }
 
-    GATEWAY_OUTDATED_SCHEMAS = {
-        "http://schemas.elite-markets.net/eddn/commodity/1": "schemas/commodity-v0.1.json",
-        "http://schemas.elite-markets.net/eddn/commodity/1/test": "schemas/commodity-v0.1.json"
-    }
+    GATEWAY_OUTDATED_SCHEMAS = [
+        "http://schemas.elite-markets.net/eddn/commodity/1",
+        "http://schemas.elite-markets.net/eddn/commodity/1/test"
+    ]
 
     ###############################################################################
     #  Monitor settings
