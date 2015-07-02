@@ -13,18 +13,17 @@ class StatsCollector(Thread):
     you choose, up to one hour.
     '''
 
-    max_minutes = 60
-
-    current = {}
-    history = {}
-
-    lock = Lock()
-
-    starttime = 0
-
     def __init__(self):
         super(StatsCollector, self).__init__()
         self.daemon = True
+        self.max_minutes = 60
+
+        self.current = {}
+        self.history = {}
+
+        self.lock = Lock()
+
+        self.starttime = 0
 
     def run(self):
         self.starttime = datetime.utcnow()
