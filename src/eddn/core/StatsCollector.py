@@ -43,12 +43,6 @@ class StatsCollector(Thread):
             else:
                 self.current[key] += 1
 
-    def getInboundCount(self, minutes):
-        return sum(islice(self.inboundHistory, 0, min(minutes, self.max_minutes)))
-
-    def getOutboundCount(self, minutes):
-        return sum(islice(self.outboundHistory, 0, min(minutes, self.max_minutes)))
-
     def getCount(self, key, minutes):
         if key in self.history:
             return sum(islice(self.history[key], 0, min(minutes, self.max_minutes)))
