@@ -13,5 +13,5 @@ class Test(unittest.TestCase):
 
         self.assertEqual(0, statsCollector.getCount("test", 1))
         statsCollector.tally("test")
-        sleep(60)
+        sleep(61)
         self.assertEqual(1, statsCollector.getCount("test", 1))
