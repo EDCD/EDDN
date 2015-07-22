@@ -13,18 +13,17 @@ class StatsCollector(Thread):
     you choose, up to one hour.
     '''
 
-    max_minutes = 60
-
-    current = {}
-    history = {}
-
-    lock = Lock()
-
-    starttime = 0
-
     def __init__(self):
         super(StatsCollector, self).__init__()
         self.daemon = True
+        self.max_minutes = 60
+
+        self.current = {}
+        self.history = {}
+
+        self.lock = Lock()
+
+        self.starttime = 0
 
     def run(self):
         self.starttime = datetime.utcnow()
@@ -43,12 +42,6 @@ class StatsCollector(Thread):
                 self.current[key] = 1
             else:
                 self.current[key] += 1
-
-    def getInboundCount(self, minutes):
-        return sum(islice(self.inboundHistory, 0, min(minutes, self.max_minutes)))
-
-    def getOutboundCount(self, minutes):
-        return sum(islice(self.outboundHistory, 0, min(minutes, self.max_minutes)))
 
     def getCount(self, key, minutes):
         if key in self.history:

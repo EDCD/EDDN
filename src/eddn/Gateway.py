@@ -213,7 +213,7 @@ class MalformedUploadError(Exception):
 def main():
     loadConfig()
     configure()
-    run(host='0.0.0.0', port=Settings.GATEWAY_HTTP_PORT, server='gevent')
+    run(host=Settings.GATEWAY_HTTP_BIND_ADDRESS, port=Settings.GATEWAY_HTTP_PORT, server='gevent')
 
 
 if __name__ == '__main__':

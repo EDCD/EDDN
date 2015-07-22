@@ -31,7 +31,8 @@ class _Settings(object):
     #  Gateway settings
     ###############################################################################
 
-    GATEWAY_HTTP_PORT = 8080
+    GATEWAY_HTTP_BIND_ADDRESS = "127.0.0.1"
+    GATEWAY_HTTP_PORT = 8081
 
     GATEWAY_SENDER_BINDINGS = ["tcp://*:8500"]
 
