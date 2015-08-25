@@ -42,6 +42,7 @@
         },
         "modules": {
           "type"        : "array",
+          "description" : "List of available modules in English as displayed in-game. Modules that depend on the Cmdr's purchases (e.g. paintjobs) or rank (e.g. decals and PowerPlay faction-specific modules) should be omitted.",
           "uniqueItems" : true,
           "items"       : {
             "oneOf": [
