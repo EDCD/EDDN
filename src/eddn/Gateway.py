@@ -150,7 +150,7 @@ def parse_and_error_handle(data):
 
         # Sends the parsed MarketOrderList or MarketHistoryList to the Announcers
         # as compressed JSON.
-        gevent.spawn(push_message, simplejson.dumps(parsed_message), parsed_message['$schemaRef'])
+        gevent.spawn(push_message, simplejson.dumps(parsed_message, ensure_ascii=False).encode('utf-8'), parsed_message['$schemaRef'])
         logger.info("Accepted %s upload from %s" % (
             parsed_message, get_remote_address()
         ))
