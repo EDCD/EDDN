@@ -1,2 +1,2 @@
 # This should be a version number as understood by setuptools
-__version__ = "0.6"
+__version__ = "0.6.1"
