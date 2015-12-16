@@ -88,9 +88,16 @@ var doUpdateSoftwares = function()
                             softwareName[softwareSplit[0]] = [0,0, parseInt(hits)];
                         else
                             softwareName[softwareSplit[0]][2] += parseInt(hits);
-                            
+                        
+                        // Might happen when nothing is received...
+                        if(softwares[yesterday] == undefined)
+                            softwares[yesterday] = [];
+                        if(softwares[today] == undefined)
+                            softwares[today] = [];
+                        
                         softwareName[softwareSplit[0]][0] += parseInt(softwares[today][software] || 0);
                         softwareName[softwareSplit[0]][1] += parseInt(softwares[yesterday][software] || 0);
+                            
                     });
                     
                     // Sort by total DESC
@@ -283,6 +290,12 @@ var doUpdateUploaders = function()
                         else
                             truncateUploader = uploader
                         
+                        // Might happen when nothing is received...  
+                        if(uploaders[yesterday] == undefined)
+                            uploaders[yesterday] = [];
+                        if(uploaders[today] == undefined)
+                            uploaders[today] = [];
+                        
                         $('#uploaders .table tbody').append(
                             newTr = $('<tr>').attr('data-name', uploader).on('mouseover', function(){
                                 chart.get('uploader-' + makeSlug(uploader)).setState('hover');
@@ -351,6 +364,12 @@ var doUpdateSchemas = function()
                     $('#schemas .table tbody').empty();
                     
                     $.each(schemasTotal, function(schema, hits){
+                        // Might happen when nothing is received...
+                        if(schemas[yesterday] == undefined)
+                            schemas[yesterday] = [];
+                        if(schemas[today] == undefined)
+                            schemas[today] = [];
+                        
                         $('#schemas .table tbody').append(
                             newTr = $('<tr>').attr('data-name', schema).on('mouseover', function(){
                                 chart.get('schema-' + makeSlug(schema)).setState('hover');
