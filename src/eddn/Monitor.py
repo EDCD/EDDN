@@ -29,6 +29,11 @@ def date(__format):
     return d.strftime(__format)
 
 
+@get('/ping')
+def ping():
+    return 'pong'
+
+
 @get('/getTotalSoftwares/')
 def getTotalSoftwares():
     response.set_header("Access-Control-Allow-Origin", "*")
