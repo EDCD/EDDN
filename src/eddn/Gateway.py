@@ -139,7 +139,7 @@ def parse_and_error_handle(data):
     validationResults = validator.validate(parsed_message)
 
     if validationResults.severity <= ValidationSeverity.WARN:
-        parsed_message['header']['gatewayTimestamp'] = datetime.utcnow().isoformat()
+        parsed_message['header']['gatewayTimestamp'] = datetime.utcnow().isoformat() + 'Z'
 
         ip_hash_salt = Settings.GATEWAY_IP_KEY_SALT
         if ip_hash_salt:
