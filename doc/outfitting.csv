@@ -1,0 +1,784 @@
+id,category,name,mount,guidance,ship,class,rating
+128049250,standard,Lightweight Alloy,,,Sidewinder,1,I
+128049251,standard,Reinforced Alloy,,,Sidewinder,1,I
+128049252,standard,Military Grade Composite,,,Sidewinder,1,I
+128049253,standard,Mirrored Surface Composite,,,Sidewinder,1,I
+128049254,standard,Reactive Surface Composite,,,Sidewinder,1,I
+128049256,standard,Lightweight Alloy,,,Eagle,1,I
+128049257,standard,Reinforced Alloy,,,Eagle,1,I
+128049258,standard,Military Grade Composite,,,Eagle,1,I
+128049259,standard,Mirrored Surface Composite,,,Eagle,1,I
+128049260,standard,Reactive Surface Composite,,,Eagle,1,I
+128049262,standard,Lightweight Alloy,,,Hauler,1,I
+128049263,standard,Reinforced Alloy,,,Hauler,1,I
+128049264,standard,Military Grade Composite,,,Hauler,1,I
+128049265,standard,Mirrored Surface Composite,,,Hauler,1,I
+128049266,standard,Reactive Surface Composite,,,Hauler,1,I
+128049268,standard,Lightweight Alloy,,,Adder,1,I
+128049269,standard,Reinforced Alloy,,,Adder,1,I
+128049270,standard,Military Grade Composite,,,Adder,1,I
+128049271,standard,Mirrored Surface Composite,,,Adder,1,I
+128049272,standard,Reactive Surface Composite,,,Adder,1,I
+128049274,standard,Lightweight Alloy,,,Viper,1,I
+128049275,standard,Reinforced Alloy,,,Viper,1,I
+128049276,standard,Military Grade Composite,,,Viper,1,I
+128049277,standard,Mirrored Surface Composite,,,Viper,1,I
+128049278,standard,Reactive Surface Composite,,,Viper,1,I
+128049280,standard,Lightweight Alloy,,,Cobra Mk III,1,I
+128049281,standard,Reinforced Alloy,,,Cobra Mk III,1,I
+128049282,standard,Military Grade Composite,,,Cobra Mk III,1,I
+128049283,standard,Mirrored Surface Composite,,,Cobra Mk III,1,I
+128049284,standard,Reactive Surface Composite,,,Cobra Mk III,1,I
+128049286,standard,Lightweight Alloy,,,Type-6 Transporter,1,I
+128049287,standard,Reinforced Alloy,,,Type-6 Transporter,1,I
+128049288,standard,Military Grade Composite,,,Type-6 Transporter,1,I
+128049289,standard,Mirrored Surface Composite,,,Type-6 Transporter,1,I
+128049290,standard,Reactive Surface Composite,,,Type-6 Transporter,1,I
+128049298,standard,Lightweight Alloy,,,Type-7 Transporter,1,I
+128049299,standard,Reinforced Alloy,,,Type-7 Transporter,1,I
+128049300,standard,Military Grade Composite,,,Type-7 Transporter,1,I
+128049301,standard,Mirrored Surface Composite,,,Type-7 Transporter,1,I
+128049302,standard,Reactive Surface Composite,,,Type-7 Transporter,1,I
+128049304,standard,Lightweight Alloy,,,Asp,1,I
+128049305,standard,Reinforced Alloy,,,Asp,1,I
+128049306,standard,Military Grade Composite,,,Asp,1,I
+128049307,standard,Mirrored Surface Composite,,,Asp,1,I
+128049308,standard,Reactive Surface Composite,,,Asp,1,I
+128049310,standard,Lightweight Alloy,,,Vulture,1,I
+128049311,standard,Reinforced Alloy,,,Vulture,1,I
+128049312,standard,Military Grade Composite,,,Vulture,1,I
+128049313,standard,Mirrored Surface Composite,,,Vulture,1,I
+128049314,standard,Reactive Surface Composite,,,Vulture,1,I
+128049316,standard,Lightweight Alloy,,,Imperial Clipper,1,I
+128049317,standard,Reinforced Alloy,,,Imperial Clipper,1,I
+128049318,standard,Military Grade Composite,,,Imperial Clipper,1,I
+128049319,standard,Mirrored Surface Composite,,,Imperial Clipper,1,I
+128049320,standard,Reactive Surface Composite,,,Imperial Clipper,1,I
+128049322,standard,Lightweight Alloy,,,Federal Dropship,1,I
+128049323,standard,Reinforced Alloy,,,Federal Dropship,1,I
+128049324,standard,Military Grade Composite,,,Federal Dropship,1,I
+128049325,standard,Mirrored Surface Composite,,,Federal Dropship,1,I
+128049326,standard,Reactive Surface Composite,,,Federal Dropship,1,I
+128049328,standard,Lightweight Alloy,,,Orca,1,I
+128049329,standard,Reinforced Alloy,,,Orca,1,I
+128049330,standard,Military Grade Composite,,,Orca,1,I
+128049331,standard,Mirrored Surface Composite,,,Orca,1,I
+128049332,standard,Reactive Surface Composite,,,Orca,1,I
+128049334,standard,Lightweight Alloy,,,Type-9 Heavy,1,I
+128049335,standard,Reinforced Alloy,,,Type-9 Heavy,1,I
+128049336,standard,Military Grade Composite,,,Type-9 Heavy,1,I
+128049337,standard,Mirrored Surface Composite,,,Type-9 Heavy,1,I
+128049338,standard,Reactive Surface Composite,,,Type-9 Heavy,1,I
+128049340,standard,Lightweight Alloy,,,Python,1,I
+128049341,standard,Reinforced Alloy,,,Python,1,I
+128049342,standard,Military Grade Composite,,,Python,1,I
+128049343,standard,Mirrored Surface Composite,,,Python,1,I
+128049344,standard,Reactive Surface Composite,,,Python,1,I
+128049352,standard,Lightweight Alloy,,,Fer-de-Lance,1,I
+128049353,standard,Reinforced Alloy,,,Fer-de-Lance,1,I
+128049354,standard,Military Grade Composite,,,Fer-de-Lance,1,I
+128049355,standard,Mirrored Surface Composite,,,Fer-de-Lance,1,I
+128049356,standard,Reactive Surface Composite,,,Fer-de-Lance,1,I
+128049364,standard,Lightweight Alloy,,,Anaconda,1,I
+128049365,standard,Reinforced Alloy,,,Anaconda,1,I
+128049366,standard,Military Grade Composite,,,Anaconda,1,I
+128049367,standard,Mirrored Surface Composite,,,Anaconda,1,I
+128049368,standard,Reactive Surface Composite,,,Anaconda,1,I
+128049370,standard,Lightweight Alloy,,,Federal Corvette,1,I
+128049371,standard,Reinforced Alloy,,,Federal Corvette,1,I
+128049372,standard,Military Grade Composite,,,Federal Corvette,1,I
+128049373,standard,Mirrored Surface Composite,,,Federal Corvette,1,I
+128049374,standard,Reactive Surface Composite,,,Federal Corvette,1,I
+128049376,standard,Lightweight Alloy,,,Imperial Cutter,1,I
+128049377,standard,Reinforced Alloy,,,Imperial Cutter,1,I
+128049378,standard,Military Grade Composite,,,Imperial Cutter,1,I
+128049379,standard,Mirrored Surface Composite,,,Imperial Cutter,1,I
+128049380,standard,Reactive Surface Composite,,,Imperial Cutter,1,I
+128049381,hardpoint,Pulse Laser,Fixed,,,1,F
+128049382,hardpoint,Pulse Laser,Fixed,,,2,E
+128049383,hardpoint,Pulse Laser,Fixed,,,3,D
+128049385,hardpoint,Pulse Laser,Gimballed,,,1,G
+128049386,hardpoint,Pulse Laser,Gimballed,,,2,F
+128049387,hardpoint,Pulse Laser,Gimballed,,,3,E
+128049388,hardpoint,Pulse Laser,Turreted,,,1,G
+128049389,hardpoint,Pulse Laser,Turreted,,,2,F
+128049390,hardpoint,Pulse Laser,Turreted,,,3,F
+128049400,hardpoint,Burst Laser,Fixed,,,1,F
+128049401,hardpoint,Burst Laser,Fixed,,,2,E
+128049402,hardpoint,Burst Laser,Fixed,,,3,D
+128049404,hardpoint,Burst Laser,Gimballed,,,1,G
+128049405,hardpoint,Burst Laser,Gimballed,,,2,F
+128049406,hardpoint,Burst Laser,Gimballed,,,3,E
+128049407,hardpoint,Burst Laser,Turreted,,,1,G
+128049408,hardpoint,Burst Laser,Turreted,,,2,F
+128049409,hardpoint,Burst Laser,Turreted,,,3,E
+128049428,hardpoint,Beam Laser,Fixed,,,1,E
+128049429,hardpoint,Beam Laser,Fixed,,,2,D
+128049430,hardpoint,Beam Laser,Fixed,,,3,C
+128049432,hardpoint,Beam Laser,Gimballed,,,1,E
+128049433,hardpoint,Beam Laser,Gimballed,,,2,D
+128049434,hardpoint,Beam Laser,Gimballed,,,3,C
+128049435,hardpoint,Beam Laser,Turreted,,,1,F
+128049436,hardpoint,Beam Laser,Turreted,,,2,E
+128049437,hardpoint,Beam Laser,Turreted,,,3,D
+128049438,hardpoint,Cannon,Fixed,,,1,D
+128049439,hardpoint,Cannon,Fixed,,,2,D
+128049440,hardpoint,Cannon,Fixed,,,3,C
+128049441,hardpoint,Cannon,Fixed,,,4,B
+128049442,hardpoint,Cannon,Gimballed,,,1,E
+128049443,hardpoint,Cannon,Gimballed,,,2,D
+128049444,hardpoint,Cannon,Gimballed,,,4,B
+128049445,hardpoint,Cannon,Turreted,,,1,F
+128049446,hardpoint,Cannon,Turreted,,,2,E
+128049447,hardpoint,Cannon,Turreted,,,3,D
+128049448,hardpoint,Fragment Cannon,Fixed,,,1,E
+128049449,hardpoint,Fragment Cannon,Fixed,,,2,A
+128049450,hardpoint,Fragment Cannon,Fixed,,,3,C
+128049451,hardpoint,Fragment Cannon,Gimballed,,,1,E
+128049452,hardpoint,Fragment Cannon,Gimballed,,,2,D
+128049453,hardpoint,Fragment Cannon,Turreted,,,1,E
+128049454,hardpoint,Fragment Cannon,Turreted,,,2,D
+128049455,hardpoint,Multi-Cannon,Fixed,,,1,F
+128049456,hardpoint,Multi-Cannon,Fixed,,,2,E
+128049459,hardpoint,Multi-Cannon,Gimballed,,,1,G
+128049460,hardpoint,Multi-Cannon,Gimballed,,,2,F
+128049462,hardpoint,Multi-Cannon,Turreted,,,1,G
+128049463,hardpoint,Multi-Cannon,Turreted,,,2,F
+128049465,hardpoint,Plasma Accelerator,Fixed,,,2,C
+128049466,hardpoint,Plasma Accelerator,Fixed,,,3,B
+128049467,hardpoint,Plasma Accelerator,Fixed,,,4,A
+128049488,hardpoint,Rail Gun,Fixed,,,1,D
+128049489,hardpoint,Rail Gun,Fixed,,,2,B
+128049492,hardpoint,Missile Rack,Fixed,Seeker,,1,B
+128049493,hardpoint,Missile Rack,Fixed,Seeker,,2,B
+128049500,hardpoint,Mine Launcher,Fixed,,,1,I
+128049501,hardpoint,Mine Launcher,Fixed,,,2,I
+128049509,hardpoint,Torpedo Pylon,Fixed,Seeker,,1,I
+128049510,hardpoint,Torpedo Pylon,Fixed,Seeker,,2,I
+128049513,utility,Chaff Launcher,,,,0,I
+128049516,utility,Electronic Countermeasure,,,,0,F
+128049519,utility,Heat Sink Launcher,,,,0,I
+128049522,utility,Point Defence,,,,0,I
+128049525,hardpoint,Mining Laser,Fixed,,,1,D
+128049526,hardpoint,Mining Laser,Fixed,,,2,D
+128049549,internal,Standard Docking Computer,,,,1,E
+128064033,standard,Power Plant,,,,2,E
+128064034,standard,Power Plant,,,,2,D
+128064035,standard,Power Plant,,,,2,C
+128064036,standard,Power Plant,,,,2,B
+128064037,standard,Power Plant,,,,2,A
+128064038,standard,Power Plant,,,,3,E
+128064039,standard,Power Plant,,,,3,D
+128064040,standard,Power Plant,,,,3,C
+128064041,standard,Power Plant,,,,3,B
+128064042,standard,Power Plant,,,,3,A
+128064043,standard,Power Plant,,,,4,E
+128064044,standard,Power Plant,,,,4,D
+128064045,standard,Power Plant,,,,4,C
+128064046,standard,Power Plant,,,,4,B
+128064047,standard,Power Plant,,,,4,A
+128064048,standard,Power Plant,,,,5,E
+128064049,standard,Power Plant,,,,5,D
+128064050,standard,Power Plant,,,,5,C
+128064051,standard,Power Plant,,,,5,B
+128064052,standard,Power Plant,,,,5,A
+128064053,standard,Power Plant,,,,6,E
+128064054,standard,Power Plant,,,,6,D
+128064055,standard,Power Plant,,,,6,C
+128064056,standard,Power Plant,,,,6,B
+128064057,standard,Power Plant,,,,6,A
+128064058,standard,Power Plant,,,,7,E
+128064059,standard,Power Plant,,,,7,D
+128064060,standard,Power Plant,,,,7,C
+128064061,standard,Power Plant,,,,7,B
+128064062,standard,Power Plant,,,,7,A
+128064063,standard,Power Plant,,,,8,E
+128064064,standard,Power Plant,,,,8,D
+128064065,standard,Power Plant,,,,8,C
+128064066,standard,Power Plant,,,,8,B
+128064067,standard,Power Plant,,,,8,A
+128064068,standard,Thrusters,,,,2,E
+128064069,standard,Thrusters,,,,2,D
+128064070,standard,Thrusters,,,,2,C
+128064071,standard,Thrusters,,,,2,B
+128064072,standard,Thrusters,,,,2,A
+128064073,standard,Thrusters,,,,3,E
+128064074,standard,Thrusters,,,,3,D
+128064075,standard,Thrusters,,,,3,C
+128064076,standard,Thrusters,,,,3,B
+128064077,standard,Thrusters,,,,3,A
+128064078,standard,Thrusters,,,,4,E
+128064079,standard,Thrusters,,,,4,D
+128064080,standard,Thrusters,,,,4,C
+128064081,standard,Thrusters,,,,4,B
+128064082,standard,Thrusters,,,,4,A
+128064083,standard,Thrusters,,,,5,E
+128064084,standard,Thrusters,,,,5,D
+128064085,standard,Thrusters,,,,5,C
+128064086,standard,Thrusters,,,,5,B
+128064087,standard,Thrusters,,,,5,A
+128064088,standard,Thrusters,,,,6,E
+128064089,standard,Thrusters,,,,6,D
+128064090,standard,Thrusters,,,,6,C
+128064091,standard,Thrusters,,,,6,B
+128064092,standard,Thrusters,,,,6,A
+128064093,standard,Thrusters,,,,7,E
+128064094,standard,Thrusters,,,,7,D
+128064095,standard,Thrusters,,,,7,C
+128064096,standard,Thrusters,,,,7,B
+128064097,standard,Thrusters,,,,7,A
+128064098,standard,Thrusters,,,,8,E
+128064099,standard,Thrusters,,,,8,D
+128064100,standard,Thrusters,,,,8,C
+128064101,standard,Thrusters,,,,8,B
+128064102,standard,Thrusters,,,,8,A
+128064103,standard,Frame Shift Drive,,,,2,E
+128064104,standard,Frame Shift Drive,,,,2,D
+128064105,standard,Frame Shift Drive,,,,2,C
+128064106,standard,Frame Shift Drive,,,,2,B
+128064107,standard,Frame Shift Drive,,,,2,A
+128064108,standard,Frame Shift Drive,,,,3,E
+128064109,standard,Frame Shift Drive,,,,3,D
+128064110,standard,Frame Shift Drive,,,,3,C
+128064111,standard,Frame Shift Drive,,,,3,B
+128064112,standard,Frame Shift Drive,,,,3,A
+128064113,standard,Frame Shift Drive,,,,4,E
+128064114,standard,Frame Shift Drive,,,,4,D
+128064115,standard,Frame Shift Drive,,,,4,C
+128064116,standard,Frame Shift Drive,,,,4,B
+128064117,standard,Frame Shift Drive,,,,4,A
+128064118,standard,Frame Shift Drive,,,,5,E
+128064119,standard,Frame Shift Drive,,,,5,D
+128064120,standard,Frame Shift Drive,,,,5,C
+128064121,standard,Frame Shift Drive,,,,5,B
+128064122,standard,Frame Shift Drive,,,,5,A
+128064123,standard,Frame Shift Drive,,,,6,E
+128064124,standard,Frame Shift Drive,,,,6,D
+128064125,standard,Frame Shift Drive,,,,6,C
+128064126,standard,Frame Shift Drive,,,,6,B
+128064127,standard,Frame Shift Drive,,,,6,A
+128064128,standard,Frame Shift Drive,,,,7,E
+128064129,standard,Frame Shift Drive,,,,7,D
+128064130,standard,Frame Shift Drive,,,,7,C
+128064131,standard,Frame Shift Drive,,,,7,B
+128064132,standard,Frame Shift Drive,,,,7,A
+128064133,standard,Frame Shift Drive,,,,8,E
+128064134,standard,Frame Shift Drive,,,,8,D
+128064135,standard,Frame Shift Drive,,,,8,C
+128064136,standard,Frame Shift Drive,,,,8,B
+128064137,standard,Frame Shift Drive,,,,8,A
+128064138,standard,Life Support,,,,1,E
+128064139,standard,Life Support,,,,1,D
+128064140,standard,Life Support,,,,1,C
+128064141,standard,Life Support,,,,1,B
+128064142,standard,Life Support,,,,1,A
+128064143,standard,Life Support,,,,2,E
+128064144,standard,Life Support,,,,2,D
+128064145,standard,Life Support,,,,2,C
+128064146,standard,Life Support,,,,2,B
+128064147,standard,Life Support,,,,2,A
+128064148,standard,Life Support,,,,3,E
+128064149,standard,Life Support,,,,3,D
+128064150,standard,Life Support,,,,3,C
+128064151,standard,Life Support,,,,3,B
+128064152,standard,Life Support,,,,3,A
+128064153,standard,Life Support,,,,4,E
+128064154,standard,Life Support,,,,4,D
+128064155,standard,Life Support,,,,4,C
+128064156,standard,Life Support,,,,4,B
+128064157,standard,Life Support,,,,4,A
+128064158,standard,Life Support,,,,5,E
+128064159,standard,Life Support,,,,5,D
+128064160,standard,Life Support,,,,5,C
+128064161,standard,Life Support,,,,5,B
+128064162,standard,Life Support,,,,5,A
+128064163,standard,Life Support,,,,6,E
+128064164,standard,Life Support,,,,6,D
+128064165,standard,Life Support,,,,6,C
+128064166,standard,Life Support,,,,6,B
+128064167,standard,Life Support,,,,6,A
+128064168,standard,Life Support,,,,7,E
+128064169,standard,Life Support,,,,7,D
+128064170,standard,Life Support,,,,7,C
+128064171,standard,Life Support,,,,7,B
+128064172,standard,Life Support,,,,7,A
+128064173,standard,Life Support,,,,8,E
+128064174,standard,Life Support,,,,8,D
+128064175,standard,Life Support,,,,8,C
+128064176,standard,Life Support,,,,8,B
+128064177,standard,Life Support,,,,8,A
+128064178,standard,Power Distributor,,,,1,E
+128064179,standard,Power Distributor,,,,1,D
+128064180,standard,Power Distributor,,,,1,C
+128064181,standard,Power Distributor,,,,1,B
+128064182,standard,Power Distributor,,,,1,A
+128064183,standard,Power Distributor,,,,2,E
+128064184,standard,Power Distributor,,,,2,D
+128064185,standard,Power Distributor,,,,2,C
+128064186,standard,Power Distributor,,,,2,B
+128064187,standard,Power Distributor,,,,2,A
+128064188,standard,Power Distributor,,,,3,E
+128064189,standard,Power Distributor,,,,3,D
+128064190,standard,Power Distributor,,,,3,C
+128064191,standard,Power Distributor,,,,3,B
+128064192,standard,Power Distributor,,,,3,A
+128064193,standard,Power Distributor,,,,4,E
+128064194,standard,Power Distributor,,,,4,D
+128064195,standard,Power Distributor,,,,4,C
+128064196,standard,Power Distributor,,,,4,B
+128064197,standard,Power Distributor,,,,4,A
+128064198,standard,Power Distributor,,,,5,E
+128064199,standard,Power Distributor,,,,5,D
+128064200,standard,Power Distributor,,,,5,C
+128064201,standard,Power Distributor,,,,5,B
+128064202,standard,Power Distributor,,,,5,A
+128064203,standard,Power Distributor,,,,6,E
+128064204,standard,Power Distributor,,,,6,D
+128064205,standard,Power Distributor,,,,6,C
+128064206,standard,Power Distributor,,,,6,B
+128064207,standard,Power Distributor,,,,6,A
+128064208,standard,Power Distributor,,,,7,E
+128064209,standard,Power Distributor,,,,7,D
+128064210,standard,Power Distributor,,,,7,C
+128064211,standard,Power Distributor,,,,7,B
+128064212,standard,Power Distributor,,,,7,A
+128064213,standard,Power Distributor,,,,8,E
+128064214,standard,Power Distributor,,,,8,D
+128064215,standard,Power Distributor,,,,8,C
+128064216,standard,Power Distributor,,,,8,B
+128064217,standard,Power Distributor,,,,8,A
+128064218,standard,Sensors,,,,1,E
+128064219,standard,Sensors,,,,1,D
+128064220,standard,Sensors,,,,1,C
+128064221,standard,Sensors,,,,1,B
+128064222,standard,Sensors,,,,1,A
+128064223,standard,Sensors,,,,2,E
+128064224,standard,Sensors,,,,2,D
+128064225,standard,Sensors,,,,2,C
+128064226,standard,Sensors,,,,2,B
+128064227,standard,Sensors,,,,2,A
+128064228,standard,Sensors,,,,3,E
+128064229,standard,Sensors,,,,3,D
+128064230,standard,Sensors,,,,3,C
+128064231,standard,Sensors,,,,3,B
+128064232,standard,Sensors,,,,3,A
+128064233,standard,Sensors,,,,4,E
+128064234,standard,Sensors,,,,4,D
+128064235,standard,Sensors,,,,4,C
+128064236,standard,Sensors,,,,4,B
+128064237,standard,Sensors,,,,4,A
+128064238,standard,Sensors,,,,5,E
+128064239,standard,Sensors,,,,5,D
+128064240,standard,Sensors,,,,5,C
+128064241,standard,Sensors,,,,5,B
+128064242,standard,Sensors,,,,5,A
+128064243,standard,Sensors,,,,6,E
+128064244,standard,Sensors,,,,6,D
+128064245,standard,Sensors,,,,6,C
+128064246,standard,Sensors,,,,6,B
+128064247,standard,Sensors,,,,6,A
+128064248,standard,Sensors,,,,7,E
+128064249,standard,Sensors,,,,7,D
+128064250,standard,Sensors,,,,7,C
+128064251,standard,Sensors,,,,7,B
+128064252,standard,Sensors,,,,7,A
+128064253,standard,Sensors,,,,8,E
+128064254,standard,Sensors,,,,8,D
+128064255,standard,Sensors,,,,8,C
+128064256,standard,Sensors,,,,8,B
+128064257,standard,Sensors,,,,8,A
+128064263,internal,Shield Generator,,,,2,E
+128064264,internal,Shield Generator,,,,2,D
+128064265,internal,Shield Generator,,,,2,C
+128064266,internal,Shield Generator,,,,2,B
+128064267,internal,Shield Generator,,,,2,A
+128064268,internal,Shield Generator,,,,3,E
+128064269,internal,Shield Generator,,,,3,D
+128064270,internal,Shield Generator,,,,3,C
+128064271,internal,Shield Generator,,,,3,B
+128064272,internal,Shield Generator,,,,3,A
+128064273,internal,Shield Generator,,,,4,E
+128064274,internal,Shield Generator,,,,4,D
+128064275,internal,Shield Generator,,,,4,C
+128064276,internal,Shield Generator,,,,4,B
+128064277,internal,Shield Generator,,,,4,A
+128064278,internal,Shield Generator,,,,5,E
+128064279,internal,Shield Generator,,,,5,D
+128064280,internal,Shield Generator,,,,5,C
+128064281,internal,Shield Generator,,,,5,B
+128064282,internal,Shield Generator,,,,5,A
+128064283,internal,Shield Generator,,,,6,E
+128064284,internal,Shield Generator,,,,6,D
+128064285,internal,Shield Generator,,,,6,C
+128064286,internal,Shield Generator,,,,6,B
+128064287,internal,Shield Generator,,,,6,A
+128064288,internal,Shield Generator,,,,7,E
+128064289,internal,Shield Generator,,,,7,D
+128064290,internal,Shield Generator,,,,7,C
+128064291,internal,Shield Generator,,,,7,B
+128064292,internal,Shield Generator,,,,7,A
+128064293,internal,Shield Generator,,,,8,E
+128064294,internal,Shield Generator,,,,8,D
+128064295,internal,Shield Generator,,,,8,C
+128064296,internal,Shield Generator,,,,8,B
+128064297,internal,Shield Generator,,,,8,A
+128064298,internal,Shield Cell Bank,,,,1,E
+128064299,internal,Shield Cell Bank,,,,1,D
+128064300,internal,Shield Cell Bank,,,,1,C
+128064301,internal,Shield Cell Bank,,,,1,B
+128064302,internal,Shield Cell Bank,,,,1,A
+128064303,internal,Shield Cell Bank,,,,2,E
+128064304,internal,Shield Cell Bank,,,,2,D
+128064305,internal,Shield Cell Bank,,,,2,C
+128064306,internal,Shield Cell Bank,,,,2,B
+128064307,internal,Shield Cell Bank,,,,2,A
+128064308,internal,Shield Cell Bank,,,,3,E
+128064309,internal,Shield Cell Bank,,,,3,D
+128064310,internal,Shield Cell Bank,,,,3,C
+128064311,internal,Shield Cell Bank,,,,3,B
+128064312,internal,Shield Cell Bank,,,,3,A
+128064313,internal,Shield Cell Bank,,,,4,E
+128064314,internal,Shield Cell Bank,,,,4,D
+128064315,internal,Shield Cell Bank,,,,4,C
+128064316,internal,Shield Cell Bank,,,,4,B
+128064317,internal,Shield Cell Bank,,,,4,A
+128064318,internal,Shield Cell Bank,,,,5,E
+128064319,internal,Shield Cell Bank,,,,5,D
+128064320,internal,Shield Cell Bank,,,,5,C
+128064321,internal,Shield Cell Bank,,,,5,B
+128064322,internal,Shield Cell Bank,,,,5,A
+128064323,internal,Shield Cell Bank,,,,6,E
+128064324,internal,Shield Cell Bank,,,,6,D
+128064325,internal,Shield Cell Bank,,,,6,C
+128064326,internal,Shield Cell Bank,,,,6,B
+128064327,internal,Shield Cell Bank,,,,6,A
+128064328,internal,Shield Cell Bank,,,,7,E
+128064329,internal,Shield Cell Bank,,,,7,D
+128064330,internal,Shield Cell Bank,,,,7,C
+128064331,internal,Shield Cell Bank,,,,7,B
+128064332,internal,Shield Cell Bank,,,,7,A
+128064333,internal,Shield Cell Bank,,,,8,E
+128064334,internal,Shield Cell Bank,,,,8,D
+128064335,internal,Shield Cell Bank,,,,8,C
+128064336,internal,Shield Cell Bank,,,,8,B
+128064337,internal,Shield Cell Bank,,,,8,A
+128064338,internal,Cargo Rack,,,,1,E
+128064339,internal,Cargo Rack,,,,2,E
+128064340,internal,Cargo Rack,,,,3,E
+128064341,internal,Cargo Rack,,,,4,E
+128064342,internal,Cargo Rack,,,,5,E
+128064343,internal,Cargo Rack,,,,6,E
+128064344,internal,Cargo Rack,,,,7,E
+128064345,internal,Cargo Rack,,,,8,E
+128064346,standard,Fuel Tank,,,,1,C
+128064347,standard,Fuel Tank,,,,2,C
+128064348,standard,Fuel Tank,,,,3,C
+128064349,standard,Fuel Tank,,,,4,C
+128064350,standard,Fuel Tank,,,,5,C
+128064351,standard,Fuel Tank,,,,6,C
+128064352,standard,Fuel Tank,,,,7,C
+128064353,standard,Fuel Tank,,,,8,C
+128066532,internal,Hatch Breaker Limpet Controller,,,,1,E
+128066533,internal,Hatch Breaker Limpet Controller,,,,1,D
+128066534,internal,Hatch Breaker Limpet Controller,,,,1,C
+128066535,internal,Hatch Breaker Limpet Controller,,,,1,B
+128066536,internal,Hatch Breaker Limpet Controller,,,,1,A
+128066537,internal,Hatch Breaker Limpet Controller,,,,3,E
+128066538,internal,Hatch Breaker Limpet Controller,,,,3,D
+128066539,internal,Hatch Breaker Limpet Controller,,,,3,C
+128066540,internal,Hatch Breaker Limpet Controller,,,,3,B
+128066541,internal,Hatch Breaker Limpet Controller,,,,3,A
+128066542,internal,Hatch Breaker Limpet Controller,,,,5,E
+128066543,internal,Hatch Breaker Limpet Controller,,,,5,D
+128066544,internal,Hatch Breaker Limpet Controller,,,,5,C
+128066545,internal,Hatch Breaker Limpet Controller,,,,5,B
+128066546,internal,Hatch Breaker Limpet Controller,,,,5,A
+128066547,internal,Hatch Breaker Limpet Controller,,,,7,E
+128066548,internal,Hatch Breaker Limpet Controller,,,,7,D
+128066549,internal,Hatch Breaker Limpet Controller,,,,7,C
+128066550,internal,Hatch Breaker Limpet Controller,,,,7,B
+128066551,internal,Hatch Breaker Limpet Controller,,,,7,A
+128662520,utility,Cargo Scanner,,,,0,E
+128662521,utility,Cargo Scanner,,,,0,D
+128662522,utility,Cargo Scanner,,,,0,C
+128662523,utility,Cargo Scanner,,,,0,B
+128662524,utility,Cargo Scanner,,,,0,A
+128662525,utility,Frame Shift Wake Scanner,,,,0,E
+128662526,utility,Frame Shift Wake Scanner,,,,0,D
+128662527,utility,Frame Shift Wake Scanner,,,,0,C
+128662528,utility,Frame Shift Wake Scanner,,,,0,B
+128662529,utility,Frame Shift Wake Scanner,,,,0,A
+128662530,utility,Kill Warrant Scanner,,,,0,E
+128662531,utility,Kill Warrant Scanner,,,,0,D
+128662532,utility,Kill Warrant Scanner,,,,0,C
+128662533,utility,Kill Warrant Scanner,,,,0,B
+128662534,utility,Kill Warrant Scanner,,,,0,A
+128662535,internal,Basic Discovery Scanner,,,,1,E
+128663560,internal,Intermediate Discovery Scanner,,,,1,D
+128663561,internal,Advanced Discovery Scanner,,,,1,C
+128666634,internal,Detailed Surface Scanner,,,,1,C
+128666644,internal,Fuel Scoop,,,,1,E
+128666645,internal,Fuel Scoop,,,,2,E
+128666646,internal,Fuel Scoop,,,,3,E
+128666647,internal,Fuel Scoop,,,,4,E
+128666648,internal,Fuel Scoop,,,,5,E
+128666649,internal,Fuel Scoop,,,,6,E
+128666650,internal,Fuel Scoop,,,,7,E
+128666651,internal,Fuel Scoop,,,,8,E
+128666652,internal,Fuel Scoop,,,,1,D
+128666653,internal,Fuel Scoop,,,,2,D
+128666654,internal,Fuel Scoop,,,,3,D
+128666655,internal,Fuel Scoop,,,,4,D
+128666656,internal,Fuel Scoop,,,,5,D
+128666657,internal,Fuel Scoop,,,,6,D
+128666658,internal,Fuel Scoop,,,,7,D
+128666659,internal,Fuel Scoop,,,,8,D
+128666660,internal,Fuel Scoop,,,,1,C
+128666661,internal,Fuel Scoop,,,,2,C
+128666662,internal,Fuel Scoop,,,,3,C
+128666663,internal,Fuel Scoop,,,,4,C
+128666664,internal,Fuel Scoop,,,,5,C
+128666665,internal,Fuel Scoop,,,,6,C
+128666666,internal,Fuel Scoop,,,,7,C
+128666667,internal,Fuel Scoop,,,,8,C
+128666668,internal,Fuel Scoop,,,,1,B
+128666669,internal,Fuel Scoop,,,,2,B
+128666670,internal,Fuel Scoop,,,,3,B
+128666671,internal,Fuel Scoop,,,,4,B
+128666672,internal,Fuel Scoop,,,,5,B
+128666673,internal,Fuel Scoop,,,,6,B
+128666674,internal,Fuel Scoop,,,,7,B
+128666675,internal,Fuel Scoop,,,,8,B
+128666676,internal,Fuel Scoop,,,,1,A
+128666677,internal,Fuel Scoop,,,,2,A
+128666678,internal,Fuel Scoop,,,,3,A
+128666679,internal,Fuel Scoop,,,,4,A
+128666680,internal,Fuel Scoop,,,,5,A
+128666681,internal,Fuel Scoop,,,,6,A
+128666682,internal,Fuel Scoop,,,,7,A
+128666683,internal,Fuel Scoop,,,,8,A
+128666684,internal,Refinery,,,,1,E
+128666685,internal,Refinery,,,,2,E
+128666686,internal,Refinery,,,,3,E
+128666687,internal,Refinery,,,,4,E
+128666688,internal,Refinery,,,,1,D
+128666689,internal,Refinery,,,,2,D
+128666690,internal,Refinery,,,,3,D
+128666691,internal,Refinery,,,,4,D
+128666692,internal,Refinery,,,,1,C
+128666693,internal,Refinery,,,,2,C
+128666694,internal,Refinery,,,,3,C
+128666695,internal,Refinery,,,,4,C
+128666696,internal,Refinery,,,,1,B
+128666697,internal,Refinery,,,,2,B
+128666698,internal,Refinery,,,,3,B
+128666699,internal,Refinery,,,,4,B
+128666700,internal,Refinery,,,,1,A
+128666701,internal,Refinery,,,,2,A
+128666702,internal,Refinery,,,,3,A
+128666703,internal,Refinery,,,,4,A
+128666704,internal,Frame Shift Drive Interdictor,,,,1,E
+128666705,internal,Frame Shift Drive Interdictor,,,,2,E
+128666706,internal,Frame Shift Drive Interdictor,,,,3,E
+128666707,internal,Frame Shift Drive Interdictor,,,,4,E
+128666708,internal,Frame Shift Drive Interdictor,,,,1,D
+128666709,internal,Frame Shift Drive Interdictor,,,,2,D
+128666710,internal,Frame Shift Drive Interdictor,,,,3,D
+128666711,internal,Frame Shift Drive Interdictor,,,,4,D
+128666712,internal,Frame Shift Drive Interdictor,,,,1,C
+128666713,internal,Frame Shift Drive Interdictor,,,,2,C
+128666714,internal,Frame Shift Drive Interdictor,,,,3,C
+128666715,internal,Frame Shift Drive Interdictor,,,,4,C
+128666716,internal,Frame Shift Drive Interdictor,,,,1,B
+128666717,internal,Frame Shift Drive Interdictor,,,,2,B
+128666718,internal,Frame Shift Drive Interdictor,,,,3,B
+128666719,internal,Frame Shift Drive Interdictor,,,,4,B
+128666720,internal,Frame Shift Drive Interdictor,,,,1,A
+128666721,internal,Frame Shift Drive Interdictor,,,,2,A
+128666722,internal,Frame Shift Drive Interdictor,,,,3,A
+128666723,internal,Frame Shift Drive Interdictor,,,,4,A
+128666724,hardpoint,Missile Rack,Fixed,Dumbfire,,1,B
+128666725,hardpoint,Missile Rack,Fixed,Dumbfire,,2,B
+128667598,internal,Auto Field-Maintenance Unit,,,,1,E
+128667599,internal,Auto Field-Maintenance Unit,,,,2,E
+128667600,internal,Auto Field-Maintenance Unit,,,,3,E
+128667601,internal,Auto Field-Maintenance Unit,,,,4,E
+128667602,internal,Auto Field-Maintenance Unit,,,,5,E
+128667603,internal,Auto Field-Maintenance Unit,,,,6,E
+128667604,internal,Auto Field-Maintenance Unit,,,,7,E
+128667605,internal,Auto Field-Maintenance Unit,,,,8,E
+128667606,internal,Auto Field-Maintenance Unit,,,,1,D
+128667607,internal,Auto Field-Maintenance Unit,,,,2,D
+128667608,internal,Auto Field-Maintenance Unit,,,,3,D
+128667609,internal,Auto Field-Maintenance Unit,,,,4,D
+128667610,internal,Auto Field-Maintenance Unit,,,,5,D
+128667611,internal,Auto Field-Maintenance Unit,,,,6,D
+128667612,internal,Auto Field-Maintenance Unit,,,,7,D
+128667613,internal,Auto Field-Maintenance Unit,,,,8,D
+128667614,internal,Auto Field-Maintenance Unit,,,,1,C
+128667615,internal,Auto Field-Maintenance Unit,,,,2,C
+128667616,internal,Auto Field-Maintenance Unit,,,,3,C
+128667617,internal,Auto Field-Maintenance Unit,,,,4,C
+128667618,internal,Auto Field-Maintenance Unit,,,,5,C
+128667619,internal,Auto Field-Maintenance Unit,,,,6,C
+128667620,internal,Auto Field-Maintenance Unit,,,,7,C
+128667621,internal,Auto Field-Maintenance Unit,,,,8,C
+128667622,internal,Auto Field-Maintenance Unit,,,,1,B
+128667623,internal,Auto Field-Maintenance Unit,,,,2,B
+128667624,internal,Auto Field-Maintenance Unit,,,,3,B
+128667625,internal,Auto Field-Maintenance Unit,,,,4,B
+128667626,internal,Auto Field-Maintenance Unit,,,,5,B
+128667627,internal,Auto Field-Maintenance Unit,,,,6,B
+128667628,internal,Auto Field-Maintenance Unit,,,,7,B
+128667629,internal,Auto Field-Maintenance Unit,,,,8,B
+128667630,internal,Auto Field-Maintenance Unit,,,,1,A
+128667631,internal,Auto Field-Maintenance Unit,,,,2,A
+128667632,internal,Auto Field-Maintenance Unit,,,,3,A
+128667633,internal,Auto Field-Maintenance Unit,,,,4,A
+128667634,internal,Auto Field-Maintenance Unit,,,,5,A
+128667635,internal,Auto Field-Maintenance Unit,,,,6,A
+128667636,internal,Auto Field-Maintenance Unit,,,,7,A
+128667637,internal,Auto Field-Maintenance Unit,,,,8,A
+128668532,utility,Shield Booster,,,,0,E
+128668533,utility,Shield Booster,,,,0,D
+128668534,utility,Shield Booster,,,,0,C
+128668535,utility,Shield Booster,,,,0,B
+128668536,utility,Shield Booster,,,,0,A
+128668537,internal,Hull Reinforcement Package,,,,1,E
+128668538,internal,Hull Reinforcement Package,,,,1,D
+128668539,internal,Hull Reinforcement Package,,,,2,E
+128668540,internal,Hull Reinforcement Package,,,,2,D
+128668541,internal,Hull Reinforcement Package,,,,3,E
+128668542,internal,Hull Reinforcement Package,,,,3,D
+128668543,internal,Hull Reinforcement Package,,,,4,E
+128668544,internal,Hull Reinforcement Package,,,,4,D
+128668545,internal,Hull Reinforcement Package,,,,5,E
+128668546,internal,Hull Reinforcement Package,,,,5,D
+128671120,hardpoint,Cannon,Gimballed,,,3,C
+128671218,standard,Lightweight Alloy,,,Diamondback Scout,1,I
+128671219,standard,Reinforced Alloy,,,Diamondback Scout,1,I
+128671220,standard,Military Grade Composite,,,Diamondback Scout,1,I
+128671221,standard,Mirrored Surface Composite,,,Diamondback Scout,1,I
+128671222,standard,Reactive Surface Composite,,,Diamondback Scout,1,I
+128671224,standard,Lightweight Alloy,,,Imperial Courier,1,I
+128671225,standard,Reinforced Alloy,,,Imperial Courier,1,I
+128671226,standard,Military Grade Composite,,,Imperial Courier,1,I
+128671227,standard,Mirrored Surface Composite,,,Imperial Courier,1,I
+128671228,standard,Reactive Surface Composite,,,Imperial Courier,1,I
+128671229,internal,Collector Limpet Controller,,,,1,E
+128671230,internal,Collector Limpet Controller,,,,1,D
+128671231,internal,Collector Limpet Controller,,,,1,C
+128671232,internal,Collector Limpet Controller,,,,1,B
+128671233,internal,Collector Limpet Controller,,,,1,A
+128671234,internal,Collector Limpet Controller,,,,3,E
+128671235,internal,Collector Limpet Controller,,,,3,D
+128671236,internal,Collector Limpet Controller,,,,3,C
+128671237,internal,Collector Limpet Controller,,,,3,B
+128671238,internal,Collector Limpet Controller,,,,3,A
+128671239,internal,Collector Limpet Controller,,,,5,E
+128671240,internal,Collector Limpet Controller,,,,5,D
+128671241,internal,Collector Limpet Controller,,,,5,C
+128671242,internal,Collector Limpet Controller,,,,5,B
+128671243,internal,Collector Limpet Controller,,,,5,A
+128671244,internal,Collector Limpet Controller,,,,7,E
+128671245,internal,Collector Limpet Controller,,,,7,D
+128671246,internal,Collector Limpet Controller,,,,7,C
+128671247,internal,Collector Limpet Controller,,,,7,B
+128671248,internal,Collector Limpet Controller,,,,7,A
+128671249,internal,Fuel Transfer Limpet Controller,,,,1,E
+128671250,internal,Fuel Transfer Limpet Controller,,,,1,D
+128671251,internal,Fuel Transfer Limpet Controller,,,,1,C
+128671252,internal,Fuel Transfer Limpet Controller,,,,1,B
+128671253,internal,Fuel Transfer Limpet Controller,,,,1,A
+128671254,internal,Fuel Transfer Limpet Controller,,,,3,E
+128671255,internal,Fuel Transfer Limpet Controller,,,,3,D
+128671256,internal,Fuel Transfer Limpet Controller,,,,3,C
+128671257,internal,Fuel Transfer Limpet Controller,,,,3,B
+128671258,internal,Fuel Transfer Limpet Controller,,,,3,A
+128671259,internal,Fuel Transfer Limpet Controller,,,,5,E
+128671260,internal,Fuel Transfer Limpet Controller,,,,5,D
+128671261,internal,Fuel Transfer Limpet Controller,,,,5,C
+128671262,internal,Fuel Transfer Limpet Controller,,,,5,B
+128671263,internal,Fuel Transfer Limpet Controller,,,,5,A
+128671264,internal,Fuel Transfer Limpet Controller,,,,7,E
+128671265,internal,Fuel Transfer Limpet Controller,,,,7,D
+128671266,internal,Fuel Transfer Limpet Controller,,,,7,C
+128671267,internal,Fuel Transfer Limpet Controller,,,,7,B
+128671268,internal,Fuel Transfer Limpet Controller,,,,7,A
+128671269,internal,Prospector Limpet Controller,,,,1,E
+128671270,internal,Prospector Limpet Controller,,,,1,D
+128671271,internal,Prospector Limpet Controller,,,,1,C
+128671272,internal,Prospector Limpet Controller,,,,1,B
+128671273,internal,Prospector Limpet Controller,,,,1,A
+128671274,internal,Prospector Limpet Controller,,,,3,E
+128671275,internal,Prospector Limpet Controller,,,,3,D
+128671276,internal,Prospector Limpet Controller,,,,3,C
+128671277,internal,Prospector Limpet Controller,,,,3,B
+128671278,internal,Prospector Limpet Controller,,,,3,A
+128671279,internal,Prospector Limpet Controller,,,,5,E
+128671280,internal,Prospector Limpet Controller,,,,5,D
+128671281,internal,Prospector Limpet Controller,,,,5,C
+128671282,internal,Prospector Limpet Controller,,,,5,B
+128671283,internal,Prospector Limpet Controller,,,,5,A
+128671284,internal,Prospector Limpet Controller,,,,7,E
+128671285,internal,Prospector Limpet Controller,,,,7,D
+128671286,internal,Prospector Limpet Controller,,,,7,C
+128671287,internal,Prospector Limpet Controller,,,,7,B
+128671288,internal,Prospector Limpet Controller,,,,7,A
+128671321,hardpoint,Fragment Cannon,Gimballed,,,3,C
+128671322,hardpoint,Fragment Cannon,Turreted,,,3,C
+128671331,internal,Bi-Weave Shield Generator,,,,1,C
+128671332,internal,Bi-Weave Shield Generator,,,,2,C
+128671333,internal,Bi-Weave Shield Generator,,,,3,C
+128671334,internal,Bi-Weave Shield Generator,,,,4,C
+128671335,internal,Bi-Weave Shield Generator,,,,5,C
+128671336,internal,Bi-Weave Shield Generator,,,,6,C
+128671337,internal,Bi-Weave Shield Generator,,,,7,C
+128671338,internal,Bi-Weave Shield Generator,,,,8,C
+128671448,hardpoint,Shock Mine Launcher,Fixed,,,1,I
+128671832,standard,Lightweight Alloy,,,Diamondback Explorer,1,I
+128671833,standard,Reinforced Alloy,,,Diamondback Explorer,1,I
+128671834,standard,Military Grade Composite,,,Diamondback Explorer,1,I
+128671835,standard,Mirrored Surface Composite,,,Diamondback Explorer,1,I
+128671836,standard,Reactive Surface Composite,,,Diamondback Explorer,1,I
+128672140,standard,Lightweight Alloy,,,Imperial Eagle,1,I
+128672141,standard,Reinforced Alloy,,,Imperial Eagle,1,I
+128672142,standard,Military Grade Composite,,,Imperial Eagle,1,I
+128672143,standard,Mirrored Surface Composite,,,Imperial Eagle,1,I
+128672144,standard,Reactive Surface Composite,,,Imperial Eagle,1,I
+128672147,standard,Lightweight Alloy,,,Federal Assault Ship,1,I
+128672148,standard,Reinforced Alloy,,,Federal Assault Ship,1,I
+128672149,standard,Military Grade Composite,,,Federal Assault Ship,1,I
+128672150,standard,Mirrored Surface Composite,,,Federal Assault Ship,1,I
+128672151,standard,Reactive Surface Composite,,,Federal Assault Ship,1,I
+128672154,standard,Lightweight Alloy,,,Federal Gunship,1,I
+128672155,standard,Reinforced Alloy,,,Federal Gunship,1,I
+128672156,standard,Military Grade Composite,,,Federal Gunship,1,I
+128672157,standard,Mirrored Surface Composite,,,Federal Gunship,1,I
+128672158,standard,Reactive Surface Composite,,,Federal Gunship,1,I
+128672257,standard,Lightweight Alloy,,,Viper MkIV,1,I
+128672258,standard,Reinforced Alloy,,,Viper MkIV,1,I
+128672259,standard,Military Grade Composite,,,Viper MkIV,1,I
+128672260,standard,Mirrored Surface Composite,,,Viper MkIV,1,I
+128672261,standard,Reactive Surface Composite,,,Viper MkIV,1,I
+128672264,standard,Lightweight Alloy,,,Cobra MkIV,1,I
+128672265,standard,Reinforced Alloy,,,Cobra MkIV,1,I
+128672266,standard,Military Grade Composite,,,Cobra MkIV,1,I
+128672267,standard,Mirrored Surface Composite,,,Cobra MkIV,1,I
+128672268,standard,Reactive Surface Composite,,,Cobra MkIV,1,I
+128672271,standard,Lightweight Alloy,,,Keelback,1,I
+128672272,standard,Reinforced Alloy,,,Keelback,1,I
+128672273,standard,Military Grade Composite,,,Keelback,1,I
+128672274,standard,Mirrored Surface Composite,,,Keelback,1,I
+128672275,standard,Reactive Surface Composite,,,Keelback,1,I
+128672278,standard,Lightweight Alloy,,,Asp Scout,1,I
+128672279,standard,Reinforced Alloy,,,Asp Scout,1,I
+128672280,standard,Military Grade Composite,,,Asp Scout,1,I
+128672281,standard,Mirrored Surface Composite,,,Asp Scout,1,I
+128672282,standard,Reactive Surface Composite,,,Asp Scout,1,I
+128672288,internal,Planetary Vehicle Hangar,,,,2,H
+128672289,internal,Planetary Vehicle Hangar,,,,2,G
+128672290,internal,Planetary Vehicle Hangar,,,,4,H
+128672291,internal,Planetary Vehicle Hangar,,,,4,G
+128672292,internal,Planetary Vehicle Hangar,,,,6,H
+128672293,internal,Planetary Vehicle Hangar,,,,6,G

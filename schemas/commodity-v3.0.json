@@ -1,6 +1,6 @@
 {
     "$schema"               : "http://json-schema.org/draft-04/schema#",
-    "id"                    : "http://schemas.elite-markets.net/eddn/commodity/2#",
+    "id"                    : "http://schemas.elite-markets.net/eddn/commodity/3#",
     "type"                  : "object",
     "additionalProperties"  : false,
     "required": [ "$schemaRef", "header", "message" ],
@@ -32,26 +32,13 @@
         "message": {
             "type"                  : "object",
             "additionalProperties"  : false,
-            "required"              : [ "systemName", "stationName", "timestamp", "commodities" ],
-            "properties"            : {
-                "systemName": {
-                    "type"      : "string",
-                    "minLength" : 1
+            "required"              : [ "system", "station", "timestamp", "commodities" ],
+            "properties" : {
+                "system" : {
+                    "$ref"          : "#/definitions/systemWithId"
                 },
-                "systemId": {
-                    "type"        : "integer",
-                    "description" : "If present should be treated by clients as taking precedence over \"systemName\""
-                },
-                "systemAddress": {
-                    "type"        : "integer"
-                },
-                "stationName": {
-                    "type"      : "string",
-                    "minLength" : 1
-                },
-                "stationId": {
-                    "type"        : "integer",
-                    "description" : "If present should be treated by clients as taking precedence over \"stationName\""
+                "station" : {
+                    "$ref"          : "#/definitions/nameWithId"
                 },
                 "timestamp": {
                     "type"      : "string",
@@ -68,12 +55,12 @@
                                 "required"              : [ "name", "buyPrice", "supply", "sellPrice", "demand" ],
                                 "properties"            : {
                                     "name": {
-                                        "type"          : "string",
-                                        "minLength"     : 1
+                                        "type"          :"string",
+                                        "minLength"     :1
                                     },
                                     "id": {
-                                        "type"          : "integer",
-                                        "description"   : "If present should be treated by clients as taking precedence over \"name\""
+                                        "type"        : "integer",
+                                        "description" : "If present should be treated by clients as taking precedence over \"name\""
                                     },
                                     "buyPrice": {
                                         "type"          :"integer",
@@ -104,8 +91,24 @@
         }
     },
     "definitions": {
-        "levelType": {
-            "enum": [ "Low", "Med", "High" ]
+        "systemWithId" : {
+            "type" :"object",
+            "additionalProperties" : false,
+            "required" : [ "name" ],
+            "properties" : {
+                "name"    : { "type": "string", "minLength" : 1 },
+                "id"      : { "type": "integer", "description"  : "If present should be treated by clients as taking precedence over \"name\"" },
+                "address" : { "type": "integer" }
+            }
+        },
+        "nameWithId" : {
+            "type" :"object",
+            "additionalProperties" : false,
+            "required" : [ "name" ],
+            "properties" : {
+                "name"    : { "type": "string", "minLength" : 1 },
+                "id"      : { "type": "integer", "description"  : "If present should be treated by clients as taking precedence over \"name\"" }
+            }
         }
     }
 }
