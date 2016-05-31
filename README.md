@@ -1,7 +1,6 @@
 ## EDDN - Elite: Dangerous Data Network
 **EDDN** is a system for players sharing dynamic data from [**Elite: Dangerous**](https://www.elitedangerous.com/).
 * Forum thread: https://forums.frontier.co.uk/showthread.php?t=57986
-* IRC channel: [#EDDN](http://webchat.quakenet.org/?channels=EDDN) on [QuakeNet](https://www.quakenet.org/)
 
 EDDN Status: http://eddn-gateway.elite-markets.net/ | http://eddn.ed-td.space/
 
@@ -14,4 +13,5 @@ EDDN Status: http://eddn-gateway.elite-markets.net/ | http://eddn.ed-td.space/
 | [**ED-TD**](http://ed-td.space/)                                                       | AnthorNet     | **Yes** (v1/v2) | **Yes** (v2)    |
 | [**EliteOCR**](https://forums.frontier.co.uk/showthread.php?t=68771)                   | seeebek       | No              | **Yes** (v1)    |
 | [**Maddavo's Market Data**](http://www.davek.com.au/td/)                               | maddavo       | **Yes** (v1/v2) | **Yes** (v1/v2) |
-| [**RegulatedNoise DJ-version**](https://forums.frontier.co.uk/showthread.php?t=137732) | Duke          | **Yes** (v1)    | **Yes** (v1)    |
+| [**RegulatedNoise DJ-version**](https://forums.frontier.co.uk/showthread.php?t=137732) | Duke          | **Yes** (v1/v2) | **Yes** (v1/v2) |
+| [**ED-IBE**](https://github.com/Duke-Jones/ED-IBE)                                     | Duke          | **Yes** (v1/v2) | **Yes** (v1/v2) |
