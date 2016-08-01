@@ -1,0 +1,63 @@
+{
+    "$schema"               : "http://json-schema.org/draft-04/schema#",
+    "id"                    : "http://schemas.elite-markets.net/eddn/outfitting/2#",
+    "type"                  : "object",
+    "additionalProperties"  : false,
+    "required"              : [ "$schemaRef", "header", "message" ],
+    "properties"            : {
+        "$schemaRef": {
+            "type"                  : "string"
+        },
+        "header": {
+            "type"                  : "object",
+            "additionalProperties"  : true,
+            "required"              : [ "uploaderID", "softwareName", "softwareVersion" ],
+            "properties"            : {
+                "uploaderID": {
+                    "type"          : "string"
+                },
+                "softwareName": {
+                    "type"          : "string"
+                },
+                "softwareVersion": {
+                    "type"          : "string"
+                },
+                "gatewayTimestamp": {
+                    "type"          : "string",
+                    "format"        : "date-time",
+                    "description"   : "Timestamp upon receipt at the gateway. If present, this property will be overwritten by the gateway; submitters are not intended to populate this property."
+                }
+            }
+        },
+        "message": {
+            "type"                  : "object",
+            "additionalProperties"  : false,
+            "required"              : [ "systemName", "stationName", "timestamp", "modules" ],
+            "properties"            : {
+                "systemName": {
+                    "type"      : "string",
+                    "minLength" : 1
+                },
+                "stationName": {
+                    "type"      : "string",
+                    "minLength" : 1
+                },
+                "timestamp": {
+                    "type"      : "string",
+                    "format"    : "date-time"
+                },
+                "modules": {
+                    "type"          : "array",
+                    "minItems"      : 1,
+                    "uniqueItems"   : true,
+                    "items"         : {
+                        "type"          : "string",
+                        "minLength"     : 1,
+                        "pattern"       : "(^Hpt_|^Int_|_Armour_)",
+                        "description"   : "Module symbolic name. e.g. Hpt_ChaffLauncher_Tiny, Int_Engine_Size3_Class5_Fast, Independant_Trader_Armour_Grade1, etc. Modules that depend on the Cmdr's purchases (e.g. bobbleheads, paintjobs) or rank (e.g. decals and PowerPlay faction-specific modules) should be omitted."
+                    }
+                }
+            }
+        }
+    }
+}
