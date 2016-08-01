@@ -38,20 +38,9 @@
                     "type"      : "string",
                     "minLength" : 1
                 },
-                "systemId": {
-                    "type"        : "integer",
-                    "description" : "If present should be treated by clients as taking precedence over \"systemName\""
-                },
-                "systemAddress": {
-                    "type"        : "integer"
-                },
                 "stationName": {
                     "type"      : "string",
                     "minLength" : 1
-                },
-                "stationId": {
-                    "type"        : "integer",
-                    "description" : "If present should be treated by clients as taking precedence over \"stationName\""
                 },
                 "timestamp": {
                     "type"      : "string",
@@ -68,12 +57,8 @@
                                 "required"              : [ "name", "buyPrice", "supply", "sellPrice", "demand" ],
                                 "properties"            : {
                                     "name": {
-                                        "type"          : "string",
-                                        "minLength"     : 1
-                                    },
-                                    "id": {
-                                        "type"          : "integer",
-                                        "description"   : "If present should be treated by clients as taking precedence over \"name\""
+                                        "type"          :"string",
+                                        "minLength"     :1
                                     },
                                     "buyPrice": {
                                         "type"          :"integer",

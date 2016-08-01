@@ -32,20 +32,9 @@
           "type"        : "string",
           "minLength"   : 1
         },
-        "systemId": {
-          "type"        : "integer",
-          "description" : "If present should be treated by clients as taking precedence over \"systemName\""
-        },
-        "systemAddress": {
-          "type"        : "integer"
-        },
         "stationName": {
           "type"        : "string",
           "minLength"   : 1
-        },
-        "stationId": {
-          "type"        : "integer",
-          "description" : "If present should be treated by clients as taking precedence over \"stationName\""
         },
         "timestamp": {
           "type"        : "string",
@@ -60,8 +49,6 @@
               {
                 "type"                  : "object",
                 "properties"            : {
-                  "id"                  : { "type": "integer",
-                                            "description": "If present should be treated by clients as taking precedence over other fields" },
                   "category"            : { "enum": [ "hardpoint" ] },
                   "name"                : { "type": "string", "minLength": 1 },
                   "mount"               : { "$ref": "#/definitions/mount" },
@@ -75,8 +62,6 @@
               {
                 "type"                  : "object",
                 "properties"            : {
-                  "id"                  : { "type": "integer",
-                                            "description": "If present should be treated by clients as taking precedence over other fields" },
                   "category"            : { "enum": [ "utility" ] },
                   "name"                : { "type": "string", "minLength": 1 },
                   "class"               : { "$ref": "#/definitions/class" },
@@ -88,8 +73,6 @@
               {
                 "type"                  : "object",
                 "properties"            : {
-                  "id"                  : { "type": "integer",
-                                            "description": "If present should be treated by clients as taking precedence over other fields" },
                   "category"            : { "enum": [ "standard" ] },
                   "name"                : { "type": "string", "minLength": 1 },
                   "ship"                : { "type": "string",
@@ -104,8 +87,6 @@
               {
                 "type"                  : "object",
                 "properties"            : {
-                  "id"                  : { "type": "integer",
-                                            "description": "If present should be treated by clients as taking precedence over other fields" },
                   "category"            : { "enum": [ "internal" ] },
                   "name"                : { "type": "string", "minLength": 1 },
                   "class"               : { "$ref": "#/definitions/class" },
