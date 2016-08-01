@@ -1,0 +1,106 @@
+{
+    "$schema"               : "http://json-schema.org/draft-04/schema#",
+    "id"                    : "http://schemas.elite-markets.net/eddn/commodity/3#",
+    "type"                  : "object",
+    "additionalProperties"  : false,
+    "required": [ "$schemaRef", "header", "message" ],
+    "properties": {
+        "$schemaRef": {
+            "type"                  : "string"
+        },
+        "header": {
+            "type"                  : "object",
+            "additionalProperties"  : true,
+            "required"              : [ "uploaderID", "softwareName", "softwareVersion" ],
+            "properties"            : {
+                "uploaderID": {
+                    "type"          : "string"
+                },
+                "softwareName": {
+                    "type"          : "string"
+                },
+                "softwareVersion": {
+                    "type"          : "string"
+                },
+                "gatewayTimestamp": {
+                    "type"          : "string",
+                    "format"        : "date-time",
+                    "description"   : "Timestamp upon receipt at the gateway. If present, this property will be overwritten by the gateway; submitters are not intended to populate this property."
+                }
+            }
+        },
+        "message": {
+            "type"                  : "object",
+            "additionalProperties"  : false,
+            "required"              : [ "systemName", "stationName", "timestamp", "commodities" ],
+            "properties"            : {
+                "systemName": {
+                    "type"      : "string",
+                    "minLength" : 1
+                },
+                "stationName": {
+                    "type"      : "string",
+                    "minLength" : 1
+                },
+                "timestamp": {
+                    "type"      : "string",
+                    "format"    : "date-time"
+                },
+                "commodities": {
+                    "type"      : "array",
+                    "minItems"  : 1,
+                    "items"     : {
+                        "type"                  : "object",
+                        "additionalProperties"  : false,
+                        "required"              : [ "name", "meanPrice", "buyPrice", "stock", "stockBracket", "sellPrice", "demand", "demandBracket" ],
+                        "properties"            : {
+                            "name": {
+                                "type"          : "string",
+                                "minLength"     : 1,
+                                "description"   : "Commodity name as returned by the Companion API, misspellings and all"
+                            },
+                            "meanPrice": {
+                                "type"          : "integer"
+                            },
+                            "buyPrice": {
+                                "type"          : "integer",
+                                "description"   : "Price to buy from the market"
+                            },
+                            "stock": {
+                                "type"          : "integer"
+                            },
+                            "stockBracket": {
+                                "$ref"          : "#/definitions/levelType"
+                            },
+                            "sellPrice": {
+                                "type"          : "integer",
+                                "description"   : "Price to sell to the market"
+                            },
+                            "demand": {
+                                "type"          : "integer"
+                            },
+                            "demandBracket": {
+                                "$ref"          : "#/definitions/levelType"
+                            },
+                            "statusFlags": {
+                                "type"          : "array",
+                                "minItems"      : 1,
+                                "uniqueItems"   : true,
+                                "items"         : {
+                                    "type"          : "string",
+                                    "minLength"     : 1
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "levelType": {
+            "enum"          : [0, 1, 2, 3, ""],
+            "description"   : "Note: A value of \"\" indicates that the commodity is not normally sold/purchased at this station, but is currently temporarily for sale/purchase"
+        }
+    }
+}
