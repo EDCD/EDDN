@@ -32,13 +32,15 @@
         "message": {
             "type"                  : "object",
             "additionalProperties"  : false,
-            "required"              : [ "system", "station", "timestamp", "ships" ],
+            "required"              : [ "systemName", "stationName", "timestamp", "ships" ],
             "properties"            : {
-                "system" : {
-                    "$ref"          : "#/definitions/systemWithId"
+                "systemName": {
+                    "type"      : "string",
+                    "minLength" : 1
                 },
-                "station" : {
-                    "$ref"          : "#/definitions/nameWithId"
+                "stationName": {
+                    "type"      : "string",
+                    "minLength" : 1
                 },
                 "timestamp": {
                     "type"      : "string",
@@ -46,34 +48,14 @@
                 },
                 "ships": {
                     "type"          : "array",
+                    "minItems"      : 1,
                     "uniqueItems"   : true,
                     "items"         : {
-                        "$ref"          : "#/definitions/nameWithId"
-                    },
-                    "description"   : "Ship names in English as displayed in-game. i.e. one of: Adder, Anaconda, Asp, Asp Scout, Cobra Mk III, Cobra MkIV, DiamondBack Scout, Diamondback Explorer, Eagle, Federal Assault Ship, Federal Corvette, Federal Dropship, Federal Gunship, Fer-de-Lance, Hauler, Imperial Clipper, Imperial Courier, Imperial Cutter, Imperial Eagle, Keelback, Orca, Python, Sidewinder, Type-6 Transporter, Type-7 Transporter, Type-9 Heavy, Viper, Viper MkIV, Vulture"
+                        "type"          : "string",
+                        "minLength"     : 1,
+                        "description"   : "Ship symbolic name. i.e. one of: SideWinder, Adder, Anaconda, Asp, Asp_Scout CobraMkIII, CobraMkIV, Cutter, DiamondBack, DiamondBackXL, Eagle, Empire_Courier, Empire_Eagle, Empire_Trader, Federation_Corvette, Federation_Dropship, Federation_Dropship_MkII, Federation_Gunship, FerDeLance, Hauler, Independant_Trader, Orca, Python, Type6, Type7, Type9, Viper, Viper_MkIV, Vulture"
+                    }
                 }
-            }
-        }
-    },
-
-    "definitions": {
-        "systemWithId" : {
-            "type" :"object",
-            "additionalProperties" : false,
-            "required" : [ "name" ],
-            "properties" : {
-                "name"    : { "type": "string", "minLength" : 1 },
-                "id"      : { "type": "integer", "description"  : "If present should be treated by clients as taking precedence over \"name\"" },
-                "address" : { "type": "integer" }
-            }
-        },
-        "nameWithId" : {
-            "type" :"object",
-            "additionalProperties" : false,
-            "required" : [ "name" ],
-            "properties" : {
-                "name"    : { "type": "string", "minLength" : 1 },
-                "id"      : { "type": "integer", "description"  : "If present should be treated by clients as taking precedence over \"name\"" }
             }
         }
     }

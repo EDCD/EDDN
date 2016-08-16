@@ -38,20 +38,9 @@
                     "type"      : "string",
                     "minLength" : 1
                 },
-                "systemId": {
-                    "type"        : "integer",
-                    "description" : "If present should be treated by clients as taking precedence over \"systemName\""
-                },
-                "systemAddress": {
-                    "type"        : "integer"
-                },
                 "stationName": {
                     "type"      : "string",
                     "minLength" : 1
-                },
-                "stationId": {
-                    "type"        : "integer",
-                    "description" : "If present should be treated by clients as taking precedence over \"stationName\""
                 },
                 "timestamp": {
                     "type"      : "string",
@@ -64,15 +53,6 @@
                         "type"          : "string",
                         "minLength"     : 1,
                         "description"   : "Ship name in English as displayed in-game. i.e. one of: Adder, Anaconda, Asp, Asp Scout, Cobra Mk III, Cobra MkIV, DiamondBack Scout, Diamondback Explorer, Eagle, Federal Assault Ship, Federal Corvette, Federal Dropship, Federal Gunship, Fer-de-Lance, Hauler, Imperial Clipper, Imperial Courier, Imperial Cutter, Imperial Eagle, Keelback, Orca, Python, Sidewinder, Type-6 Transporter, Type-7 Transporter, Type-9 Heavy, Viper, Viper MkIV, Vulture"
-                    }
-                },
-                "shipIds": {
-                    "type"          : "array",
-                    "description"   : "If present should be treated by clients as taking precedence over \"ships\"",
-                    "uniqueItems"   : true,
-                    "items"         : {
-                        "type"          : "integer",
-                        "minLength"     : 1
                     }
                 }
             }
