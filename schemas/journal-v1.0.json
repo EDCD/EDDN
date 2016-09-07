@@ -33,7 +33,7 @@
             "type"                  : "object",
             "description"           : "Contains all properties from the listed events in the client's journal minus Localised strings and the properties marked below as 'disallowed'",
             "additionalProperties"  : true,
-            "required"              : [ "timestamp", "event" ],
+            "required"              : [ "timestamp", "event", "StarSystem" ],
             "properties"            : {
                 "timestamp": {
                     "type"          : "string",
@@ -41,6 +41,11 @@
                 },
                 "event" : {
                     "enum"          : [ "Docked", "FSDJump", "Scan" ]
+                },
+                "StarSystem": {
+                    "type"          : "string",
+                    "minLength"     : 1,
+                    "description"   : "Must be added by the sender if not present in the journal event"
                 },
 
                 "CockpitBreach"     : { "$ref" : "#/definitions/disallowed" },
