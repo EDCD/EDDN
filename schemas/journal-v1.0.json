@@ -1,0 +1,65 @@
+{
+    "$schema"               : "http://json-schema.org/draft-04/schema#",
+    "id"                    : "http://schemas.elite-markets.net/eddn/journal/1#",
+    "type"                  : "object",
+    "additionalProperties"  : false,
+    "required": [ "$schemaRef", "header", "message" ],
+    "properties": {
+        "$schemaRef": {
+            "type"                  : "string"
+        },
+        "header": {
+            "type"                  : "object",
+            "additionalProperties"  : true,
+            "required"              : [ "uploaderID", "softwareName", "softwareVersion" ],
+            "properties"            : {
+                "uploaderID": {
+                    "type"          : "string"
+                },
+                "softwareName": {
+                    "type"          : "string"
+                },
+                "softwareVersion": {
+                    "type"          : "string"
+                },
+                "gatewayTimestamp": {
+                    "type"          : "string",
+                    "format"        : "date-time",
+                    "description"   : "Timestamp upon receipt at the gateway. If present, this property will be overwritten by the gateway; submitters are not intended to populate this property."
+                }
+            }
+        },
+        "message": {
+            "type"                  : "object",
+            "description"           : "Contains all properties from the listed events in the client's journal minus Localised strings and the properties marked below as 'disallowed'",
+            "additionalProperties"  : true,
+            "required"              : [ "timestamp", "event", "StarSystem" ],
+            "properties"            : {
+                "timestamp": {
+                    "type"          : "string",
+                    "format"        : "date-time"
+                },
+                "event" : {
+                    "enum"          : [ "Docked", "FSDJump", "Scan" ]
+                },
+                "StarSystem": {
+                    "type"          : "string",
+                    "minLength"     : 1,
+                    "description"   : "Must be added by the sender if not present in the journal event"
+                },
+
+                "CockpitBreach"     : { "$ref" : "#/definitions/disallowed" },
+                "BoostUsed"         : { "$ref" : "#/definitions/disallowed" },
+                "FuelLevel"         : { "$ref" : "#/definitions/disallowed" },
+                "FuelUsed"          : { "$ref" : "#/definitions/disallowed" },
+                "JumpDist"          : { "$ref" : "#/definitions/disallowed" }
+            },
+            "patternProperties"     : {
+                "_Localised$"       : { "$ref" : "#/definitions/disallowed" }
+            }
+        }
+    },
+    "definitions": {
+        "disallowed" : { "not" : { "type": [ "array", "boolean", "integer", "number", "null", "object", "string" ] } }
+    }
+}
