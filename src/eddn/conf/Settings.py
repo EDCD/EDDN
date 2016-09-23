@@ -54,8 +54,11 @@ class _Settings(object):
         "http://schemas.elite-markets.net/eddn/outfitting/2": "schemas/outfitting-v2.0.json",
         "http://schemas.elite-markets.net/eddn/outfitting/2/test": "schemas/outfitting-v2.0.json",
 
+        "http://schemas.elite-markets.net/eddn/blackmarket/1": "schemas/blackmarket-v1.0.json",
+        "http://schemas.elite-markets.net/eddn/blackmarket/1/test": "schemas/blackmarket-v1.0.json",
+
         "http://schemas.elite-markets.net/eddn/journal/1": "schemas/journal-v1.0.json",
-        "http://schemas.elite-markets.net/eddn/journal/1/test": "schemas/journal-v1.0.json",
+        "http://schemas.elite-markets.net/eddn/journal/1/test": "schemas/journal-v1.0.json"
     }
 
     GATEWAY_OUTDATED_SCHEMAS = [
