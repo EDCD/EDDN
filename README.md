@@ -1,17 +1,9 @@
 ## EDDN - Elite: Dangerous Data Network
-**EDDN** is a system for players sharing dynamic data from [**Elite: Dangerous**](https://www.elitedangerous.com/).
-* Forum thread: https://forums.frontier.co.uk/showthread.php?t=57986
 
-EDDN Status: http://eddn-gateway.elite-markets.net/ | http://eddn.ed-td.space/
+The **Elite: Dangerous Data Network** is a system for willing Commanders to share dynamic data about the galaxy with others. By pooling data in a common format, tools and analyses can be produced that add an even greater depth and vibrancy to the in-game universe.
 
-### Known tools using EDDN
-| Tool                                                                                   | Commander     | Subscriber      | Publisher       |
-| -------------------------------------------------------------------------------------- | ------------- | --------------- | --------------- |
-| [**E:D Market Connector**](https://github.com/Marginal/EDMarketConnector)              | Otis B.       | No              | **Yes** (v1/v2) | 
-| [**edce-client**](https://github.com/Andargor/edce-client/)                            | Andargor      | No              | **Yes** (v1/v2) |
-| [**EDDB**](http://eddb.io/)                                                            | themroc       | **Yes** (v1/v2) | No              |
-| [**ED-TD**](http://ed-td.space/)                                                       | AnthorNet     | **Yes** (v1/v2) | **Yes** (v2)    |
-| [**EliteOCR**](https://forums.frontier.co.uk/showthread.php?t=68771)                   | seeebek       | No              | **Yes** (v1)    |
-| [**Maddavo's Market Data**](http://www.davek.com.au/td/)                               | maddavo       | **Yes** (v1/v2) | **Yes** (v1/v2) |
-| [**RegulatedNoise DJ-version**](https://forums.frontier.co.uk/showthread.php?t=137732) | Duke          | **Yes** (v1/v2) | **Yes** (v1/v2) |
-| [**ED-IBE**](https://github.com/Duke-Jones/ED-IBE)                                     | Duke          | **Yes** (v1/v2) | **Yes** (v1/v2) |
+EDDN is not run by or affiliated with [Frontier Developments](http://www.frontier.co.uk/). Hosting has been very generously provided by [Vivio Technologies](https://www.viviotech.net/).
+
+### [Using EDDN](https://github.com/jamesremuscat/EDDN/wiki)
+
+### [EDDN Status](http://eddn-gateway.elite-markets.net/)
