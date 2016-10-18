@@ -33,7 +33,7 @@
             "type"                  : "object",
             "description"           : "Contains all properties from the listed events in the client's journal minus Localised strings and the properties marked below as 'disallowed'",
             "additionalProperties"  : true,
-            "required"              : [ "timestamp", "event", "StarSystem" ],
+            "required"              : [ "timestamp", "event", "StarSystem", "StarPos" ],
             "properties"            : {
                 "timestamp": {
                     "type"          : "string",
@@ -45,6 +45,13 @@
                 "StarSystem": {
                     "type"          : "string",
                     "minLength"     : 1,
+                    "description"   : "Must be added by the sender if not present in the journal event"
+                },
+                "StarPos": {
+                    "type"          : "array",
+                    "items"         : { "type": "number" },
+                    "minItems"      : 3,
+                    "maxItems"      : 3,
                     "description"   : "Must be added by the sender if not present in the journal event"
                 },
 
