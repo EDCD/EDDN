@@ -116,6 +116,10 @@
     	var finishedslug = slugcontent_hyphens.replace(/[^a-zA-Z0-9\-]/g,'');
     	return finishedslug.toLowerCase();
     }
+    makeName =  function(str) {
+        var match = /^http:\/\/schemas.elite-markets.net\/eddn\/(\w)(\w*)\/(\d+)$/.exec(str);
+        return match ? match[1].toUpperCase() + match[2] + " v" + match[3] : str;
+    }
 
     $(document).ready(function(){
         var monitorEndPoint     = 'http://eddn-monitor.ed-td.space:9091/';
@@ -214,105 +218,37 @@
                         // IF TEST CONTINUE
                         if(schema.substr(schema.length - 4) == 'test')
                             return;
-                            
-                        if(makeSlug(schema) == 'httpschemaselite-marketsneteddncommodity1')
-                            return;
-                            
+
+                        var slug = makeSlug(schema);
+                        var name = makeName(schema);
+
                         // Check series exists
-                        if(!chart.get(makeSlug(schema)))
+                        if(!chart.get(slug))
                         {
-                            // Format name
-                            if(makeSlug(schema) == 'httpschemaselite-marketsneteddncommodity1')
-                                name = 'Commodity v1';
-                            else if(makeSlug(schema) == 'httpschemaselite-marketsneteddncommodity2')
-                                name = 'Commodity v2';
-                            else if(makeSlug(schema) == 'httpschemaselite-marketsneteddnshipyard1')
-                                name = 'Shipyard v1';
-                            else if(makeSlug(schema) == 'httpschemaselite-marketsneteddnoutfitting1')
-                                name = 'Outfitting v1';
-                            else
-                                name = schema;
-                            
                             chart.addSeries({
-                                id: makeSlug(schema),
+                                id: slug,
                                 name: name,
                                 data: []
                             });
-                            /*
-                            if(name == 'Commodity v2')
-                                chart.addSeries({
-                                    id: makeSlug(schema + '(Projected)'),
-                                    name: name + ' (Projected * 55.0287)',
-                                    data: []
-                                });
-                            */
                         }
                         
                         // Add data
-                        serie  = chart.get(makeSlug(schema));
-                        
+                        serie = chart.get(slug);
                         serie.addPoint({x: date, y: parseInt(hits)}, false);
-                        
-                        // Add projected
-                        /*
-                        if(makeSlug(schema) == 'httpschemaselite-marketsneteddncommodity2')
-                        {
-                            serie  = chart.get(makeSlug(schema + '(Projected)'));
-                            serie.addPoint({x: date, y: Math.round(parseInt(hits)*55.0287)}, false);
-                        }
-                        */
-                        
+
                         // Check series exists
-                        if(!chartStacked.get(makeSlug(schema)))
+                        if(!chartStacked.get(slug))
                         {
-                            // Format name
-                            if(makeSlug(schema) == 'httpschemaselite-marketsneteddncommodity1')
-                                name = 'Commodity v1';
-                            else if(makeSlug(schema) == 'httpschemaselite-marketsneteddncommodity2')
-                                name = 'Commodity v2';
-                            else if(makeSlug(schema) == 'httpschemaselite-marketsneteddnshipyard1')
-                                name = 'Shipyard v1';
-                            else if(makeSlug(schema) == 'httpschemaselite-marketsneteddnoutfitting1')
-                                name = 'Outfitting v1';
-                            else
-                                name = schema;
-                            
-                            /*
-                            if(name == 'Commodity v2' && !chartStacked.get(makeSlug(schema + '(Projected)')))
-                                chartStacked.addSeries({
-                                    id: makeSlug(schema + '(Projected)'),
-                                    name: name + ' (Projected * 55.0287)',
-                                    data: []
-                                });
-                            else
-                            */
-                            {
-                                //if(name != 'Commodity v2')
-                                    chartStacked.addSeries({
-                                        id: makeSlug(schema),
-                                        name: name,
-                                        data: []
-                                    });
-                            }
+                            chartStacked.addSeries({
+                                id: slug,
+                                name: name,
+                                data: []
+                            });
                         }
                         
-                        
-                        
-                        // Add projected
-                        /*
-                        if(makeSlug(schema) == 'httpschemaselite-marketsneteddncommodity2')
-                        {
-                            serie  = chartStacked.get(makeSlug(schema + '(Projected)'));
-                            serie.addPoint({x: date, y: Math.round(parseInt(hits)*55.0287)}, false);
-                        }
                         // Add data
-                        else
-                        */
-                        {
-                            serie  = chartStacked.get(makeSlug(schema));
-                            
-                            serie.addPoint({x: date, y: parseInt(hits)}, false);
-                        }
+                        serie = chartStacked.get(slug);
+                        serie.addPoint({x: date, y: parseInt(hits)}, false);
                     });
                 });
                 
