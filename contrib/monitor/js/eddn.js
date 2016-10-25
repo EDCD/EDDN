@@ -24,10 +24,28 @@ formatNumber = function(num) {
     return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
 }
 
-makeSlug = function(str) {
+var makeSlug = function(str) {
 	var slugcontent_hyphens = str.replace(/\s/g,'-');
 	var finishedslug = slugcontent_hyphens.replace(/[^a-zA-Z0-9\-]/g,'');
 	return finishedslug.toLowerCase();
+}
+
+var makeName =  function(str) {
+    var match = /^http:\/\/schemas.elite-markets.net\/eddn\/(\w)(\w*)\/(\d+)$/.exec(str);
+    
+    if(match)
+    {
+        return match[1].toUpperCase() + match[2] + " v" + match[3];
+    }
+    
+    var match = /^http:\/\/schemas.elite-markets.net\/eddn\/(\w)(\w*)\/(\d+)\/test$/.exec(str);
+    
+    if(match)
+    {
+        return match[1].toUpperCase() + match[2] + " v" + match[3] + " [TEST]";
+    }
+    
+    return str;
 }
 
 secondsToDurationString = function(seconds) {
@@ -369,18 +387,21 @@ var doUpdateSchemas = function()
                             schemas[yesterday] = [];
                         if(schemas[today] == undefined)
                             schemas[today] = [];
+                            
+                        var slug = makeSlug(schema);
+                        var name = makeName(schema);
                         
                         $('#schemas .table tbody').append(
                             newTr = $('<tr>').attr('data-name', schema).on('mouseover', function(){
-                                chart.get('schema-' + makeSlug(schema)).setState('hover');
-                                chart.tooltip.refresh(chart.get('schema-' + makeSlug(schema)));
+                                chart.get('schema-' + slug).setState('hover');
+                                chart.tooltip.refresh(chart.get('schema-' +slug));
                             }).on('mouseout', function(){
-                                chart.get('schema-' + makeSlug(schema)).setState('');
+                                chart.get('schema-' + slug).setState('');
                                 chart.tooltip.hide();
                             }).append(
                                 $('<td>').addClass('square')
                             ).append(
-                                $('<td>').html('<strong>' + schema + '</strong>')
+                                $('<td>').html('<strong>' + name + '</strong>')
                             )
                             .append(
                                 $('<td>').addClass('stat today').html(formatNumber(schemas[today][schema] || 0))
@@ -393,12 +414,12 @@ var doUpdateSchemas = function()
                             )
                         );
                         
-                        if(!chart.get('schema-' + makeSlug(schema)))
-                            series.addPoint({id: 'schema-' + makeSlug(schema), name: schema, y: parseInt(hits)}, false);
+                        if(!chart.get('schema-' + slug))
+                            series.addPoint({id: 'schema-' + slug, name: name, y: parseInt(hits)}, false);
                         else
-                            chart.get('schema-' + makeSlug(schema)).update(parseInt(hits), false);
+                            chart.get('schema-' + slug).update(parseInt(hits), false);
                             
-                        newTr.find('.square').css('background', chart.get('schema-' + makeSlug(schema)).color);
+                        newTr.find('.square').css('background', chart.get('schema-' + slug).color);
                     });
                     
                     chart.redraw();

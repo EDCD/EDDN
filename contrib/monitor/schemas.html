@@ -111,14 +111,27 @@
     <script src="http://code.highcharts.com/4.1.5/highcharts.js"></script>
     
     <script type="text/javascript">
-    makeSlug = function(str) {
+    var makeSlug = function(str) {
     	var slugcontent_hyphens = str.replace(/\s/g,'-');
     	var finishedslug = slugcontent_hyphens.replace(/[^a-zA-Z0-9\-]/g,'');
     	return finishedslug.toLowerCase();
     }
-    makeName =  function(str) {
+    var makeName =  function(str) {
         var match = /^http:\/\/schemas.elite-markets.net\/eddn\/(\w)(\w*)\/(\d+)$/.exec(str);
-        return match ? match[1].toUpperCase() + match[2] + " v" + match[3] : str;
+        
+        if(match)
+        {
+            return match[1].toUpperCase() + match[2] + " v" + match[3];
+        }
+        
+        var match = /^http:\/\/schemas.elite-markets.net\/eddn\/(\w)(\w*)\/(\d+)\/test$/.exec(str);
+        
+        if(match)
+        {
+            return match[1].toUpperCase() + match[2] + " v" + match[3] + " [TEST]";
+        }
+        
+        return str;
     }
 
     $(document).ready(function(){
