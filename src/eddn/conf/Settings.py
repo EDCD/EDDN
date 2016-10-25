@@ -39,18 +39,12 @@ class _Settings(object):
     GATEWAY_IP_KEY_SALT = None
 
     GATEWAY_JSON_SCHEMAS = {
-        "http://schemas.elite-markets.net/eddn/commodity/2": "schemas/commodity-v2.0.json",
-        "http://schemas.elite-markets.net/eddn/commodity/2/test": "schemas/commodity-v2.0.json",
         "http://schemas.elite-markets.net/eddn/commodity/3": "schemas/commodity-v3.0.json",
         "http://schemas.elite-markets.net/eddn/commodity/3/test": "schemas/commodity-v3.0.json",
 
-        "http://schemas.elite-markets.net/eddn/shipyard/1": "schemas/shipyard-v1.0.json",
-        "http://schemas.elite-markets.net/eddn/shipyard/1/test": "schemas/shipyard-v1.0.json",
         "http://schemas.elite-markets.net/eddn/shipyard/2": "schemas/shipyard-v2.0.json",
         "http://schemas.elite-markets.net/eddn/shipyard/2/test": "schemas/shipyard-v2.0.json",
 
-        "http://schemas.elite-markets.net/eddn/outfitting/1": "schemas/outfitting-v1.0.json",
-        "http://schemas.elite-markets.net/eddn/outfitting/1/test": "schemas/outfitting-v1.0.json",
         "http://schemas.elite-markets.net/eddn/outfitting/2": "schemas/outfitting-v2.0.json",
         "http://schemas.elite-markets.net/eddn/outfitting/2/test": "schemas/outfitting-v2.0.json",
 
@@ -58,12 +52,18 @@ class _Settings(object):
         "http://schemas.elite-markets.net/eddn/blackmarket/1/test": "schemas/blackmarket-v1.0.json",
 
         "http://schemas.elite-markets.net/eddn/journal/1": "schemas/journal-v1.0.json",
-        "http://schemas.elite-markets.net/eddn/journal/1/test": "schemas/journal-v1.0.json"
+        "http://schemas.elite-markets.net/eddn/journal/1/test": "schemas/journal-v1.0.json",
     }
 
     GATEWAY_OUTDATED_SCHEMAS = [
         "http://schemas.elite-markets.net/eddn/commodity/1",
-        "http://schemas.elite-markets.net/eddn/commodity/1/test"
+        "http://schemas.elite-markets.net/eddn/commodity/1/test",
+        "http://schemas.elite-markets.net/eddn/commodity/2",
+        "http://schemas.elite-markets.net/eddn/commodity/2/test",
+        "http://schemas.elite-markets.net/eddn/outfitting/1",
+        "http://schemas.elite-markets.net/eddn/outfitting/1/test",
+        "http://schemas.elite-markets.net/eddn/shipyard/1",
+        "http://schemas.elite-markets.net/eddn/shipyard/1/test",
     ]
 
     ###############################################################################
