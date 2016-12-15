@@ -70,7 +70,7 @@ class _Settings(object):
     #  Monitor settings
     ###############################################################################
 
-    MONITOR_RECEIVER_BINDINGS = ["tcp://eddn-gateway.elite-markets.net:8500", "tcp://eddn-gateway.ed-td.space:8500"]
+    MONITOR_RECEIVER_BINDINGS = ["tcp://eddn-gateway.elite-markets.net:8500"]
 
     MONITOR_DB = "/home/EDDN_Monitor.s3db"
 
