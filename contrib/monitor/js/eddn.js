@@ -6,13 +6,11 @@ var updateInterval      = 60000,
     relayBottlePort     = 9090,
     
     gateways            = [
-        'eddn-gateway.elite-markets.net',
-        'eddn-gateway.ed-td.space'
-    ]; // Must find a way to bind them to monitor,
+        'eddn-gateway.elite-markets.net'
+    ], // Must find a way to bind them to monitor
     
     relays              = [
-        'eddn-relay.elite-markets.net',
-        'eddn-relay.ed-td.space'
+        'eddn-relay.elite-markets.net'
     ]; // Must find a way to bind them to monitor
     
 var stats = {
