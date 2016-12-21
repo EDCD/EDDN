@@ -72,7 +72,7 @@ class _Settings(object):
 
     MONITOR_RECEIVER_BINDINGS = ["tcp://eddn-gateway.elite-markets.net:8500"]
 
-    MONITOR_DB = "/home/EDDN_Monitor.s3db"
+    MONITOR_DB = "/opt/eddn/EDDN_Monitor.s3db"
 
     MONITOR_DECOMPRESS_MESSAGES = True
 
