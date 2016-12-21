@@ -1,6 +1,6 @@
 var updateInterval      = 60000,
 
-    monitorEndPoint     = 'http://eddn-monitor.ed-td.space:9091/',
+    monitorEndPoint     = 'http://eddn-gateway.elite-markets.net:9091/',
     
     gatewayBottlePort   = 8080,
     relayBottlePort     = 9090,
