@@ -41,11 +41,15 @@ class DuplicateMessages(Thread):
                 return False
 
             if message['header']['gatewayTimestamp']:
-                del message['header']['gatewayTimestamp']  # Prevent dupe with new timestamp ^^
+                del message['header']['gatewayTimestamp']  # Prevent dupe with new timestamp
             if message['message']['timestamp']:
-                del message['message']['timestamp']  # Prevent dupe with new timestamp ^^
+                del message['message']['timestamp']  # Prevent dupe with new timestamp
+            if message['header']['softwareName']:
+                del message['header']['softwareName']  # Prevent dupe with different software
+            if message['header']['softwareVersion']:
+                del message['header']['softwareVersion']  # Prevent dupe with different software version
 
-            message = simplejson.dumps(message)
+            message = simplejson.dumps(message, sort_keys=True) # Ensure most duplicate messages will get the same key
             key = hashlib.sha256(message).hexdigest()
 
             if key not in self.caches:
