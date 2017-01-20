@@ -1,8 +1,9 @@
 # coding: utf8
 
 import simplejson
+import strict-rfc3339
 from enum import IntEnum
-from jsonschema import validate as jsValidate, ValidationError
+from jsonschema import validate as jsValidate, ValidationError, FormatChecker
 
 
 class Validator(object):
@@ -30,7 +31,7 @@ class Validator(object):
 
         schema = self.schemas[schemaRef]
         try:
-            jsValidate(json_object, schema)
+            jsValidate(json_object, schema, format_checker=jsonschema.FormatChecker())
         except ValidationError as e:
             results.add(ValidationSeverity.ERROR, e)
 
