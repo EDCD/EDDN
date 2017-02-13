@@ -10,7 +10,7 @@ __relayEDDN             = 'tcp://eddn-relay.elite-markets.net:9500'
 __timeoutEDDN           = 600000
 
 # Set False to listen to production stream
-__debugEDDN             = True;
+__debugEDDN             = False;
 
 # Set to False if you do not want verbose logging
 __logVerboseFile        = os.path.dirname(__file__) + '/Logs_Verbose_EDDN_%DATE%.htm'
@@ -22,6 +22,9 @@ __logJSONFile           = os.path.dirname(__file__) + '/Logs_JSON_EDDN_%DATE%.lo
 
 # A sample list of authorised softwares
 __authorisedSoftwares   = [
+    "E:D Market Connector",
+    "EDDiscovery",
+    "EDDI",
     "EDCE",
     "ED-TD.SPACE",
     "EliteOCR",
@@ -110,8 +113,16 @@ def main():
                     echoLog('')
                     break
                 
+                echoLog('Got a message')
+
                 __message   = zlib.decompress(__message)
+                if __message == False:
+                    echoLog('Failed to decompress message')
+
                 __json      = simplejson.loads(__message)
+                if __json == False:
+                    echoLog('Failed to parse message as json')
+
                 __converted = False
                 
                 
@@ -203,6 +214,9 @@ def main():
                     echoLog('')
                     echoLog('')
                 
+                else:
+                    echoLog('Unknown schema: ' + __json['$schemaRef']);
+
                 del __converted
                 
                 
