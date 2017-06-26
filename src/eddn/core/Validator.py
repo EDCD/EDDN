@@ -1,7 +1,7 @@
 # coding: utf8
 
 import simplejson
-import strict-rfc3339
+import strict_rfc3339
 from enum import IntEnum
 from jsonschema import validate as jsValidate, ValidationError, FormatChecker
 
