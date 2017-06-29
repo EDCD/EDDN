@@ -31,7 +31,7 @@ class Validator(object):
 
         schema = self.schemas[schemaRef]
         try:
-            jsValidate(json_object, schema, format_checker=jsonschema.FormatChecker())
+            jsValidate(json_object, schema, format_checker=FormatChecker())
         except ValidationError as e:
             results.add(ValidationSeverity.ERROR, e)
 
