@@ -2,17 +2,18 @@ var updateInterval      = 60000,
 
     monitorEndPoint     = 'https://eddn.edcd.io:9091/',
     
-    gatewayBottlePort   = 8080,
+    //gatewayBottlePort   = 8080,
+    gatewayBottlePort   = 4430,
     relayBottlePort     = 9090,
     
     gateways            = [
         'eddn.edcd.io',
-        'eddn-gateway.elite-markets.net'
+        //'eddn-gateway.elite-markets.net'
     ], // Must find a way to bind them to monitor
     
     relays              = [
         'eddn.edcd.io',
-        'eddn-relay.elite-markets.net'
+        //'eddn-relay.elite-markets.net'
     ]; // Must find a way to bind them to monitor
     
 var stats = {
