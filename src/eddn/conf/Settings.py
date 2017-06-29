@@ -13,7 +13,7 @@ class _Settings(object):
     # Relay settings
     ###############################################################################
 
-    RELAY_RECEIVER_BINDINGS = ["tcp://eddn-gateway.elite-markets.net:8500"]
+    RELAY_RECEIVER_BINDINGS = ["tcp://eddn-gateway.elite-markets.net:8500", "tcp://eddn.edcd.io:8500"]
 
     RELAY_SENDER_BINDINGS = ["tcp://*:9500"]
 
