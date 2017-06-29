@@ -48,17 +48,21 @@ def configure():
         validator.addSchemaResource(schemaRef, resource_string('eddn.Gateway', schemaFile))
 
 
-def push_message(string_message, topic):
+def push_message(parsed_message, topic):
     """
     Spawned as a greenlet to push messages (strings) through ZeroMQ.
     This is a dumb method that just pushes strings; it assumes you've already validated
     and serialised as you want to.
     """
+    string_message = simplejson.dumps(parsed_message, ensure_ascii=False).encode('utf-8')
 
     # Push a zlib compressed JSON representation of the message to
     # announcers with schema as topic
     compressed_msg = zlib.compress(string_message)
-    sender.send("%s |-| %s" % (topic, compressed_msg))
+    
+    send_message = "%s |-| %s" % (str(topic), compressed_msg)
+    
+    sender.send(send_message)
     statsCollector.tally("outbound")
 
 
@@ -150,7 +154,7 @@ def parse_and_error_handle(data):
 
         # Sends the parsed MarketOrderList or MarketHistoryList to the Announcers
         # as compressed JSON.
-        gevent.spawn(push_message, simplejson.dumps(parsed_message, ensure_ascii=False).encode('utf-8'), parsed_message['$schemaRef'])
+        gevent.spawn(push_message, parsed_message, parsed_message['$schemaRef'])
         logger.info("Accepted %s upload from %s" % (
             parsed_message, get_remote_address()
         ))
