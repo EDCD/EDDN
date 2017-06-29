@@ -13,7 +13,7 @@ class _Settings(object):
     # Relay settings
     ###############################################################################
 
-    RELAY_RECEIVER_BINDINGS = ["tcp://eddn-gateway.elite-markets.net:8500"]
+    RELAY_RECEIVER_BINDINGS = ["tcp://eddn.edcd.io:8500", "tcp://eddn-gateway.elite-markets.net:8500"]
 
     RELAY_SENDER_BINDINGS = ["tcp://*:9500"]
 
@@ -70,9 +70,9 @@ class _Settings(object):
     #  Monitor settings
     ###############################################################################
 
-    MONITOR_RECEIVER_BINDINGS = ["tcp://eddn-gateway.elite-markets.net:8500"]
+    MONITOR_RECEIVER_BINDINGS = ["tcp://eddn.edcd.io:8500", "tcp://eddn-gateway.elite-markets.net:8500"]
 
-    MONITOR_DB = "/opt/eddn/EDDN_Monitor.s3db"
+    MONITOR_DB = "/home/EDDN_Monitor.s3db"
 
     MONITOR_DECOMPRESS_MESSAGES = True
 

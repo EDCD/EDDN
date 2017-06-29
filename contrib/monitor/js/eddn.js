@@ -6,10 +6,12 @@ var updateInterval      = 60000,
     relayBottlePort     = 9090,
     
     gateways            = [
+        'eddn.edcd.io',
         'eddn-gateway.elite-markets.net'
     ], // Must find a way to bind them to monitor
     
     relays              = [
+        'eddn.edcd.io',
         'eddn-relay.elite-markets.net'
     ]; // Must find a way to bind them to monitor
     
@@ -539,7 +541,7 @@ var start       = function(){
         gateway = gateway.replace(':8500', '');
         
         $("select[name=gateways]").append($('<option>', { 
-            value: 'http://' + gateway + ':' + gatewayBottlePort + '/stats/',
+            value: 'https://' + gateway + ':' + gatewayBottlePort + '/stats/',
             text : gateway
         }));
         
@@ -586,7 +588,7 @@ var start       = function(){
     //relays = relays.sort();
     $.each(relays, function(k, relay){
         $("select[name=relays]").append($('<option>', { 
-            value: 'http://' + relay + ':' + relayBottlePort + '/stats/',
+            value: 'https://' + relay + ':' + relayBottlePort + '/stats/',
             text : relay
         }));
                 

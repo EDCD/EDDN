@@ -111,7 +111,13 @@ def main():
     loadConfig()
     r = Relay()
     r.start()
-    bottle_run(host='0.0.0.0', port=9090, server='gevent')
+    bottle_run(
+        host='0.0.0.0', 
+        port=9090, 
+        server='gevent', 
+        certfile='/etc/letsencrypt/live/eddn.edcd.io/fullchain.pem', 
+        keyfile='/etc/letsencrypt/live/eddn.edcd.io/privkey.pem'
+    )
 
 
 if __name__ == '__main__':

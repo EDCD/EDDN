@@ -213,8 +213,13 @@ class MalformedUploadError(Exception):
 def main():
     loadConfig()
     configure()
-    run(host=Settings.GATEWAY_HTTP_BIND_ADDRESS, port=Settings.GATEWAY_HTTP_PORT, server='gevent')
-
+    run(
+        host=Settings.GATEWAY_HTTP_BIND_ADDRESS, 
+        port=Settings.GATEWAY_HTTP_PORT, 
+        server='gevent', 
+        certfile='/etc/letsencrypt/live/eddn.edcd.io/fullchain.pem', 
+        keyfile='/etc/letsencrypt/live/eddn.edcd.io/privkey.pem'
+    )
 
 if __name__ == '__main__':
     main()
