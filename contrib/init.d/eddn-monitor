@@ -1,0 +1,77 @@
+#!/bin/sh
+
+### BEGIN INIT INFO
+# Provides: eddn-monitor
+# Required-Start: $network
+# Required-Stop:
+# Default-Start: 2 3 4 5
+# Default-Stop: 0 1 6
+### END INIT INFO
+
+# -------------------------------------------------------------------------
+#    Based on: <Pyro4 NameServer Script>
+#    Copyright (C) <2011>  <Pierre PACORY> - ppacory-Re5JQEeQqe8AvxtiuMwx3w@public.gmane.org
+#    Modified by James Muscat
+#    This program is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+
+#    This program is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+
+#    You should have received a copy of the GNU General Public License
+#    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# -------------------------------------------------------------------------
+
+
+MESSAGEDIR=/var/log/eddn
+MESSAGELOG=/var/log/eddn/monitor.log
+PID=/var/run/eddn-monitor.pid
+EXECUTABLE=/usr/local/bin/eddn-monitor
+CMDLINE=""
+
+
+# Check the script is being run by root user
+if [ "$(id -u)" != "0" ]; then
+  echo 1>&2 "ERROR: The $0 script must be run as root"
+  exit 1
+fi
+
+# Create the PID File
+touch $PID
+
+case "$1" in
+  start)
+    # create the log directory if not exist
+    [ ! -d "$MESSAGEDIR" ] && mkdir -p "$MESSAGEDIR"
+
+    echo "Starting $EXECUTABLE"
+    # test if not already running
+    if [ ! -f "/proc/$(cat $PID)/exe" ]; then
+      $EXECUTABLE "$CMDLINE" > "$MESSAGELOG" 2>&1 &
+      echo $!>"$PID"
+    else
+      echo "$EXECUTABLE already running"
+    fi
+  ;;
+  stop)
+    echo "Stopping $EXECUTABLE"
+    # test if running
+    if [ -f "/proc/$(cat $PID)/exe" ]; then
+      kill -9 "$(cat $PID)"
+      rm -rf "$PID"
+    else
+      echo "$EXECUTABLE already stopped"
+    fi
+    ;;
+  restart)
+    $0 stop
+    $0 start
+    ;;
+  *)
+    echo "usage: $0 {start|stop|restart}"
+esac
+exit 0

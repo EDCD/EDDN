@@ -1,7 +1,7 @@
 #!/bin/sh
 
 ### BEGIN INIT INFO
-# Provides: eddn-gateway
+# Provides: eddn-relay
 # Required-Start: $network
 # Required-Stop:
 # Default-Start: 2 3 4 5
@@ -27,10 +27,10 @@
 # -------------------------------------------------------------------------
 
 
-MESSAGEDIR=/var/log/eddn-gateway
-MESSAGELOG=/var/log/eddn-gateway/gateway.log
-PID=/var/run/eddn-gateway.pid
-EXECUTABLE=/path/to/eddn-gateway
+MESSAGEDIR=/var/log/eddn
+MESSAGELOG=/var/log/eddn/relay.log
+PID=/var/run/eddn-relay.pid
+EXECUTABLE=/usr/local/bin/eddn-relay
 CMDLINE=""
 
 
@@ -48,23 +48,23 @@ case "$1" in
     # create the log directory if not exist
     [ ! -d "$MESSAGEDIR" ] && mkdir -p "$MESSAGEDIR"
 
-    echo "Starting EDDN gateway"
+    echo "Starting $EXECUTABLE"
     # test if not already running
     if [ ! -f "/proc/$(cat $PID)/exe" ]; then
       $EXECUTABLE "$CMDLINE" > "$MESSAGELOG" 2>&1 &
       echo $!>"$PID"
     else
-      echo "EDDN gateway already running"
+      echo "$EXECUTABLE already running"
     fi
   ;;
   stop)
-    echo "Stopping EDDN gateway"
+    echo "Stopping $EXECUTABLE"
     # test if running
     if [ -f "/proc/$(cat $PID)/exe" ]; then
       kill -9 "$(cat $PID)"
       rm -rf "$PID"
     else
-      echo "EDDN gateway already stopped"
+      echo "$EXECUTABLE already stopped"
     fi
     ;;
   restart)
