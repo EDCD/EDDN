@@ -13,32 +13,35 @@ class _Settings(object):
     # Relay settings
     ###############################################################################
 
-    RELAY_RECEIVER_BINDINGS = ["tcp://eddn.edcd.io:8500", "tcp://eddn-gateway.elite-markets.net:8500"]
+    RELAY_HTTP_BIND_ADDRESS                 = "0.0.0.0"
+    RELAY_HTTP_PORT                         = 9090
 
-    RELAY_SENDER_BINDINGS = ["tcp://*:9500"]
+    RELAY_RECEIVER_BINDINGS                 = ["tcp://eddn.edcd.io:8500", "tcp://eddn-gateway.elite-markets.net:8500"]
 
-    RELAY_DECOMPRESS_MESSAGES = False
+    RELAY_SENDER_BINDINGS                   = ["tcp://*:9500"]
+
+    RELAY_DECOMPRESS_MESSAGES               = False
 
     # If set to False, no deduplicate is made
-    RELAY_DUPLICATE_MAX_MINUTES = 15
+    RELAY_DUPLICATE_MAX_MINUTES             = 15
 
     # If set to false, don't listen to topic and accept all incoming messages
-    RELAY_RECEIVE_ONLY_GATEWAY_EXTRA_JSON = True
+    RELAY_RECEIVE_ONLY_GATEWAY_EXTRA_JSON   = True
 
-    RELAY_EXTRA_JSON_SCHEMAS = {}
+    RELAY_EXTRA_JSON_SCHEMAS                = {}
 
     ###############################################################################
     #  Gateway settings
     ###############################################################################
 
-    GATEWAY_HTTP_BIND_ADDRESS = "127.0.0.1"
-    GATEWAY_HTTP_PORT = 8081
+    GATEWAY_HTTP_BIND_ADDRESS               = "127.0.0.1"
+    GATEWAY_HTTP_PORT                       = 8081
 
-    GATEWAY_SENDER_BINDINGS = ["tcp://*:8500"]
+    GATEWAY_SENDER_BINDINGS                 = ["tcp://*:8500"]
 
-    GATEWAY_IP_KEY_SALT = None
+    GATEWAY_IP_KEY_SALT                     = None
 
-    GATEWAY_JSON_SCHEMAS = {
+    GATEWAY_JSON_SCHEMAS                    = {
         "http://schemas.elite-markets.net/eddn/commodity/3": "schemas/commodity-v3.0.json",
         "http://schemas.elite-markets.net/eddn/commodity/3/test": "schemas/commodity-v3.0.json",
 
@@ -55,7 +58,7 @@ class _Settings(object):
         "http://schemas.elite-markets.net/eddn/journal/1/test": "schemas/journal-v1.0.json",
     }
 
-    GATEWAY_OUTDATED_SCHEMAS = [
+    GATEWAY_OUTDATED_SCHEMAS                = [
         "http://schemas.elite-markets.net/eddn/commodity/1",
         "http://schemas.elite-markets.net/eddn/commodity/1/test",
         "http://schemas.elite-markets.net/eddn/commodity/2",
@@ -70,11 +73,17 @@ class _Settings(object):
     #  Monitor settings
     ###############################################################################
 
-    MONITOR_RECEIVER_BINDINGS = ["tcp://eddn.edcd.io:8500", "tcp://eddn-gateway.elite-markets.net:8500"]
+    MONITOR_RECEIVER_BINDINGS               = [
+        "tcp://eddn.edcd.io:8500", 
+        "tcp://eddn-gateway.elite-markets.net:8500"
+    ]
 
-    MONITOR_DB = "/home/EDDN_Monitor.s3db"
+    MONITOR_DB                              = "/home/EDDN_Monitor.s3db"
 
-    MONITOR_DECOMPRESS_MESSAGES = True
+    MONITOR_DECOMPRESS_MESSAGES             = True
+
+
+
 
     def loadFrom(self, fileName):
         f = open(fileName, 'r')

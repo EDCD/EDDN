@@ -112,8 +112,8 @@ def main():
     r = Relay()
     r.start()
     bottle_run(
-        host='0.0.0.0', 
-        port=9090, 
+        host=Settings.RELAY_HTTP_BIND_ADDRESS, 
+        port=Settings.RELAY_HTTP_PORT, 
         server='gevent', 
         certfile='/etc/letsencrypt/live/eddn.edcd.io/fullchain.pem', 
         keyfile='/etc/letsencrypt/live/eddn.edcd.io/privkey.pem'
