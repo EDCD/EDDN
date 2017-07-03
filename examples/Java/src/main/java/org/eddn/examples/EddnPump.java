@@ -15,7 +15,7 @@ import java.util.zip.Inflater;
 public class EddnPump extends Thread {
 
     public static final String SCHEMA_KEY = "$schemaRef";
-    public static final String RELAY = "tcp://eddn-relay.elite-markets.net:9500";
+    public static final String RELAY = "tcp://eddn.edcd.io:9500";
 
     public void msg(String msg) {
         System.out.println(msg);

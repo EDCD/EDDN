@@ -18,7 +18,7 @@ namespace ConsoleApp
             using (var client = new SubscriberSocket())
             {
                 client.Options.ReceiveHighWatermark = 1000;
-                client.Connect("tcp://eddn-relay.elite-markets.net:9500");
+                client.Connect("tcp://eddn.edcd.io:9500");
                 client.SubscribeToAnyTopic();
                 while (true)
                 {

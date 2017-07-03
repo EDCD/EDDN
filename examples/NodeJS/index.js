@@ -2,7 +2,7 @@ const zlib = require('zlib');
 const zmq = require('zeromq');
 const sock = zmq.socket('sub');
 
-sock.connect('tcp://eddn-relay.elite-markets.net:9500');
+sock.connect('tcp://eddn.edcd.io:9500');
 console.log('Worker connected to port 9500');
 
 sock.subscribe('');

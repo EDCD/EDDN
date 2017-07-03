@@ -7,7 +7,7 @@ import time
 """
  "  Configuration
 """
-__relayEDDN             = 'tcp://eddn-relay.elite-markets.net:9500'
+__relayEDDN             = 'tcp://eddn.edcd.io:9500'
 __timeoutEDDN           = 600000
 
 
