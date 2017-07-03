@@ -42,20 +42,30 @@ class _Settings(object):
     GATEWAY_IP_KEY_SALT                     = None
 
     GATEWAY_JSON_SCHEMAS                    = {
-        "http://schemas.elite-markets.net/eddn/commodity/3": "schemas/commodity-v3.0.json",
-        "http://schemas.elite-markets.net/eddn/commodity/3/test": "schemas/commodity-v3.0.json",
+        "http://schemas.elite-markets.net/eddn/commodity/3"         : "schemas/commodity-v3.0.json",
+        "http://schemas.elite-markets.net/eddn/commodity/3/test"    : "schemas/commodity-v3.0.json",
+        "https://eddn.edcd.io/schemas/commodity/3"                  : "schemas/commodity-v3.0.json",
+        "https://eddn.edcd.io/schemas/commodity/3/test"             : "schemas/commodity-v3.0.json",
 
-        "http://schemas.elite-markets.net/eddn/shipyard/2": "schemas/shipyard-v2.0.json",
-        "http://schemas.elite-markets.net/eddn/shipyard/2/test": "schemas/shipyard-v2.0.json",
+        "http://schemas.elite-markets.net/eddn/shipyard/2"          : "schemas/shipyard-v2.0.json",
+        "http://schemas.elite-markets.net/eddn/shipyard/2/test"     : "schemas/shipyard-v2.0.json",
+        "https://eddn.edcd.io/schemas/shipyard/2"                   : "schemas/shipyard-v2.0.json",
+        "https://eddn.edcd.io/schemas/shipyard/2/test"              : "schemas/shipyard-v2.0.json",
 
-        "http://schemas.elite-markets.net/eddn/outfitting/2": "schemas/outfitting-v2.0.json",
-        "http://schemas.elite-markets.net/eddn/outfitting/2/test": "schemas/outfitting-v2.0.json",
+        "http://schemas.elite-markets.net/eddn/outfitting/2"        : "schemas/outfitting-v2.0.json",
+        "http://schemas.elite-markets.net/eddn/outfitting/2/test"   : "schemas/outfitting-v2.0.json",
+        "https://eddn.edcd.io/schemas/outfitting/2"                 : "schemas/outfitting-v2.0.json",
+        "https://eddn.edcd.io/schemas/outfitting/2/test"            : "schemas/outfitting-v2.0.json",
 
-        "http://schemas.elite-markets.net/eddn/blackmarket/1": "schemas/blackmarket-v1.0.json",
-        "http://schemas.elite-markets.net/eddn/blackmarket/1/test": "schemas/blackmarket-v1.0.json",
+        "http://schemas.elite-markets.net/eddn/blackmarket/1"       : "schemas/blackmarket-v1.0.json",
+        "http://schemas.elite-markets.net/eddn/blackmarket/1/test"  : "schemas/blackmarket-v1.0.json",
+        "https://eddn.edcd.io/schemas/blackmarket/1"                : "schemas/blackmarket-v1.0.json",
+        "https://eddn.edcd.io/schemas/blackmarket/1/test"           : "schemas/blackmarket-v1.0.json",
 
-        "http://schemas.elite-markets.net/eddn/journal/1": "schemas/journal-v1.0.json",
-        "http://schemas.elite-markets.net/eddn/journal/1/test": "schemas/journal-v1.0.json",
+        "http://schemas.elite-markets.net/eddn/journal/1"           : "schemas/journal-v1.0.json",
+        "http://schemas.elite-markets.net/eddn/journal/1/test"      : "schemas/journal-v1.0.json",
+        "https://eddn.edcd.io/schemas/journal/1"                    : "schemas/journal-v1.0.json",
+        "https://eddn.edcd.io/schemas/journal/1/test"               : "schemas/journal-v1.0.json",
     }
 
     GATEWAY_OUTDATED_SCHEMAS                = [
