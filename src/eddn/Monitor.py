@@ -258,8 +258,8 @@ def main():
         host='0.0.0.0', 
         port=9091, 
         server='gevent', 
-        certfile='/etc/letsencrypt/live/eddn.edcd.io/fullchain.pem', 
-        keyfile='/etc/letsencrypt/live/eddn.edcd.io/privkey.pem'
+        certfile=Settings.CERT_FILE,
+        keyfile=Settings.KEY_FILE
     )
 
 

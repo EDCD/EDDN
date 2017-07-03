@@ -10,6 +10,13 @@ class _Settings(object):
     EDDN_VERSION = version
 
     ###############################################################################
+    # Local installation settings
+    ###############################################################################
+
+    CERT_FILE                               = '/etc/letsencrypt/live/eddn.edcd.io/fullchain.pem'
+    KEY_FILE                                = '/etc/letsencrypt/live/eddn.edcd.io/privkey.pem'
+
+    ###############################################################################
     # Relay settings
     ###############################################################################
 

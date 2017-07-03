@@ -115,8 +115,8 @@ def main():
         host=Settings.RELAY_HTTP_BIND_ADDRESS, 
         port=Settings.RELAY_HTTP_PORT, 
         server='gevent', 
-        certfile='/etc/letsencrypt/live/eddn.edcd.io/fullchain.pem', 
-        keyfile='/etc/letsencrypt/live/eddn.edcd.io/privkey.pem'
+        certfile=Settings.CERT_FILE,
+        keyfile=Settings.KEY_FILE
     )
 
 
