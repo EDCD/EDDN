@@ -1,16 +1,19 @@
 var updateInterval      = 60000,
 
-    monitorEndPoint     = 'http://eddn-gateway.elite-markets.net:9091/',
+    monitorEndPoint     = 'https://eddn.edcd.io:9091/',
     
-    gatewayBottlePort   = 8080,
+    //gatewayBottlePort   = 8080,
+    gatewayBottlePort   = 4430,
     relayBottlePort     = 9090,
     
     gateways            = [
-        'eddn-gateway.elite-markets.net'
+        'eddn.edcd.io',
+        //'eddn-gateway.elite-markets.net'
     ], // Must find a way to bind them to monitor
     
     relays              = [
-        'eddn-relay.elite-markets.net'
+        'eddn.edcd.io',
+        //'eddn-relay.elite-markets.net'
     ]; // Must find a way to bind them to monitor
     
 var stats = {
@@ -539,7 +542,7 @@ var start       = function(){
         gateway = gateway.replace(':8500', '');
         
         $("select[name=gateways]").append($('<option>', { 
-            value: 'http://' + gateway + ':' + gatewayBottlePort + '/stats/',
+            value: 'https://' + gateway + ':' + gatewayBottlePort + '/stats/',
             text : gateway
         }));
         
@@ -586,7 +589,7 @@ var start       = function(){
     //relays = relays.sort();
     $.each(relays, function(k, relay){
         $("select[name=relays]").append($('<option>', { 
-            value: 'http://' + relay + ':' + relayBottlePort + '/stats/',
+            value: 'https://' + relay + ':' + relayBottlePort + '/stats/',
             text : relay
         }));
                 

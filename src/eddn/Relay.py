@@ -111,7 +111,13 @@ def main():
     loadConfig()
     r = Relay()
     r.start()
-    bottle_run(host='0.0.0.0', port=9090, server='gevent')
+    bottle_run(
+        host=Settings.RELAY_HTTP_BIND_ADDRESS, 
+        port=Settings.RELAY_HTTP_PORT, 
+        server='gevent', 
+        certfile=Settings.CERT_FILE,
+        keyfile=Settings.KEY_FILE
+    )
 
 
 if __name__ == '__main__':

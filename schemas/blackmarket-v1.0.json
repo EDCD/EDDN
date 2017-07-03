@@ -1,6 +1,6 @@
 {
     "$schema"               : "http://json-schema.org/draft-04/schema#",
-    "id"                    : "http://schemas.elite-markets.net/eddn/blackmarket/1#",
+    "id"                    : "https://eddn.edcd.io/schemas/blackmarket/1#",
     "type"                  : "object",
     "additionalProperties"  : false,
     "required": [ "$schemaRef", "header", "message" ],

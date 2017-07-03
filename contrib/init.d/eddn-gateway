@@ -1,0 +1,53 @@
+#!/bin/sh
+
+### BEGIN INIT INFO
+# Provides: eddn-gateway
+# Required-Start: $network
+# Required-Stop:
+# Default-Start: 2 3 4 5
+# Default-Stop: 0 1 6
+### END INIT INFO
+
+NAME=eddn-gateway
+DESC="eddn-gateway"
+PIDFILE="/var/run/${NAME}.pid"
+LOGFILE="/var/log/eddn/${NAME}.log"
+
+DAEMON="/usr/local/bin/${NAME}"
+
+EXEC_AS_USER="root"
+
+START_OPTS="--start --background --make-pidfile --pidfile ${PIDFILE} --chuid ${EXEC_AS_USER} --exec ${DAEMON}"
+STOP_OPTS="--stop --pidfile ${PIDFILE}"
+
+test -x $DAEMON || exit 0
+
+set -e
+
+case "$1" in
+start)
+    echo -n "Starting ${DESC}: "
+    start-stop-daemon $START_OPTS >> $LOGFILE
+    echo "$NAME."
+    ;;
+stop)
+    echo -n "Stopping $DESC: "
+    start-stop-daemon $STOP_OPTS
+    echo "$NAME."
+    rm -f $PIDFILE
+    ;;
+restart|force-reload)
+    echo -n "Restarting $DESC: "
+    start-stop-daemon $STOP_OPTS
+    sleep 1
+    start-stop-daemon $START_OPTS >> $LOGFILE
+    echo "$NAME."
+    ;;
+*)
+    N=/etc/init.d/$NAME
+    echo "Usage: $N {start|stop|restart|force-reload}" >&2
+    exit 1
+    ;;
+esac
+
+exit 0

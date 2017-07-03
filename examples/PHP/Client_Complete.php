@@ -2,7 +2,7 @@
 /**
  *  Configuration
  */
-$relayEDDN              = 'tcp://eddn-relay.elite-markets.net:9500';
+$relayEDDN              = 'tcp://eddn.edcd.io:9500';
 $timeoutEDDN            = 600000;
 
 // Set false to listen to production stream

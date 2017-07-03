@@ -254,7 +254,13 @@ def main():
     loadConfig()
     m = Monitor()
     m.start()
-    bottle_run(host='0.0.0.0', port=9091, server='gevent')
+    bottle_run(
+        host='0.0.0.0', 
+        port=9091, 
+        server='gevent', 
+        certfile=Settings.CERT_FILE,
+        keyfile=Settings.KEY_FILE
+    )
 
 
 if __name__ == '__main__':
