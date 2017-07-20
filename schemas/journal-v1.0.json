@@ -40,7 +40,7 @@
                     "format"        : "date-time"
                 },
                 "event" : {
-                    "enum"          : [ "Docked", "FSDJump", "Scan" ]
+                    "enum"          : [ "Docked", "FSDJump", "Scan", "Location" ]
                 },
                 "StarSystem": {
                     "type"          : "string",
