@@ -37,11 +37,6 @@ statsCollector = StatsCollector()
 statsCollector.start()
 
 
-# Migration from schemas.elite-markets.net to eddn.edcd.io - Remove after transition complete!
-import re
-TRANSITION_RE = re.compile('^https://eddn.edcd.io/schemas/(.+)')
-
-
 def configure():
     # Get the list of transports to bind from settings. This allows us to PUB
     # messages to multiple announcers over a variety of socket types
@@ -149,11 +144,6 @@ def parse_and_error_handle(data):
 
     if validationResults.severity <= ValidationSeverity.WARN:
         parsed_message['header']['gatewayTimestamp'] = datetime.utcnow().isoformat() + 'Z'
-
-        # Migration from schemas.elite-markets.net to eddn.edcd.io - Remove after transition complete!
-        match = TRANSITION_RE.match(parsed_message['$schemaRef'])
-        if match and match.group(1):
-            parsed_message['$schemaRef'] = 'http://schemas.elite-markets.net/eddn/%s' % match.group(1)
 
         ip_hash_salt = Settings.GATEWAY_IP_KEY_SALT
         if ip_hash_salt:
