@@ -228,15 +228,10 @@
                     schemasCount = {};
                     $.each(schemasCountTmp, function(schema, hits){
                         schema = schema.replace('http://schemas.elite-markets.net/eddn/', 'https://eddn.edcd.io/schemas/');
+                        hits   = parseInt(hits);
                         
-                        if(schemasCount[schema])
-                        {
-                            schemasCount[schema] += hits;
-                        }
-                        else
-                        {
-                            schemasCount[schema] = hits;
-                        }
+                        if(schemasCount[schema]){ schemasCount[schema] += hits; }
+                        else{ schemasCount[schema] = hits; }
                     });
                     
                     // Loop results
