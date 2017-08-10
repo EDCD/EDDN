@@ -7,14 +7,12 @@ var updateInterval      = 60000,
     relayBottlePort     = 9090,
     
     gateways            = [
-        'eddn.edcd.io',
-        //'eddn-gateway.elite-markets.net'
-    ], // Must find a way to bind them to monitor
+        'eddn.edcd.io'
+    ], //TODO: Must find a way to bind them to monitor
     
     relays              = [
-        'eddn.edcd.io',
-        //'eddn-relay.elite-markets.net'
-    ]; // Must find a way to bind them to monitor
+        'eddn.edcd.io'
+    ]; //TODO: Must find a way to bind them to monitor
     
 var stats = {
     'gateways' : {},
@@ -32,21 +30,19 @@ var makeSlug = function(str) {
 }
 
 var makeName =  function(str) {
-    var match = /^http:\/\/schemas.elite-markets.net\/eddn\/(\w)(\w*)\/(\d+)$/.exec(str);
-    
-    if(match)
-    {
-        return match[1].toUpperCase() + match[2] + " v" + match[3];
-    }
-    
-    var match = /^http:\/\/schemas.elite-markets.net\/eddn\/(\w)(\w*)\/(\d+)\/test$/.exec(str);
-    
-    if(match)
-    {
-        return match[1].toUpperCase() + match[2] + " v" + match[3] + " [TEST]";
-    }
-    
-    return str;
+	var match = /^https:\/\/eddn.edcd.io\/schemas\/(\w)(\w*)\/(\d+)$/.exec(str);
+	if(match)
+	{
+		return match[1].toUpperCase() + match[2] + " v" + match[3];
+	}
+
+	var match = /^https:\/\/eddn.edcd.io\/schemas\/(\w)(\w*)\/(\d+)\/test$/.exec(str);
+	if(match)
+	{
+		return match[1].toUpperCase() + match[2] + " v" + match[3] + " [TEST]";
+	}
+
+	return str;
 }
 
 secondsToDurationString = function(seconds) {
@@ -376,7 +372,17 @@ var doUpdateSchemas = function()
             $.ajax({
                 dataType: "json",
                 url: monitorEndPoint + 'getTotalSchemas/',
-                success: function(schemasTotal){
+                success: function(schemasTotalTmp){
+					// Convert old schemas and sum them to new schemas
+                    schemasTotal = {};
+                    $.each(schemasTotalTmp, function(schema, hits){
+                        schema = schema.replace('http://schemas.elite-markets.net/eddn/', 'https://eddn.edcd.io/schemas/');
+                        hits   = parseInt(hits);
+                        
+                        if(schemasTotal[schema]){ schemasTotal[schema] += hits; }
+                        else{ schemasTotal[schema] = hits; }
+                    });
+					
                     var chart   = $('#schemas .chart').highcharts(),
                         series  = chart.get('schemas');
                     
@@ -388,6 +394,27 @@ var doUpdateSchemas = function()
                             schemas[yesterday] = [];
                         if(schemas[today] == undefined)
                             schemas[today] = [];
+						
+						// Convert old schemas and sum them to new schemas
+						schemasYesterdayTmp = {};
+						$.each(schemas[yesterday], function(schema, hits){
+							schema = schema.replace('http://schemas.elite-markets.net/eddn/', 'https://eddn.edcd.io/schemas/');
+							hits   = parseInt(hits);
+
+							if(schemasYesterdayTmp[schema]){ schemasYesterdayTmp[schema] += hits; }
+							else{ schemasYesterdayTmp[schema] = hits; }
+						});
+						schemas[yesterday] = schemasYesterdayTmp;
+						
+						schemasTodayTmp = {};
+						$.each(schemas[today], function(schema, hits){
+							schema = schema.replace('http://schemas.elite-markets.net/eddn/', 'https://eddn.edcd.io/schemas/');
+							hits   = parseInt(hits);
+
+							if(schemasTodayTmp[schema]){ schemasYesterdayTmp[schema] += hits; }
+							else{ schemasTodayTmp[schema] = hits; }
+						});
+						schemas[today] = schemasTodayTmp;
                             
                         var slug = makeSlug(schema);
                         var name = makeName(schema);
