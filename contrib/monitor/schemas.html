@@ -117,15 +117,13 @@
     	return finishedslug.toLowerCase();
     }
     var makeName =  function(str) {
-        var match = /^http:\/\/schemas.elite-markets.net\/eddn\/(\w)(\w*)\/(\d+)$/.exec(str);
-        
+        var match = /^https:\/\/eddn.edcd.io\/schemas\/(\w)(\w*)\/(\d+)$/.exec(str);
         if(match)
         {
             return match[1].toUpperCase() + match[2] + " v" + match[3];
         }
         
-        var match = /^http:\/\/schemas.elite-markets.net\/eddn\/(\w)(\w*)\/(\d+)\/test$/.exec(str);
-        
+        var match = /^https:\/\/eddn.edcd.io\/schemas\/(\w)(\w*)\/(\d+)\/test$/.exec(str);
         if(match)
         {
             return match[1].toUpperCase() + match[2] + " v" + match[3] + " [TEST]";
@@ -221,12 +219,27 @@
                 var chart = chartContainer.highcharts();
                 var chartStacked = chartStackedContainer.highcharts();
                 
-                
-                $.each(schemas, function(date, schemasCount){
+                $.each(schemas, function(date, schemasCountTmp){
                     // Convert date for highcharts
                     date = date.split('-')
                     date = Date.UTC(date[0], date[1] - 1, date[2]);
                     
+                    // Convert old schemas and sum them to new schemas
+                    schemasCount = {};
+                    $.each(schemasCountTmp, function(schema, hits){
+                        schema = schema.replace('http://schemas.elite-markets.net/eddn/', 'https://eddn.edcd.io/schemas/');
+                        
+                        if(schemasCount[schema])
+                        {
+                            schemasCount[schema] += hits;
+                        }
+                        else
+                        {
+                            schemasCount[schema] = hits;
+                        }
+                    });
+                    
+                    // Loop results
                     $.each(schemasCount, function(schema, hits){
                         // IF TEST CONTINUE
                         if(schema.substr(schema.length - 4) == 'test')
