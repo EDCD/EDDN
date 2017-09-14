@@ -49,6 +49,7 @@
                 "commodities": {
                     "type"      : "array",
                     "minItems"  : 1,
+                    "description" : "Commodities returned by the Companion API, with illegal commodities omitted",
                     "items"     : {
                         "type"                  : "object",
                         "additionalProperties"  : false,
@@ -92,6 +93,32 @@
                                 }
                             }
                         }
+                    }
+                },
+                "economies": {
+                    "type"      : "array",
+                    "items"     : {
+                        "type"                  : "object",
+                        "additionalProperties"  : false,
+                        "required"              : [ "name", "proportion" ],
+                        "properties"            : {
+                            "name": {
+                                "type"          : "string",
+                                "minLength"     : 1,
+                                "description"   : "Economy type as returned by the Companion API"
+                            },
+                            "proportion": {
+                                "type"          : "number"
+                            }
+                        }
+                    }
+                },
+                "prohibited": {
+                    "type"          : "array",
+                    "uniqueItems"   : true,
+                    "items"         : {
+                        "type"          : "string",
+                        "minLength"     : 1
                     }
                 }
             }
