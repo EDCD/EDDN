@@ -58,7 +58,7 @@
                             "name": {
                                 "type"          : "string",
                                 "minLength"     : 1,
-                                "description"   : "Commodity name as returned by the Companion API, misspellings and all"
+                                "description"   : "Symbolic name as returned by the Companion API"
                             },
                             "meanPrice": {
                                 "type"          : "integer"
