@@ -167,6 +167,7 @@ def parse_and_error_handle(data):
 
 @post('/upload/')
 def upload():
+    response.set_header("Access-Control-Allow-Origin", "*")
     try:
         # Body may or may not be compressed.
         message_body = get_decompressed_message()
