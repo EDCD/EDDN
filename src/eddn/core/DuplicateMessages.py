@@ -40,19 +40,19 @@ class DuplicateMessages(Thread):
             if re.search('test', message['$schemaRef'], re.I):
                 return False
 
-            if message['header']['gatewayTimestamp']:
+            if 'gatewayTimestamp' in message['header']:
                 del message['header']['gatewayTimestamp']  # Prevent dupe with new timestamp
-            if message['message']['timestamp']:
+            if 'timestamp' in message['message']:
                 del message['message']['timestamp']  # Prevent dupe with new timestamp
-            if message['header']['softwareName']:
+            if 'softwareName' in message['header']:
                 del message['header']['softwareName']  # Prevent dupe with different software
-            if message['header']['softwareVersion']:
+            if 'softwareVersion' in message['header']:
                 del message['header']['softwareVersion']  # Prevent dupe with different software version
-            if message['header']['uploaderID']:
+            if 'uploaderID' in message['header']:
                 del message['header']['uploaderID']  # Prevent dupe with different uploaderID
             
             # Convert starPos to avoid software modification in dupe messages
-            if message['message']['StarPos']:
+            if 'StarPos' in message['message']:
                 if message['message']['StarPos'][0]:
                     message['message']['StarPos'][0] = round(message['message']['StarPos'][0] *32)
                 if message['message']['StarPos'][1]:
@@ -61,7 +61,7 @@ class DuplicateMessages(Thread):
                     message['message']['StarPos'][2] = round(message['message']['StarPos'][2] *32)
             
             # Prevent Docked event with small difference in distance from start
-            if message['message']['DistFromStarLS']:
+            if 'DistFromStarLS' in message['message']:
                 message['message']['DistFromStarLS'] = round(message['message']['DistFromStarLS'])
 
             message = simplejson.dumps(message, sort_keys=True) # Ensure most duplicate messages will get the same key
