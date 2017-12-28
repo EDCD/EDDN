@@ -62,7 +62,7 @@ class DuplicateMessages(Thread):
             
             # Prevent Docked event with small difference in distance from start
             if message['message']['DistFromStarLS']:
-                message['message']['DistFromStarLS'] = int(message['message']['DistFromStarLS'])
+                message['message']['DistFromStarLS'] = round(message['message']['DistFromStarLS'])
 
             message = simplejson.dumps(message, sort_keys=True) # Ensure most duplicate messages will get the same key
             key     = hashlib.sha256(message).hexdigest()
