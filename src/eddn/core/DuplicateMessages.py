@@ -54,11 +54,11 @@ class DuplicateMessages(Thread):
             # Convert starPos to avoid software modification in dupe messages
             if message['message']['StarPos']:
                 if message['message']['StarPos'][0]:
-                    message['message']['StarPos'][0] = round(message['message']['StarPos'][0] *32) /32
+                    message['message']['StarPos'][0] = round(message['message']['StarPos'][0] *32)
                 if message['message']['StarPos'][1]:
-                    message['message']['StarPos'][1] = round(message['message']['StarPos'][1] *32) /32
+                    message['message']['StarPos'][1] = round(message['message']['StarPos'][1] *32)
                 if message['message']['StarPos'][2]:
-                    message['message']['StarPos'][2] = round(message['message']['StarPos'][2] *32) /32
+                    message['message']['StarPos'][2] = round(message['message']['StarPos'][2] *32)
 
             message = simplejson.dumps(message, sort_keys=True) # Ensure most duplicate messages will get the same key
             key     = hashlib.sha256(message).hexdigest()
