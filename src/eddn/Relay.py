@@ -86,26 +86,26 @@ class Relay(Thread):
                 message = message[0]
 
             message = zlib.decompress(message)
-            message = simplejson.loads(message)
+            json    = simplejson.loads(message)
             
             # Handle duplicate message
             if Settings.RELAY_DUPLICATE_MAX_MINUTES:
-                if duplicateMessages.isDuplicated(message):
+                if duplicateMessages.isDuplicated(json):
                     # We've already seen this message recently. Discard it.
                     statsCollector.tally("duplicate")
                     return
             
             # Remove IP to end consumer
-            #if 'uploaderIP' in message['header']:
-            #    del message['header']['uploaderIP']
+            if 'uploaderIP' in json['header']:
+                del json['header']['uploaderIP']
             
-            # Convert messgae back to JSON
-            message = simplejson.dumps(message, sort_keys=True)
+            # Convert message back to JSON
+            message = simplejson.dumps(json, sort_keys=True)
             
-            # Recompress message when needed
-            if not Settings.RELAY_DECOMPRESS_MESSAGES:
-                message = zlib.compress(message)
+            # Recompress message
+            message = zlib.compress(message)
             
+            # Send message
             sender.send(message)
             statsCollector.tally("outbound")
 

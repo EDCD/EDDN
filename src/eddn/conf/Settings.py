@@ -27,8 +27,6 @@ class _Settings(object):
 
     RELAY_SENDER_BINDINGS                   = ["tcp://*:9500"]
 
-    RELAY_DECOMPRESS_MESSAGES               = False
-
     # If set to False, no deduplicate is made
     RELAY_DUPLICATE_MAX_MINUTES             = 15
 
@@ -93,9 +91,7 @@ class _Settings(object):
     ]
 
     MONITOR_DB                              = "/home/EDDN_Monitor.s3db"
-    MONITOR_DB                              = "D:/EDDN_Monitor.s3db" #DEBUG
-
-    MONITOR_DECOMPRESS_MESSAGES             = True
+    #MONITOR_DB                              = "D:/EDDN_Monitor.s3db" #DEBUG
     
     MONITOR_UA                              = "UA-496332-23"
 

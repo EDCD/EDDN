@@ -2,7 +2,7 @@
 import hashlib
 import re
 import simplejson
-import zlib
+import copy
 
 from datetime import datetime, timedelta
 from eddn.conf.Settings import Settings
@@ -31,37 +31,40 @@ class DuplicateMessages(Thread):
                     if self.caches[key] + timedelta(minutes=self.max_minutes) < maxTime:
                         del self.caches[key]
 
-    def isDuplicated(self, message):
+    def isDuplicated(self, json):
         with self.lock:
+            jsonTest = copy.deepcopy(json)
+        
             # Test messages are not duplicate
-            if re.search('test', message['$schemaRef'], re.I):
+            if re.search('test', jsonTest['$schemaRef'], re.I):
                 return False
-
-            if 'gatewayTimestamp' in message['header']:
-                del message['header']['gatewayTimestamp']  # Prevent dupe with new timestamp
-            if 'timestamp' in message['message']:
-                del message['message']['timestamp']  # Prevent dupe with new timestamp
-            if 'softwareName' in message['header']:
-                del message['header']['softwareName']  # Prevent dupe with different software
-            if 'softwareVersion' in message['header']:
-                del message['header']['softwareVersion']  # Prevent dupe with different software version
-            if 'uploaderID' in message['header']:
-                del message['header']['uploaderID']  # Prevent dupe with different uploaderID
+            
+            # Remove headers
+            if 'gatewayTimestamp' in jsonTest['header']:
+                del jsonTest['header']['gatewayTimestamp']  # Prevent dupe with new timestamp
+            if 'timestamp' in jsonTest['message']:
+                del jsonTest['message']['timestamp']  # Prevent dupe with new timestamp
+            if 'softwareName' in jsonTest['header']:
+                del jsonTest['header']['softwareName']  # Prevent dupe with different software
+            if 'softwareVersion' in jsonTest['header']:
+                del jsonTest['header']['softwareVersion']  # Prevent dupe with different software version
+            if 'uploaderID' in jsonTest['header']:
+                del jsonTest['header']['uploaderID']  # Prevent dupe with different uploaderID
             
             # Convert starPos to avoid software modification in dupe messages
-            if 'StarPos' in message['message']:
-                if message['message']['StarPos'][0]:
-                    message['message']['StarPos'][0] = round(message['message']['StarPos'][0] *32)
-                if message['message']['StarPos'][1]:
-                    message['message']['StarPos'][1] = round(message['message']['StarPos'][1] *32)
-                if message['message']['StarPos'][2]:
-                    message['message']['StarPos'][2] = round(message['message']['StarPos'][2] *32)
+            if 'StarPos' in jsonTest['message']:
+                if jsonTest['message']['StarPos'][0]:
+                    jsonTest['message']['StarPos'][0] = round(jsonTest['message']['StarPos'][0] *32)
+                if jsonTest['message']['StarPos'][1]:
+                    jsonTest['message']['StarPos'][1] = round(jsonTest['message']['StarPos'][1] *32)
+                if jsonTest['message']['StarPos'][2]:
+                    jsonTest['message']['StarPos'][2] = round(jsonTest['message']['StarPos'][2] *32)
             
             # Prevent Docked event with small difference in distance from start
-            if 'DistFromStarLS' in message['message']:
-                message['message']['DistFromStarLS'] = round(message['message']['DistFromStarLS'])
+            if 'DistFromStarLS' in jsonTest['message']:
+                jsonTest['message']['DistFromStarLS'] = round(jsonTest['message']['DistFromStarLS'])
 
-            message = simplejson.dumps(message, sort_keys=True) # Ensure most duplicate messages will get the same key
+            message = simplejson.dumps(jsonTest, sort_keys=True) # Ensure most duplicate messages will get the same key
             key     = hashlib.sha256(message).hexdigest()
 
             if key not in self.caches:
