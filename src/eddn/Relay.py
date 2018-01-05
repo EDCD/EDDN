@@ -85,19 +85,29 @@ class Relay(Thread):
             else:
                 message = message[0]
 
+            message = zlib.decompress(message)
+            message = simplejson.loads(message)
+            
+            # Handle duplicate message
             if Settings.RELAY_DUPLICATE_MAX_MINUTES:
                 if duplicateMessages.isDuplicated(message):
                     # We've already seen this message recently. Discard it.
                     statsCollector.tally("duplicate")
                     return
-
-            if Settings.RELAY_DECOMPRESS_MESSAGES:
-                message = zlib.decompress(message)
-
+            
+            # Remove IP to end consumer
+            if 'uploaderIP' in message['header']:
+                del json['header']['uploaderIP']
+            
+            # Convert messgae back to JSON
+            message = simplejson.dumps(message, sort_keys=True)
+            
+            # Recompress message when needed
+            if not Settings.RELAY_DECOMPRESS_MESSAGES:
+                message = zlib.compress(message)
+            
             sender.send(message)
             statsCollector.tally("outbound")
-
-        logger.info("Relay is now listening for order data.")
 
         while True:
             # For each incoming message, spawn a greenlet using the relay_worker

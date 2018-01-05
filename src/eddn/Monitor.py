@@ -11,8 +11,10 @@ import sqlite3
 import datetime
 import collections
 import zmq.green as zmq
+
 from bottle import get, request, response, run as bottle_run
 from eddn.conf.Settings import Settings, loadConfig
+from eddn.core.Analytics import Analytics
 
 from gevent import monkey
 monkey.patch_all()
@@ -186,6 +188,8 @@ class Monitor(Thread):
 
         receiver = context.socket(zmq.SUB)
         receiver.setsockopt(zmq.SUBSCRIBE, '')
+        
+        analytics = Analytics()
 
         for binding in Settings.MONITOR_RECEIVER_BINDINGS:
             receiver.connect(binding)
@@ -210,6 +214,7 @@ class Monitor(Thread):
                     c.execute('UPDATE schemas SET hits = hits + 1 WHERE `name` = ? AND `dateStats` = DATE("now", "utc")', (schemaID, ))
                     c.execute('INSERT OR IGNORE INTO schemas (name, dateStats) VALUES (?, DATE("now", "utc"))', (schemaID, ))
                     db.commit()
+                    db.close()
 
                     return
 
@@ -244,6 +249,12 @@ class Monitor(Thread):
             db.commit()
 
             db.close()
+            
+            uploaderIP = None
+            if 'uploaderIP' in json['header']:
+                uploaderIP = json['header']['uploaderIP'].encode('utf8')
+                
+            analytics.hit(schemaID, uploaderID, uploaderIP)
 
         while True:
             inboundMessage = receiver.recv()

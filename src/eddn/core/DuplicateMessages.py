@@ -33,9 +33,6 @@ class DuplicateMessages(Thread):
 
     def isDuplicated(self, message):
         with self.lock:
-            message = zlib.decompress(message)
-            message = simplejson.loads(message)
-
             # Test messages are not duplicate
             if re.search('test', message['$schemaRef'], re.I):
                 return False

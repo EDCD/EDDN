@@ -46,8 +46,6 @@ class _Settings(object):
 
     GATEWAY_SENDER_BINDINGS                 = ["tcp://*:8500"]
 
-    GATEWAY_IP_KEY_SALT                     = None
-
     GATEWAY_JSON_SCHEMAS                    = {
         "https://eddn.edcd.io/schemas/commodity/3"                  : "schemas/commodity-v3.0.json",
         "https://eddn.edcd.io/schemas/commodity/3/test"             : "schemas/commodity-v3.0.json",
@@ -95,8 +93,11 @@ class _Settings(object):
     ]
 
     MONITOR_DB                              = "/home/EDDN_Monitor.s3db"
+    MONITOR_DB                              = "D:/EDDN_Monitor.s3db" #DEBUG
 
     MONITOR_DECOMPRESS_MESSAGES             = True
+    
+    MONITOR_UA                              = "UA-496332-23"
 
 
 
