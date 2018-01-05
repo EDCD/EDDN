@@ -97,7 +97,7 @@ class Relay(Thread):
             
             # Remove IP to end consumer
             if 'uploaderIP' in message['header']:
-                del json['header']['uploaderIP']
+                del message['header']['uploaderIP']
             
             # Convert messgae back to JSON
             message = simplejson.dumps(message, sort_keys=True)
