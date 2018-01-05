@@ -2,7 +2,6 @@
 import hashlib
 import re
 import simplejson
-import copy
 
 from datetime import datetime, timedelta
 from eddn.conf.Settings import Settings
@@ -33,36 +32,23 @@ class DuplicateMessages(Thread):
 
     def isDuplicated(self, json):
         with self.lock:
-            jsonTest = copy.deepcopy(json)
-        
             # Test messages are not duplicate
-            if re.search('test', jsonTest['$schemaRef'], re.I):
+            if re.search('test', json['$schemaRef'], re.I):
                 return False
-            
-            # Remove headers
-            if 'gatewayTimestamp' in jsonTest['header']:
-                del jsonTest['header']['gatewayTimestamp']  # Prevent dupe with new timestamp
-            if 'timestamp' in jsonTest['message']:
-                del jsonTest['message']['timestamp']  # Prevent dupe with new timestamp
-            if 'softwareName' in jsonTest['header']:
-                del jsonTest['header']['softwareName']  # Prevent dupe with different software
-            if 'softwareVersion' in jsonTest['header']:
-                del jsonTest['header']['softwareVersion']  # Prevent dupe with different software version
-            if 'uploaderID' in jsonTest['header']:
-                del jsonTest['header']['uploaderID']  # Prevent dupe with different uploaderID
-            
+
+            # Shallow copy, minus headers
+            jsonTest = {
+                '$schemaRef': json['$schemaRef'],
+                'message': json['message'],
+            }
+
             # Convert starPos to avoid software modification in dupe messages
             if 'StarPos' in jsonTest['message']:
-                if jsonTest['message']['StarPos'][0]:
-                    jsonTest['message']['StarPos'][0] = round(jsonTest['message']['StarPos'][0] *32)
-                if jsonTest['message']['StarPos'][1]:
-                    jsonTest['message']['StarPos'][1] = round(jsonTest['message']['StarPos'][1] *32)
-                if jsonTest['message']['StarPos'][2]:
-                    jsonTest['message']['StarPos'][2] = round(jsonTest['message']['StarPos'][2] *32)
-            
+                jsonTest['message']['StarPos'] = [int(round(x * 32)) for x in jsonTest['message']['StarPos']]
+
             # Prevent Docked event with small difference in distance from start
             if 'DistFromStarLS' in jsonTest['message']:
-                jsonTest['message']['DistFromStarLS'] = round(jsonTest['message']['DistFromStarLS'])
+                jsonTest['message']['DistFromStarLS'] = int(jsonTest['message']['DistFromStarLS'] + 0.5)
 
             message = simplejson.dumps(jsonTest, sort_keys=True) # Ensure most duplicate messages will get the same key
             key     = hashlib.sha256(message).hexdigest()
