@@ -160,6 +160,7 @@ def getTotalSchemas():
 def getSchemas():
     response.set_header("Access-Control-Allow-Origin", "*")
     db = sqlite3.connect(Settings.MONITOR_DB)
+    db.text_factory = lambda x: unicode(x, "utf-8", "ignore")
     schemas = collections.OrderedDict()
 
     dateStart = request.GET.get('dateStart', str(date('%Y-%m-%d'))).strip()
