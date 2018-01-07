@@ -39,7 +39,7 @@ class DuplicateMessages(Thread):
             # Shallow copy, minus headers
             jsonTest = {
                 '$schemaRef': json['$schemaRef'],
-                'message': json['message'],
+                'message': dict(json['message']),
             }
 
             # Convert starPos to avoid software modification in dupe messages
