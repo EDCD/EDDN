@@ -95,6 +95,10 @@ class Relay(Thread):
                     statsCollector.tally("duplicate")
                     return
             
+            # Remove ID to end consumer (Avoid realtime user tracking without their consent)
+            if 'uploaderID' in json['header']:
+                del json['header']['uploaderID']
+            
             # Remove IP to end consumer
             if 'uploaderIP' in json['header']:
                 del json['header']['uploaderIP']

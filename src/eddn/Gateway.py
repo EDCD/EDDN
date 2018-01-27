@@ -146,7 +146,7 @@ def parse_and_error_handle(data):
         parsed_message['header']['gatewayTimestamp']    = datetime.utcnow().isoformat() + 'Z'
         parsed_message['header']['uploaderIP']          = get_remote_address()        
 
-        # Sends the parsed to the Relay/Monitor as compressed JSON.
+        # Sends the parsed message to the Relay/Monitor as compressed JSON.
         gevent.spawn(push_message, parsed_message, parsed_message['$schemaRef'])
         logger.info("Accepted %s upload from %s" % (
             parsed_message, get_remote_address()
