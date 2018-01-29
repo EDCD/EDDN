@@ -11,6 +11,10 @@ from threading import Thread
 logger = logging.getLogger(__name__)
 import zlib
 
+import random
+import string
+import hashlib
+
 import gevent
 import simplejson
 import zmq.green as zmq
@@ -38,6 +42,35 @@ def stats():
     stats = statsCollector.getSummary()
     stats["version"] = Settings.EDDN_VERSION
     return simplejson.dumps(stats)
+
+
+def onetime_prefix():
+    """
+    Return random string 8 character string
+    :return:
+    """
+    prefix = ""
+    while len(prefix) < 8:
+        prefix += random.choice(string.lowercase + string.digits + string.uppercase)
+    return prefix
+
+
+# used by scramble_uploader to give a unique "key" each time the relay process is started
+_onetime_prefix_value = onetime_prefix()
+
+
+def scramble_uploader(uploaderId):
+    """
+    Make a one-way hash of the uploader that can't be undone from.
+
+    This is kind of like an HMac with _onetime_prefix_value as an ephemeral key.
+    the public data
+    :param uploaderId:
+    :return:
+    """
+    hasher = hashlib.sha1()
+    hasher.update(_onetime_prefix_value + uploaderId)
+    return hasher.hexdigest()[:20]
 
 
 class Relay(Thread):
@@ -95,9 +128,9 @@ class Relay(Thread):
                     statsCollector.tally("duplicate")
                     return
             
-            # Remove ID to end consumer (Avoid realtime user tracking without their consent)
+            # Scramble ID to end consumer (Avoid realtime user tracking without their consent)
             if 'uploaderID' in json['header']:
-                del json['header']['uploaderID']
+                json['header']['uploaderID'] = scramble_uploader(json['header']['uploaderID'])
             
             # Remove IP to end consumer
             if 'uploaderIP' in json['header']:
