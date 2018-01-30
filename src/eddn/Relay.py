@@ -13,6 +13,7 @@ import zlib
 
 import gevent
 import simplejson
+import hashlib
 import zmq.green as zmq
 from bottle import get, response, run as bottle_run
 from eddn.conf.Settings import Settings, loadConfig
@@ -95,9 +96,12 @@ class Relay(Thread):
                     statsCollector.tally("duplicate")
                     return
             
-            # Remove ID to end consumer (Avoid realtime user tracking without their consent)
+            # Hash ID with private IP if available (Avoid realtime user tracking without their consent)
             if 'uploaderID' in json['header']:
-                del json['header']['uploaderID']
+                if 'uploaderIP' in json['header']:
+                    json['header']['uploaderID'] = hashlib.sha1("%s%s" % (json['header']['uploaderIP'], json['header']['uploaderID'])).hexdigest()
+                else:
+                    json['header']['uploaderID'] = hashlib.sha1(json['header']['uploaderID']).hexdigest()
             
             # Remove IP to end consumer
             if 'uploaderIP' in json['header']:
