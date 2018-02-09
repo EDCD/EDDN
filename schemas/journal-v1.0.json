@@ -40,7 +40,7 @@
                     "format"        : "date-time"
                 },
                 "event" : {
-                    "enum"          : [ "Docked", "FSDJump", "Scan", "Location" ]
+                    "enum"          : [ "Docked", "FSDJump", "Scan", "Location", "Died", "Interdicted" ]
                 },
                 "StarSystem": {
                     "type"          : "string",
@@ -61,7 +61,17 @@
                 "FuelUsed"          : { "$ref" : "#/definitions/disallowed" },
                 "JumpDist"          : { "$ref" : "#/definitions/disallowed" },
                 "Latitude"          : { "$ref" : "#/definitions/disallowed" },
-                "Longitude"         : { "$ref" : "#/definitions/disallowed" }
+                "Longitude"         : { "$ref" : "#/definitions/disallowed" },
+                "KillerName"        : { "$ref" : "#/definitions/disallowed" },
+                "KillerShip"        : { "$ref" : "#/definitions/disallowed" },
+                "KillerRank"        : { "$ref" : "#/definitions/disallowed" },
+                "Killers"           : { "$ref" : "#/definitions/disallowed" },
+                "Submitted"         : { "$ref" : "#/definitions/disallowed" },
+                "Interdictor"       : { "$ref" : "#/definitions/disallowed" },
+                "CombatRank"        : { "$ref" : "#/definitions/disallowed" },
+                "Faction"           : { "$ref" : "#/definitions/disallowed" },
+                "Power"             : { "$ref" : "#/definitions/disallowed" },
+                "IsPlayer"          : { "$ref" : "#/definitions/disallowed" }
             },
             "patternProperties"     : {
                 "_Localised$"       : { "$ref" : "#/definitions/disallowed" }
