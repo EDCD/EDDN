@@ -54,6 +54,10 @@
                     "maxItems"      : 3,
                     "description"   : "Must be added by the sender if not present in the journal event"
                 },
+                "SystemAddress": {
+                    "type"          : "number",
+                    "description"   : "Should be added by the sender if not present in the journal event"
+                },
 
                 "CockpitBreach"     : { "$ref" : "#/definitions/disallowed" },
                 "BoostUsed"         : { "$ref" : "#/definitions/disallowed" },
