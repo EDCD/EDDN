@@ -42,6 +42,9 @@
                 "stationName": {
                     "type"          : "string",
                     "minLength"     : 1
+                },                
+                "marketId": {
+                    "type"          : "number"
                 },
                 "timestamp": {
                     "type"          : "string",
