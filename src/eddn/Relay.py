@@ -8,12 +8,15 @@ they receive over PUB/SUB.
 import logging
 from threading import Thread
 
+import time
+
 logger = logging.getLogger(__name__)
 import zlib
 
 import gevent
 import simplejson
 import hashlib
+import uuid
 import zmq.green as zmq
 from bottle import get, response, run as bottle_run
 from eddn.conf.Settings import Settings, loadConfig
@@ -42,6 +45,24 @@ def stats():
 
 
 class Relay(Thread):
+
+    REGENERATE_UPLOADER_NONCE_INTERVAL = 12 * 60 * 60  # 12 hrs
+
+    def __init__(self, **kwargs):
+        super(Relay, self).__init__(**kwargs)
+        self.uploader_nonce = None
+        self.uploader_nonce_timestamp = 0
+        self.generate_uploader_nonce()
+
+    def generate_uploader_nonce(self):
+        self.uploader_nonce = str(uuid.uuid4())
+        self.uploader_nonce_timestamp = time.time()
+
+    def scramble_uploader(self, uploader):
+        now = time.time()
+        if now - self.uploader_nonce_timestamp > self.REGENERATE_UPLOADER_NONCE_INTERVAL:
+            self.generate_uploader_nonce()
+        return hashlib.sha1("{}-{}".format(self.uploader_nonce, uploader)).hexdigest()
 
     def run(self):
         """
@@ -96,12 +117,10 @@ class Relay(Thread):
                     statsCollector.tally("duplicate")
                     return
             
-            # Hash ID with private IP if available (Avoid realtime user tracking without their consent)
+            # Mask the uploader with a randomised nonce but still make it unique
+            # for each uploader
             if 'uploaderID' in json['header']:
-                if 'uploaderIP' in json['header']:
-                    json['header']['uploaderID'] = hashlib.sha1("%s%s" % (json['header']['uploaderIP'], json['header']['uploaderID'])).hexdigest()
-                else:
-                    json['header']['uploaderID'] = hashlib.sha1(json['header']['uploaderID']).hexdigest()
+                json['header']['uploaderID'] = self.scramble_uploader(json['header']['uploaderID'])
             
             # Remove IP to end consumer
             if 'uploaderIP' in json['header']:
