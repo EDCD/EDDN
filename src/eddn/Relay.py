@@ -47,6 +47,9 @@ def stats():
 class Relay(Thread):
 
     REGENERATE_UPLOADER_NONCE_INTERVAL = 12 * 60 * 60  # 12 hrs
+    UPLOADER_PRIVACY_RANDOM = "random"  # use scramble_uploader() - default
+    UPLOADER_PRIVACY_CLEAR = "clear"  # allow the name through untouched
+    UPLOADER_PRIVACY_MODES = [UPLOADER_PRIVACY_RANDOM, UPLOADER_PRIVACY_CLEAR]
 
     def __init__(self, **kwargs):
         super(Relay, self).__init__(**kwargs)
@@ -118,9 +121,18 @@ class Relay(Thread):
                     return
             
             # Mask the uploader with a randomised nonce but still make it unique
-            # for each uploader
+            # for each uploader unless they explicitly set uploaderPrivacy to "clear"
+            privacy = self.UPLOADER_PRIVACY_RANDOM
+            if 'uploaderPrivacy' in json['header']:
+                if json['header']['uploaderPrivacy'] in self.UPLOADER_PRIVACY_MODES:
+                    privacy = json['header']['uploaderPrivacy']
+
+                # remove the privacy setting
+                del json['header']['uploaderPrivacy']
+
             if 'uploaderID' in json['header']:
-                json['header']['uploaderID'] = self.scramble_uploader(json['header']['uploaderID'])
+                if privacy == self.UPLOADER_PRIVACY_RANDOM:
+                    json['header']['uploaderID'] = self.scramble_uploader(json['header']['uploaderID'])
             
             # Remove IP to end consumer
             if 'uploaderIP' in json['header']:
