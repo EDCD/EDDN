@@ -51,8 +51,8 @@ class _Settings(object):
         "https://eddn.edcd.io/schemas/shipyard/2"                   : "schemas/shipyard-v2.0.json",
         "https://eddn.edcd.io/schemas/shipyard/2/test"              : "schemas/shipyard-v2.0.json",
 
-        "https://eddn.edcd.io/schemas/outfitting/2"                 : "schemas/outfitting-v2.0.json",
-        "https://eddn.edcd.io/schemas/outfitting/2/test"            : "schemas/outfitting-v2.0.json",
+        "https://eddn.edcd.io/schemas/outfitting/2"                 : "schemas/outfitting-v2.1.json",
+        "https://eddn.edcd.io/schemas/outfitting/2/test"            : "schemas/outfitting-v2.1.json",
 
         "https://eddn.edcd.io/schemas/blackmarket/1"                : "schemas/blackmarket-v1.0.json",
         "https://eddn.edcd.io/schemas/blackmarket/1/test"           : "schemas/blackmarket-v1.0.json",
