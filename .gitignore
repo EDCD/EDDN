@@ -57,3 +57,4 @@ target/
 /examples/CSharp/ConsoleApp/ConsoleApp/bin
 /examples/CSharp/ConsoleApp/.vs/
 /examples/CSharp/ConsoleApp/ConsoleApp/obj
+/nbproject/private/

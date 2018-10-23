@@ -7,7 +7,7 @@ from threading import Thread
 import zlib
 import gevent
 import simplejson
-import sqlite3
+import mysql.connector as mariadb
 import datetime
 import collections
 import zmq.green as zmq
@@ -40,7 +40,7 @@ def ping():
 @get('/getTotalSoftwares/')
 def getTotalSoftwares():
     response.set_header("Access-Control-Allow-Origin", "*")
-    db = sqlite3.connect(Settings.MONITOR_DB)
+    db = mariadb.connect(user=Settings.MONITOR_DB['user'], password=Settings.MONITOR_DB['password'], database=Settings.MONITOR_DB['database'])
     softwares = collections.OrderedDict()
 
     maxDays = request.GET.get('maxDays', '31').strip()
@@ -64,16 +64,16 @@ def getTotalSoftwares():
 @get('/getSoftwares/')
 def getSoftwares():
     response.set_header("Access-Control-Allow-Origin", "*")
-    db = sqlite3.connect(Settings.MONITOR_DB)
+    db = mariadb.connect(user=Settings.MONITOR_DB['user'], password=Settings.MONITOR_DB['password'], database=Settings.MONITOR_DB['database'])
     softwares = collections.OrderedDict()
 
     dateStart = request.GET.get('dateStart', str(date('%Y-%m-%d'))).strip()
     dateEnd = request.GET.get('dateEnd', str(date('%Y-%m-%d'))).strip()
 
     query = """SELECT *
-               FROM softwares
-               WHERE dateStats BETWEEN ? AND ?
-               ORDER BY hits DESC, dateStats ASC"""
+               FROM `softwares`
+               WHERE `dateStats` BETWEEN %s AND %s
+               ORDER BY `hits` DESC, `dateStats` ASC"""
     results = db.execute(query, (dateStart, dateEnd))
 
     for row in results:
@@ -90,17 +90,17 @@ def getSoftwares():
 @get('/getTotalUploaders/')
 def getTotalUploaders():
     response.set_header("Access-Control-Allow-Origin", "*")
-    db = sqlite3.connect(Settings.MONITOR_DB)
+    db = mariadb.connect(user=Settings.MONITOR_DB['user'], password=Settings.MONITOR_DB['password'], database=Settings.MONITOR_DB['database'])
     uploaders = collections.OrderedDict()
 
     limit = request.GET.get('limit', '20').strip()
 
-    query = """SELECT name, SUM(hits) AS total
-               FROM uploaders
-               GROUP BY name
-               ORDER BY total DESC
-               LIMIT """ + limit
-    results = db.execute(query)
+    query = """SELECT `name`, SUM(`hits`) AS `total`
+               FROM `uploaders`
+               GROUP BY `name`
+               ORDER BY `total` DESC
+               LIMIT %s"""
+    results = db.execute(query, (limit, ))
 
     for row in results:
         uploaders[row[0].encode('utf8')] = row[1]
@@ -113,16 +113,16 @@ def getTotalUploaders():
 @get('/getUploaders/')
 def getUploaders():
     response.set_header("Access-Control-Allow-Origin", "*")
-    db = sqlite3.connect(Settings.MONITOR_DB)
+    db = mariadb.connect(user=Settings.MONITOR_DB['user'], password=Settings.MONITOR_DB['password'], database=Settings.MONITOR_DB['database'])
     uploaders = collections.OrderedDict()
 
     dateStart = request.GET.get('dateStart', str(date('%Y-%m-%d'))).strip()
     dateEnd = request.GET.get('dateEnd', str(date('%Y-%m-%d'))).strip()
 
     query = """SELECT *
-               FROM uploaders
-               WHERE dateStats BETWEEN ? AND ?
-               ORDER BY hits DESC, dateStats ASC"""
+               FROM `uploaders`
+               WHERE `dateStats` BETWEEN %s AND %s
+               ORDER BY `hits` DESC, `dateStats` ASC"""
     results = db.execute(query, (dateStart, dateEnd))
 
     for row in results:
@@ -139,13 +139,13 @@ def getUploaders():
 @get('/getTotalSchemas/')
 def getTotalSchemas():
     response.set_header("Access-Control-Allow-Origin", "*")
-    db = sqlite3.connect(Settings.MONITOR_DB)
+    db = mariadb.connect(user=Settings.MONITOR_DB['user'], password=Settings.MONITOR_DB['password'], database=Settings.MONITOR_DB['database'])
     schemas = collections.OrderedDict()
 
-    query = """SELECT name, SUM(hits) AS total
-               FROM schemas
-               GROUP BY name
-               ORDER BY total DESC"""
+    query = """SELECT `name`, SUM(`hits`) AS `total`
+               FROM `schemas`
+               GROUP BY `name`
+               ORDER BY `total` DESC"""
     results = db.execute(query)
 
     for row in results:
@@ -159,17 +159,17 @@ def getTotalSchemas():
 @get('/getSchemas/')
 def getSchemas():
     response.set_header("Access-Control-Allow-Origin", "*")
-    db = sqlite3.connect(Settings.MONITOR_DB)
-    db.text_factory = lambda x: unicode(x, "utf-8", "ignore")
+    db = mariadb.connect(user=Settings.MONITOR_DB['user'], password=Settings.MONITOR_DB['password'], database=Settings.MONITOR_DB['database'])
+    #db.text_factory = lambda x: unicode(x, "utf-8", "ignore")
     schemas = collections.OrderedDict()
 
     dateStart = request.GET.get('dateStart', str(date('%Y-%m-%d'))).strip()
     dateEnd = request.GET.get('dateEnd', str(date('%Y-%m-%d'))).strip()
 
     query = """SELECT *
-               FROM schemas
-               WHERE dateStats BETWEEN ? AND ?
-               ORDER BY hits DESC, dateStats ASC"""
+               FROM `schemas`
+               WHERE `dateStats` BETWEEN %s AND %s
+               ORDER BY `hits` DESC, `dateStats` ASC"""
     results = db.execute(query, (dateStart, dateEnd))
 
     for row in results:
@@ -190,14 +190,14 @@ class Monitor(Thread):
 
         receiver = context.socket(zmq.SUB)
         receiver.setsockopt(zmq.SUBSCRIBE, '')
-        
+
         analytics = Analytics()
 
         for binding in Settings.MONITOR_RECEIVER_BINDINGS:
             receiver.connect(binding)
 
         def monitor_worker(message):
-            db = sqlite3.connect(Settings.MONITOR_DB)
+            db = mariadb.connect(user=Settings.MONITOR_DB['user'], password=Settings.MONITOR_DB['password'], database=Settings.MONITOR_DB['database'])
 
             # Separate topic from message
             message = message.split(' |-| ')
@@ -210,52 +210,52 @@ class Monitor(Thread):
 
             message = zlib.decompress(message)
             json    = simplejson.loads(message)
-            
+
             # Default variables
             schemaID    = json['$schemaRef']
             softwareID  = json['header']['softwareName'].encode('utf8') + ' | ' + json['header']['softwareVersion'].encode('utf8')
-            
+
             uploaderID  = json['header']['uploaderID'].encode('utf8')
             uploaderIP  = None
             if 'uploaderIP' in json['header']:
                 uploaderIP = json['header']['uploaderIP'].encode('utf8')
-            
+
             # Duplicates?
             if Settings.RELAY_DUPLICATE_MAX_MINUTES:
                 if duplicateMessages.isDuplicated(json):
                     schemaID = 'DUPLICATE MESSAGE'
 
                     c = db.cursor()
-                    c.execute('UPDATE schemas SET hits = hits + 1 WHERE `name` = ? AND `dateStats` = DATE("now", "utc")', (schemaID, ))
-                    c.execute('INSERT OR IGNORE INTO schemas (name, dateStats) VALUES (?, DATE("now", "utc"))', (schemaID, ))
+                    c.execute('UPDATE `schemas` SET `hits` = `hits` + 1 WHERE `name` = %s AND `dateStats` = UTC_DATE()', (schemaID, ))
+                    c.execute('INSERT IGNORE INTO `schemas` (`name`, `dateStats`) VALUES (%s, UTC_DATE())', (schemaID, ))
                     db.commit()
-                    
+
                     db.close()
                     analytics.hit('DUPLICATE', uploaderID, uploaderIP)
 
                     return
-            
+
             # Update software count
             c = db.cursor()
-            c.execute('UPDATE softwares SET hits = hits + 1 WHERE `name` = ? AND `dateStats` = DATE("now", "utc")', (softwareID, ))
-            c.execute('INSERT OR IGNORE INTO softwares (name, dateStats) VALUES (?, DATE("now", "utc"))', (softwareID, ))
+            c.execute('UPDATE `softwares` SET `hits` = `hits` + 1 WHERE `name` = %s AND `dateStats` = UTC_DATE()', (softwareID, ))
+            c.execute('INSERT IGNORE INTO `softwares` (`name`, `dateStats`) VALUES (%s, UTC_DATE())', (softwareID, ))
             db.commit()
-            
+
             # Update uploader count
             if uploaderID:  # Don't get empty uploaderID
                 c = db.cursor()
-                c.execute('UPDATE uploaders SET hits = hits + 1 WHERE `name` = ? AND `dateStats` = DATE("now", "utc")', (uploaderID, ))
-                c.execute('INSERT OR IGNORE INTO uploaders (name, dateStats) VALUES (?, DATE("now", "utc"))', (uploaderID, ))
+                c.execute('UPDATE `uploaders` SET `hits` = `hits` + 1 WHERE `name` = %s AND `dateStats` = UTC_DATE()', (uploaderID, ))
+                c.execute('INSERT IGNORE INTO `uploaders` (`name`, `dateStats`) VALUES (%s, UTC_DATE())', (uploaderID, ))
                 db.commit()
-            
+
             # Update schemas count
             c = db.cursor()
-            c.execute('UPDATE schemas SET hits = hits + 1 WHERE `name` = ? AND `dateStats` = DATE("now", "utc")', (schemaID, ))
-            c.execute('INSERT OR IGNORE INTO schemas (name, dateStats) VALUES (?, DATE("now", "utc"))', (schemaID, ))
+            c.execute('UPDATE `schemas` SET `hits` = `hits` + 1 WHERE `name` = %s AND `dateStats` = UTC_DATE()', (schemaID, ))
+            c.execute('INSERT IGNORE INTO `schemas` (`name`, `dateStats`) VALUES (%s, UTC_DATE())', (schemaID, ))
             db.commit()
-            
+
             db.close()
-            
+
             if re.search('test', schemaID, re.I):
                 analytics.hit(Settings.GATEWAY_JSON_SCHEMAS[schemaID] + '#test', uploaderID, uploaderIP)
             else:
@@ -271,9 +271,9 @@ def main():
     m = Monitor()
     m.start()
     bottle_run(
-        host='0.0.0.0', 
-        port=9091, 
-        server='gevent', 
+        host=Settings.MONITOR_HTTP_BIND_ADDRESS,
+        port=Settings.MONITOR_HTTP_PORT,
+        server='gevent',
         certfile=Settings.CERT_FILE,
         keyfile=Settings.KEY_FILE
     )

@@ -20,16 +20,16 @@ setup(
     name='eddn',
     version=verstr,
     description='Elite: Dangerous Data Network',
-    author='James Muscat',
-    author_email='muscaat@elite-markets.net',
-    url='https://github.com/jamesremuscat/eddn',
+    author='Anthor (EDSM)',
+    author_email='contact@edsm.net',
+    url='https://github.com/EDSM-NET/EDDN',
     packages=find_packages('src', exclude=["*.tests"]),
     package_dir = {'':'src'},
     data_files=[('eddn/schemas', glob.glob("schemas/*.json"))],
     long_description="""\
       The Elite: Dangerous Data Network allows E:D players to share data. Not affiliated with Frontier Developments.
       """,
-    install_requires=["argparse", "bottle", "enum34", "gevent", "jsonschema", "pyzmq", "simplejson"],
+    install_requires=["argparse", "bottle", "enum34", "gevent", "jsonschema", "pyzmq", "simplejson", "mysql-connector-python"],
     entry_points={
         'console_scripts': [
             'eddn-gateway = eddn.Gateway:main',

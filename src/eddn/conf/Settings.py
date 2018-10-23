@@ -86,10 +86,16 @@ class _Settings(object):
     #  Monitor settings
     ###############################################################################
 
+    MONITOR_HTTP_BIND_ADDRESS               = "0.0.0.0"
+    MONITOR_HTTP_PORT                       = 9091
+
     MONITOR_RECEIVER_BINDINGS               = ["tcp://127.0.0.1:8500"]
 
-    MONITOR_DB                              = "/home/EDDN_Monitor.s3db"
-    #MONITOR_DB                              = "D:/EDDN_Monitor.s3db" #DEBUG
+    MONITOR_DB                              = {
+        "user":     "eddn",
+        "password": "cvLYM8AEqg29YTatFMEcqph3YkDWUMvC",
+        "database": "eddn"
+    }
 
     MONITOR_UA                              = "UA-496332-23"
 
