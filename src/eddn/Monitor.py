@@ -49,9 +49,11 @@ def getTotalSoftwares():
     query = """SELECT name, SUM(hits) AS total, MAX(dateStats) AS maxDate
                FROM softwares
                GROUP BY name
-               HAVING maxDate >= DATE('now', '""" + '-' + str(maxDays) + """ day')
+               HAVING maxDate >= DATE_SUB(NOW(), INTERVAL %s DAY)
                ORDER BY total DESC"""
-    results = db.execute(query)
+
+    results = db.cursor()
+    results.execute(query, (maxDays, ))
 
     for row in results:
         softwares[row[0].encode('utf8')] = str(row[1])
@@ -74,13 +76,16 @@ def getSoftwares():
                FROM `softwares`
                WHERE `dateStats` BETWEEN %s AND %s
                ORDER BY `hits` DESC, `dateStats` ASC"""
-    results = db.execute(query, (dateStart, dateEnd))
+
+    results = db.cursor()
+    results.execute(query, (dateStart, dateEnd))
 
     for row in results:
-        if not str(row[2].encode('utf8')) in softwares.keys():
-            softwares[row[2].encode('utf8')] = collections.OrderedDict()
+        currentDate = row[2].strftime('%Y-%m-%d')
+        if not currentDate in softwares.keys():
+            softwares[currentDate] = collections.OrderedDict()
 
-        softwares[row[2].encode('utf8')][str(row[0])] = str(row[1])
+        softwares[currentDate][str(row[0])] = str(row[1])
 
     db.close()
 
@@ -100,7 +105,9 @@ def getTotalUploaders():
                GROUP BY `name`
                ORDER BY `total` DESC
                LIMIT %s"""
-    results = db.execute(query, (limit, ))
+
+    results = db.cursor()
+    results.execute(query, (int(limit), ))
 
     for row in results:
         uploaders[row[0].encode('utf8')] = row[1]
@@ -123,13 +130,16 @@ def getUploaders():
                FROM `uploaders`
                WHERE `dateStats` BETWEEN %s AND %s
                ORDER BY `hits` DESC, `dateStats` ASC"""
-    results = db.execute(query, (dateStart, dateEnd))
+
+    results = db.cursor()
+    results.execute(query, (dateStart, dateEnd))
 
     for row in results:
-        if not row[2].encode('utf8') in uploaders.keys():
-            uploaders[row[2].encode('utf8')] = collections.OrderedDict()
+        currentDate = row[2].strftime('%Y-%m-%d')
+        if not currentDate in uploaders.keys():
+            uploaders[currentDate] = collections.OrderedDict()
 
-        uploaders[row[2]][row[0].encode('utf8')] = row[1]
+        uploaders[currentDate][row[0].encode('utf8')] = row[1]
 
     db.close()
 
@@ -146,10 +156,12 @@ def getTotalSchemas():
                FROM `schemas`
                GROUP BY `name`
                ORDER BY `total` DESC"""
-    results = db.execute(query)
+
+    results = db.cursor()
+    results.execute(query)
 
     for row in results:
-        schemas[str(row[0])] = str(row[1])
+        schemas[str(row[0])] = row[1]
 
     db.close()
 
@@ -170,13 +182,16 @@ def getSchemas():
                FROM `schemas`
                WHERE `dateStats` BETWEEN %s AND %s
                ORDER BY `hits` DESC, `dateStats` ASC"""
-    results = db.execute(query, (dateStart, dateEnd))
+
+    results = db.cursor()
+    results.execute(query, (dateStart, dateEnd))
 
     for row in results:
-        if not str(row[2]) in schemas.keys():
-            schemas[str(row[2])] = collections.OrderedDict()
+        currentDate = row[2].strftime('%Y-%m-%d')
+        if not currentDate in schemas.keys():
+            schemas[currentDate] = collections.OrderedDict()
 
-        schemas[str(row[2])][str(row[0])] = str(row[1])
+        schemas[currentDate][str(row[0])] = str(row[1])
 
     db.close()
 
