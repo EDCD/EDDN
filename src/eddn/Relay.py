@@ -109,29 +109,36 @@ class Relay(Thread):
 
             message = zlib.decompress(message)
             json    = simplejson.loads(message)
-            
+
             # Handle duplicate message
             if Settings.RELAY_DUPLICATE_MAX_MINUTES:
                 if duplicateMessages.isDuplicated(json):
                     # We've already seen this message recently. Discard it.
                     statsCollector.tally("duplicate")
                     return
-            
+
             # Mask the uploader with a randomised nonce but still make it unique
             # for each uploader
             if 'uploaderID' in json['header']:
                 json['header']['uploaderID'] = self.scramble_uploader(json['header']['uploaderID'])
-            
+
             # Remove IP to end consumer
             if 'uploaderIP' in json['header']:
                 del json['header']['uploaderIP']
-            
+
+            # Remove personal data from FSDJump and Location => MyReputation
+            if '/journal/' in json['$schemaRef'] and 'event' in json['message']:
+                if json['message']['event'] in ['FSDJump', 'Location'] and 'Factions' in json['message']:
+                    for values in json['message']['Factions']:
+                        if 'MyReputation' in values:
+                            del json['message']['Factions'][values.index()]['MyReputation']
+
             # Convert message back to JSON
             message = simplejson.dumps(json, sort_keys=True)
-            
+
             # Recompress message
             message = zlib.compress(message)
-            
+
             # Send message
             sender.send(message)
             statsCollector.tally("outbound")
@@ -149,9 +156,9 @@ def main():
     r = Relay()
     r.start()
     bottle_run(
-        host=Settings.RELAY_HTTP_BIND_ADDRESS, 
-        port=Settings.RELAY_HTTP_PORT, 
-        server='gevent', 
+        host=Settings.RELAY_HTTP_BIND_ADDRESS,
+        port=Settings.RELAY_HTTP_PORT,
+        server='gevent',
         certfile=Settings.CERT_FILE,
         keyfile=Settings.KEY_FILE
     )
