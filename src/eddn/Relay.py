@@ -129,9 +129,9 @@ class Relay(Thread):
             # Remove personal data from FSDJump and Location => MyReputation
             if '/journal/' in json['$schemaRef'] and 'event' in json['message']:
                 if json['message']['event'] in ['FSDJump', 'Location'] and 'Factions' in json['message']:
-                    for values in json['message']['Factions']:
+                    for i, values in enumerate(json['message']['Factions']):
                         if 'MyReputation' in values:
-                            del json['message']['Factions'][values.index()]['MyReputation']
+                            del json['message']['Factions'][i]['MyReputation']
 
             # Convert message back to JSON
             message = simplejson.dumps(json, sort_keys=True)
