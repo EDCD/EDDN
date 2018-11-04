@@ -69,13 +69,15 @@
                         }
                     }
                 },
+                "ActiveFine"        : { "$ref" : "#/definitions/disallowed" },
                 "CockpitBreach"     : { "$ref" : "#/definitions/disallowed" },
                 "BoostUsed"         : { "$ref" : "#/definitions/disallowed" },
                 "FuelLevel"         : { "$ref" : "#/definitions/disallowed" },
                 "FuelUsed"          : { "$ref" : "#/definitions/disallowed" },
                 "JumpDist"          : { "$ref" : "#/definitions/disallowed" },
                 "Latitude"          : { "$ref" : "#/definitions/disallowed" },
-                "Longitude"         : { "$ref" : "#/definitions/disallowed" }
+                "Longitude"         : { "$ref" : "#/definitions/disallowed" },
+                "Wanted"            : { "$ref" : "#/definitions/disallowed" }
             },
             "patternProperties"     : {
                 "_Localised$"       : { "$ref" : "#/definitions/disallowed" }
