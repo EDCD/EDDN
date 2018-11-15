@@ -80,8 +80,8 @@ var doUpdateSoftwares = function()
     var dToday      = new Date(),
         dYesterday  = new (function(d){ d.setDate(d.getDate()-1); return d})(new Date),
 
-        yesterday   = dYesterday.getUTCFullYear() + '-' + ("0" + (dYesterday.getUTCMonth() +　1)).slice(-2) + '-' + ("0" + (dYesterday.getUTCDate())).slice(-2),
-        today       = dToday.getUTCFullYear() + '-' + ("0" + (dToday.getUTCMonth() +　1)).slice(-2) + '-' + ("0" + (dToday.getUTCDate())).slice(-2);
+        yesterday   = dYesterday.getUTCFullYear() + '-' + ("0" + (dYesterday.getUTCMonth() + 1)).slice(-2) + '-' + ("0" + (dYesterday.getUTCDate())).slice(-2),
+        today       = dToday.getUTCFullYear() + '-' + ("0" + (dToday.getUTCMonth() + 1)).slice(-2) + '-' + ("0" + (dToday.getUTCDate())).slice(-2);
 
     $.ajax({
         dataType: "json",
@@ -283,8 +283,8 @@ var doUpdateUploaders = function()
     var dToday      = new Date(),
         dYesterday  = new (function(d){ d.setDate(d.getDate()-1); return d})(new Date),
 
-        yesterday   = dYesterday.getUTCFullYear() + '-' + ("0" + (dYesterday.getUTCMonth() +　1)).slice(-2) + '-' + ("0" + (dYesterday.getUTCDate())).slice(-2),
-        today       = dToday.getUTCFullYear() + '-' + ("0" + (dToday.getUTCMonth() +　1)).slice(-2) + '-' + ("0" + (dToday.getUTCDate())).slice(-2);
+        yesterday   = dYesterday.getUTCFullYear() + '-' + ("0" + (dYesterday.getUTCMonth() + 1)).slice(-2) + '-' + ("0" + (dYesterday.getUTCDate())).slice(-2),
+        today       = dToday.getUTCFullYear() + '-' + ("0" + (dToday.getUTCMonth() + 1)).slice(-2) + '-' + ("0" + (dToday.getUTCDate())).slice(-2);
 
     $.ajax({
         dataType: "json",
@@ -363,8 +363,8 @@ var doUpdateSchemas = function()
     var dToday      = new Date(),
         dYesterday  = new (function(d){ d.setDate(d.getDate()-1); return d})(new Date),
 
-        yesterday   = dYesterday.getUTCFullYear() + '-' + ("0" + (dYesterday.getUTCMonth() +　1)).slice(-2) + '-' + ("0" + (dYesterday.getUTCDate())).slice(-2),
-        today       = dToday.getUTCFullYear() + '-' + ("0" + (dToday.getUTCMonth() +　1)).slice(-2) + '-' + ("0" + (dToday.getUTCDate())).slice(-2);
+        yesterday   = dYesterday.getUTCFullYear() + '-' + ("0" + (dYesterday.getUTCMonth() + 1)).slice(-2) + '-' + ("0" + (dYesterday.getUTCDate())).slice(-2),
+        today       = dToday.getUTCFullYear() + '-' + ("0" + (dToday.getUTCMonth() + 1)).slice(-2) + '-' + ("0" + (dToday.getUTCDate())).slice(-2);
 
     $.ajax({
         dataType: "json",
