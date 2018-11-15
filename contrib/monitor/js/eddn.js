@@ -42,6 +42,12 @@ var makeName =  function(str) {
 		return match[1].toUpperCase() + match[2] + " v" + match[3] + " [TEST]";
 	}
 
+	var match = /^https:\/\/eddn.edcd.io\/schemas\/(\w)(\w*)\/(\d+)\/beta$/.exec(str);
+	if(match)
+	{
+		return match[1].toUpperCase() + match[2] + " v" + match[3] + " [BETA]";
+	}
+
 	return str;
 }
 

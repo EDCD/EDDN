@@ -212,6 +212,8 @@ class Monitor(Thread):
 
             if re.search('test', schemaID, re.I):
                 analytics.hit(Settings.GATEWAY_JSON_SCHEMAS[schemaID] + '#test', uploaderID, uploaderIP)
+            elif re.search('beta', schemaID, re.I):
+                analytics.hit(Settings.GATEWAY_JSON_SCHEMAS[schemaID] + '#beta', uploaderID, uploaderIP)
             else:
                 analytics.hit(Settings.GATEWAY_JSON_SCHEMAS[schemaID], uploaderID, uploaderIP)
 

@@ -24,7 +24,7 @@
     <header>
         <nav class="navbar navbar-default navbar-fixed-top">
         <div class="container">
-            
+
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#header-nav">
                     <span class="sr-only">Toggle navigation</span>
@@ -34,21 +34,21 @@
                 </button>
                 <a class="navbar-brand" href="">EDDN Status - Schemas</a>
             </div>
-            
+
             <div class="collapse navbar-collapse" id="header-nav">
                 <ul class="nav navbar-nav">
                     <li><a href="./#schemas">Back to EDDN Status</a></li>
                 </ul>
-                
+
                 <p class="navbar-right navbar-text">
                     <em>Provided by <a href="https://www.edsm.net/" target="_blank" class="navbar-link"><strong>EDSM</strong></a></em>
                 </p>
             </div>
-            
+
         </div>
         </nav>
     </header>
-    
+
     <section id="schemas" class="container">
         <div class="row">
             <div class="col-md-12">
@@ -60,19 +60,19 @@
             <div class="col-md-12">
                 <div class="panel panel-default">
                     <div class="panel-body">
-                                                
+
                         <div class="row">
                             <div class="col-md-12 charts" style="height: 500px;">
-                                
+
                             </div>
                         </div>
-                        
+
                     </div>
                 </div>
-            </div>    
+            </div>
         </div>
     </section>
-    
+
     <section id="schemasStacked" class="container">
         <div class="row">
             <div class="col-md-12">
@@ -84,36 +84,36 @@
             <div class="col-md-12">
                 <div class="panel panel-default">
                     <div class="panel-body">
-                                                
+
                         <div class="row">
                             <div class="col-md-12 charts" style="height: 500px;">
-                                
+
                             </div>
                         </div>
-                        
+
                     </div>
                 </div>
-            </div>    
+            </div>
         </div>
     </section>
-    
+
     <footer>
         <nav class="navbar navbar-default">
             <div class="container">
                 <p class="navbar-text">
                     The <em>Elite: Dangerous Data Network</em> is volunteer-run and not affiliated with <a href="https://frontier.co.uk/" target="_blank">Frontier Developments</a>.
-                     | 
+                     |
                     Charts by <a href="http://www.highcharts.com/" target="_blank">HighCharts</a>
                 </p>
             </div>
         </nav>
     </footer>
-    
+
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
     <script src="https://code.highcharts.com/5.0.12/highcharts.js"></script>
-    
+
     <script type="text/javascript">
     var makeSlug = function(str) {
     	var slugcontent_hyphens = str.replace(/\s/g,'-');
@@ -126,21 +126,27 @@
         {
             return match[1].toUpperCase() + match[2] + " v" + match[3];
         }
-        
+
         var match = /^https:\/\/eddn.edcd.io\/schemas\/(\w)(\w*)\/(\d+)\/test$/.exec(str);
         if(match)
         {
             return match[1].toUpperCase() + match[2] + " v" + match[3] + " [TEST]";
         }
-        
+
+        var match = /^https:\/\/eddn.edcd.io\/schemas\/(\w)(\w*)\/(\d+)\/beta$/.exec(str);
+        if(match)
+        {
+            return match[1].toUpperCase() + match[2] + " v" + match[3] + " [BETA]";
+        }
+
         return str;
     }
 
     $(document).ready(function(){
         var monitorEndPoint     = 'https://eddn.edcd.io:9091/';
-        
+
         var chartContainer = $('#schemas .charts');
-        
+
         chartContainer.highcharts({
             chart: {
                 type: 'spline', animation: Highcharts.svg,
@@ -166,9 +172,9 @@
                 {id: 'duplicate-message', data: [], name: 'Messages duplicate', zIndex: 1}
             ]
         });
-        
+
         var chartStackedContainer = $('#schemasStacked .charts');
-        
+
         chartStackedContainer.highcharts({
             chart: {
                 type: 'area', animation: Highcharts.svg,
@@ -199,7 +205,7 @@
                     }
                 }
             },
-            tooltip: { 
+            tooltip: {
                 pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.percentage:.1f}%</b> ({point.y:,.0f})<br/>',
                 shared: true
             },
@@ -209,39 +215,41 @@
                 {id: 'duplicate-message', data: [], name: 'Messages duplicate', zIndex: 1}
             ]
         });
-        
+
         var dYesterday  = new (function(d){ d.setDate(d.getDate()-1); return d})(new Date),
             d60         = new (function(d){ d.setDate(d.getDate()-60); return d})(new Date),
-        
+
         day60           = d60.getUTCFullYear() + '-' + ("0" + (d60.getUTCMonth() +　1)).slice(-2) + '-' + ("0" + (d60.getUTCDate())).slice(-2),
         yesterday       = dYesterday.getUTCFullYear() + '-' + ("0" + (dYesterday.getUTCMonth() +　1)).slice(-2) + '-' + ("0" + (dYesterday.getUTCDate())).slice(-2);
-    
+
         $.ajax({
             dataType: "json",
             url: monitorEndPoint + 'getSchemas/?dateStart=' + day60 + '&dateEnd = ' + yesterday,
             success: function(schemas){
                 var chart = chartContainer.highcharts();
                 var chartStacked = chartStackedContainer.highcharts();
-                
+
                 $.each(schemas, function(date, schemasCountTmp){
                     // Convert date for highcharts
                     date = date.split('-')
                     date = Date.UTC(date[0], date[1] - 1, date[2]);
-                    
+
                     // Convert old schemas and sum them to new schemas
                     schemasCount = {};
                     $.each(schemasCountTmp, function(schema, hits){
                         schema = schema.replace('http://schemas.elite-markets.net/eddn/', 'https://eddn.edcd.io/schemas/');
                         hits   = parseInt(hits);
-                        
+
                         if(schemasCount[schema]){ schemasCount[schema] += hits; }
                         else{ schemasCount[schema] = hits; }
                     });
-                    
+
                     // Loop results
                     $.each(schemasCount, function(schema, hits){
-                        // IF TEST CONTINUE
+                        // IF TEST or BETA CONTINUE
                         if(schema.substr(schema.length - 4) == 'test')
+                            return;
+                        if(schema.substr(schema.length - 4) == 'beta')
                             return;
 
                         var slug = makeSlug(schema);
@@ -256,7 +264,7 @@
                                 data: []
                             });
                         }
-                        
+
                         // Add data
                         serie = chart.get(slug);
                         serie.addPoint({x: date, y: parseInt(hits)}, false);
@@ -270,26 +278,26 @@
                                 data: []
                             });
                         }
-                        
+
                         // Add data
                         serie = chartStacked.get(slug);
                         serie.addPoint({x: date, y: parseInt(hits)}, false);
                     });
                 });
-                
+
                 chart.redraw();
                 chartStacked.redraw();
             }
         });
     });
     </script>
-    
+
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-    
+
       ga('create', 'UA-496332-23', 'auto');
       ga('send', 'pageview');
     </script>
