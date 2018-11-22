@@ -65,7 +65,10 @@
                     "items" : {
                         "type"      : "object",
                         "properties": {
-                            "MyReputation" : { "$ref" : "#/definitions/disallowed" }
+                            "HappiestSystem"  : { "$ref" : "#/definitions/disallowed" },
+                            "HomeSystem"      : { "$ref" : "#/definitions/disallowed" },
+                            "MyReputation"    : { "$ref" : "#/definitions/disallowed" },
+                            "SquadronFaction" : { "$ref" : "#/definitions/disallowed" }
                         }
                     }
                 },
