@@ -51,10 +51,10 @@ def date(__format):
 __oldTime = False
 def echoLog(__str):
     global __oldTime, __logVerboseFile
-    
+
     if __logVerboseFile != False:
         __logVerboseFileParsed = __logVerboseFile.replace('%DATE%', str(date('%Y-%m-%d')))
-    
+
     if __logVerboseFile != False and not os.path.exists(__logVerboseFileParsed):
         f = open(__logVerboseFileParsed, 'w')
         f.write('<style type="text/css">html { white-space: pre; font-family: Courier New,Courier,Lucida Sans Typewriter,Lucida Typewriter,monospace; }</style>')
@@ -65,7 +65,7 @@ def echoLog(__str):
         __str = str(__oldTime)  + ' | ' + str(__str)
     else:
         __str = '        '  + ' | ' + str(__str)
-        
+
     print (__str)
     sys.stdout.flush()
 
@@ -73,26 +73,26 @@ def echoLog(__str):
         f = open(__logVerboseFileParsed, 'a')
         f.write(__str + '\n')
         f.close()
-    
+
 
 def echoLogJSON(__json):
     global __logJSONFile
-    
+
     if __logJSONFile != False:
         __logJSONFileParsed = __logJSONFile.replace('%DATE%', str(date('%Y-%m-%d')))
-        
+
         f = open(__logJSONFileParsed, 'a')
         f.write(str(__json) + '\n')
         f.close()
-        
+
 
 def main():
     echoLog('Starting EDDN Subscriber')
     echoLog('')
-    
+
     context     = zmq.Context()
     subscriber  = context.socket(zmq.SUB)
-    
+
     subscriber.setsockopt(zmq.SUBSCRIBE, b"")
     subscriber.setsockopt(zmq.RCVTIMEO, __timeoutEDDN)
 
@@ -102,17 +102,17 @@ def main():
             echoLog('Connect to ' + __relayEDDN)
             echoLog('')
             echoLog('')
-            
+
             while True:
                 __message   = subscriber.recv()
-                
+
                 if __message == False:
                     subscriber.disconnect(__relayEDDN)
                     echoLog('Disconnect from ' + __relayEDDN)
                     echoLog('')
                     echoLog('')
                     break
-                
+
                 echoLog('Got a message')
 
                 __message   = zlib.decompress(__message)
@@ -124,83 +124,83 @@ def main():
                     echoLog('Failed to parse message as json')
 
                 __converted = False
-                
-                
+
+
                 # Handle commodity v1
-                if __json['$schemaRef'] == 'http://schemas.elite-markets.net/eddn/commodity/1' + ('/test' if (__debugEDDN == True) else ''):
+                if __json['$schemaRef'] == 'https://eddn.edcd.io/schemas/commodity/1' + ('/test' if (__debugEDDN == True) else ''):
                     echoLogJSON(__message)
                     echoLog('Receiving commodity-v1 message...')
-                    echoLog('    - Converting to v2...')
-                    
+                    echoLog('    - Converting to v3...')
+
                     __temp                              = {}
-                    __temp['$schemaRef']                = 'http://schemas.elite-markets.net/eddn/commodity/2' + ('/test' if (__debugEDDN == True) else '')
+                    __temp['$schemaRef']                = 'https://eddn.edcd.io/schemas/commodity/3' + ('/test' if (__debugEDDN == True) else '')
                     __temp['header']                    = __json['header']
-                    
+
                     __temp['message']                   = {}
                     __temp['message']['systemName']     = __json['message']['systemName']
                     __temp['message']['stationName']    = __json['message']['stationName']
                     __temp['message']['timestamp']      = __json['message']['timestamp']
-                    
+
                     __temp['message']['commodities']    = []
-                    
+
                     __commodity                         = {}
-                    
+
                     if 'itemName' in __json['message']:
                         __commodity['name'] = __json['message']['itemName']
-                    
+
                     if 'buyPrice' in __json['message']:
                         __commodity['buyPrice'] = __json['message']['buyPrice']
                     if 'stationStock' in __json['message']:
                         __commodity['supply'] = __json['message']['stationStock']
                     if 'supplyLevel' in __json['message']:
                         __commodity['supplyLevel'] = __json['message']['supplyLevel']
-                    
+
                     if 'sellPrice' in __json['message']:
                         __commodity['sellPrice'] = __json['message']['sellPrice']
                     if 'demand' in __json['message']:
                         __commodity['demand'] = __json['message']['demand']
                     if'demandLevel' in __json['message']:
                         __commodity['demandLevel'] = __json['message']['demandLevel']
-                    
+
                     __temp['message']['commodities'].append(__commodity)
                     __json                              = __temp
                     del __temp, __commodity
-                    
+
                     __converted = True
-                
-                # Handle commodity v2
-                if __json['$schemaRef'] == 'http://schemas.elite-markets.net/eddn/commodity/2' + ('/test' if (__debugEDDN == True) else ''):
+
+                # Handle commodity v3
+                if __json['$schemaRef'] == 'https://eddn.edcd.io/schemas/commodity/3' + ('/test' if (__debugEDDN == True) else ''):
                     if __converted == False:
                         echoLogJSON(__message)
-                        echoLog('Receiving commodity-v2 message...')
-                    
+                        echoLog('Receiving commodity-v3 message...')
+
                     __authorised = False
                     __excluded   = False
-                    
+
                     if __json['header']['softwareName'] in __authorisedSoftwares:
                         __authorised = True
                     if __json['header']['softwareName'] in __excludedSoftwares:
                         __excluded = True
-                
+
                     echoLog('    - Software: ' + __json['header']['softwareName'] + ' / ' + __json['header']['softwareVersion'])
                     echoLog('        - ' + 'AUTHORISED' if (__authorised == True) else
                                                 ('EXCLUDED' if (__excluded == True) else 'UNAUTHORISED')
                     )
-                    
+
                     if __authorised == True and __excluded == False:
                         # Do what you want with the data...
                         # Have fun !
-                        
+
                         # For example
                         echoLog('    - Timestamp: ' + __json['message']['timestamp'])
                         echoLog('    - Uploader ID: ' + __json['header']['uploaderID'])
                         echoLog('        - System Name: ' + __json['message']['systemName'])
                         echoLog('        - Station Name: ' + __json['message']['stationName'])
-                        
+
                         for __commodity in __json['message']['commodities']:
                             echoLog('            - Name: ' + __commodity['name'])
                             echoLog('                - Buy Price: ' + str(__commodity['buyPrice']))
-                            echoLog('                - Supply: ' + str(__commodity['supply']) 
+                            echoLog('                - Supply: ' + str(__commodity['supply'])
                                 + ((' (' + __commodity['supplyLevel'] + ')') if 'supplyLevel' in __commodity else '')
                             )
                             echoLog('                - Sell Price: ' + str(__commodity['sellPrice']))
@@ -208,18 +208,18 @@ def main():
                                 + ((' (' + __commodity['demandLevel'] + ')') if 'demandLevel' in __commodity else '')
                             )
                         # End example
-                        
+
                     del __authorised, __excluded
-                    
+
                     echoLog('')
                     echoLog('')
-                
+
                 else:
                     echoLog('Unknown schema: ' + __json['$schemaRef']);
 
                 del __converted
-                
-                
+
+
         except zmq.ZMQError as e:
             echoLog('')
             echoLog('ZMQSocketException: ' + str(e))
@@ -227,8 +227,8 @@ def main():
             echoLog('Disconnect from ' + __relayEDDN)
             echoLog('')
             time.sleep(5)
-            
-        
+
+
 
 if __name__ == '__main__':
     main()
