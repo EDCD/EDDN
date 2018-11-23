@@ -30,22 +30,16 @@ var makeSlug = function(str) {
 }
 
 var makeName =  function(str) {
-	var match = /^https:\/\/eddn.edcd.io\/schemas\/(\w)(\w*)\/(\d+)$/.exec(str);
+	var match = /^https:\/\/eddn.edcd.io\/schemas\/(\w)(\w*)\/(\d+)(\/live)?$/.exec(str);
 	if(match)
 	{
 		return match[1].toUpperCase() + match[2] + " v" + match[3];
 	}
 
-	var match = /^https:\/\/eddn.edcd.io\/schemas\/(\w)(\w*)\/(\d+)\/test$/.exec(str);
+	var match = /^https:\/\/eddn.edcd.io\/schemas\/(\w)(\w*)\/(\d+)\/(test|beta)$/.exec(str);
 	if(match)
 	{
-		return match[1].toUpperCase() + match[2] + " v" + match[3] + " [TEST]";
-	}
-
-	var match = /^https:\/\/eddn.edcd.io\/schemas\/(\w)(\w*)\/(\d+)\/beta$/.exec(str);
-	if(match)
-	{
-		return match[1].toUpperCase() + match[2] + " v" + match[3] + " [BETA]";
+		return match[1].toUpperCase() + match[2] + " v" + match[3] + " [" + match[4].toUpperCase() + "]";
 	}
 
 	return str;

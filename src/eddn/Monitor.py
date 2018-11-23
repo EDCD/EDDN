@@ -202,10 +202,16 @@ class Monitor(Thread):
             c.execute('INSERT IGNORE INTO `softwares` (`name`, `dateStats`) VALUES (%s, UTC_DATE())', (softwareID, ))
             db.commit()
 
+            # remove live endpoint from schema for the update
+            if schemaID.endswith('/live'):
+                upd_schema = schemaID[:-5]
+            else:
+                upd_schema = schemaID
+
             # Update schemas count
             c = db.cursor()
-            c.execute('UPDATE `schemas` SET `hits` = `hits` + 1 WHERE `name` = %s AND `dateStats` = UTC_DATE()', (schemaID, ))
-            c.execute('INSERT IGNORE INTO `schemas` (`name`, `dateStats`) VALUES (%s, UTC_DATE())', (schemaID, ))
+            c.execute('UPDATE `schemas` SET `hits` = `hits` + 1 WHERE `name` = %s AND `dateStats` = UTC_DATE()', (upd_schema, ))
+            c.execute('INSERT IGNORE INTO `schemas` (`name`, `dateStats`) VALUES (%s, UTC_DATE())', (upd_schema, ))
             db.commit()
 
             db.close()

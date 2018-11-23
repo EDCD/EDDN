@@ -36,9 +36,15 @@ class DuplicateMessages(Thread):
             if re.search('test', json['$schemaRef'], re.I):
                 return False
 
+            # remove live endpoint from schema
+            if json['$schemaRef'].endswith('/live'):
+                schema_ref = json['$schemaRef'][:-5]
+            else:
+                schema_ref = json['$schemaRef']
+
             # Shallow copy, minus headers
             jsonTest = {
-                '$schemaRef': json['$schemaRef'],
+                '$schemaRef': schema_ref,
                 'message': dict(json['message']),
             }
 
