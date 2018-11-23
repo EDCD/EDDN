@@ -7,7 +7,7 @@
  *     'softwareVersion'   => 'v3.14'
  * )); *
  *
- * $result = $eddn->publishCommodityV2(
+ * $result = $eddn->publishCommodityV3(
  *     'Eranin',
  *     'Azeban Orbital',
  *     time(),
@@ -73,7 +73,7 @@ class EDDN
 
     public function publishCommodityV3($systemName, $stationName, $timestamp, array $commodities)
     {
-        $schema                 = self::$_schemas['commodity-v2'][((self::$_debug === true) ? 'test' : 'production')];
+        $schema                 = self::$_schemas['commodity-v3'][((self::$_debug === true) ? 'test' : 'production')];
 
         $message                = array();
         $message['systemName']  = $systemName;
