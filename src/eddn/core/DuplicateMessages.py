@@ -32,7 +32,7 @@ class DuplicateMessages(Thread):
 
     def isDuplicated(self, json):
         with self.lock:
-            # Test messages are not duplicate
+            # Test messages are never duplicate, would be a pain to wait for another test :D
             if re.search('test', json['$schemaRef'], re.I):
                 return False
 
@@ -49,6 +49,10 @@ class DuplicateMessages(Thread):
             # Prevent Docked event with small difference in distance from start
             if 'DistFromStarLS' in jsonTest['message']:
                 jsonTest['message']['DistFromStarLS'] = int(jsonTest['message']['DistFromStarLS'] + 0.5)
+
+            # Remove journal timestamp (Mainly to avoid multiple scan messages and faction influences)
+            if 'timestamp' in jsonTest['message']:
+                del jsonTest['message']['timestamp']
 
             message = simplejson.dumps(jsonTest, sort_keys=True) # Ensure most duplicate messages will get the same key
             key     = hashlib.sha256(message).hexdigest()
