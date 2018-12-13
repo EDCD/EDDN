@@ -54,9 +54,11 @@ class DuplicateMessages(Thread):
             if 'timestamp' in jsonTest['message']:
                 del jsonTest['message']['timestamp']
 
-            # Remove journal timestamp (Avoid duplicate scan messages after SAAScanComplete)
+            # Remove journal ScanType and DistanceFromArrivalLS (Avoid duplicate scan messages after SAAScanComplete)
             if 'ScanType' in jsonTest['message']:
                 del jsonTest['message']['ScanType']
+            if 'DistanceFromArrivalLS' in jsonTest['message']:
+                del jsonTest['message']['DistanceFromArrivalLS']
 
             message = simplejson.dumps(jsonTest, sort_keys=True) # Ensure most duplicate messages will get the same key
             key     = hashlib.sha256(message).hexdigest()
