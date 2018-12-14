@@ -19,6 +19,7 @@
 
     <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
     <script src="./js/date.js"></script>
+    <script type="text/javascript" src="./netdata/dashboard.js?v20181412"></script>
 </head>
 <body data-spy="scroll" data-target="#header-nav" data-offset="70">
     <header>
@@ -37,6 +38,7 @@
 
             <div class="collapse navbar-collapse" id="header-nav">
                 <ul class="nav navbar-nav">
+                    <li><a href="#monitoring">Server monitoring</a></li>
                     <li><a href="#gateways">Gateways</a></li>
                     <li><a href="#relays">Relays</a></li>
                     <li><a href="#software">Software</a></li>
@@ -62,6 +64,70 @@
                     This page shows transaction information (messages sent/received) for key points of the EDDN, over a one-, five- and sixty-minute period.<br />
                     Values automatically update every minute.
                 </p>
+            </div>
+        </div>
+    </section>
+
+    <section id="monitoring" class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>Server monitoring</h2>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-3 text-center">
+            	<div data-netdata="system.ram"
+                     data-dimensions="used|buffers|active|wired"
+                     data-title="Used RAM"
+                     data-chart-library="easypiechart"
+                     data-append-options="percentage"
+                     data-units="%"
+                     data-easypiechart-max-value="100"
+                     data-colors="#EE9911"
+                     data-width="85%"
+                     data-height="100%"></div>
+            </div>
+            <div class="col-md-3 text-center">
+                <div data-netdata="system.cpu"
+                     data-title="CPU"
+                     data-chart-library="gauge"
+                     data-gauge-max-value="100"
+                     data-units="%"
+                     data-after="-420"
+                     data-points="420"
+                     data-width="100%"
+                     data-height="100%"
+                     data-colors="#22AA99"></div>
+            <br/>
+    		<div data-netdata="system.load"
+                 data-chart-library="dygraph"
+                 data-dygraph-theme="sparkline"
+                 data-width="100%"
+                 data-height="50px"
+                 data-after="-420"
+                 data-points="420"></div>
+            </div>
+            <div class="col-md-3 text-center">
+                <div data-netdata="system.net"
+                     data-dimensions="received"
+                     data-title="Inbound Traffic"
+                     data-chart-library="easypiechart"
+                     data-after="-420"
+                     data-points="420"
+                     data-width="85%"
+                     data-height="100%"></div>
+            </div>
+            <div class="col-md-3 text-center">
+                <div data-netdata="system.net"
+                     data-dimensions="sent"
+                     data-common-units="system.net.mainhead"
+                     data-title="Outbound Traffic"
+                     data-chart-library="easypiechart"
+                     data-after="-420"
+                     data-points="420"
+                     data-width="85%"
+                     data-height="100%"></div>
             </div>
         </div>
     </section>
