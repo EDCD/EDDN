@@ -92,6 +92,7 @@ def getSoftwares():
     return simplejson.dumps(softwares)
 
 
+'''
 @get('/getTotalUploaders/')
 def getTotalUploaders():
     response.set_header("Access-Control-Allow-Origin", "*")
@@ -144,6 +145,7 @@ def getUploaders():
     db.close()
 
     return simplejson.dumps(uploaders)
+'''
 
 
 @get('/getTotalSchemas/')
