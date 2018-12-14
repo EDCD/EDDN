@@ -87,6 +87,7 @@ class Relay(Thread):
             receiver.connect(binding)
 
         sender = context.socket(zmq.PUB)
+        sender.setsockopt(zmq.SNDHWM, 500)
 
         for binding in Settings.RELAY_SENDER_BINDINGS:
             # End users, or other relays, may attach here.
