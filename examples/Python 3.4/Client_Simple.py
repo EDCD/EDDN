@@ -36,8 +36,8 @@ def main():
                 __message   = zlib.decompress(__message)
                 __json      = simplejson.loads(__message)
                 
-                
-                print (__json)
+                # call dumps() to ensure double quotes in output
+                print(simplejson.dumps(__json))
                 sys.stdout.flush()
                 
         except zmq.ZMQError as e:
