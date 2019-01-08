@@ -33,7 +33,7 @@
             "type"                  : "object",
             "description"           : "Contains all properties from the listed events in the client's journal minus Localised strings and the properties marked below as 'disallowed'",
             "additionalProperties"  : true,
-            "required"              : [ "timestamp", "event", "StarSystem", "StarPos" ],
+          "required"              : [ "timestamp", "event", "StarSystem", "StarPos", "SystemAddress" ],
             "properties"            : {
                 "timestamp": {
                     "type"          : "string",
@@ -59,13 +59,28 @@
                     "description"   : "Should be added by the sender if not present in the journal event"
                 },
 
+                "Factions": {
+                    "type"          : "array",
+                    "description"   : "Present in Location and FSDJump messages",
+                    "items" : {
+                        "type"      : "object",
+                        "properties": {
+                            "HappiestSystem"  : { "$ref" : "#/definitions/disallowed" },
+                            "HomeSystem"      : { "$ref" : "#/definitions/disallowed" },
+                            "MyReputation"    : { "$ref" : "#/definitions/disallowed" },
+                            "SquadronFaction" : { "$ref" : "#/definitions/disallowed" }
+                        }
+                    }
+                },
+                "ActiveFine"        : { "$ref" : "#/definitions/disallowed" },
                 "CockpitBreach"     : { "$ref" : "#/definitions/disallowed" },
                 "BoostUsed"         : { "$ref" : "#/definitions/disallowed" },
                 "FuelLevel"         : { "$ref" : "#/definitions/disallowed" },
                 "FuelUsed"          : { "$ref" : "#/definitions/disallowed" },
                 "JumpDist"          : { "$ref" : "#/definitions/disallowed" },
                 "Latitude"          : { "$ref" : "#/definitions/disallowed" },
-                "Longitude"         : { "$ref" : "#/definitions/disallowed" }
+                "Longitude"         : { "$ref" : "#/definitions/disallowed" },
+                "Wanted"            : { "$ref" : "#/definitions/disallowed" }
             },
             "patternProperties"     : {
                 "_Localised$"       : { "$ref" : "#/definitions/disallowed" }
