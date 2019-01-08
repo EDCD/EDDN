@@ -33,7 +33,7 @@
             "type"                  : "object",
             "description"           : "Contains all properties from the listed events in the client's journal minus Localised strings and the properties marked below as 'disallowed'",
             "additionalProperties"  : true,
-            "required"              : [ "timestamp", "event", "StarSystem", "StarPos" ],
+          "required"              : [ "timestamp", "event", "StarSystem", "StarPos", "SystemAddress" ],
             "properties"            : {
                 "timestamp": {
                     "type"          : "string",
