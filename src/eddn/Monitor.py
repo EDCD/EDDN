@@ -92,62 +92,6 @@ def getSoftwares():
     return simplejson.dumps(softwares)
 
 
-'''
-@get('/getTotalUploaders/')
-def getTotalUploaders():
-    response.set_header("Access-Control-Allow-Origin", "*")
-    db = mariadb.connect(user=Settings.MONITOR_DB['user'], password=Settings.MONITOR_DB['password'], database=Settings.MONITOR_DB['database'])
-    uploaders = collections.OrderedDict()
-
-    limit = request.GET.get('limit', '20').strip()
-
-    query = """SELECT `name`, SUM(`hits`) AS `total`
-               FROM `uploaders`
-               GROUP BY `name`
-               ORDER BY `total` DESC
-               LIMIT %s"""
-
-    results = db.cursor()
-    results.execute(query, (int(limit), ))
-
-    for row in results:
-        uploaders[row[0].encode('utf8')] = row[1]
-
-    db.close()
-
-    return simplejson.dumps(uploaders)
-
-
-@get('/getUploaders/')
-def getUploaders():
-    response.set_header("Access-Control-Allow-Origin", "*")
-    db = mariadb.connect(user=Settings.MONITOR_DB['user'], password=Settings.MONITOR_DB['password'], database=Settings.MONITOR_DB['database'])
-    uploaders = collections.OrderedDict()
-
-    dateStart = request.GET.get('dateStart', str(date('%Y-%m-%d'))).strip()
-    dateEnd = request.GET.get('dateEnd', str(date('%Y-%m-%d'))).strip()
-
-    query = """SELECT *
-               FROM `uploaders`
-               WHERE `dateStats` BETWEEN %s AND %s
-               ORDER BY `hits` DESC, `dateStats` ASC"""
-
-    results = db.cursor()
-    results.execute(query, (dateStart, dateEnd))
-
-    for row in results:
-        currentDate = row[2].strftime('%Y-%m-%d')
-        if not currentDate in uploaders.keys():
-            uploaders[currentDate] = collections.OrderedDict()
-
-        uploaders[currentDate][row[0].encode('utf8')] = row[1]
-
-    db.close()
-
-    return simplejson.dumps(uploaders)
-'''
-
-
 @get('/getTotalSchemas/')
 def getTotalSchemas():
     response.set_header("Access-Control-Allow-Origin", "*")
@@ -257,13 +201,6 @@ class Monitor(Thread):
             c.execute('UPDATE `softwares` SET `hits` = `hits` + 1 WHERE `name` = %s AND `dateStats` = UTC_DATE()', (softwareID, ))
             c.execute('INSERT IGNORE INTO `softwares` (`name`, `dateStats`) VALUES (%s, UTC_DATE())', (softwareID, ))
             db.commit()
-
-            # Update uploader count
-            if uploaderID:  # Don't get empty uploaderID
-                c = db.cursor()
-                c.execute('UPDATE `uploaders` SET `hits` = `hits` + 1 WHERE `name` = %s AND `dateStats` = UTC_DATE()', (uploaderID, ))
-                c.execute('INSERT IGNORE INTO `uploaders` (`name`, `dateStats`) VALUES (%s, UTC_DATE())', (uploaderID, ))
-                db.commit()
 
             # Update schemas count
             c = db.cursor()
