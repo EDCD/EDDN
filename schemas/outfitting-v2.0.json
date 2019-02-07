@@ -60,7 +60,7 @@
                     "items"         : {
                         "type"          : "string",
                         "minLength"     : 1,
-                        "pattern"       : "(^Hpt_|^Int_|_Armour_)",
+                        "pattern"       : "(^Hpt_|^hpt_|^Int_|^int_|_Armour_|_armour_)",
                         "description"   : "Module symbolic name. e.g. Hpt_ChaffLauncher_Tiny, Int_Engine_Size3_Class5_Fast, Independant_Trader_Armour_Grade1, etc. Modules that depend on the Cmdr's purchases (e.g. bobbleheads, paintjobs) or rank (e.g. decals and PowerPlay faction-specific modules) should be omitted."
                     }
                 }
