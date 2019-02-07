@@ -43,7 +43,7 @@
                     "minLength" : 1
                 },                
                 "marketId": {
-                    "type"      : "number"
+                    "type"      : "integer"
                 },
                 "horizons": {
                     "type"      : "boolean",

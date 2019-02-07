@@ -44,7 +44,7 @@
                     "minLength"     : 1
                 },                
                 "marketId": {
-                    "type"          : "number"
+                    "type"          : "integer"
                 },
                 "timestamp": {
                     "type"          : "string",
