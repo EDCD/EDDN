@@ -86,7 +86,17 @@
                 "Wanted"            : { "$ref" : "#/definitions/disallowed" }
             },
             "patternProperties"     : {
-                "_Localised$"       : { "$ref" : "#/definitions/disallowed" }
+                "_Localised$"       : { "$ref" : "#/definitions/disallowed" },
+                "^(Materials|StationEconomies)$" : {
+                    "type"          : "array",
+                    "description"   : "Present in Scan and Docked messages",
+                    "items" : {
+                        "type"      : "object",
+                        "patternProperties"     : {
+                            "_Localised$"       : { "$ref" : "#/definitions/disallowed" }
+                        }
+                    }
+                }
             }
         }
     },
