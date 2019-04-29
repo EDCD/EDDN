@@ -62,7 +62,7 @@ class Relay(Thread):
         now = time.time()
         if now - self.uploader_nonce_timestamp > self.REGENERATE_UPLOADER_NONCE_INTERVAL:
             self.generate_uploader_nonce()
-        return hashlib.sha1("{}-{}".format(self.uploader_nonce, uploader)).hexdigest()
+        return hashlib.sha1("{}-{}".format(self.uploader_nonce, uploader.encode('utf8'))).hexdigest()
 
     def run(self):
         """
