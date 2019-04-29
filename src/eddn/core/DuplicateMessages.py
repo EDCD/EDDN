@@ -42,23 +42,20 @@ class DuplicateMessages(Thread):
                 'message': dict(json['message']),
             }
 
-            # Convert starPos to avoid software modification in dupe messages
+            # Remove timestamp (Mainly to avoid multiple scan messages and faction influences)
+            jsonTest['message'].pop('timestamp')
+
+            # Convert journal starPos to avoid software modification in dupe messages
             if 'StarPos' in jsonTest['message']:
                 jsonTest['message']['StarPos'] = [int(round(x * 32)) for x in jsonTest['message']['StarPos']]
 
-            # Prevent Docked event with small difference in distance from start
+            # Prevent journal Docked event with small difference in distance from start
             if 'DistFromStarLS' in jsonTest['message']:
                 jsonTest['message']['DistFromStarLS'] = int(jsonTest['message']['DistFromStarLS'] + 0.5)
 
-            # Remove journal timestamp (Mainly to avoid multiple scan messages and faction influences)
-            if 'timestamp' in jsonTest['message']:
-                del jsonTest['message']['timestamp']
-
             # Remove journal ScanType and DistanceFromArrivalLS (Avoid duplicate scan messages after SAAScanComplete)
-            if 'ScanType' in jsonTest['message']:
-                del jsonTest['message']['ScanType']
-            if 'DistanceFromArrivalLS' in jsonTest['message']:
-                del jsonTest['message']['DistanceFromArrivalLS']
+            jsonTest['message'].pop('ScanType', None)
+            jsonTest['message'].pop('DistanceFromArrivalLS', None)
 
             message = simplejson.dumps(jsonTest, sort_keys=True) # Ensure most duplicate messages will get the same key
             key     = hashlib.sha256(message).hexdigest()
