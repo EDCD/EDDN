@@ -33,7 +33,7 @@
             "type"                  : "object",
             "description"           : "Contains all properties from the listed events in the client's journal minus Localised strings and the properties marked below as 'disallowed'",
             "additionalProperties"  : true,
-          "required"              : [ "timestamp", "event", "StarSystem", "StarPos", "SystemAddress" ],
+            "required"              : [ "timestamp", "event", "StarSystem", "StarPos", "SystemAddress" ],
             "properties"            : {
                 "timestamp": {
                     "type"          : "string",
@@ -69,6 +69,9 @@
                             "HomeSystem"      : { "$ref" : "#/definitions/disallowed" },
                             "MyReputation"    : { "$ref" : "#/definitions/disallowed" },
                             "SquadronFaction" : { "$ref" : "#/definitions/disallowed" }
+                        },
+                        "patternProperties"   : {
+                            "_Localised$"     : { "$ref" : "#/definitions/disallowed" }
                         }
                     }
                 },
@@ -83,7 +86,17 @@
                 "Wanted"            : { "$ref" : "#/definitions/disallowed" }
             },
             "patternProperties"     : {
-                "_Localised$"       : { "$ref" : "#/definitions/disallowed" }
+                "_Localised$"       : { "$ref" : "#/definitions/disallowed" },
+                "^(Materials|StationEconomies)$" : {
+                    "type"          : "array",
+                    "description"   : "Present in Scan and Docked messages",
+                    "items" : {
+                        "type"      : "object",
+                        "patternProperties"     : {
+                            "_Localised$"       : { "$ref" : "#/definitions/disallowed" }
+                        }
+                    }
+                }
             }
         }
     },
