@@ -75,6 +75,18 @@
                         }
                     }
                 },
+                
+                "Signals": {
+                    "type"          : "array",
+                    "description"   : "Present in SAASignalsFound messages",
+                    "items" : {
+                        "type"      : "object",
+                        "patternProperties"   : {
+                            "_Localised$"     : { "$ref" : "#/definitions/disallowed" }
+                        }
+                    }
+                },
+                
                 "ActiveFine"        : { "$ref" : "#/definitions/disallowed" },
                 "CockpitBreach"     : { "$ref" : "#/definitions/disallowed" },
                 "BoostUsed"         : { "$ref" : "#/definitions/disallowed" },
