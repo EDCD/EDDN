@@ -76,17 +76,6 @@
                     }
                 },
                 
-                "Signals": {
-                    "type"          : "array",
-                    "description"   : "Present in SAASignalsFound messages",
-                    "items" : {
-                        "type"      : "object",
-                        "patternProperties"   : {
-                            "_Localised$"     : { "$ref" : "#/definitions/disallowed" }
-                        }
-                    }
-                },
-                
                 "ActiveFine"        : { "$ref" : "#/definitions/disallowed" },
                 "CockpitBreach"     : { "$ref" : "#/definitions/disallowed" },
                 "BoostUsed"         : { "$ref" : "#/definitions/disallowed" },
@@ -99,9 +88,9 @@
             },
             "patternProperties"     : {
                 "_Localised$"       : { "$ref" : "#/definitions/disallowed" },
-                "^(Materials|StationEconomies)$" : {
+                "^(Materials|StationEconomies|Signals)$" : {
                     "type"          : "array",
-                    "description"   : "Present in Scan and Docked messages",
+                    "description"   : "Present in Scan, Docked and SAASignalsFound messages",
                     "items" : {
                         "type"      : "object",
                         "patternProperties"     : {
