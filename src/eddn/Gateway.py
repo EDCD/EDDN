@@ -21,7 +21,8 @@ from eddn.core.Validator import Validator, ValidationSeverity
 
 from gevent import monkey
 monkey.patch_all()
-from bottle import run, request, response, get, post
+from bottle import Bottle, run, request, response, get, post
+app = Bottle()
 
 logger = logging.getLogger(__name__)
 
@@ -158,7 +159,7 @@ def parse_and_error_handle(data):
         return "FAIL: " + str(validationResults.messages)
 
 
-@post('/upload/')
+@app.post('/upload/')
 def upload():
     response.set_header("Access-Control-Allow-Origin", "*")
     try:
@@ -181,7 +182,7 @@ def upload():
     return parse_and_error_handle(message_body)
 
 
-@get('/health_check/')
+@app.get('/health_check/')
 def health_check():
     """
     This should only be used by the gateway monitoring script. It is used
@@ -191,7 +192,7 @@ def health_check():
     return Settings.EDDN_VERSION
 
 
-@get('/stats/')
+@app.get('/stats/')
 def stats():
     response.set_header("Access-Control-Allow-Origin", "*")
     stats = statsCollector.getSummary()
@@ -211,7 +212,7 @@ class MalformedUploadError(Exception):
 def main():
     loadConfig()
     configure()
-    run(
+    app.run(
         host=Settings.GATEWAY_HTTP_BIND_ADDRESS, 
         port=Settings.GATEWAY_HTTP_PORT, 
         server='gevent', 
