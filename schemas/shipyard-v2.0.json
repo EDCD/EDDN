@@ -49,6 +49,10 @@
                     "type"          : "boolean",
                     "description"   : "Whether the sending Cmdr has a Horizons pass."
                 },
+                "allowCobraMkIV": {
+                    "type"          : "boolean",
+                    "description"   : "Whether the sending Cmdr can purchase the Cobra MkIV or not."
+                },
                 "timestamp": {
                     "type"          : "string",
                     "format"        : "date-time"
