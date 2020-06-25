@@ -25,3 +25,22 @@ footer .navbar-default {
 }
     
 .highcharts-container{width:100% !important; height:100% !important;}
+
+.jsgrid {
+	/* Same as bootstrap CSS sets on body */
+	font-size: 14px; 
+}
+
+.jsgrid-grid-header,
+.jsgrid-grid-body{
+	  overflow: auto;
+}
+
+tr.jsgrid-row > td, tr.jsgrid-alt-row > td {
+	padding: 8px;
+}
+
+/* Style the zero boxes as per bootstrap td.warning */
+tr.jsgrid-row > td.warning {
+	background-color:#faf2cc;
+}
