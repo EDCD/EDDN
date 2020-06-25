@@ -80,7 +80,7 @@ var softwaresViewData = new Array(); // The data for the current view
 var softwaresVersion  = {};
 
 var softwaresJsGridDataController = function () {
-    console.log('softwares -> jsGrid.controller.loadData() returning %o', softwaresViewData);
+    //console.log('softwares -> jsGrid.controller.loadData() returning %o', softwaresViewData);
     return softwaresViewData;
 };
 
