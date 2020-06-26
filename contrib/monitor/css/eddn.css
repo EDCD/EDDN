@@ -41,6 +41,6 @@ tr.jsgrid-row > td, tr.jsgrid-alt-row > td {
 }
 
 /* Style the zero boxes as per bootstrap td.warning */
-tr.jsgrid-row > td.warning {
+tr.jsgrid-row > td.warning, tr.jsgrid-alt-row > td.warning {
 	background-color:#faf2cc;
 }
