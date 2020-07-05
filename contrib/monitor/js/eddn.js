@@ -1,3 +1,5 @@
+/* vim: wrapmargin=0 textwidth=0 tabstop=4 softtabstop=4 expandtab shiftwidth=4
+ */
 var updateInterval      = 60000,
 
     monitorEndPoint     = 'https://eddn.edcd.io:9091/',
@@ -72,8 +74,339 @@ secondsToDurationString = function(seconds) {
 var drillDownSoftware = false;
 var currentDrillDown  = false;
 
-var softwaresTotal    = {};
+var softwaresSort     = { field: 'today', order: 'desc' }; // Very first load sort order
+var softwaresData     = new Array();     // The last data we got from API
+var softwaresViewData = new Array(); // The data for the current view
 var softwaresVersion  = {};
+
+var softwaresJsGridDataController = function () {
+    //console.log('softwares -> jsGrid.controller.loadData() returning %o', softwaresViewData);
+    return softwaresViewData;
+};
+
+/*
+ * Create a new jsGrid and HighChart for Softwares
+ */
+var softwaresNewJsGrid = function () {
+    var chart  = $('#software .chart').highcharts(),
+        series = chart.get('softwares');
+    var newJsGrid;
+    if (currentDrillDown) {
+        newJsGrid = $("#table-softwares").jsGrid({
+            width: "100%",
+    
+            filtering: false,
+            inserting: false,
+            editing: false,
+            sorting: true,
+    
+            controller: {
+                loadData: softwaresJsGridDataController,
+            },
+    
+            fields: [
+                {
+                    title: "",
+                    width: "30px",
+                    sorting: false,
+                    readOnly: true,
+                },
+                {
+                    title: currentDrillDown,
+                    width: "50%",
+                    name: "name",
+                    type: "text",
+                    align: "left",
+                    readOnly: true,
+                },
+                {
+                    title: "Today hits",
+                    name: "today",
+                    type: "number",
+                    align: "right",
+                    readOnly: true,
+                    css: "stat today",
+                    itemTemplate: formatNumberJsGrid,
+                },
+                {
+                    title: "Yesterday hits",
+                    name: "yesterday",
+                    type: "number",
+                    align: "right",
+                    readOnly: true,
+                    css: "stat yesterday",
+                    itemTemplate: formatNumberJsGrid,
+                },
+                {
+                    title: "Total hits",
+                    name: "total",
+                    type: "number",
+                    align: "right",
+                    readOnly: true,
+                    css: "stat total",
+                    itemTemplate: formatNumberJsGrid,
+                },
+            ],
+    
+            rowRenderer: function(item) {
+                softwareSplit = item.name.split(' | ');
+                return $('<tr>').attr('data-type', 'parent').attr('data-name', item.name).on('mouseover', function(){
+                    chart.get('software-' + makeSlug(item.name)).setState('hover');
+                    chart.tooltip.refresh(chart.get('software-' + makeSlug(item.name)));
+                }).on('mouseout', function(){
+                    if(chart.get('software-' + makeSlug(item.name)))
+                        chart.get('software-' + makeSlug(item.name)).setState('');
+                    chart.tooltip.hide();
+                }).append(
+                    $('<td>').addClass('square').attr('data-name', item.name).css('width', '30px').css('padding', '8px')
+                ).append(
+                    $('<td>').html('<strong>' + item.name + '</strong>').css('cursor','pointer').css('width', '50%')
+                )
+                .append(
+                    $('<td>').addClass(item.today ? 'stat today' : 'warning').html(formatNumber(item.today || 0))
+                )
+                .append(
+                    $('<td>').addClass(item.yesterday ? 'stat yesterday' : 'warning').html(formatNumber(item.yesterday || 0))
+                )
+                .append(
+                    $('<td>').addClass('stat total').html('<strong>' + formatNumber(item.total) + '</strong>')
+                );
+            },
+    
+            onRefreshed: function(grid) {
+                // Gets fired when sort is changed
+                //console.log('softwares.onRefreshed(): %o', grid);
+                if (grid && grid.grid && grid.grid._sortField) {
+                    //console.log(' grid sort is: %o, %o', grid.grid._sortField.name, grid.grid._sortOrder);
+                    //console.log(' saved sort is: %o', softwaresSort);
+                    if (softwaresSort.field != grid.grid._sortField.name) {
+                        softwaresSort.field = grid.grid._sortField.name;
+                        $("#table-softwares").jsGrid("sort", softwaresSort);
+                        return;
+                    } else {
+                        softwaresSort.order = grid.grid._sortOrder;
+                    }
+                    $.each(softwaresViewData, function(key, values) {
+
+                        if(!chart.get('software-' + makeSlug(values.name)))
+                        {
+                            //console.log('Adding data point sort is: %o', softwaresSort.field);
+                            // Populates the data into the overall Software pie chart as per current sort column
+                            series.addPoint({id: 'software-' + makeSlug(values.name), name: values.name, y: parseInt(values[grid.grid._sortField.name]), drilldown: true}, false);
+                        } else {
+                            // Populates the data into the overall Software pie chart as per current sort column
+                            chart.get('software-' + makeSlug(values.name)).update(parseInt(values[grid.grid._sortField.name]), false);
+                        }
+                        $(".square[data-name='" + this.name.replace("'", "\\'") + "']").css('background', chart.get('software-' + makeSlug(values.name)).color);
+                    });
+                }
+                chart.redraw();
+            },
+        });
+
+        $("#table-softwares table .jsgrid-header-row th:eq(0)").html('<span class="glyphicon glyphicon-remove"></span>')
+        .css('cursor','pointer')
+        .on('click', function(event) {
+            //console.log('softwares: click! %o', event);
+            currentDrillDown = false;
+            /*
+             * No longer drilling down, so need to reset the data
+             */
+            softwaresViewData = new Array();
+            softwaresData.forEach(function(software, s) {
+                softwareSplit = software.name.split(' | ');
+                name = softwareSplit[0];
+                var sw = softwaresViewData.find(o => o.name === name);
+                if(!sw) {
+                    softwaresViewData.push({ 'name': name, 'today': software.today, 'yesterday': software.yesterday, 'total': software.total});
+                    sw = softwaresViewData.find(o => o.name === name);
+                } else {
+                    sw['today'] += software.today;
+                    sw['yesterday'] += software.yesterday;
+                    sw['total'] += software.total;
+                }
+            });
+            softwaresNewJsGrid();
+        });
+
+    } else {
+        // Not drilling down
+        newJsGrid = $("#table-softwares").jsGrid({
+            width: "100%",
+        
+            filtering: false,
+            inserting: false,
+            editing: false,
+            sorting: true,
+            autoload: false,
+        
+            controller: {
+                loadData: softwaresJsGridDataController
+            },
+        
+            fields: [
+                {
+                    title: "",
+                    width: "30px",
+                    sorting: false,
+                    readOnly: true,
+                },
+                {
+                    title: "Software name",
+                    width: "50%",
+                    name: "name",
+                    type: "text",
+                    align: "left",
+                    readOnly: true,
+                },
+                {
+                    title: "Today hits",
+                    name: "today",
+                    type: "number",
+                    align: "right",
+                    readOnly: true,
+                    css: "stat today",
+                    itemTemplate: formatNumberJsGrid,
+                },
+                {
+                    title: "Yesterday hits",
+                    name: "yesterday",
+                    type: "number",
+                    align: "right",
+                    readOnly: true,
+                    css: "stat yesterday",
+                    itemTemplate: formatNumberJsGrid,
+                },
+                {
+                    title: "Total hits",
+                    name: "total",
+                    type: "number",
+                    align: "right",
+                    readOnly: true,
+                    css: "stat total",
+                    itemTemplate: formatNumberJsGrid,
+                },
+            ],
+    
+            rowRenderer: function(item) {
+                return $('<tr>').attr('data-type', 'parent').attr('data-name', item.name).on('click', function(event){
+                    //console.log('softwares: click! %o', event);
+                    currentDrillDown = item.name;
+    
+                    /*
+                     * The data we need for this drilldown
+                     */
+                    softwaresViewData = new Array();
+                    softwaresData.forEach(function(software, s) {
+                        softwareSplit = software.name.split(' | ');
+                        var name = "";
+                        if (currentDrillDown == softwareSplit[0]) {
+                            name = softwareSplit[1];
+                        } else {
+                            return true;
+                        }
+                        var sw = softwaresViewData.find(o => o.name === name);
+                        if(!sw) {
+                            softwaresViewData.push({ 'name': name, 'today': software.today, 'yesterday': software.yesterday, 'total': software.total});
+                            sw = softwaresViewData.find(o => o.name === name);
+                        } else {
+                            sw['today'] += software.today;
+                            sw['yesterday'] += software.yesterday;
+                            sw['total'] += software.total;
+                        }
+                    });
+                    softwaresNewJsGrid();
+                }).on('mouseover', function(){
+                    chart.get('software-' + makeSlug(item.name)).setState('hover');
+                    chart.tooltip.refresh(chart.get('software-' + makeSlug(item.name)));
+                }).on('mouseout', function(){
+                    if(chart.get('software-' + makeSlug(item.name)))
+                        chart.get('software-' + makeSlug(item.name)).setState('');
+                    chart.tooltip.hide();
+                }).append(
+                    $('<td>').addClass('square').attr('data-name', item.name).css('width', '30px').css('padding', '8px')
+                ).append(
+                    $('<td>').html('<strong>' + item.name + '</strong>').css('cursor','pointer').css('width', '50%')
+                )
+                .append(
+                    $('<td>').addClass(item.today ? 'stat today' : 'warning').html(formatNumber(item.today || 0))
+                )
+                .append(
+                    $('<td>').addClass(item.yesterday ? 'stat yesterday' : 'warning').html(formatNumber(item.yesterday || 0))
+                )
+                .append(
+                    $('<td>').addClass('stat total').html('<strong>' + formatNumber(item.total) + '</strong>')
+                );
+            },
+        
+            onRefreshed: function(grid) {
+                // Gets fired when sort is changed
+                //console.log('softwares.onRefreshed(): %o', grid);
+                if (grid && grid.grid && grid.grid._sortField) {
+                    //console.log(' grid sort is: %o, %o', grid.grid._sortField.name, grid.grid._sortOrder);
+                    //console.log(' saved sort is: %o', softwaresSort);
+                    if (softwaresSort.field != grid.grid._sortField.name) {
+                        softwaresSort.field = grid.grid._sortField.name;
+                        $("#table-softwares").jsGrid("sort", softwaresSort);
+                        return;
+                    } else {
+                        softwaresSort.order = grid.grid._sortOrder;
+                    }
+                    $.each(softwaresViewData, function(key, values) {
+
+                        if(!chart.get('software-' + makeSlug(values.name)))
+                        {
+                            //console.log('Adding data point sort is: %o', softwaresSort.field);
+                            // Populates the data into the overall Software pie chart as per current sort column
+                            series.addPoint({id: 'software-' + makeSlug(values.name), name: values.name, y: parseInt(values[grid.grid._sortField.name]), drilldown: true}, false);
+                        } else {
+                            // Populates the data into the overall Software pie chart as per current sort column
+                            chart.get('software-' + makeSlug(values.name)).update(parseInt(values[grid.grid._sortField.name]), false);
+                        }
+                        $(".square[data-name='" + this.name.replace("'", "\\'") + "']").css('background', chart.get('software-' + makeSlug(values.name)).color);
+                    });
+                }
+                chart.redraw();
+            },
+        });
+    }
+    
+    // Because we're using a controller for data we need to trigger it
+    $("#table-softwares").jsGrid("loadData");
+    // Re-apply the last stored sor
+    $("#table-softwares").jsGrid("sort", softwaresSort);
+
+    // Populate the chart with the data
+    series.remove(false);
+    series = chart.addSeries({
+        id: 'softwares',
+        name: 'Softwares',
+        type: 'pie',
+        data: []
+    });
+    $.each(softwaresViewData, function(key, values) {
+        field = $("#table-softwares").jsGrid("getSorting").field;
+        if(!chart.get('software-' + makeSlug(values.name)))
+        {
+            //console.log('Adding data point sort is: %o', softwaresSort.field);
+            // Populates the data into the overall Software pie chart as per current sort column
+            series.addPoint({id: 'software-' + makeSlug(values.name), name: values.name, y: parseInt(values[field]), drilldown: true}, false);
+        } else {
+            // Populates the data into the overall Software pie chart as per current sort column
+            chart.get('software-' + makeSlug(values.name)).update(parseInt(values[field]), false);
+        }
+        $(".square[data-name='" + this.name.replace("'", "\\'") + "']").css('background', chart.get('software-' + makeSlug(values.name)).color);
+    });
+    
+    chart.redraw();
+
+    $('#software').find(".stat").removeClass("warning").each(function() {
+        if ($(this).html() == "0")
+            $(this).addClass("warning");
+    });
+
+    return newJsGrid;
+}
 
 var doUpdateSoftwares = function()
 {
@@ -83,192 +416,92 @@ var doUpdateSoftwares = function()
         yesterday   = dYesterday.getUTCFullYear() + '-' + ("0" + (dYesterday.getUTCMonth() +　1)).slice(-2) + '-' + ("0" + (dYesterday.getUTCDate())).slice(-2),
         today       = dToday.getUTCFullYear() + '-' + ("0" + (dToday.getUTCMonth() +　1)).slice(-2) + '-' + ("0" + (dToday.getUTCDate())).slice(-2);
 
+    /*
+     * Gathering the data per a "<softwareName> | <softwareVersion>" tuple takes two calls.
+     *
+     *  1) First a /getSoftwares/?dateStart=<yesterday>&dateEnd=<today>
+     *
+     *      This returns an object with two top level keys, one for each date.  The value
+     *      for each is another object with "<softwareName> | <softwareVersion>" as each key,
+     *      and the value as the count for that tuple.
+     *
+     *  2) Then the lifetime totals for each "<softwareName> | <softwareVersion>" tuple, from
+     *     /getTotalSoftwares/
+     *
+     *      This returns an object with "<softwareName> | <softwareVersion>" tuples as keys,
+     *      the values being the lifetime totals for each tuple.
+     *
+     *  The calls are nested here, so only the inner .ajax() has access to the totality of data.
+     */
     $.ajax({
         dataType: "json",
         url: monitorEndPoint + 'getSoftwares/?dateStart=' + yesterday + '&dateEnd = ' + today,
-        success: function(softwares){
+        success: function(softwaresTodayYesterday){
             $.ajax({
                 dataType: "json",
                 url: monitorEndPoint + 'getTotalSoftwares/',
-                success: function(softwaresTotalData){
-                    var chart   = $('#software .chart').highcharts(),
-                        series  = chart.get('softwares');
+                success: function(softwaresTotals){
+                    // Might happen when nothing is received...
+                    if(softwaresTodayYesterday[yesterday] == undefined)
+                        softwaresTodayYesterday[yesterday] = [];
+                    if(softwaresTodayYesterday[today] == undefined)
+                        softwaresTodayYesterday[today] = [];
 
-                    // Count total by software, all versions included
-                    var softwareName = {};
-                    $.each(softwaresTotalData, function(software, hits){
-                        softwareSplit = software.split(' | ');
+                    /*
+                     * Prepare 'softwaresData' dictionary:
+                     *
+                     * 	key: software name, including the version
+                     * 	value: dictionary with counts for: today, yesterday, total (all time)
+                     */
+                    softwaresData = new Array();
+                    $.each(softwaresTotals, function(softwareName, total){
+                        var sw = { 'name': softwareName, 'today': 0, 'yesterday': 0, 'total': parseInt(total)};
 
-                        if(!softwareName[softwareSplit[0]])
-                            softwareName[softwareSplit[0]] = [0,0, parseInt(hits)];
-                        else
-                            softwareName[softwareSplit[0]][2] += parseInt(hits);
+                        sw['today'] += parseInt(softwaresTodayYesterday[today][softwareName] || 0);
+                        sw['yesterday'] += parseInt(softwaresTodayYesterday[yesterday][softwareName] || 0);
 
-                        // Might happen when nothing is received...
-                        if(softwares[yesterday] == undefined)
-                            softwares[yesterday] = [];
-                        if(softwares[today] == undefined)
-                            softwares[today] = [];
-
-                        softwareName[softwareSplit[0]][0] += parseInt(softwares[today][software] || 0);
-                        softwareName[softwareSplit[0]][1] += parseInt(softwares[yesterday][software] || 0);
-
+                        softwaresData.push(sw);
                     });
 
-                    // Sort by total DESC
-                    var tmp = new Array();
-                    $.each(softwareName, function(software, hits){ tmp.push({name: software, today: hits[0], yesterday: hits[1], total: hits[2]}); });
-                    tmp.sort(function(a,b) { return b.total - a.total; });
-                    softwaresTotal = tmp;
-
-                    $('#software .table tbody').empty();
-
-                    // Prepare drilldowns
-                    $.each(softwaresTotalData, function(software, hits){
-                        softwareSplit = software.split(' | ');
-
-                        $('#software .table tbody').append(
-                            newTr = $('<tr>').attr('data-type', 'drilldown').attr('data-parent', softwareSplit[0]).attr('data-name', software).on('mouseover', function(){
-                                chart.get('software-' + makeSlug(software)).setState('hover');
-                                chart.tooltip.refresh(chart.get('software-' + makeSlug(software)));
-                            }).on('mouseout', function(){
-                                chart.get('software-' + makeSlug(software)).setState('');
-                                chart.tooltip.hide();
-                            }).append(
-                                $('<td>').addClass('square')
-                            ).append(
-                                $('<td>').html('<strong>' + softwareSplit[1] + '</strong>')
-                            )
-                            .append(
-                                $('<td>').addClass('stat today').html(formatNumber(softwares[today][software] || 0))
-                            )
-                            .append(
-                                $('<td>').addClass('stat yesterday').html(formatNumber(softwares[yesterday][software] || 0))
-                            )
-                            .append(
-                                $('<td>').addClass('stat total').html('<strong>' + formatNumber(hits) + '</strong>')
-                            )
-                        );
-
-                        if(!drillDownSoftware)
-                            newTr.hide();
-                        else
-                            if(softwareSplit[0] != currentDrillDown)
-                                newTr.hide();
-
-                        if(!softwaresVersion[softwareSplit[0]])
-                            softwaresVersion[softwareSplit[0]] = {};
-                        if(!softwaresVersion[softwareSplit[0]][software])
-                            softwaresVersion[softwareSplit[0]][software] = {
-                                today: (softwares[today][software] || 0), yesterday: (softwares[yesterday][software] || 0), total: hits
-                            };
-                    });
-
-                    // Add main softwares
-                    $.each(softwaresTotal, function(key, values){
-                        $('#software .table tbody').append(
-                            newTr = $('<tr>').attr('data-type', 'parent').attr('data-name', values.name).on('click', function(event){
-                                event.stopImmediatePropagation();
-                                currentSoftware = $(this).attr('data-name');
-
-                                if(!drillDownSoftware)
-                                {
-                                    currentDrillDown = currentSoftware;
-
-                                    $('#software .table thead th:eq(0)').html('<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>')
-                                                                         .css('cursor','pointer')
-                                                                         .on('click', function(){
-                                                                             currentDrillDown = false;
-                                                                             chart.showDrillUpButton();
-                                                                             $('#software .table thead th:eq(0)').html('');
-                                                                             $('#software .table thead th:eq(1)').html('');
-                                                                             $('#software .table tbody tr[data-type=parent]').show();
-                                                                             $('#software .table tbody tr[data-type=drilldown]').hide();
-                                                                             drillDownSoftware = !drillDownSoftware;
-                                                                             doUpdateSoftwares();
-                                                                             chart.drillUp();
-                                                                         });
-                                    $('#software .table thead th:eq(1)').html(currentSoftware);
-                                    $('#software .table tbody tr[data-type=parent]').hide();
-                                    $('#software .table tbody tr[data-type=drilldown][data-parent="' + currentSoftware + '"]').show();
-
-                                    var currentData = [];
-
-                                    $.each(softwaresVersion[currentSoftware], function(key, value){
-                                        currentData.push({
-                                            id: 'software-' + makeSlug(key),
-                                            name: key,
-                                            y: parseInt(value.total)
-                                        });
-                                    });
-
-                                    chart.addSeriesAsDrilldown(chart.get('software-' + makeSlug(currentSoftware)), {
-                                        id: 'softwareDrilldown-' + makeSlug(currentSoftware),
-                                        type: 'pie',
-                                        name: currentSoftware,
-                                        data: currentData
-                                    });
-                                    chart.redraw();
-
-                                    if(chart.drillUpButton)
-                                        chart.drillUpButton = chart.drillUpButton.destroy();
-
-                                    $('#software .table tbody tr[data-type=drilldown][data-parent="' + currentSoftware + '"]').each(function(){
-                                        $(this).find('.square').css('background', chart.get('software-' + makeSlug($(this).attr('data-name'))).color);
-                                    });
-                                }
-
-                                drillDownSoftware = !drillDownSoftware;
-                            }).on('mouseover', function(){
-                                chart.get('software-' + makeSlug(values.name)).setState('hover');
-                                chart.tooltip.refresh(chart.get('software-' + makeSlug(values.name)));
-                            }).on('mouseout', function(){
-                                if(chart.get('software-' + makeSlug(values.name)))
-                                    chart.get('software-' + makeSlug(values.name)).setState('');
-                                chart.tooltip.hide();
-                            }).append(
-                                $('<td>').addClass('square')
-                            ).append(
-                                $('<td>').html('<strong>' + values.name + '</strong>').css('cursor','pointer')
-                            )
-                            .append(
-                                $('<td>').addClass('stat today').html(formatNumber(values.today || 0))
-                            )
-                            .append(
-                                $('<td>').addClass('stat yesterday').html(formatNumber(values.yesterday || 0))
-                            )
-                            .append(
-                                $('<td>').addClass('stat total').html('<strong>' + formatNumber(values.total) + '</strong>')
-                            )
-                        );
-
-                        if(!drillDownSoftware)
-                        {
-                            if(!chart.get('software-' + makeSlug(values.name)))
-                            {
-                                series.addPoint({id: 'software-' + makeSlug(values.name), name: values.name, y: parseInt(values.total), drilldown: true}, false);
+                    /*
+                     * Now the data we need for the current view (overall data or a drilldown of a software)
+                     */
+                    softwaresViewData = new Array();
+                    softwaresData.forEach(function(software, s) {
+                        softwareSplit = software.name.split(' | ');
+                        var name = "";
+                        if (currentDrillDown) {
+                            if (currentDrillDown == softwareSplit[0]) {
+                                name = softwareSplit[1];
+                            } else {
+                                return true;
                             }
-                            else
-                                chart.get('software-' + makeSlug(values.name)).update(parseInt(values.total), false);
-
-                            newTr.find('.square').css('background', chart.get('software-' + makeSlug(values.name)).color);
+                        } else {
+                            name = softwareSplit[0];
                         }
-
-                        if(drillDownSoftware)
-                            newTr.hide();
+                        var sw = softwaresViewData.find(o => o.name === name);
+                        if(!sw) {
+                            softwaresViewData.push({ 'name': name, 'today': software.today, 'yesterday': software.yesterday, 'total': software.total});
+                            sw = softwaresViewData.find(o => o.name === name);
+                        } else {
+                            sw['today'] += software.today;
+                            sw['yesterday'] += software.yesterday;
+                            sw['total'] += software.total;
+                        }
                     });
 
-                    if(drillDownSoftware)
-                        $('#software .table tbody tr[data-type=drilldown][data-parent="' + currentDrillDown + '"]').each(function(){
-                            $(this).find('.square').css('background', chart.get('software-' + makeSlug($(this).attr('data-name'))).color);
-                        });
+                    // Ensure we have the jsGrid added
+                    if (! $("#table-softwares").length ) {
+                        // Append a new DIV for this jsGrid to the "#software #tables" div
+                        $('#software #tables').append(
+                            $('<div/>').addClass('jsGridTable').attr('id', 'table-softwares')
+                        );
+                    } else {
+                        // Store the last selected sort so we can apply it to the new version
+                        softwaresSort = $("#table-softwares").jsGrid("getSorting");
+                    }
 
-                    chart.redraw();
-
-                    $('#software').find(".stat").removeClass("warning").each(function() {
-                        if ($(this).html() == "0")
-                            $(this).addClass("warning");
-                    });
+                    newJsGrid = softwaresNewJsGrid();
 
                     $('#software').find(".update_timestamp").html(d.toString("yyyy-MM-dd HH:mm:ss"));
                 }
@@ -277,86 +510,9 @@ var doUpdateSoftwares = function()
     });
 }
 
-/*
-var doUpdateUploaders = function()
-{
-    var dToday      = new Date(),
-        dYesterday  = new (function(d){ d.setDate(d.getDate()-1); return d})(new Date),
 
-        yesterday   = dYesterday.getUTCFullYear() + '-' + ("0" + (dYesterday.getUTCMonth() +　1)).slice(-2) + '-' + ("0" + (dYesterday.getUTCDate())).slice(-2),
-        today       = dToday.getUTCFullYear() + '-' + ("0" + (dToday.getUTCMonth() +　1)).slice(-2) + '-' + ("0" + (dToday.getUTCDate())).slice(-2);
-
-    $.ajax({
-        dataType: "json",
-        url: monitorEndPoint + 'getUploaders/?dateStart=' + yesterday + '&dateEnd = ' + today,
-        success: function(uploaders){
-            $.ajax({
-                dataType: "json",
-                url: monitorEndPoint + 'getTotalUploaders/',
-                success: function(uploadersTotal){
-                    var chart   = $('#uploaders .chart').highcharts(),
-                        series  = chart.get('uploaders');
-
-                    $('#uploaders .table tbody').empty();
-
-                    $.each(uploadersTotal, function(uploader, hits){
-                        if(uploader.length > 32)
-                            truncateUploader = jQuery.trim(uploader).substring(0, 32) + "..."
-                        else
-                            truncateUploader = uploader
-
-                        // Might happen when nothing is received...
-                        if(uploaders[yesterday] == undefined)
-                            uploaders[yesterday] = [];
-                        if(uploaders[today] == undefined)
-                            uploaders[today] = [];
-
-                        $('#uploaders .table tbody').append(
-                            newTr = $('<tr>').attr('data-name', uploader).on('mouseover', function(){
-                                chart.get('uploader-' + makeSlug(uploader)).setState('hover');
-                                chart.tooltip.refresh(chart.get('uploader-' + makeSlug(uploader)));
-                            }).on('mouseout', function(){
-                                chart.get('uploader-' + makeSlug(uploader)).setState('');
-                                chart.tooltip.hide();
-                            }).append(
-                                $('<td>').addClass('square')
-                            ).append(
-                                $('<td>').html('<strong>' + truncateUploader + '</strong>')
-                            )
-                            .append(
-                                $('<td>').addClass('stat today').html(formatNumber(uploaders[today][uploader] || 0))
-                            )
-                            .append(
-                                $('<td>').addClass('stat yesterday').html(formatNumber(uploaders[yesterday][uploader] || 0))
-                            )
-                            .append(
-                                $('<td>').addClass('stat total').html('<strong>' + formatNumber(hits) + '</strong>')
-                            )
-                        );
-
-                        if(!chart.get('uploader-' + makeSlug(uploader)))
-                            series.addPoint({id: 'uploader-' + makeSlug(uploader), name: uploader, y: parseInt(hits)}, false);
-                        else
-                            chart.get('uploader-' + makeSlug(uploader)).update(parseInt(hits), false);
-
-                        newTr.find('.square').css('background', chart.get('uploader-' + makeSlug(uploader)).color);
-                    });
-
-                    chart.redraw();
-
-                    $('#uploaders').find(".stat").removeClass("warning").each(function() {
-                        if ($(this).html() == "0")
-                            $(this).addClass("warning");
-                    });
-
-                    $('#uploaders').find(".update_timestamp").html(d.toString("yyyy-MM-dd HH:mm:ss"));
-                }
-            });
-        }
-    });
-}
-*/
-
+var schemasSort = { field: 'today', order: 'desc' }; // Very first load sort order
+var schemasData    = new Array();
 
 var doUpdateSchemas = function()
 {
@@ -369,87 +525,173 @@ var doUpdateSchemas = function()
     $.ajax({
         dataType: "json",
         url: monitorEndPoint + 'getSchemas/?dateStart=' + yesterday + '&dateEnd = ' + today,
-        success: function(schemas){
+        success: function(schemasTodayYesterday){
+            // Might happen when nothing is received...
+            if(schemasTodayYesterday[yesterday] == undefined)
+                schemaTodayYesterday[yesterday] = [];
+            if(schemasTodayYesterday[today] == undefined)
+                schemasTodayYesterday[today] = [];
+
             $.ajax({
                 dataType: "json",
                 url: monitorEndPoint + 'getTotalSchemas/',
-                success: function(schemasTotalTmp){
-					// Convert old schemas and sum them to new schemas
-                    schemasTotal = {};
-                    $.each(schemasTotalTmp, function(schema, hits){
-                        schema = schema.replace('http://schemas.elite-markets.net/eddn/', 'https://eddn.edcd.io/schemas/');
-                        hits   = parseInt(hits);
-
-                        if(schemasTotal[schema]){ schemasTotal[schema] += hits; }
-                        else{ schemasTotal[schema] = hits; }
-                    });
-
+                success: function(schemasTotals){
                     var chart   = $('#schemas .chart').highcharts(),
                         series  = chart.get('schemas');
 
-                    $('#schemas .table tbody').empty();
+                    /*
+                     * Prepare 'schemasData' dictionary
+                     */
+                    schemasData = new Array();
+                    $.each(schemasTotals, function(schema, total) {
+                        schemaName = schema.replace('http://schemas.elite-markets.net/eddn/', 'https://eddn.edcd.io/schemas/');
+                        // Due to the schema renames and us merging them there could be more than one
+                        // row of data input per schema
+                        var sch = schemasData.find(o => o.name === schemaName);
+                        if (!sch) {
+                            schemasData.push({ 'name': schemaName, 'today': 0, 'yesterday': 0, 'total': parseInt(total)});
+                            sch = schemasData.find(o => o.name === schemaName);
+                        } else {
+                            sch['total'] += parseInt(total);
+                        }
+                    });
 
-                    $.each(schemasTotal, function(schema, hits){
-                        // Might happen when nothing is received...
-                        if(schemas[yesterday] == undefined)
-                            schemas[yesterday] = [];
-                        if(schemas[today] == undefined)
-                            schemas[today] = [];
+                    // Today
+                    $.each(schemasTodayYesterday[today], function(schema, hits) {
+                        schemaName = schema.replace('http://schemas.elite-markets.net/eddn/', 'https://eddn.edcd.io/schemas/');
+                        var sch = schemasData.find(o => o.name === schemaName);
+                        sch['today'] += parseInt(hits);
+                    });
+                    // Yesterday
+                    $.each(schemasTodayYesterday[yesterday], function(schema, hits) {
+                        schemaName = schema.replace('http://schemas.elite-markets.net/eddn/', 'https://eddn.edcd.io/schemas/');
+                        var sch = schemasData.find(o => o.name === schemaName);
+                        sch['yesterday'] += parseInt(hits);
+                    });
 
-						// Convert old schemas and sum them to new schemas
-						schemasYesterdayTmp = {};
-						$.each(schemas[yesterday], function(schema, hits){
-							schema = schema.replace('http://schemas.elite-markets.net/eddn/', 'https://eddn.edcd.io/schemas/');
-							hits   = parseInt(hits);
+                    // Ensure we have the jsGrid added
+                    if (! $("#table-schemas").length ) {
+                        // Append a new DIV for this jsGrid to the "#schemas #tables" div
+                        $('#schemas #tables').append(
+                            $('<div/>').addClass('jsGridTable').attr('id', 'table-schemas')
+                        );
+                    } else {
+                        // Store the last selected sort so we can apply it to the new version
+                        schemasSort = $("#table-schemas").jsGrid("getSorting");
+                    }
 
-							if(schemasYesterdayTmp[schema]){ schemasYesterdayTmp[schema] += hits; }
-							else{ schemasYesterdayTmp[schema] = hits; }
-						});
-						schemas[yesterday] = schemasYesterdayTmp;
+                    newJsGrid = $("#table-schemas").jsGrid({
+                        width: "100%",
 
-						schemasTodayTmp = {};
-						$.each(schemas[today], function(schema, hits){
-							schema = schema.replace('http://schemas.elite-markets.net/eddn/', 'https://eddn.edcd.io/schemas/');
-							hits   = parseInt(hits);
+                        filtering: false,
+                        inserting: false,
+                        editing: false,
+                        sorting: true,
+                        autoload: false,
 
-							if(schemasTodayTmp[schema]){ schemasYesterdayTmp[schema] += hits; }
-							else{ schemasTodayTmp[schema] = hits; }
-						});
-						schemas[today] = schemasTodayTmp;
+                        data: schemasData,
 
-                        var slug = makeSlug(schema);
-                        var name = makeName(schema);
+                        fields: [
+                            {
+                                title: "",
+                                width: "30px",
+                                name: "chartslug",
+                                sorting: false,
+                                readOnly: true,
+                            },
+                            {
+                                title: "Schema",
+                                width: "50%",
+                                name: "name",
+                                type: "text",
+                                align: "left",
+                                readOnly: true,
+                            },
+                            {
+                                title: "Today hits",
+                                name: "today",
+                                type: "number",
+                                align: "right",
+                                readOnly: true,
+                                css: "stat today",
+                                itemTemplate: formatNumberJsGrid,
+                            },
+                            {
+                                title: "Yesterday hits",
+                                name: "yesterday",
+                                type: "number",
+                                align: "right",
+                                readOnly: true,
+                                css: "stat yesterday",
+                                itemTemplate: formatNumberJsGrid,
+                            },
+                            {
+                                title: "Total hits",
+                                name: "total",
+                                type: "number",
+                                align: "right",
+                                readOnly: true,
+                                css: "stat total",
+                                itemTemplate: formatNumberJsGrid,
+                            },
+                        ],
 
-                        $('#schemas .table tbody').append(
-                            newTr = $('<tr>').attr('data-name', schema).on('mouseover', function(){
-                                chart.get('schema-' + slug).setState('hover');
-                                chart.tooltip.refresh(chart.get('schema-' +slug));
+                        rowRenderer: function(item) {
+                            return $('<tr>').attr('data-type', 'parent').attr('data-name', item.name).on('mouseover', function(){
+                                chart.get('schema-' + makeSlug(item.name)).setState('hover');
+                                chart.tooltip.refresh(chart.get('schema-' + makeSlug(item.name)));
                             }).on('mouseout', function(){
-                                chart.get('schema-' + slug).setState('');
+                                if(chart.get('schema-' + makeSlug(item.name)))
+                                    chart.get('schema-' + makeSlug(item.name)).setState('');
                                 chart.tooltip.hide();
                             }).append(
-                                $('<td>').addClass('square')
+                                $('<td>').addClass('square').attr('data-name', item.name).css('width', '30px').css('padding', '8px')
                             ).append(
-                                $('<td>').html('<strong>' + name + '</strong>')
+                                $('<td>').html('<strong>' + makeName(item.name) + '</strong>').css('cursor','pointer').css('width', '50%')
                             )
                             .append(
-                                $('<td>').addClass('stat today').html(formatNumber(schemas[today][schema] || 0))
+                                $('<td>').addClass(item.today ? 'stat today' : 'warning').html(formatNumber(item.today || 0))
                             )
                             .append(
-                                $('<td>').addClass('stat yesterday').html(formatNumber(schemas[yesterday][schema] || 0))
+                                $('<td>').addClass(item.yesterday ? 'stat yesterday' : 'warning').html(formatNumber(item.yesterday || 0))
                             )
                             .append(
-                                $('<td>').addClass('stat total').html('<strong>' + formatNumber(hits) + '</strong>')
-                            )
-                        );
+                                $('<td>').addClass('stat total').html('<strong>' + formatNumber(item.total) + '</strong>')
+                            );
+                        },
 
-                        if(!chart.get('schema-' + slug))
-                            series.addPoint({id: 'schema-' + slug, name: name, y: parseInt(hits)}, false);
-                        else
-                            chart.get('schema-' + slug).update(parseInt(hits), false);
-
-                        newTr.find('.square').css('background', chart.get('schema-' + slug).color);
+                        onRefreshed: function(grid) {
+                            // Gets fired when sort is changed
+                            //console.log('softwares.onRefreshed(): %o', grid);
+                            if (grid && grid.grid && grid.grid._sortField) {
+                                //console.log(' grid sort is: %o, %o', grid.grid._sortField.name, grid.grid._sortOrder);
+                                //console.log(' saved sort is: %o', schemasSort);
+                                if (schemasSort.field != grid.grid._sortField.name) {
+                                    schemasSort.field = grid.grid._sortField.name;
+                                    $("#table-schemas").jsGrid("sort", schemasSort);
+                                    return;
+                                } else {
+                                    schemasSort.order = grid.grid._sortOrder;
+                                }
+                                $.each(schemasData, function(key, values) {
+                                    if(!chart.get('schema-' + makeSlug(values.name)))
+                                    {
+                                        //console.log('Adding data point sort is: %o', schemasSort.field);
+                                        // Populates the data into the overall Software pie chart as per current sort column
+                                        series.addPoint({id: 'schema-' + makeSlug(values.name), name: values.name, y: parseInt(values[grid.grid._sortField.name]), drilldown: true}, false);
+                                    } else {
+                                        // Populates the data into the overall Software pie chart as per current sort column
+                                        chart.get('schema-' + makeSlug(values.name)).update(parseInt(values[grid.grid._sortField.name]), false);
+                                    }
+                                    $(".square[data-name='" + this.name.replace("'", "\\'") + "']").css('background', chart.get('schema-' + makeSlug(values.name)).color);
+                                });
+                            }
+                            chart.redraw();
+                        },
                     });
+
+                    // Re-apply the last stored sort
+                    $("#table-schemas").jsGrid("sort", schemasSort);
 
                     chart.redraw();
 
@@ -703,13 +945,6 @@ var start       = function(){
         }]
     });
 
-    /*
-    doUpdateUploaders();
-    setInterval(function(){
-        doUpdateUploaders();
-    }, updateInterval);
-    */
-
     // Grab schema from monitor
     $('#schemas .chart').highcharts({
         chart: {
@@ -739,6 +974,17 @@ var start       = function(){
     $("select[name=relays]").change(function(){
         showStats('relays', $(this).find('option:selected').html());
     });
+}
+
+/*
+ * JS Grid related functions
+ */
+
+/*
+ * Nicely format a number for jsGrid
+ */
+formatNumberJsGrid = function(value, item) {
+    return value.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
 }
 
 $(document).ready(function(){
