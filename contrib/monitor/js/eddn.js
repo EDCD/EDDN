@@ -197,7 +197,7 @@ var softwaresNewJsGrid = function () {
                             // Populates the data into the overall Software pie chart as per current sort column
                             chart.get('software-' + makeSlug(values.name)).update(parseInt(values[grid.grid._sortField.name]), false);
                         }
-                        $(".square[data-name='" + this.name + "']").css('background', chart.get('software-' + makeSlug(values.name)).color);
+                        $(".square[data-name='" + this.name.replace("'", "\\'") + "']").css('background', chart.get('software-' + makeSlug(values.name)).color);
                     });
                 }
                 chart.redraw();
@@ -363,7 +363,7 @@ var softwaresNewJsGrid = function () {
                             // Populates the data into the overall Software pie chart as per current sort column
                             chart.get('software-' + makeSlug(values.name)).update(parseInt(values[grid.grid._sortField.name]), false);
                         }
-                        $(".square[data-name='" + this.name + "']").css('background', chart.get('software-' + makeSlug(values.name)).color);
+                        $(".square[data-name='" + this.name.replace("'", "\\'") + "']").css('background', chart.get('software-' + makeSlug(values.name)).color);
                     });
                 }
                 chart.redraw();
@@ -395,7 +395,7 @@ var softwaresNewJsGrid = function () {
             // Populates the data into the overall Software pie chart as per current sort column
             chart.get('software-' + makeSlug(values.name)).update(parseInt(values[field]), false);
         }
-        $(".square[data-name='" + this.name + "']").css('background', chart.get('software-' + makeSlug(values.name)).color);
+        $(".square[data-name='" + this.name.replace("'", "\\'") + "']").css('background', chart.get('software-' + makeSlug(values.name)).color);
     });
     
     chart.redraw();
@@ -683,7 +683,7 @@ var doUpdateSchemas = function()
                                         // Populates the data into the overall Software pie chart as per current sort column
                                         chart.get('schema-' + makeSlug(values.name)).update(parseInt(values[grid.grid._sortField.name]), false);
                                     }
-                                    $(".square[data-name='" + this.name + "']").css('background', chart.get('schema-' + makeSlug(values.name)).color);
+                                    $(".square[data-name='" + this.name.replace("'", "\\'") + "']").css('background', chart.get('schema-' + makeSlug(values.name)).color);
                                 });
                             }
                             chart.redraw();
