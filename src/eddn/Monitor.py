@@ -15,7 +15,6 @@ import re
 
 from bottle import get, request, response, run as bottle_run
 from eddn.conf.Settings import Settings, loadConfig
-from eddn.core.Analytics import Analytics
 
 from gevent import monkey
 monkey.patch_all()
@@ -152,8 +151,6 @@ class Monitor(Thread):
         receiver = context.socket(zmq.SUB)
         receiver.setsockopt(zmq.SUBSCRIBE, '')
 
-        analytics = Analytics()
-
         for binding in Settings.MONITOR_RECEIVER_BINDINGS:
             receiver.connect(binding)
 
@@ -192,7 +189,6 @@ class Monitor(Thread):
                     db.commit()
 
                     db.close()
-                    analytics.hit('DUPLICATE', uploaderID, uploaderIP)
 
                     return
 
@@ -209,11 +205,6 @@ class Monitor(Thread):
             db.commit()
 
             db.close()
-
-            if re.search('test', schemaID, re.I):
-                analytics.hit(Settings.GATEWAY_JSON_SCHEMAS[schemaID] + '#test', uploaderID, uploaderIP)
-            else:
-                analytics.hit(Settings.GATEWAY_JSON_SCHEMAS[schemaID], uploaderID, uploaderIP)
 
         while True:
             inboundMessage = receiver.recv()
