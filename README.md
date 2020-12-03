@@ -1,7 +1,7 @@
 ## EDDN - Elite: Dangerous Data Network
 
 The **Elite: Dangerous Data Network** is a system for willing Commanders to share dynamic data about the galaxy with others.  
-By pooling data in a common format, tools and analyses can be produced that add an even greater depth and vibrancy to the in-game universe.
+By pooling data in a common format, tools and analyses can be produced that add an even greater depth and vibrancy to the [Elite Dangerous] universe.
 
 EDDN is not run by or affiliated with [Frontier Developments](http://www.frontier.co.uk/).
 
@@ -11,3 +11,5 @@ Hosting is now provided by the [EDCD community](https://edcd.github.io/).
 ### [Using EDDN](https://github.com/EDSM-NET/EDDN/wiki)
 
 ### [EDDN Status](https://eddn.edcd.io/)
+
+[Elite Dangerous]: https://www.frontier.co.uk/our-games/elite-dangerous
