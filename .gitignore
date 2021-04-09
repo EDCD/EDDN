@@ -58,3 +58,6 @@ target/
 /examples/CSharp/ConsoleApp/.vs/
 /examples/CSharp/ConsoleApp/ConsoleApp/obj
 /nbproject/private/
+
+# Editors
+.idea
