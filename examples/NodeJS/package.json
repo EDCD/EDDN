@@ -1,15 +1,14 @@
 {
-  "name": "eddn",
-  "version": "1.0.0",
+  "name": "eddn-listener",
+  "version": "0.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-	  "start": "node index.js"
+    "watch": "node index.js"
   },
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "zeromq": "^4.2.0",
-    "zlib": "^1.0.5"
+    "zeromq": "^6.0.0-beta.6"
   }
 }
