@@ -1,12 +1,19 @@
-const zlib = require('zlib');
-const zmq = require('zeromq');
-const sock = zmq.socket('sub');
+const zlib = require('zlib')
+const zmq = require('zeromq')
 
-sock.connect('tcp://eddn.edcd.io:9500');
-console.log('Worker connected to port 9500');
+const SOURCE_URL = 'tcp://eddn.edcd.io:9500'
 
-sock.subscribe('');
+async function run () {
+  const sock = new zmq.Subscriber
 
-sock.on('message', topic => {
-  console.log(JSON.parse(zlib.inflateSync(topic)));
-});
+  sock.connect(SOURCE_URL)
+  sock.subscribe('')
+  console.log('EDDN listener connected to:', SOURCE_URL)
+
+  for await (const [ src ] of sock) {
+    const msg = JSON.parse(zlib.inflateSync(src))
+    console.log(msg)
+  }
+}
+
+run()
