@@ -81,7 +81,8 @@ another file.
        from the Relay and Monitor in order to send them messages that passed
        schema checks.
     1. `GATEWAY_JSON_SCHEMAS` defines the schemas used for validation.  Note
-       that these are full public URLs which are served by ...
+       that these are full public URLs which are served by nginx (or whatever
+       else you're using as the reverse proxy).
     1. `GATEWAY_OUTDATED_SCHEMAS` any past schema that is no longer valid.
     1. `MONITOR_HTTP_BIND_ADDRESS` and `MONITOR_HTTP_PORT` define where the
        Monitor listens for web connections to, e.g. the statistics page.
