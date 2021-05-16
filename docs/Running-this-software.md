@@ -248,15 +248,25 @@ Note how the external URLs will all begin, `https://yourserver/eddn/`, not just
 You'll also need to redirect the Gateway and Relay ports using firewall rules.
 With iptables:
 
+        PUB_INT=<your public facing interface>
+        PRIV_INT=<internal interface if testing on internal network>
+        ANYWHERE="0.0.0.0/0"  # Not strictly necessary, but it's good to be explicit
+        # The IP your host/VM can be reached on.
+        YOUR_EDDN_IP=...
         # Port 4430 is for senders to the Gateway
-        iptables -t nat -A PREROUTING-i EXTERNAL_INTERFACE -p tcp -s 0.0.0.0/0 --dport 4430 -j DNAT --to-destination VM_IP
-        iptables -t nat -A OUTPUT -i lo -p tcp -s 0.0.0.0/0 --dport 4430 -j DNAT --to-destination VM_IP
+        iptables -t nat -A PREROUTING -i ${PUB_INT} -p tcp -s ${ANYWHERE} --dport 4430 -j DNAT --to-destination ${YOUR_EDDN_IP}
+        iptables -t nat -A PREROUTING -i ${PRIV_INT} -p tcp -s ${ANYWHERE} --dport 4430 -j DNAT --to-destination ${YOUR_EDDN_IP}
+        iptables -t nat -A OUTPUT -p tcp -s ${ANYWHERE} --dport 4430 -j DNAT --to-destination ${YOUR_EDDN_IP}
         # Port 9500 is for listeners connecting to the Relay
-        iptables -t nat -A PREROUTING-i EXTERNAL_INTERFACE -p tcp -s 0.0.0.0/0 --dport 9500 -j DNAT --to-destination VM_IP
-        iptables -t nat -A OUTPUT -i lo -p tcp -s 0.0.0.0/0 --dport 9500 -j DNAT --to-destination VM_IP
-        # Port 9091 is for the Monitor API endpoints
-        iptables -t nat -A PREROUTING-i EXTERNAL_INTERFACE -p tcp -s 0.0.0.0/0 --dport 9091 -j DNAT --to-destination VM_IP
-        iptables -t nat -A OUTPUT -i lo -p tcp -s 0.0.0.0/0 --dport 9091 -j DNAT --to-destination VM_IP
+        iptables -t nat -A PREROUTING -i ${PUB_INT} -p tcp -s ${ANYWHERE} --dport 9500 -j DNAT --to-destination ${YOUR_EDDN_IP}
+        iptables -t nat -A PREROUTING -i ${PRIV_INT} -p tcp -s ${ANYWHERE} --dport 9500 -j DNAT --to-destination ${YOUR_EDDN_IP}
+        iptables -t nat -A OUTPUT -p tcp -s ${ANYWHERE} --dport 9500 -j DNAT --to-destination ${YOUR_EDDN_IP}
+        # Port 9090 is for the Relay web server, stats API
+        iptables -t nat -A PREROUTING -i ${PUB_INT} -p tcp -s ${ANYWHERE} --dport 9090 -j DNAT --to-destination ${YOUR_EDDN_IP}
+        iptables -t nat -A PREROUTING -i ${PRIV_INT} -p tcp -s ${ANYWHERE} --dport 9090 -j DNAT --to-destination ${YOUR_EDDN_IP}
+        iptables -t nat -A OUTPUT -p tcp -s ${ANYWHERE} --dport 9090 -j DNAT --to-destination ${YOUR_EDDN_IP}
+        # Port 9091 is for the Monitor web server, stats API
+        iptables -t nat -A PREROUTING -i ${PUB_INT} -p tcp -s ${ANYWHERE} --dport 9091 -j DNAT --to-destination ${YOUR_EDDN_IP}
+        iptables -t nat -A PREROUTING -i ${PRIV_INT} -p tcp -s ${ANYWHERE} --dport 9091 -j DNAT --to-destination ${YOUR_EDDN_IP}
+        iptables -t nat -A OUTPUT -p tcp -s ${ANYWHERE} --dport 9091 -j DNAT --to-destination ${YOUR_EDDN_IP}
 
-
-        
