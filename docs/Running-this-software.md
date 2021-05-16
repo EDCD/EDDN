@@ -31,22 +31,96 @@ You will need a mysql/mariab database:
     > GRANT ALL PRIVILEGES on eddn.* TO 'eddn'@'localhost';
     > \q
 
+### Netdata
+In order to get host performance metrics (CPU, RAM and network usage) you will
+need to install netdata.  On Debian-based systems:
+
+    apt install netdata
+
+The default configuration should be all you need, listening on
+`127.0.0.1:19999`.
+
+### Reverse Proxy with nginx
+If you don't yet have nginx installed then start with:
+
+    apt install nginx-light
+
+There is an example configuration in `contrib/nginx-eddn.conf` which makes
+some assumptions:
+
+  1. That it will listen on the standard HTTP and HTTPS ports.
+  1. The hostname being used - `server_name` directives.
+  1. The location of the monitor files - `root` directive.
+  1. The location of the schema files - `location` directive.
+  1. The location of the TLS certificate files - `ssl_certificate` and
+     `ssl_certificate_key` directives.
+
+You should be able to:
+
+  1. Copy `contrib/nginx-eddn.conf` into `/etc/nginx/sites-available/eddn`.
+  1. Edit to suit the local situation/setup.
+  1. Enable the site:
+
+         cd /etc/nginx/sites-enabled
+         ln -s /etc/nginx/sites-available/eddn        
+         systemctl restart nginx.service
+
+If you're already using another web server, such as Apache, you'll need to
+duplicate at least the use of a TLS certificate and the Reverse Proxying as
+required.
+
+For Apache you reverse proxy using something like the following in an
+appropriate `<VirtualHost>` section:
+
+        <IfModule mod_proxy.c>
+                SSLProxyEngine On
+                SSLProxyVerify none
+                ProxyPreserveHost On
+
+                # Pass through 'gateway' upload URL to Debian VM
+                ProxyPass "/eddn/upload/" "https://EDDNHOST:8081/upload/"
+                # Pass through 'monitor' URLs to Debian VM
+                ProxyPass "/eddn/" "https://EDDNHOST/"
+        </IfModule>
+
 ## In the 'eddn' account
+
+### Clone a copy of the application project from gitub
 
     mkdir -p ~/eddn/dev
     cd ~/eddn/dev
     git clone https://github.com/EDCD/EDDN.git
-    pip install -r requirements.txt
 
 We'll assume this `~/eddn/dev/EDDN` path elsewhere in this document.
 
-## Initialising Database Schema
+### Ensure necessary python modules are installed
+Installing extra necessary python modules is simple:
+
+    pip install -r requirements.txt
+
+### Initialise Database Schema
 You will need to get the database schema in place:
 
     mysql -p eddn < ~/eddn/dev/EDDN/schema.sql
     <password>
 
-## Concepts
+### Monitor and Schema files
+The Monitor files are not currently installed anywhere by the `setup.py`
+script, so you'll need to manually copy them into somewhere convenient,
+e.g.:
+
+    mkdir -p ${HOME}/.local/share/eddn
+    cp -r ~/eddn/dev/EDDN/contrib/monitor ${HOME}/.local/share/eddn
+    chmod -R og+rX ${HOME} ${HOME}/.local ${HOME}/.local/share ${HOME}/.local/share/eddn
+
+You will need to ensure that the Monitor nginx setup can see the schema files
+in order to serve them for use by the Gateway. So perform, e.g.:
+
+    mkdir -p ${HOME}/.local/share/eddn
+    cp -r ~/eddn/dev/EDDN/schemas ${HOME}/.local/share/eddn
+    chmod -R og+rX ${HOME}/.local/share/eddn/schemas
+
+# Concepts
 There are three components to this application.
 
 1. Gateway - this is where senders connect to upload messages.  It performs
@@ -79,7 +153,7 @@ test host.  The files in question are:
 
 Replace the string `eddn.edcd.io` with the hostname you're using.
 
-## Configuration
+# Configuration
 Default application configuration is in the file `src/eddn/conf/Settings.py`.
 Do **not** change anything in this file, see below about overriding using
 another file.
@@ -149,7 +223,7 @@ It sets:
   1. Configures the database connection and credentials.
   1. Turns off the relay duplicate check.
 
-## Running
+# Running
 You have some choices for how to run the application components:
 
 1. You can choose to run this application directly from the source using the
@@ -175,63 +249,14 @@ You have some choices for how to run the application components:
         ~/.local/bin/eddn-monitor --config ${HOME}/etc/eddn-settings-overrides.json >> ~/logs/eddn-monitor.log 2>&1 &
         ~/.local/bin/eddn-relay --config ${HOME}/etc/eddn-settings-overrides.json >> ~/logs/eddn-relay.log 2>&1 &
   
-## Accessing the Monitor
-There is an EDDN Status web page usually provided at https://eddn.edcd.io/ .
-This is enabled by the Monitor component through the combination of the
-`contrib/monitor/` files and API endpoints provided by the Monitor process
-itself.
-
-Those files are not currently installed anywhere by the `setup.py` script, so
-you'll need to manually copy them into somewhere convenient, e.g.:
-
-    mkdir -p ${HOME}/.local/share/eddn
-    cp -r ~/eddn/dev/EDDN/contrib/monitor ${HOME}/.local/share/eddn
-    chmod -R og+rX ${HOME} ${HOME}/.local ${HOME}/.local/share ${HOME}/.local/share/eddn
+# Accessing the Monitor
+There is an EDDN Status web page usually provided at, e.g.
+https://eddn.edcd.io/.  This is enabled by the Monitor component through
+the combination of the `contrib/monitor/` files and API endpoints provided
+by the Monitor process itself.
 
 You will need to configure a reverse proxy to actually enable access to this.
 There is an example nginx configuration in `contrib/nginx-eddn.conf`.
-
-## Schema files
-You will need to ensure that the Monitor nginx setup can see the schema files
-in order to serve them for use by the Gateway:
-
-    mkdir -p ${HOME}/.local/share/eddn
-    cp -r ~/eddn/dev/EDDN/schemas ${HOME}/.local/share/eddn
-    chmod -R og+rX ${HOME}/.local/share/eddn/schemas
-
-## Netdata
-In order to get host performance metrics (CPU, RAM and network usage) you will
-need to install netdata.  On Debian-based systems:
-
-    apt install netdata
-
-The default configuration should be all you need, listening on
-`127.0.0.1:19999`.
-
-## Using nginx as Reverse Proxy
-If you don't yet have nginx installed then start with:
-
-    apt install nginx-light
-
-There is an example configuration in `contrib/nginx-eddn.conf` which makes
-some assumptions:
-
-  1. That it will listen on the standard HTTP and HTTPS ports.
-  1. The hostname being used - `server_name` directives.
-  1. The location of the monitor files - `root` directive.
-  1. The location of the schema files - `location` directive.
-  1. The location of the TLS certificate files - `ssl_certificate` and
-     `ssl_certificate_key` directives.
-
-You should be able to:
-
-  1. Copy `contrib/nginx-eddn.conf` into `/etc/nginx/sites-available/eddn`.
-  1. Edit to suit the local situation/setup.
-  1. Enable the site:
-
-         cd /etc/nginx/sites-enabled
-         ln -s /etc/nginx/sites-available/eddn        
-         systemctl restart nginx.service
 
 ## Testing all of this in a VM
 In order to test all of this in a VM you might need to set up a double
@@ -251,9 +276,6 @@ If using Apache on a Debian server then you need some ProxyPass directives:
                 # Pass through 'monitor' URLs to Debian VM
                 ProxyPass "/eddn/" "https://VM_HOST/"
         </IfModule>
-
-Note how the external URLs will all begin, `https://yourserver/eddn/`, not just
-`https://yourserver/`.
 
 You'll also need to redirect the Gateway and Relay ports using firewall rules.
 With iptables:
