@@ -59,12 +59,12 @@ another file.
 1. You will need to obtain a TLS certificate from, e.g. LetsEncrypt.  The
    application will need access to this and its private key file.
 
-    CERT_FILE = '/etc/letsencrypt/live/eddn.edcd.io/fullchain.pem'
-    KEY_FILE  = '/etc/letsencrypt/live/eddn.edcd.io/privkey.pem'
+       CERT_FILE = '/etc/letsencrypt/live/eddn.edcd.io/fullchain.pem'
+       KEY_FILE  = '/etc/letsencrypt/live/eddn.edcd.io/privkey.pem'
 
 1. Network configuration
-    1. `RELAY_HTTP_BIND_ADDRESS` and `RELAY_HTTP_PORT` define the IP and port on
-       which the application listens for new messages from the Gateway.
+    1. `RELAY_HTTP_BIND_ADDRESS` and `RELAY_HTTP_PORT` define the IP and port
+       on the Relay listens for, e.g. `/stats/` requests.
     1. `RELAY_RECEIVER_BINDINGS` defines where the Relay connects in order to
        subscribe to messages from the Gateway.  Should match
        `GATEWAY_SENDER_BINDINGS`.
@@ -74,7 +74,7 @@ another file.
        cached for so as to detect, and not Relay out, duplicate messages.  If
        you set this to the literal string `false` the duplication checks will be
        disabled.  This is **very handy** when testing the code.
-    1. `GATEWAY_HTTP_BIND_ADDRESS` and ``GATEWAY_HTTP_PORT` define where the
+    1. `GATEWAY_HTTP_BIND_ADDRESS` and `GATEWAY_HTTP_PORT` define where the
        Gateway listens to for incoming messages from senders.  Might be
        forwarded from nginx or other reverse proxy.
     1. `GATEWAY_SENDER_BINDINGS` is where the Gateway listens for connections
