@@ -18,6 +18,16 @@ Some additional Debian packages and python modules are required:
 
     apt install python-pip
 
+You will need a mysql/mariab database:
+
+    apt install mariadb-server
+    mysqladmin create eddn
+    # Generate a secure password somehow, e.g.
+    dd if=/dev/urandom bs=512 count=1 | sha256sum
+    mysql mysql # Connect to the database as root
+    > CREATE USER IF NOT EXISTS 'eddn'@'localhost' IDENTIFIED BY ' SOME SECURE PASSWORD ';
+    > GRANT ALL PRIVILEGES on eddn.* TO 'eddn'@'localhost';
+
 ## In the 'eddn' account
 
     mkdir -p ~/eddn/dev
@@ -75,6 +85,15 @@ Application configuration is in the file `src/eddn/conf/Settings.py`.
      connect to a mysql/mariadb database for storing stats.
   1. `MONITOR_UA` appears to be unused.
 
+1. Database Configuration
+  This is performed in the `MONITOR_DB` key:
+    1. `database` - the name of the database
+    1. `user` - the user to connect as
+    1. `password` - the secure password you set above when installing and
+       configuring mariadb/mysql.
+
+  It is assumed that the database is on `localhost`.
+
 Any of these settings can be overridden by a separate config file that you
 then pass to the application scripts, e.g.:
 
@@ -91,13 +110,69 @@ You have two choices for how to run the application components:
   provided script in `contrib/run-from-source.sh`.
 
 1. Or you can utilise the `setup.py` file to build and install the application
-   files, but this requires write permissions under `/usr/local`.
+   files.  By default this requires write permissions under `/usr/local`, but
+   you can run:
 
-  If you go with this option then there are also SysV style init.d scripts in
-  `contrib/init.d/` for running the components.
+     python setup.py install --user
+
+   to install under `~/.local/` instead.
+
+  If you install into `/usr/local/` then there are SysV style init.d scripts
+  in `contrib/init.d/` for running the components.  They will need the
+  `DAEMON` lines tweaking for running from another location.
 
 ## Accessing the Monitor
 There is an EDDN Status web page usually provided at https://eddn.edcd.io/ .
 This is enabled by the Monitor component through the combination of the
 `contrib/monitor/` files and API endpoints provided by the Monitor process
 itself.
+
+Those files are not currently installed anywhere by the `setup.py` script, so
+you'll need to manually copy them into somewhere convenient, e.g.:
+
+    mkdir -p ${HOME}/.local/share/eddn
+    cp -p <eddn source root>/contrib/monitor ${HOME}/.local/share/eddn
+    chmod -R og+rX ${HOME} ${HOME}/.local ${HOME}/.local/share ${HOME}/.local/share/eddn
+
+You will need to configure a reverse proxy to actually enable access to this.
+There is an example nginx configuration in `contrib/nginx-eddn.conf`.
+
+## Schema files
+You will need to ensure that the Monitor nginx setup can see the schema files
+in order to serve them for use by the Gateway:
+
+    1. mkdir -p ${HOME}/.local/share/eddn
+    1. cp -r <eddn source root>/schemas ${HOME}/.local/share/eddn
+    1. chmod -R og+rX ${HOME}/.local/share/eddn/schemas
+
+## Netdata
+In order to get host performance metrics (CPU, RAM and network usage) you will
+need to install netdata.  On Debian-based systems:
+
+	apt install netdata
+
+The default configuration should be all you need, listening on
+`127.0.0.1:19999`.
+
+## Using nginx as Reverse Proxy
+If you don't yet have nginx installed then start with:
+
+	apt install nginx-light
+
+There is an example configuration in `contrib/nginx-eddn.conf` which makes
+some assumptions:
+
+  1. That it will listen on the standard HTTP and HTTPS ports.
+  1. The hostname being used - `server_name` directives.
+  1. The location of the monitor files - `root` directive.
+  1. The location of the schema files - `location` directive.
+  1. The location of the TLS certificate files.
+
+You should be able to:
+
+  1. Copy this into `/etc/nginx/sites-available/eddn`
+  1. Edit to suit the local situation/setup.
+  1. Enable the site:
+
+      cd /etc/nginx/sites-enabled
+      ln -s /etc/nginx/sites-available/eddn	
