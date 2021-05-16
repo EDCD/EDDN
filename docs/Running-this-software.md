@@ -51,6 +51,18 @@ There are three components to this application.
 1. Relay - this is where listeners connect in order to be sent messages that
    have passed the schema and duplicate checks.
 
+As the code currently (2021-05-16) stands it MUST run on a standalone host
+such that everything is served relative to the path root, not a path prefix.
+
+Also all of the `contrib/monitor` files have `eddn.edcd.io` hard-coded.  You
+will need to perform search and replace on the installed/live files to use a
+test host.  The files in question are:
+
+    monitor/js/eddn.js
+    monitor/schemas.html
+
+Replace the string `eddn.edcd.io` with the hostname you're using.
+
 ## Configuration
 Default application configuration is in the file `src/eddn/conf/Settings.py`.
 Do **not** change anything in this file, see below about overriding using
