@@ -163,7 +163,7 @@ Those files are not currently installed anywhere by the `setup.py` script, so
 you'll need to manually copy them into somewhere convenient, e.g.:
 
     mkdir -p ${HOME}/.local/share/eddn
-    cp -p <eddn source root>/contrib/monitor ${HOME}/.local/share/eddn
+    cp -r <eddn source root>/contrib/monitor ${HOME}/.local/share/eddn
     chmod -R og+rX ${HOME} ${HOME}/.local ${HOME}/.local/share ${HOME}/.local/share/eddn
 
 You will need to configure a reverse proxy to actually enable access to this.
