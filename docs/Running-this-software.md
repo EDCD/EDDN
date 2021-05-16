@@ -38,6 +38,14 @@ You will need a mysql/mariab database:
     git clone https://github.com/EDCD/EDDN.git
     pip install -r requirements.txt
 
+We'll assume this `~/eddn/dev/EDDN` path elsewhere in this document.
+
+## Initialising Database Schema
+You will need to get the database schema in place:
+
+    mysql -p eddn < ~/eddn/dev/EDDN/schema.sql
+    <password>
+
 ## Concepts
 There are three components to this application.
 
@@ -141,12 +149,6 @@ It sets:
   1. Configures the database connection and credentials.
   1. Turns off the relay duplicate check.
 
-## Initialising Database Schema
-You will need to get the database schema in place:
-
-    mysql -p eddn < <git source root>/schema.sql
-    <password>
-
 ## Running
 You have some choices for how to run the application components:
 
@@ -183,7 +185,7 @@ Those files are not currently installed anywhere by the `setup.py` script, so
 you'll need to manually copy them into somewhere convenient, e.g.:
 
     mkdir -p ${HOME}/.local/share/eddn
-    cp -r <eddn source root>/contrib/monitor ${HOME}/.local/share/eddn
+    cp -r ~/eddn/dev/EDDN/contrib/monitor ${HOME}/.local/share/eddn
     chmod -R og+rX ${HOME} ${HOME}/.local ${HOME}/.local/share ${HOME}/.local/share/eddn
 
 You will need to configure a reverse proxy to actually enable access to this.
@@ -194,7 +196,7 @@ You will need to ensure that the Monitor nginx setup can see the schema files
 in order to serve them for use by the Gateway:
 
     mkdir -p ${HOME}/.local/share/eddn
-    cp -r <eddn source root>/schemas ${HOME}/.local/share/eddn
+    cp -r ~/eddn/dev/EDDN/schemas ${HOME}/.local/share/eddn
     chmod -R og+rX ${HOME}/.local/share/eddn/schemas
 
 ## Netdata
