@@ -64,7 +64,7 @@ another file.
 
 1. Network configuration
     1. `RELAY_HTTP_BIND_ADDRESS` and `RELAY_HTTP_PORT` define the IP and port
-       on the Relay listens for, e.g. `/stats/` requests.
+       on which the Relay listens for, e.g. `/stats/` requests.
     1. `RELAY_RECEIVER_BINDINGS` defines where the Relay connects in order to
        subscribe to messages from the Gateway.  Should match
        `GATEWAY_SENDER_BINDINGS`.
