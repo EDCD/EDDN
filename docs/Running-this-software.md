@@ -196,9 +196,9 @@ If using Apache on a Debian server then you need some ProxyPass directives:
                 ProxyPreserveHost On
 
                 # Pass through 'gateway' upload URL to Debian VM
-                ProxyPass "/eddn/upload/" "https://emiliaDVM.dsl.miggy.org:8081/upload/"
+                ProxyPass "/eddn/upload/" "https://VM_HOST:8081/upload/"
                 # Pass through 'monitor' URLs to Debian VM
-                ProxyPass "/eddn/" "https://emiliaDVM.dsl.miggy.org/"
+                ProxyPass "/eddn/" "https://VM_HOST/"
         </IfModule>
 
 You'll also need to redirect the Gateway and Relay ports using firewall rules.
