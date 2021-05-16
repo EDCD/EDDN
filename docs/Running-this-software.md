@@ -59,56 +59,56 @@ another file.
 1. You will need to obtain a TLS certificate from, e.g. LetsEncrypt.  The
    application will need access to this and its private key file.
 
-       CERT_FILE = '/etc/letsencrypt/live/eddn.edcd.io/fullchain.pem'
-       KEY_FILE  = '/etc/letsencrypt/live/eddn.edcd.io/privkey.pem'
+    CERT_FILE = '/etc/letsencrypt/live/eddn.edcd.io/fullchain.pem'
+    KEY_FILE  = '/etc/letsencrypt/live/eddn.edcd.io/privkey.pem'
 
 1. Network configuration
-  1. `RELAY_HTTP_BIND_ADDRESS` and `RELAY_HTTP_PORT` define the IP and port on
-     which the application listens for new messages from the Gateway.
-  1. `RELAY_RECEIVER_BINDINGS` defines where the Relay connects in order to
-     subscribe to messages from the Gateway.  Should match
-     `GATEWAY_SENDER_BINDINGS`.
-  1. `RELAY_SENDER_BINDINGS` defines the address the application listens on
-     for connections from listeners such as eddb.io.
-  1. `RELAY_DUPLICATE_MAX_MINUTES` how many minutes to keep messages hashes
-     cached for so as to detect, and not Relay out, duplicate messages.  If
-     you set this to the literal string `false` the duplication checks will be
-     disabled.  This is **very handy** when testing the code.
-  1. `GATEWAY_HTTP_BIND_ADDRESS` and ``GATEWAY_HTTP_PORT` define where the
-     Gateway listens to for incoming messages from senders.  Might be
-     forwarded from nginx or other reverse proxy.
-  1. `GATEWAY_SENDER_BINDINGS` is where the Gateway listens for connections
-     from the Relay and Monitor in order to send them messages that passed
-     schema checks.
-  1. `GATEWAY_JSON_SCHEMAS` defines the schemas used for validation.  Note
-     that these are full public URLs which are served by ...
-  1. `GATEWAY_OUTDATED_SCHEMAS` any past schema that is no longer valid.
-  1. `MONITOR_HTTP_BIND_ADDRESS` and `MONITOR_HTTP_PORT` define where the
-     Monitor listens for web connections to, e.g. the statistics page.
-  1. `MONITOR_RECEIVER_BINDINGS` defines where the Monitor connects in order to
-     subscribe to messages from the Gateway.  Should match
-     `GATEWAY_SENDER_BINDINGS`.
-  1. `MONITOR_DB` - defines the necessary information for the application to
-     connect to a mysql/mariadb database for storing stats.
-  1. `MONITOR_UA` appears to be unused.
+    1. `RELAY_HTTP_BIND_ADDRESS` and `RELAY_HTTP_PORT` define the IP and port on
+       which the application listens for new messages from the Gateway.
+    1. `RELAY_RECEIVER_BINDINGS` defines where the Relay connects in order to
+       subscribe to messages from the Gateway.  Should match
+       `GATEWAY_SENDER_BINDINGS`.
+    1. `RELAY_SENDER_BINDINGS` defines the address the application listens on
+       for connections from listeners such as eddb.io.
+    1. `RELAY_DUPLICATE_MAX_MINUTES` how many minutes to keep messages hashes
+       cached for so as to detect, and not Relay out, duplicate messages.  If
+       you set this to the literal string `false` the duplication checks will be
+       disabled.  This is **very handy** when testing the code.
+    1. `GATEWAY_HTTP_BIND_ADDRESS` and ``GATEWAY_HTTP_PORT` define where the
+       Gateway listens to for incoming messages from senders.  Might be
+       forwarded from nginx or other reverse proxy.
+    1. `GATEWAY_SENDER_BINDINGS` is where the Gateway listens for connections
+       from the Relay and Monitor in order to send them messages that passed
+       schema checks.
+    1. `GATEWAY_JSON_SCHEMAS` defines the schemas used for validation.  Note
+       that these are full public URLs which are served by ...
+    1. `GATEWAY_OUTDATED_SCHEMAS` any past schema that is no longer valid.
+    1. `MONITOR_HTTP_BIND_ADDRESS` and `MONITOR_HTTP_PORT` define where the
+       Monitor listens for web connections to, e.g. the statistics page.
+    1. `MONITOR_RECEIVER_BINDINGS` defines where the Monitor connects in order to
+       subscribe to messages from the Gateway.  Should match
+       `GATEWAY_SENDER_BINDINGS`.
+    1. `MONITOR_UA` appears to be unused.
 
 1. Database Configuration
-  This is performed in the `MONITOR_DB` key:
-    1. `database` - the name of the database
-    1. `user` - the user to connect as
-    1. `password` - the secure password you set above when installing and
-       configuring mariadb/mysql.
+    1. `MONITOR_DB` - defines the necessary information for the application to
+       connect to a mysql/mariadb database for storing stats.
+        1. `database` - the name of the database
+        1. `user` - the user to connect as
+        1. `password` - the secure password you set above when installing and
+           configuring mariadb/mysql.
 
-  It is assumed that the database is on `localhost`.
+    It is assumed that the database is on `localhost`.
 
-Any of these settings can be overridden by a separate config file that you
-then pass to the application scripts, e.g.:
+To change anything from the defaults create an override config file, which
+must be in valid JSON format (so no comments, no dangling commas etc).
+You can then pass this file to the application scripts, e.g.:
 
-	python Gateway.py --config some/other/configfile.json
+    python Gateway.py --config some/other/configfile.json
 
-this way you can utilise such a file to override settings for certificate
-files and database credentials without worrying about the basic setup.  Think
-of `src/eddn/conf/Settings` as the defaults.
+You only need to define the settings that you need to change from defaults,
+e.g. certificate files and database credentials, without worrying about the
+basic setup.
 
 ## Running
 You have two choices for how to run the application components:
@@ -117,10 +117,10 @@ You have two choices for how to run the application components:
   provided script in `contrib/run-from-source.sh`.
 
 1. Or you can utilise the `setup.py` file to build and install the application
-   files.  By default this requires write permissions under `/usr/local`, but
-   you can run:
+  files.  By default this requires write permissions under `/usr/local`, but
+  you can run:
 
-     python setup.py install --user
+       python setup.py install --user
 
    to install under `~/.local/` instead.
 
@@ -128,6 +128,14 @@ You have two choices for how to run the application components:
   in `contrib/init.d/` for running the components.  They will need the
   `DAEMON` lines tweaking for running from another location.
 
+1. For quick testing purposes you can run them as follows, assuming you
+   installed into `~/.local/`, and have your override settings in
+   `${HOME}/etc/eddn-settings-overrides.json`:
+
+        ~/.local/bin/eddn-gateway --config ${HOME}/etc/eddn-settings-overrides.json >> ~/logs/eddn-gateway.log 2>&1 &
+        ~/.local/bin/eddn-monitor --config ${HOME}/etc/eddn-settings-overrides.json >> ~/logs/eddn-monitor.log 2>&1 &
+        ~/.local/bin/eddn-relay --config ${HOME}/etc/eddn-settings-overrides.json >> ~/logs/eddn-relay.log 2>&1 &
+  
 ## Accessing the Monitor
 There is an EDDN Status web page usually provided at https://eddn.edcd.io/ .
 This is enabled by the Monitor component through the combination of the
@@ -148,15 +156,15 @@ There is an example nginx configuration in `contrib/nginx-eddn.conf`.
 You will need to ensure that the Monitor nginx setup can see the schema files
 in order to serve them for use by the Gateway:
 
-    1. mkdir -p ${HOME}/.local/share/eddn
-    1. cp -r <eddn source root>/schemas ${HOME}/.local/share/eddn
-    1. chmod -R og+rX ${HOME}/.local/share/eddn/schemas
+    mkdir -p ${HOME}/.local/share/eddn
+    cp -r <eddn source root>/schemas ${HOME}/.local/share/eddn
+    chmod -R og+rX ${HOME}/.local/share/eddn/schemas
 
 ## Netdata
 In order to get host performance metrics (CPU, RAM and network usage) you will
 need to install netdata.  On Debian-based systems:
 
-	apt install netdata
+    apt install netdata
 
 The default configuration should be all you need, listening on
 `127.0.0.1:19999`.
@@ -164,7 +172,7 @@ The default configuration should be all you need, listening on
 ## Using nginx as Reverse Proxy
 If you don't yet have nginx installed then start with:
 
-	apt install nginx-light
+    apt install nginx-light
 
 There is an example configuration in `contrib/nginx-eddn.conf` which makes
 some assumptions:
@@ -173,16 +181,18 @@ some assumptions:
   1. The hostname being used - `server_name` directives.
   1. The location of the monitor files - `root` directive.
   1. The location of the schema files - `location` directive.
-  1. The location of the TLS certificate files.
+  1. The location of the TLS certificate files - `ssl_certificate` and
+     `ssl_certificate_key` directives.
 
 You should be able to:
 
-  1. Copy this into `/etc/nginx/sites-available/eddn`
+  1. Copy `contrib/nginx-eddn.conf` into `/etc/nginx/sites-available/eddn`.
   1. Edit to suit the local situation/setup.
   1. Enable the site:
 
-      cd /etc/nginx/sites-enabled
-      ln -s /etc/nginx/sites-available/eddn	
+         cd /etc/nginx/sites-enabled
+         ln -s /etc/nginx/sites-available/eddn        
+         systemctl restart nginx.service
 
 ## Testing all of this in a VM
 In order to test all of this in a VM you might need to set up a double
@@ -203,6 +213,9 @@ If using Apache on a Debian server then you need some ProxyPass directives:
                 ProxyPass "/eddn/" "https://VM_HOST/"
         </IfModule>
 
+Note how the external URLs will all begin, `https://yourserver/eddn/`, not just
+`https://yourserver/`.
+
 You'll also need to redirect the Gateway and Relay ports using firewall rules.
 With iptables:
 
@@ -214,4 +227,4 @@ With iptables:
         iptables -t nat -A OUTPUT -i lo -p tcp -s 0.0.0.0/0 --dport 9500 -j DNAT --to-destination VM_IP
 
 
-	
+        
