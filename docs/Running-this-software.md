@@ -52,7 +52,9 @@ There are three components to this application.
    have passed the schema and duplicate checks.
 
 ## Configuration
-Application configuration is in the file `src/eddn/conf/Settings.py`.
+Default application configuration is in the file `src/eddn/conf/Settings.py`.
+Do **not** change anything in this file, see below about overriding using
+another file.
 
 1. You will need to obtain a TLS certificate from, e.g. LetsEncrypt.  The
    application will need access to this and its private key file.
