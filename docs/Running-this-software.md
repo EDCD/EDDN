@@ -38,7 +38,7 @@ There are three components to this application.
    have passed the schema and duplicate checks.
 
 ## Configuration
-Application configuration is in the file `rc/eddn/conf/Settings.py`.
+Application configuration is in the file `src/eddn/conf/Settings.py`.
 
 1. You will need to obtain a TLS certificate from, e.g. LetsEncrypt.  The
    application will need access to this and its private key file.
@@ -73,3 +73,12 @@ Application configuration is in the file `rc/eddn/conf/Settings.py`.
   1. `MONITOR_DB` - defines the necessary information for the application to
      connect to a mysql/mariadb database for storing stats.
   1. `MONITOR_UA` appears to be unused.
+
+Any of these settings can be overridden by a separate config file that you
+then pass to the application scripts, e.g.:
+
+	python Gateway.py --config some/other/configfile.json
+
+this way you can utilise such a file to override settings for certificate
+files and database credentials without worrying about the basic setup.  Think
+of `src/eddn/conf/Settings` as the defaults.
