@@ -43,13 +43,21 @@ There are three components to this application.
 
 1. Gateway - this is where senders connect to upload messages.  It performs
    schema validation and then passes the messages on to both the Monitor and
-   the Relay (they connect and perform zeromq subscription).
+   the Relay (they connect and perform zeromq subscription).  This requires
+   port `4430` to make it past any firewall, NAT etc and to the Gateway process.
+   However, the actual Gateway *process* listens on port `8081` and the reverse
+   proxy setup forwards port `4430` traffic to this.
 
 1. Monitor - this gathers statistics about the messages, such as the sending
-   software name and version.
+   software name and version.  This requires port `9091` to make it past any
+   firewall, NAT etc, and to the Monitor process.
 
 1. Relay - this is where listeners connect in order to be sent messages that
-   have passed the schema and duplicate checks.
+   have passed the schema and duplicate checks.  This requires ports 9500
+   and `9090` to make it past any firewall, NAT etc, and to the Relay process.
+
+There also port `8500` which is used purely over localhost for the communication
+from the Gateway to the Relay and Monitor.
 
 As the code currently (2021-05-16) stands it MUST run on a standalone host
 such that everything is served relative to the path root, not a path prefix.
