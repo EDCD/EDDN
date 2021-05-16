@@ -121,6 +121,12 @@ It sets:
   1. Configures the database connection and credentials.
   1. Turns off the relay duplicate check.
 
+## Initialising Database Schema
+You will need to get the database schema in place:
+
+    mysql -p eddn < <git source root>/schema.sql
+    <password>
+
 ## Running
 You have some choices for how to run the application components:
 
@@ -236,6 +242,9 @@ With iptables:
         # Port 9500 is for listeners connecting to the Relay
         iptables -t nat -A PREROUTING-i EXTERNAL_INTERFACE -p tcp -s 0.0.0.0/0 --dport 9500 -j DNAT --to-destination VM_IP
         iptables -t nat -A OUTPUT -i lo -p tcp -s 0.0.0.0/0 --dport 9500 -j DNAT --to-destination VM_IP
+        # Port 9091 is for the Monitor API endpoints
+        iptables -t nat -A PREROUTING-i EXTERNAL_INTERFACE -p tcp -s 0.0.0.0/0 --dport 9091 -j DNAT --to-destination VM_IP
+        iptables -t nat -A OUTPUT -i lo -p tcp -s 0.0.0.0/0 --dport 9091 -j DNAT --to-destination VM_IP
 
 
         
