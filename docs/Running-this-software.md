@@ -29,7 +29,8 @@ Some additional Debian packages and python modules are required:
 There are three components to this application.
 
 1. Gateway - this is where senders connect to upload messages.  It performs
-   schema validation and then passes the messages on to...
+   schema validation and then passes the messages on to both the Monitor and
+   the Relay (they connect and perform zeromq subscription).
 
 1. Monitor - this gathers statistics about the messages, such as the sending
    software name and version.
@@ -82,3 +83,21 @@ then pass to the application scripts, e.g.:
 this way you can utilise such a file to override settings for certificate
 files and database credentials without worrying about the basic setup.  Think
 of `src/eddn/conf/Settings` as the defaults.
+
+## Running
+You have two choices for how to run the application components:
+
+1. You can choose to run this application directly from the source using the
+  provided script in `contrib/run-from-source.sh`.
+
+1. Or you can utilise the `setup.py` file to build and install the application
+   files, but this requires write permissions under `/usr/local`.
+
+  If you go with this option then there are also SysV style init.d scripts in
+  `contrib/init.d/` for running the components.
+
+## Accessing the Monitor
+There is an EDDN Status web page usually provided at https://eddn.edcd.io/ .
+This is enabled by the Monitor component through the combination of the
+`contrib/monitor/` files and API endpoints provided by the Monitor process
+itself.
