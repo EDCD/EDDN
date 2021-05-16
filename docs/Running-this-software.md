@@ -8,6 +8,8 @@ following packages also installed:
 
     apt install screen sudo git
 
+A specific user was created:
+
     useradd -c 'EDDN Gateway' -m -s /bin/bash eddn
 
 # Further installation
@@ -27,13 +29,14 @@ You will need a mysql/mariab database:
     mysql mysql # Connect to the database as root
     > CREATE USER IF NOT EXISTS 'eddn'@'localhost' IDENTIFIED BY ' SOME SECURE PASSWORD ';
     > GRANT ALL PRIVILEGES on eddn.* TO 'eddn'@'localhost';
+    > \q
 
 ## In the 'eddn' account
 
     mkdir -p ~/eddn/dev
     cd ~/eddn/dev
     git clone https://github.com/EDCD/EDDN.git
-    pip install -r requirements.txt  # NB: Needs merging from ...
+    pip install -r requirements.txt
 
 ## Concepts
 There are three components to this application.
@@ -66,7 +69,9 @@ Application configuration is in the file `src/eddn/conf/Settings.py`.
   1. `RELAY_SENDER_BINDINGS` defines the address the application listens on
      for connections from listeners such as eddb.io.
   1. `RELAY_DUPLICATE_MAX_MINUTES` how many minutes to keep messages hashes
-     cached for so as to detect, and not Relay out, duplicate messages.
+     cached for so as to detect, and not Relay out, duplicate messages.  If
+     you set this to the literal string `false` the duplication checks will be
+     disabled.  This is **very handy** when testing the code.
   1. `GATEWAY_HTTP_BIND_ADDRESS` and ``GATEWAY_HTTP_PORT` define where the
      Gateway listens to for incoming messages from senders.  Might be
      forwarded from nginx or other reverse proxy.
@@ -176,3 +181,35 @@ You should be able to:
 
       cd /etc/nginx/sites-enabled
       ln -s /etc/nginx/sites-available/eddn	
+
+## Testing all of this in a VM
+In order to test all of this in a VM you might need to set up a double
+proxying:
+
+  Internet -> existing server -> VM -> nginx -> EDDN scripts
+
+If using Apache on a Debian server then you need some ProxyPass directives:
+
+        <IfModule mod_proxy.c>
+                SSLProxyEngine On
+                SSLProxyVerify none
+                ProxyPreserveHost On
+
+                # Pass through 'gateway' upload URL to Debian VM
+                ProxyPass "/eddn/upload/" "https://emiliaDVM.dsl.miggy.org:8081/upload/"
+                # Pass through 'monitor' URLs to Debian VM
+                ProxyPass "/eddn/" "https://emiliaDVM.dsl.miggy.org/"
+        </IfModule>
+
+You'll also need to redirect the Gateway and Relay ports using firewall rules.
+With iptables:
+
+        # Port 4430 is for senders to the Gateway
+        iptables -t nat -A PREROUTING-i EXTERNAL_INTERFACE -p tcp -s 0.0.0.0/0 --dport 4430 -j DNAT --to-destination VM_IP
+        iptables -t nat -A OUTPUT -i lo -p tcp -s 0.0.0.0/0 --dport 4430 -j DNAT --to-destination VM_IP
+        # Port 9500 is for listeners connecting to the Relay
+        iptables -t nat -A PREROUTING-i EXTERNAL_INTERFACE -p tcp -s 0.0.0.0/0 --dport 9500 -j DNAT --to-destination VM_IP
+        iptables -t nat -A OUTPUT -i lo -p tcp -s 0.0.0.0/0 --dport 9500 -j DNAT --to-destination VM_IP
+
+
+	
