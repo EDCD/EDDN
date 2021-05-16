@@ -83,7 +83,7 @@ another file.
     1. `GATEWAY_JSON_SCHEMAS` defines the schemas used for validation.  Note
        that these are full public URLs which are served by nginx (or whatever
        else you're using as the reverse proxy).
-    1. `GATEWAY_OUTDATED_SCHEMAS` any past schema that is no longer valid.
+    1. `GATEWAY_OUTDATED_SCHEMAS` any past schemas that are no longer valid.
     1. `MONITOR_HTTP_BIND_ADDRESS` and `MONITOR_HTTP_PORT` define where the
        Monitor listens for web connections to, e.g. the statistics page.
     1. `MONITOR_RECEIVER_BINDINGS` defines where the Monitor connects in order to
