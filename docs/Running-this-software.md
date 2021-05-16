@@ -85,9 +85,9 @@ another file.
        else you're using as the reverse proxy).
     1. `GATEWAY_OUTDATED_SCHEMAS` any past schemas that are no longer valid.
     1. `MONITOR_HTTP_BIND_ADDRESS` and `MONITOR_HTTP_PORT` define where the
-       Monitor listens for web connections to, e.g. the statistics page.
-    1. `MONITOR_RECEIVER_BINDINGS` defines where the Monitor connects in order to
-       subscribe to messages from the Gateway.  Should match
+       Monitor listens to for web connections, e.g. the statistics page.
+    1. `MONITOR_RECEIVER_BINDINGS` defines where the Monitor connects in order
+       to subscribe to messages from the Gateway.  Should match
        `GATEWAY_SENDER_BINDINGS`.
     1. `MONITOR_UA` appears to be unused.
 
@@ -111,8 +111,18 @@ You only need to define the settings that you need to change from defaults,
 e.g. certificate files and database credentials, without worrying about the
 basic setup.
 
+There is an **example** of this in
+[eddn-settings-overrides-EXAMPLE.json](./eddn-settings-overrides-EXAMPLE.json).
+It sets:
+
+  1. The TLS CERT and KEY files.
+  1. The gateway to listen on `0.0.0.0` rather than localhost (necessary
+    when testing in a VM).
+  1. Configures the database connection and credentials.
+  1. Turns off the relay duplicate check.
+
 ## Running
-You have two choices for how to run the application components:
+You have some choices for how to run the application components:
 
 1. You can choose to run this application directly from the source using the
   provided script in `contrib/run-from-source.sh`.
@@ -125,9 +135,9 @@ You have two choices for how to run the application components:
 
    to install under `~/.local/` instead.
 
-  If you install into `/usr/local/` then there are SysV style init.d scripts
-  in `contrib/init.d/` for running the components.  They will need the
-  `DAEMON` lines tweaking for running from another location.
+   If you install into `/usr/local/` then there are SysV style init.d scripts
+   in `contrib/init.d/` for running the components.  They will need the
+   `DAEMON` lines tweaking for running from another location.
 
 1. For quick testing purposes you can run them as follows, assuming you
    installed into `~/.local/`, and have your override settings in
