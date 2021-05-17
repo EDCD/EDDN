@@ -1,6 +1,11 @@
 These instructions are based on getting the software up and running from
 scratch on a Debian Buster (10.9, stable as of 2021-05-16) system.
 
+In the end the installed packages were as per the files:
+
+  - [debian-vm-dpkg-selections.txt](./debian-vm-dpkg-selections.txt)
+  - [debian-vm-dpkg_-l.txt](./debian-vm-dpkg_-l.txt)
+
 # Base Debian Install
 A simple Debian install was performed in a VirtualBox VM to ensure no
 confounding factors.  Only the bare minimum was installed, and then the
