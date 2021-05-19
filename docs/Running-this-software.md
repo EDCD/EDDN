@@ -74,7 +74,7 @@ If you're already using another web server, such as Apache, you'll need to
 duplicate at least the use of a TLS certificate and the Reverse Proxying as
 required.
 
-For Apache you reverse proxy using something like the following in an
+For Apache you would reverse proxy using something like the following in an
 appropriate `<VirtualHost>` section:
 
         <IfModule mod_proxy.c>
@@ -83,9 +83,9 @@ appropriate `<VirtualHost>` section:
                 ProxyPreserveHost On
 
                 # Pass through 'gateway' upload URL to Debian VM
-                ProxyPass "/eddn/upload/" "https://EDDNHOST:8081/upload/"
+                ProxyPass "/upload/" "https://EDDNHOST:8081/upload/"
                 # Pass through 'monitor' URLs to Debian VM
-                ProxyPass "/eddn/" "https://EDDNHOST/"
+                ProxyPass "/" "https://EDDNHOST/"
         </IfModule>
 
 ## In the 'eddn' account
@@ -281,6 +281,10 @@ If using Apache on a Debian server then you need some ProxyPass directives:
                 # Pass through 'monitor' URLs to Debian VM
                 ProxyPass "/eddn/" "https://VM_HOST/"
         </IfModule>
+
+This assumes you don't have a dedicated virtual host in this case, hence the
+"/eddn" prefix there.  Remove that if you are using a dedicated virtual host
+on the 'existing server'.
 
 You'll also need to redirect the Gateway and Relay ports using firewall rules.
 With iptables:
