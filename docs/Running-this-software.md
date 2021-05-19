@@ -107,7 +107,7 @@ Installing extra necessary python modules is simple:
 You will need to get the database schema in place:
 
     mysql -p eddn < ~/eddn/dev/EDDN/schema.sql
-    <password>
+    <the password you set in the "CREATE USER" statement above>
 
 ### Monitor and Schema files
 The Monitor files are not currently installed anywhere by the `setup.py`
