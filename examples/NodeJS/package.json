@@ -6,6 +6,7 @@
   "scripts": {
     "watch": "node index.js"
   },
+  "type": "module",
   "author": "",
   "license": "MIT",
   "dependencies": {
