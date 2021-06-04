@@ -45,11 +45,36 @@ need to install netdata.  On Debian-based systems:
 The default configuration should be all you need, listening on
 `127.0.0.1:19999`.
 
+### LetsEncrypt: certbot
+It will be necessary to renew the TLS certificate using certbot (or some
+alternative ACME client).
+
+    apt install certbot
+
 ### Reverse Proxy with nginx
 If you don't yet have nginx installed then start with:
 
     apt install nginx-light
 
+#### LetsEncrypt TLS Certificates
+
+You will need a LetsEncrupt/ACME client in order to keep the TLS certificate
+renewed.
+
+    cd /etc/letsencrypt
+    mkdir -p archive/eddn.edcd.io
+    mkdir -p live/eddn.edcd.io
+    cd archive/eddn.edcd.io
+    cp <source for all *.pem files> .
+    chmod 644 *.pem
+    chmod 600 privkey*.pem
+    cd ../../live/eddn.edcd.io
+    # NB: You need to check what the *newest* file is.  The `1` will be a
+    # greater number if the certificate has ever been renewed.
+    ln -s ../../archive/eddn.edcd.io/fullchain1.pem fullchain.pem
+    ln -s ../../archive/eddn.edcd.io/privkey1.pem privkey.pem
+
+#### nginx configuration
 There is an example configuration in `contrib/nginx-eddn.conf` which makes
 some assumptions:
 
