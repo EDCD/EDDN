@@ -1,0 +1,9 @@
+OS: Debian Stretch 9.13
+Packages: See Anthor-VPS-dpkg-selections.txt and Anthor-VPS-dpkg_-l.txt
+Reverse Proxy: nginx, see Anthor-VPS-nginx.conf
+:/etc/nginx$ ls modules-enabled/
+50-mod-http-auth-pam.conf  50-mod-http-image-filter.conf   50-mod-mail.conf
+50-mod-http-dav-ext.conf   50-mod-http-subs-filter.conf    50-mod-stream.conf
+50-mod-http-echo.conf      50-mod-http-upstream-fair.conf
+50-mod-http-geoip.conf     50-mod-http-xslt-filter.conf
+
