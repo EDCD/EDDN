@@ -29,7 +29,19 @@ setup(
     long_description="""\
       The Elite: Dangerous Data Network allows E:D players to share data. Not affiliated with Frontier Developments.
       """,
-    install_requires=["argparse", "bottle", "enum34", "gevent", "jsonschema", "pyzmq", "strict_rfc3339", "simplejson", "mysql-connector-python"],
+    # Yes, we pin versions.  With python2.7 the latest pyzmq will NOT
+    # work, for instance.
+    install_requires=[
+        "argparse",
+        "bottle==0.12.15",
+        "enum34==1.1.6",
+        "gevent==1.3.7",
+        "jsonschema==2.6.0",
+        "pyzmq==17.1.2",
+        "strict_rfc3339==0.7",
+        "simplejson==3.16.0",
+        "mysql-connector-python==8.0.17"
+    ],
     entry_points={
         'console_scripts': [
             'eddn-gateway = eddn.Gateway:main',
