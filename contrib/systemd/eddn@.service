@@ -1,0 +1,32 @@
+# systemd service template for EDDN services. The actual instances will
+# be called "eddn@<component>", e.g. "eddn@eddn-gateway". The
+# variable %i expands to "version-cluster", %I expands to "version/cluster".
+# (%I breaks for cluster names containing dashes.)
+#
+# NB: This is heavily cribbed from Debiab's PostgreSQL systemd service files.
+
+[Unit]
+Description=EDDN Service %i
+AssertPathExists=/home/eddn/.local/bin/%i
+PartOf=eddn.service
+ReloadPropagatedFrom=eddn.service
+Before=eddn.service
+# stop server before networking goes down on shutdown
+After=network.target
+
+[Service]
+Type=simple
+User=eddn
+Group=eddn
+ExecStart=/home/eddn/.local/bin/start-%i
+TimeoutStartSec=10s
+TimeoutStopSec=10s
+SyslogIdentifier=eddn@%i
+# prevent OOM killer from choosing the postmaster (individual backends will
+# reset the score to 0)
+#OOMScoreAdjust=-900
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+
