@@ -71,6 +71,10 @@ setup(
 )
 
 # Ensure the systemd-required start files are in place
+print """
+******************************************************************************
+Ensuring start script and its config file are in place...
+"""
 old_cwd = os.getcwd()
 if not os.path.isdir(START_SCRIPT_BIN):
     # We're still using Python 2.7, so no pathlib
@@ -93,6 +97,10 @@ for f in ( 'contrib/systemd/start-eddn-service', 'contrib/systemd/eddn_config'):
     shutil.copy(f, START_SCRIPT_BIN)
 
 # Ensure the latest monitor files are in place
+print """
+******************************************************************************
+Ensuring %s exists...
+""" % ( SHARE_EDDN_FILES )
 old_cwd = os.getcwd()
 if not os.path.isdir(SHARE_EDDN_FILES):
     # We're still using Python 2.7, so no pathlib
@@ -111,6 +119,10 @@ if not os.path.isdir(SHARE_EDDN_FILES):
         exit(-1)
 
 os.chdir(old_cwd)
+print """
+******************************************************************************
+Ensuring latest monitor files are in place...
+"""
 # Copy the monitor (Web page) files
 try:
     shutil.rmtree('%s/monitor' % ( SHARE_EDDN_FILES ))
@@ -118,6 +130,10 @@ except OSError:
     pass
 shutil.copytree('contrib/monitor', '%s/monitor' % ( SHARE_EDDN_FILES ))
 # And a copy of the schemas too
+print """
+******************************************************************************
+Ensuring latest schema files are in place for web access...
+"""
 try:
     shutil.rmtree('%s/schemas' % ( SHARE_EDDN_FILES ))
 except OSError:
