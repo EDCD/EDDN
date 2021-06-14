@@ -1,6 +1,8 @@
-from setuptools import setup, find_packages
-import re
 import glob
+import os
+import re
+import shutil
+from setuptools import setup, find_packages
 
 
 VERSIONFILE = "src/eddn/conf/Version.py"
@@ -15,6 +17,10 @@ except EnvironmentError:
     print "unable to find version in %s" % (VERSIONFILE,)
     raise RuntimeError("if %s exists, it is required to be well-formed" % (VERSIONFILE,))
 
+# Location of start-eddn-service script and its config file
+START_SCRIPT_BIN='%s/.local/bin' % ( os.environ['HOME'] )
+# Location of web files
+SHARE_EDDN_FILES='%s/.local/share/eddn' % ( os.environ['HOME'] )
 
 setup(
     name='eddn',
@@ -63,3 +69,56 @@ setup(
         ],
     }
 )
+
+# Ensure the systemd-required start files are in place
+if not os.path.isdir(START_SCRIPT_BIN):
+    # We're still using Python 2.7, so no pathlib
+    os.chdir('/')
+    for pc in START_SCRIPT_BIN[1:].split('/'):
+        try:
+            os.mkdir(pc)
+
+        except OSError:
+            pass
+
+        os.chdir(pc)
+
+    if not os.path.isdir(START_SCRIPT_BIN):
+        print "%s can't be created, aborting!!!" % (START_SCRIPT_BIN)
+        exit(-1)
+
+for f in ( 'contrib/systemd/start-eddn-service', 'contrib/systemd/eddn_config'):
+    shutil.copy(f, START_SCRIPT_BIN)
+
+# Ensure the latest monitor files are in place
+if not os.path.isdir(SHARE_EDDN_FILES):
+    # We're still using Python 2.7, so no pathlib
+    os.chdir('/')
+    for pc in SHARE_EDDN_FILES[1:].split('/'):
+        try:
+            os.mkdir(pc)
+
+        except OSError:
+            pass
+
+        os.chdir(pc)
+
+    if not os.path.isdir(SHARE_EDDN_FILES):
+        print "%s can't be created, aborting!!!" % (SHARE_EDDN_FILES)
+        exit(-1)
+
+# Copy the monitor (Web page) files
+try:
+    shutil.rmtree('%s/monitor' % ( SHARE_EDDN_FILES ))
+except OSError:
+    pass
+shutil.copytree('contrib/monitor', '%s/monitor' % ( SHARE_EDDN_FILES ))
+# And a copy of the schemas too
+try:
+    shutil.rmtree('%s/schemas' % ( SHARE_EDDN_FILES ))
+except OSError:
+    pass
+shutil.copytree('schemas', '%s/schemas' % ( SHARE_EDDN_FILES ))
+
+# You still need to make an override config file
+print "You now NEED to create and populate %s/config.json" % ( SHARE_EDDN_FILES )
