@@ -58,7 +58,7 @@ If you don't yet have nginx installed then start with:
 
 #### LetsEncrypt TLS Certificates
 
-You will need a LetsEncrupt/ACME client in order to keep the TLS certificate
+You will need a LetsEncrypt/ACME client in order to keep the TLS certificate
 renewed.
 
     cd /etc/letsencrypt
@@ -120,23 +120,29 @@ So as to not have any python package version requirements clash with
 anything else it's best to use a Python virtual environment (venv).  You
 will have installed the Debian package 'virtualenv' above for this purpose.
 
-We'll put the venv in `~/eddn/python2.7-venv` with the following
+We'll put the venv in `${HOME}/eddn/python2.7-venv` with the following
 command:
 
+    mkdir -p ${HOME}/eddn
+    cd ${HOME}/eddn
     virtualenv -p /usr/bin/python2.7 ${HOME}/python2.7-venv
+
+And for future ease of changing python versions:
+
+    ln -s python2.7-venv python-venv
 
 And now start using this venv:
 
-    . python2.7-venv/bin/activate
+    . python-venv/bin/activate
 
 ### Clone a copy of the application project from gitub
 
-    mkdir -p ~/eddn/dev
-    cd ~/eddn/dev
+    mkdir -p ${HOME}/eddn/dev
+    cd ${HOME}/eddn/dev
     git clone https://github.com/EDCD/EDDN.git
     cd EDDN
 
-We'll assume this `~/eddn/dev/EDDN` path elsewhere in this document.
+We'll assume this `${HOME}/eddn/dev/EDDN` path elsewhere in this document.
 
 ### Ensure necessary python modules are installed
 Installing extra necessary python modules is simple:
@@ -146,7 +152,7 @@ Installing extra necessary python modules is simple:
 ### Initialise Database Schema
 You will need to get the database schema in place:
 
-    mysql -p eddn < ~/eddn/dev/EDDN/schema.sql
+    mysql -p eddn < ${HOME}/eddn/dev/EDDN/schema.sql
     <the password you set in the "CREATE USER" statement above>
 
 ### Monitor and Schema files
@@ -155,14 +161,14 @@ script, so you'll need to manually copy them into somewhere convenient,
 e.g.:
 
     mkdir -p ${HOME}/.local/share/eddn
-    cp -r ~/eddn/dev/EDDN/contrib/monitor ${HOME}/.local/share/eddn
+    cp -r ${HOME}/eddn/dev/EDDN/contrib/monitor ${HOME}/.local/share/eddn
     chmod -R og+rX ${HOME} ${HOME}/.local ${HOME}/.local/share ${HOME}/.local/share/eddn
 
 You will need to ensure that the Monitor nginx setup can see the schema files
 in order to serve them for use by the Gateway. So perform, e.g.:
 
     mkdir -p ${HOME}/.local/share/eddn
-    cp -r ~/eddn/dev/EDDN/schemas ${HOME}/.local/share/eddn
+    cp -r ${HOME}/eddn/dev/EDDN/schemas ${HOME}/.local/share/eddn
     chmod -R og+rX ${HOME}/.local/share/eddn/schemas
 
 # Concepts
@@ -280,7 +286,7 @@ You have some choices for how to run the application components:
 
        python setup.py install --user
 
-   to install under `~/.local/` instead.
+   to install under `${HOME}/.local/` instead.
 
    There is an example systemd setup in `contrib/systemd` that assumes
    this local installation.
@@ -290,12 +296,12 @@ You have some choices for how to run the application components:
    `DAEMON` lines tweaking for running from another location.
 
 1. For quick testing purposes you can run them as follows, assuming you
-   installed into `~/.local/`, and have your override settings in
+   installed into `${HOME}/.local/`, and have your override settings in
    `${HOME}/etc/eddn-settings-overrides.json`:
 
-        ~/.local/bin/eddn-gateway --config ${HOME}/etc/eddn-settings-overrides.json >> ~/logs/eddn-gateway.log 2>&1 &
-        ~/.local/bin/eddn-monitor --config ${HOME}/etc/eddn-settings-overrides.json >> ~/logs/eddn-monitor.log 2>&1 &
-        ~/.local/bin/eddn-relay --config ${HOME}/etc/eddn-settings-overrides.json >> ~/logs/eddn-relay.log 2>&1 &
+        ${HOME}/.local/bin/eddn-gateway --config ${HOME}/etc/eddn-settings-overrides.json >> ${HOME}/logs/eddn-gateway.log 2>&1 &
+        ${HOME}/.local/bin/eddn-monitor --config ${HOME}/etc/eddn-settings-overrides.json >> ${HOME}/logs/eddn-monitor.log 2>&1 &
+        ${HOME}/.local/bin/eddn-relay --config ${HOME}/etc/eddn-settings-overrides.json >> ${HOME}/logs/eddn-relay.log 2>&1 &
   
 # Accessing the Monitor
 There is an EDDN Status web page usually provided at, e.g.
