@@ -1,2 +1,3 @@
 CONFIG_OVERRIDE="${HOME}/.local/share/eddn/config.json"
 LOG_DIR="${HOME}/.var/log/eddn"
+PYTHON_VENV_ACTIVATE="${HOME}/eddn/python2.7-venv/bin/activate"

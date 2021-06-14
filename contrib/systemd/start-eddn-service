@@ -1,0 +1,37 @@
+#!/bin/bash -x
+# vim: tabstop=2 shiftwidth=2 textwidth=0 wrapmargin=0 expandtab
+#
+# Start an EDDN Service, including redirecting output to a log file.
+
+if [ -z "${1}" ];
+then
+  echo "No EDDN service specified.  One of: ${SERVICE}, monitor, relay"
+  exit 3
+fi
+SERVICE="${1}"
+
+EXEC_PATH=$(dirname $0)
+#echo "EXEC_PATH: ${EXEC_PATH}"
+
+# Ensure we're in the correct place
+cd ${EXEC_PATH}
+#pwd
+
+# Bring in some common configuration
+if [ ! -f eddn_config ];
+then
+  echo "eddn_config is missing from $(pwd)"
+  exit 1
+fi
+. ./eddn_config
+
+# Use the python venv
+. "${PYTHON_VENV_ACTIVATE}"
+
+if [ ! -f eddn-${SERVICE} ];
+then
+  echo "eddn-${SERVICE} is missing from $(pwd)"
+  exit 2
+fi
+
+./eddn-${SERVICE} --config "${CONFIG_OVERRIDE}" >> "${LOG_DIR}/eddn-${SERVICE}.log" 2>&1
