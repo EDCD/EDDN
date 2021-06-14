@@ -25,6 +25,8 @@ setup(
     url='https://github.com/EDCD/EDDN',
     packages=find_packages('src', exclude=["*.tests"]),
     package_dir = {'':'src'},
+    # This includes them for the running code, but that doesn't help
+    # serve them up for reference.
     data_files=[('eddn/schemas', glob.glob("schemas/*.json"))],
     long_description="""\
       The Elite: Dangerous Data Network allows E:D players to share data. Not affiliated with Frontier Developments.
