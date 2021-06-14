@@ -1,0 +1,505 @@
+Desired=Unknown/Install/Remove/Purge/Hold
+| Status=Not/Inst/Conf-files/Unpacked/halF-conf/Half-inst/trig-aWait/Trig-pend
+|/ Err?=(none)/Reinst-required (Status,Err: uppercase=bad)
+||/ Name                           Version                      Architecture Description
++++-==============================-============================-============-===============================================================================
+ii  adduser                        3.118                        all          add and remove users and groups
+ii  apparmor                       2.13.2-10                    amd64        user-space parser utility for AppArmor
+ii  apt                            1.8.2.3                      amd64        commandline package manager
+ii  apt-listchanges                3.19                         all          package change history notification tool
+ii  apt-utils                      1.8.2.3                      amd64        package management related utility programs
+ii  base-files                     10.3+deb10u9                 amd64        Debian base system miscellaneous files
+ii  base-passwd                    3.5.46                       amd64        Debian base system master password and group files
+ii  bash                           5.0-4                        amd64        GNU Bourne Again SHell
+ii  bash-completion                1:2.8-6                      all          programmable completion for the bash shell
+ii  bind9-host                     1:9.11.5.P4+dfsg-5.1+deb10u5 amd64        DNS lookup utility (deprecated)
+ii  binutils                       2.31.1-16                    amd64        GNU assembler, linker and binary utilities
+ii  binutils-common:amd64          2.31.1-16                    amd64        Common files for the GNU assembler, linker and binary utilities
+ii  binutils-x86-64-linux-gnu      2.31.1-16                    amd64        GNU binary utilities, for x86-64-linux-gnu target
+ii  bsdmainutils                   11.1.2+b1                    amd64        collection of more utilities from FreeBSD
+ii  bsdutils                       1:2.33.1-0.1                 amd64        basic utilities from 4.4BSD-Lite
+ii  build-essential                12.6                         amd64        Informational list of build-essential packages
+ii  busybox                        1:1.30.1-4                   amd64        Tiny utilities for small and embedded systems
+ii  bzip2                          1.0.6-9.2~deb10u1            amd64        high-quality block-sorting file compressor - utilities
+ii  ca-certificates                20200601~deb10u2             all          Common CA certificates
+ii  console-setup                  1.193~deb10u1                all          console font and keymap setup program
+ii  console-setup-linux            1.193~deb10u1                all          Linux specific part of console-setup
+ii  coreutils                      8.30-3                       amd64        GNU core utilities
+ii  cpio                           2.12+dfsg-9                  amd64        GNU cpio -- a program to manage archives of files
+ii  cpp                            4:8.3.0-1                    amd64        GNU C preprocessor (cpp)
+ii  cpp-8                          8.3.0-6                      amd64        GNU C preprocessor
+ii  cron                           3.0pl1-134+deb10u1           amd64        process scheduling daemon
+ii  curl                           7.64.0-4+deb10u2             amd64        command line tool for transferring data with URL syntax
+ii  dash                           0.5.10.2-5                   amd64        POSIX-compliant shell
+rc  dbconfig-common                2.0.11+deb10u1               all          framework that helps packages to manage databases
+ii  dbus                           1.12.20-0+deb10u1            amd64        simple interprocess messaging system (daemon and utilities)
+ii  debconf                        1.5.71                       all          Debian configuration management system
+ii  debconf-i18n                   1.5.71                       all          full internationalization support for debconf
+ii  debian-archive-keyring         2019.1+deb10u1               all          GnuPG archive keys of the Debian archive
+ii  debian-faq                     9.0                          all          Debian Frequently Asked Questions
+ii  debianutils                    4.8.6.1                      amd64        Miscellaneous utilities specific to Debian
+ii  dictionaries-common            1.28.1                       all          spelling dictionaries - common utilities
+ii  diffutils                      1:3.7-3                      amd64        File comparison utilities
+ii  dirmngr                        2.2.12-1+deb10u1             amd64        GNU privacy guard - network certificate management service
+ii  discover                       2.1.2-8                      amd64        hardware identification system
+ii  discover-data                  2.2013.01.11                 all          Data lists for Discover hardware detection system
+ii  distro-info-data               0.41+deb10u3                 all          information about the distributions' releases (data files)
+ii  dmeventd                       2:1.02.155-3                 amd64        Linux Kernel Device Mapper event daemon
+ii  dmidecode                      3.2-1                        amd64        SMBIOS/DMI table decoder
+ii  dmsetup                        2:1.02.155-3                 amd64        Linux Kernel Device Mapper userspace library
+ii  doc-debian                     6.4                          all          Debian Project documentation and other documents
+ii  dpkg                           1.19.7                       amd64        Debian package management system
+ii  dpkg-dev                       1.19.7                       all          Debian package development tools
+ii  e2fsprogs                      1.44.5-1+deb10u3             amd64        ext2/ext3/ext4 file system utilities
+ii  eject                          2.1.5+deb1+cvs20081104-13.2  amd64        ejects CDs and operates CD-Changers under Linux
+ii  emacsen-common                 3.0.4                        all          Common facilities for all emacsen
+ii  fakeroot                       1.23-1                       amd64        tool for simulating superuser privileges
+ii  fdisk                          2.33.1-0.1                   amd64        collection of partitioning utilities
+ii  file                           1:5.35-4+deb10u2             amd64        Recognize the type of data in a file using "magic" numbers
+ii  findutils                      4.6.0+git+20190209-2         amd64        utilities for finding files--find, xargs
+ii  firmware-linux-free            3.4                          all          Binary firmware for various drivers in the Linux kernel
+ii  fonts-font-awesome             5.0.10+really4.7.0~dfsg-1    all          iconic font designed for use with Twitter Bootstrap
+ii  fonts-glyphicons-halflings     1.009~3.4.1+dfsg-1           all          icons made for smaller graphic
+ii  freeipmi-common                1.6.3-1.1                    all          GNU implementation of the IPMI protocol - common files
+ii  g++                            4:8.3.0-1                    amd64        GNU C++ compiler
+ii  g++-8                          8.3.0-6                      amd64        GNU C++ compiler
+ii  galera-3                       25.3.25-2                    amd64        Replication framework for transactional applications
+ii  gawk                           1:4.2.1+dfsg-1               amd64        GNU awk, a pattern scanning and processing language
+ii  gcc                            4:8.3.0-1                    amd64        GNU C compiler
+ii  gcc-8                          8.3.0-6                      amd64        GNU C compiler
+ii  gcc-8-base:amd64               8.3.0-6                      amd64        GCC, the GNU Compiler Collection (base package)
+ii  gdbm-l10n                      1.18.1-4                     all          GNU dbm database routines (translation files) 
+ii  geoip-database                 20181108-1                   all          IP lookup command line tools that use the GeoIP library (country database)
+ii  gettext-base                   0.19.8.1-9                   amd64        GNU Internationalization utilities for the base system
+ii  gir1.2-glib-2.0:amd64          1.58.3-2                     amd64        Introspection data for GLib, GObject, Gio and GModule
+ii  git                            1:2.20.1-2+deb10u3           amd64        fast, scalable, distributed revision control system
+ii  git-man                        1:2.20.1-2+deb10u3           all          fast, scalable, distributed revision control system (manual pages)
+ii  gnupg                          2.2.12-1+deb10u1             all          GNU privacy guard - a free PGP replacement
+ii  gnupg-l10n                     2.2.12-1+deb10u1             all          GNU privacy guard - localization files
+ii  gnupg-utils                    2.2.12-1+deb10u1             amd64        GNU privacy guard - utility programs
+ii  gpg                            2.2.12-1+deb10u1             amd64        GNU Privacy Guard -- minimalist public key operations
+ii  gpg-agent                      2.2.12-1+deb10u1             amd64        GNU privacy guard - cryptographic agent
+ii  gpg-wks-client                 2.2.12-1+deb10u1             amd64        GNU privacy guard - Web Key Service client
+ii  gpg-wks-server                 2.2.12-1+deb10u1             amd64        GNU privacy guard - Web Key Service server
+ii  gpgconf                        2.2.12-1+deb10u1             amd64        GNU privacy guard - core configuration utilities
+ii  gpgsm                          2.2.12-1+deb10u1             amd64        GNU privacy guard - S/MIME version
+ii  gpgv                           2.2.12-1+deb10u1             amd64        GNU privacy guard - signature verification tool
+ii  grep                           3.3-1                        amd64        GNU grep, egrep and fgrep
+ii  groff-base                     1.22.4-3+deb10u1             amd64        GNU troff text-formatting system (base system components)
+ii  grub-common                    2.02+dfsg1-20+deb10u4        amd64        GRand Unified Bootloader (common files)
+ii  grub-pc                        2.02+dfsg1-20+deb10u4        amd64        GRand Unified Bootloader, version 2 (PC/BIOS version)
+ii  grub-pc-bin                    2.02+dfsg1-20+deb10u4        amd64        GRand Unified Bootloader, version 2 (PC/BIOS modules)
+ii  grub2-common                   2.02+dfsg1-20+deb10u4        amd64        GRand Unified Bootloader (common files for version 2)
+ii  gzip                           1.9-3                        amd64        GNU compression utilities
+ii  hdparm                         9.58+ds-1                    amd64        tune hard disk parameters for high performance
+ii  hostname                       3.21                         amd64        utility to set/show the host name or domain name
+ii  iamerican                      3.4.00-6                     all          American English dictionary for ispell (standard version)
+ii  ibritish                       3.4.00-6                     all          British English dictionary for ispell (standard version)
+ii  ienglish-common                3.4.00-6                     all          Common files for British and American ispell dictionaries
+ii  ifupdown                       0.8.35                       amd64        high level tools to configure network interfaces
+ii  init                           1.56+nmu1                    amd64        metapackage ensuring an init system is installed
+ii  init-system-helpers            1.56+nmu1                    all          helper tools for all init systems
+ii  initramfs-tools                0.133+deb10u1                all          generic modular initramfs generator (automation)
+ii  initramfs-tools-core           0.133+deb10u1                all          generic modular initramfs generator (core tools)
+ii  installation-report            2.71                         all          system installation report
+ii  iproute2                       4.20.0-2+deb10u1             amd64        networking and traffic control tools
+ii  iptables                       1.8.2-4                      amd64        administration tools for packet filtering and NAT
+ii  iputils-ping                   3:20180629-2+deb10u2         amd64        Tools to test the reachability of network hosts
+ii  isc-dhcp-client                4.4.1-2                      amd64        DHCP client for automatically obtaining an IP address
+ii  isc-dhcp-common                4.4.1-2                      amd64        common manpages relevant to all of the isc-dhcp packages
+ii  iso-codes                      4.2-1                        all          ISO language, territory, currency, script codes and their translations
+ii  ispell                         3.4.00-6+b1                  amd64        International Ispell (an interactive spelling corrector)
+ii  javascript-common              11                           all          Base support for JavaScript library packages
+ii  kbd                            2.0.4-4                      amd64        Linux console font and keytable utilities
+ii  keyboard-configuration         1.193~deb10u1                all          system-wide keyboard preferences
+ii  klibc-utils                    2.0.6-1                      amd64        small utilities built with klibc for early boot
+ii  kmod                           26-1                         amd64        tools for managing Linux kernel modules
+ii  krb5-locales                   1.17-3+deb10u1               all          internationalization support for MIT Kerberos
+ii  laptop-detect                  0.16                         all          system chassis type checker
+ii  less                           487-0.1+b1                   amd64        pager program similar to more
+ii  libacl1:amd64                  2.2.53-4                     amd64        access control list - shared library
+ii  libaio1:amd64                  0.3.112-3                    amd64        Linux kernel AIO access library - shared library
+ii  libalgorithm-diff-perl         1.19.03-2                    all          module to find differences between files
+ii  libalgorithm-diff-xs-perl      0.04-5+b1                    amd64        module to find differences between files (XS accelerated)
+ii  libalgorithm-merge-perl        0.08-3                       all          Perl module for three-way merge of textual data
+ii  libapparmor1:amd64             2.13.2-10                    amd64        changehat AppArmor library
+ii  libapt-inst2.0:amd64           1.8.2.3                      amd64        deb package format runtime library
+ii  libapt-pkg5.0:amd64            1.8.2.3                      amd64        package management runtime library
+ii  libargon2-1:amd64              0~20171227-0.2               amd64        memory-hard hashing function - runtime library
+ii  libasan5:amd64                 8.3.0-6                      amd64        AddressSanitizer -- a fast memory error detector
+ii  libassuan0:amd64               2.5.2-1                      amd64        IPC library for the GnuPG components
+ii  libatomic1:amd64               8.3.0-6                      amd64        support library providing __atomic built-in functions
+ii  libattr1:amd64                 1:2.4.48-4                   amd64        extended attribute handling - shared library
+ii  libaudit-common                1:2.8.4-3                    all          Dynamic library for security auditing - common files
+ii  libaudit1:amd64                1:2.8.4-3                    amd64        Dynamic library for security auditing
+ii  libbind9-161:amd64             1:9.11.5.P4+dfsg-5.1+deb10u5 amd64        BIND9 Shared Library used by BIND
+ii  libbinutils:amd64              2.31.1-16                    amd64        GNU binary utilities (private shared library)
+ii  libblkid1:amd64                2.33.1-0.1                   amd64        block device ID library
+ii  libbrotli1:amd64               1.0.7-2+deb10u1              amd64        library implementing brotli encoder and decoder (shared libraries)
+ii  libbsd0:amd64                  0.9.1-2+deb10u1              amd64        utility functions from BSD systems - shared library
+ii  libbz2-1.0:amd64               1.0.6-9.2~deb10u1            amd64        high-quality block-sorting file compressor library - runtime
+ii  libc-ares2:amd64               1.14.0-1                     amd64        asynchronous name resolver
+ii  libc-bin                       2.28-10                      amd64        GNU C Library: Binaries
+ii  libc-dev-bin                   2.28-10                      amd64        GNU C Library: Development binaries
+ii  libc-l10n                      2.28-10                      all          GNU C Library: localization files
+ii  libc6:amd64                    2.28-10                      amd64        GNU C Library: Shared libraries
+ii  libc6-dev:amd64                2.28-10                      amd64        GNU C Library: Development Libraries and Header Files
+ii  libcap-ng0:amd64               0.7.9-2                      amd64        An alternate POSIX capabilities library
+ii  libcap2:amd64                  1:2.25-2                     amd64        POSIX 1003.1e capabilities (library)
+ii  libcap2-bin                    1:2.25-2                     amd64        POSIX 1003.1e capabilities (utilities)
+ii  libcc1-0:amd64                 8.3.0-6                      amd64        GCC cc1 plugin for GDB
+ii  libcgi-fast-perl               1:2.13-1                     all          CGI subclass for work with FCGI
+ii  libcgi-pm-perl                 4.40-1                       all          module for Common Gateway Interface applications
+ii  libcom-err2:amd64              1.44.5-1+deb10u3             amd64        common error description library
+ii  libconfig-inifiles-perl        3.000001-1                   all          read .ini-style configuration files
+ii  libcryptsetup12:amd64          2:2.1.0-5+deb10u2            amd64        disk encryption support - shared library
+ii  libcurl3-gnutls:amd64          7.64.0-4+deb10u2             amd64        easy-to-use client-side URL transfer library (GnuTLS flavour)
+ii  libcurl4:amd64                 7.64.0-4+deb10u2             amd64        easy-to-use client-side URL transfer library (OpenSSL flavour)
+ii  libdb5.3:amd64                 5.3.28+dfsg1-0.5             amd64        Berkeley v5.3 Database Libraries [runtime]
+ii  libdbd-mysql-perl:amd64        4.050-2                      amd64        Perl5 database interface to the MariaDB/MySQL database
+ii  libdbi-perl:amd64              1.642-1+deb10u2              amd64        Perl Database Interface (DBI)
+ii  libdbus-1-3:amd64              1.12.20-0+deb10u1            amd64        simple interprocess messaging system (library)
+ii  libdebconfclient0:amd64        0.249                        amd64        Debian Configuration Management System (C-implementation library)
+ii  libdevmapper-event1.02.1:amd64 2:1.02.155-3                 amd64        Linux Kernel Device Mapper event support library
+ii  libdevmapper1.02.1:amd64       2:1.02.155-3                 amd64        Linux Kernel Device Mapper userspace library
+ii  libdiscover2                   2.1.2-8                      amd64        hardware identification library
+ii  libdns-export1104              1:9.11.5.P4+dfsg-5.1+deb10u5 amd64        Exported DNS Shared Library
+ii  libdns1104:amd64               1:9.11.5.P4+dfsg-5.1+deb10u5 amd64        DNS Shared Library used by BIND
+ii  libdpkg-perl                   1.19.7                       all          Dpkg perl modules
+ii  libedit2:amd64                 3.1-20181209-1               amd64        BSD editline and history libraries
+ii  libefiboot1:amd64              37-2+deb10u1                 amd64        Library to manage UEFI variables
+ii  libefivar1:amd64               37-2+deb10u1                 amd64        Library to manage UEFI variables
+ii  libelf1:amd64                  0.176-1.1                    amd64        library to read and write ELF files
+ii  libencode-locale-perl          1.05-1                       all          utility to determine the locale encoding
+ii  liberror-perl                  0.17027-2                    all          Perl module for error/exception handling in an OO-ish way
+ii  libestr0:amd64                 0.1.10-2.1                   amd64        Helper functions for handling strings (lib)
+ii  libexpat1:amd64                2.2.6-2+deb10u1              amd64        XML parsing C library - runtime library
+ii  libexpat1-dev:amd64            2.2.6-2+deb10u1              amd64        XML parsing C library - development kit
+ii  libext2fs2:amd64               1.44.5-1+deb10u3             amd64        ext2/ext3/ext4 file system libraries
+ii  libfakeroot:amd64              1.23-1                       amd64        tool for simulating superuser privileges - shared libraries
+ii  libfastjson4:amd64             0.99.8-2                     amd64        fast json library for C
+ii  libfcgi-perl                   0.78-2+b3                    amd64        helper module for FastCGI
+ii  libfdisk1:amd64                2.33.1-0.1                   amd64        fdisk partitioning library
+ii  libffi6:amd64                  3.2.1-9                      amd64        Foreign Function Interface library runtime
+ii  libfile-fcntllock-perl         0.22-3+b5                    amd64        Perl module for file locking with fcntl(2)
+ii  libfreeipmi17                  1.6.3-1.1                    amd64        GNU IPMI - libraries
+ii  libfreetype6:amd64             2.9.1-3+deb10u2              amd64        FreeType 2 font engine, shared library files
+ii  libfstrm0:amd64                0.4.0-1                      amd64        Frame Streams (fstrm) library
+ii  libfuse2:amd64                 2.9.9-1+deb10u1              amd64        Filesystem in Userspace (library)
+ii  libgc1c2:amd64                 1:7.6.4-0.4                  amd64        conservative garbage collector for C and C++
+ii  libgcc-8-dev:amd64             8.3.0-6                      amd64        GCC support library (development files)
+ii  libgcc1:amd64                  1:8.3.0-6                    amd64        GCC support library
+ii  libgcrypt20:amd64              1.8.4-5                      amd64        LGPL Crypto library - runtime library
+ii  libgdbm-compat4:amd64          1.18.1-4                     amd64        GNU dbm database routines (legacy support runtime version) 
+ii  libgdbm6:amd64                 1.18.1-4                     amd64        GNU dbm database routines (runtime version) 
+ii  libgeoip1:amd64                1.6.12-1                     amd64        non-DNS IP-to-country resolver library
+ii  libgirepository-1.0-1:amd64    1.58.3-2                     amd64        Library for handling GObject introspection data (runtime library)
+ii  libglib2.0-0:amd64             2.58.3-2+deb10u2             amd64        GLib library of C routines
+ii  libglib2.0-data                2.58.3-2+deb10u2             all          Common files for GLib library
+ii  libgmp10:amd64                 2:6.1.2+dfsg-4               amd64        Multiprecision arithmetic library
+ii  libgnutls30:amd64              3.6.7-4+deb10u6              amd64        GNU TLS library - main runtime library
+ii  libgomp1:amd64                 8.3.0-6                      amd64        GCC OpenMP (GOMP) support library
+ii  libgpg-error0:amd64            1.35-1                       amd64        GnuPG development runtime library
+ii  libgpm2:amd64                  1.20.7-5                     amd64        General Purpose Mouse - shared library
+ii  libgssapi-krb5-2:amd64         1.17-3+deb10u1               amd64        MIT Kerberos runtime libraries - krb5 GSS-API Mechanism
+ii  libhogweed4:amd64              3.4.1-1                      amd64        low level cryptographic library (public-key cryptos)
+ii  libhtml-parser-perl            3.72-3+b3                    amd64        collection of modules that parse HTML text documents
+ii  libhtml-tagset-perl            3.20-3                       all          Data tables pertaining to HTML
+ii  libhtml-template-perl          2.97-1                       all          module for using HTML templates with Perl
+ii  libhttp-date-perl              6.02-1                       all          module of date conversion routines
+ii  libhttp-message-perl           6.18-1                       all          perl interface to HTTP style messages
+ii  libicu63:amd64                 63.1-6+deb10u1               amd64        International Components for Unicode
+ii  libidn11:amd64                 1.33-2.2                     amd64        GNU Libidn library, implementation of IETF IDN specifications
+ii  libidn2-0:amd64                2.0.5-1+deb10u1              amd64        Internationalized domain names (IDNA2008/TR46) library
+ii  libio-html-perl                1.001-1                      all          open an HTML file with automatic charset detection
+ii  libip4tc0:amd64                1.8.2-4                      amd64        netfilter libip4tc library
+ii  libip6tc0:amd64                1.8.2-4                      amd64        netfilter libip6tc library
+ii  libipmimonitoring6             1.6.3-1.1                    amd64        GNU IPMI - Sensor monitoring library
+ii  libiptc0:amd64                 1.8.2-4                      amd64        netfilter libiptc library
+ii  libisc-export1100:amd64        1:9.11.5.P4+dfsg-5.1+deb10u5 amd64        Exported ISC Shared Library
+ii  libisc1100:amd64               1:9.11.5.P4+dfsg-5.1+deb10u5 amd64        ISC Shared Library used by BIND
+ii  libisccc161:amd64              1:9.11.5.P4+dfsg-5.1+deb10u5 amd64        Command Channel Library used by BIND
+ii  libisccfg163:amd64             1:9.11.5.P4+dfsg-5.1+deb10u5 amd64        Config File Handling Library used by BIND
+ii  libisl19:amd64                 0.20-2                       amd64        manipulating sets and relations of integer points bounded by linear constraints
+ii  libitm1:amd64                  8.3.0-6                      amd64        GNU Transactional Memory Library
+ii  libjs-bootstrap                3.4.1+dfsg-1                 all          HTML, CSS and JS framework
+ii  libjs-jquery                   3.3.1~dfsg-3+deb10u1         all          JavaScript library for dynamic web applications
+ii  libjs-sphinxdoc                1.8.4-1                      all          JavaScript support for Sphinx documentation
+ii  libjs-underscore               1.9.1~dfsg-1+deb10u1         all          JavaScript's functional programming helper library
+ii  libjson-c3:amd64               0.12.1+ds-2+deb10u1          amd64        JSON manipulation library - shared library
+ii  libk5crypto3:amd64             1.17-3+deb10u1               amd64        MIT Kerberos runtime libraries - Crypto Library
+ii  libkeyutils1:amd64             1.6-6                        amd64        Linux Key Management Utilities (library)
+ii  libklibc:amd64                 2.0.6-1                      amd64        minimal libc subset for use with initramfs
+ii  libkmod2:amd64                 26-1                         amd64        libkmod shared library
+ii  libkrb5-3:amd64                1.17-3+deb10u1               amd64        MIT Kerberos runtime libraries
+ii  libkrb5support0:amd64          1.17-3+deb10u1               amd64        MIT Kerberos runtime libraries - Support library
+ii  libksba8:amd64                 1.3.5-2                      amd64        X.509 and CMS support library
+ii  libldap-2.4-2:amd64            2.4.47+dfsg-3+deb10u6        amd64        OpenLDAP libraries
+ii  libldap-common                 2.4.47+dfsg-3+deb10u6        all          OpenLDAP common files for libraries
+ii  liblmdb0:amd64                 0.9.22-1                     amd64        Lightning Memory-Mapped Database shared library
+ii  liblocale-gettext-perl         1.07-3+b4                    amd64        module using libc functions for internationalization in Perl
+ii  liblockfile-bin                1.14-1.1                     amd64        support binaries for and cli utilities based on liblockfile
+ii  liblognorm5:amd64              2.0.5-1                      amd64        log normalizing library
+ii  liblsan0:amd64                 8.3.0-6                      amd64        LeakSanitizer -- a memory leak detector (runtime)
+ii  liblvm2cmd2.03:amd64           2.03.02-3                    amd64        LVM2 command library
+ii  liblwp-mediatypes-perl         6.02-1                       all          module to guess media type for a file or a URL
+ii  liblwres161:amd64              1:9.11.5.P4+dfsg-5.1+deb10u5 amd64        Lightweight Resolver Library used by BIND
+ii  liblz4-1:amd64                 1.8.3-1                      amd64        Fast LZ compression algorithm library - runtime
+ii  liblzma5:amd64                 5.2.4-1                      amd64        XZ-format compression library
+ii  libmagic-mgc                   1:5.35-4+deb10u2             amd64        File type determination library using "magic" numbers (compiled magic file)
+ii  libmagic1:amd64                1:5.35-4+deb10u2             amd64        Recognize the type of data in a file using "magic" numbers - library
+ii  libmariadb3:amd64              1:10.3.27-0+deb10u1          amd64        MariaDB database client library
+ii  libmnl0:amd64                  1.0.4-2                      amd64        minimalistic Netlink communication library
+ii  libmount1:amd64                2.33.1-0.1                   amd64        device mounting library
+ii  libmpc3:amd64                  1.1.0-1                      amd64        multiple precision complex floating-point library
+ii  libmpdec2:amd64                2.4.2-2                      amd64        library for decimal floating point arithmetic (runtime library)
+ii  libmpfr6:amd64                 4.0.2-1                      amd64        multiple precision floating-point computation
+ii  libmpx2:amd64                  8.3.0-6                      amd64        Intel memory protection extensions (runtime)
+ii  libncurses6:amd64              6.1+20181013-2+deb10u2       amd64        shared libraries for terminal handling
+ii  libncursesw6:amd64             6.1+20181013-2+deb10u2       amd64        shared libraries for terminal handling (wide character support)
+ii  libnetfilter-conntrack3:amd64  1.0.7-1                      amd64        Netfilter netlink-conntrack library
+ii  libnettle6:amd64               3.4.1-1                      amd64        low level cryptographic library (symmetric and one-way cryptos)
+ii  libnewt0.52:amd64              0.52.20-8                    amd64        Not Erik's Windowing Toolkit - text mode windowing with slang
+ii  libnfnetlink0:amd64            1.0.1-3+b1                   amd64        Netfilter netlink library
+ii  libnftnl11:amd64               1.1.2-2                      amd64        Netfilter nftables userspace API library
+ii  libnghttp2-14:amd64            1.36.0-2+deb10u1             amd64        library implementing HTTP/2 protocol (shared library)
+ii  libnginx-mod-http-echo         1.14.2-2+deb10u3             amd64        Bring echo and more shell style goodies to Nginx
+ii  libnode64:amd64                10.24.0~dfsg-1~deb10u1       amd64        evented I/O for V8 javascript - runtime library
+ii  libnpth0:amd64                 1.6-1                        amd64        replacement for GNU Pth using system threads
+ii  libnss-systemd:amd64           241-7~deb10u7                amd64        nss module providing dynamic user and group name resolution
+ii  libp11-kit0:amd64              0.23.15-2+deb10u1            amd64        library for loading and coordinating access to PKCS#11 modules - runtime
+ii  libpam-modules:amd64           1.3.1-5                      amd64        Pluggable Authentication Modules for PAM
+ii  libpam-modules-bin             1.3.1-5                      amd64        Pluggable Authentication Modules for PAM - helper binaries
+ii  libpam-runtime                 1.3.1-5                      all          Runtime support for the PAM library
+ii  libpam-systemd:amd64           241-7~deb10u7                amd64        system and service manager - PAM module
+ii  libpam0g:amd64                 1.3.1-5                      amd64        Pluggable Authentication Modules library
+ii  libpcap0.8:amd64               1.8.1-6                      amd64        system interface for user-level packet capture
+ii  libpci3:amd64                  1:3.5.2-1                    amd64        Linux PCI Utilities (shared library)
+ii  libpcre2-8-0:amd64             10.32-5                      amd64        New Perl Compatible Regular Expression Library- 8 bit runtime files
+ii  libpcre3:amd64                 2:8.39-12                    amd64        Old Perl 5 Compatible Regular Expression Library - runtime files
+ii  libperl5.28:amd64              5.28.1-6+deb10u1             amd64        shared Perl library
+ii  libpipeline1:amd64             1.5.1-2                      amd64        pipeline manipulation library
+ii  libpng16-16:amd64              1.6.36-6                     amd64        PNG library - runtime (version 1.6)
+ii  libpopt0:amd64                 1.16-12                      amd64        lib for parsing cmdline parameters
+ii  libprocps7:amd64               2:3.3.15-2                   amd64        library for accessing process information from /proc
+ii  libprotobuf-c1:amd64           1.3.1-1+b1                   amd64        Protocol Buffers C shared library (protobuf-c)
+ii  libpsl5:amd64                  0.20.2-2                     amd64        Library for Public Suffix List (shared libraries)
+ii  libpython-all-dev:amd64        2.7.16-1                     amd64        package depending on all supported Python2 development packages
+ii  libpython-dev:amd64            2.7.16-1                     amd64        header files and a static library for Python2
+ii  libpython-stdlib:amd64         2.7.16-1                     amd64        interactive high-level object-oriented language (Python2)
+ii  libpython2-dev:amd64           2.7.16-1                     amd64        header files and a static library for Python2
+ii  libpython2-stdlib:amd64        2.7.16-1                     amd64        interactive high-level object-oriented language (Python2)
+ii  libpython2.7:amd64             2.7.16-2+deb10u1             amd64        Shared Python runtime library (version 2.7)
+ii  libpython2.7-dev:amd64         2.7.16-2+deb10u1             amd64        Header files and a static library for Python (v2.7)
+ii  libpython2.7-minimal:amd64     2.7.16-2+deb10u1             amd64        Minimal subset of the Python language (version 2.7)
+ii  libpython2.7-stdlib:amd64      2.7.16-2+deb10u1             amd64        Interactive high-level object-oriented language (standard library, version 2.7)
+ii  libpython3-stdlib:amd64        3.7.3-1                      amd64        interactive high-level object-oriented language (default python3 version)
+ii  libpython3.7-minimal:amd64     3.7.3-2+deb10u3              amd64        Minimal subset of the Python language (version 3.7)
+ii  libpython3.7-stdlib:amd64      3.7.3-2+deb10u3              amd64        Interactive high-level object-oriented language (standard library, version 3.7)
+ii  libquadmath0:amd64             8.3.0-6                      amd64        GCC Quad-Precision Math Library
+ii  libreadline5:amd64             5.2+dfsg-3+b13               amd64        GNU readline and history libraries, run-time libraries
+ii  libreadline7:amd64             7.0-5                        amd64        GNU readline and history libraries, run-time libraries
+ii  librtmp1:amd64                 2.4+20151223.gitfa8646d.1-2  amd64        toolkit for RTMP streams (shared library)
+ii  libsasl2-2:amd64               2.1.27+dfsg-1+deb10u1        amd64        Cyrus SASL - authentication abstraction library
+ii  libsasl2-modules:amd64         2.1.27+dfsg-1+deb10u1        amd64        Cyrus SASL - pluggable authentication modules
+ii  libsasl2-modules-db:amd64      2.1.27+dfsg-1+deb10u1        amd64        Cyrus SASL - pluggable authentication modules (DB)
+ii  libseccomp2:amd64              2.3.3-4                      amd64        high level interface to Linux seccomp filter
+ii  libselinux1:amd64              2.8-1+b1                     amd64        SELinux runtime shared libraries
+ii  libsemanage-common             2.8-2                        all          Common files for SELinux policy management libraries
+ii  libsemanage1:amd64             2.8-2                        amd64        SELinux policy management library
+ii  libsepol1:amd64                2.8-1                        amd64        SELinux library for manipulating binary security policies
+ii  libsigsegv2:amd64              2.12-2                       amd64        Library for handling page faults in a portable way
+ii  libslang2:amd64                2.3.2-2                      amd64        S-Lang programming library - runtime version
+ii  libsmartcols1:amd64            2.33.1-0.1                   amd64        smart column output alignment library
+ii  libsnappy1v5:amd64             1.1.7-1                      amd64        fast compression/decompression library
+ii  libsqlite3-0:amd64             3.27.2-3+deb10u1             amd64        SQLite 3 shared library
+ii  libss2:amd64                   1.44.5-1+deb10u3             amd64        command-line interface parsing library
+ii  libssh2-1:amd64                1.8.0-2.1                    amd64        SSH2 client-side library
+ii  libssl1.1:amd64                1.1.1d-0+deb10u6             amd64        Secure Sockets Layer toolkit - shared libraries
+ii  libstdc++-8-dev:amd64          8.3.0-6                      amd64        GNU Standard C++ Library v3 (development files)
+ii  libstdc++6:amd64               8.3.0-6                      amd64        GNU Standard C++ Library v3
+ii  libsystemd0:amd64              241-7~deb10u7                amd64        systemd utility library
+ii  libtasn1-6:amd64               4.13-3                       amd64        Manage ASN.1 structures (runtime)
+ii  libterm-readkey-perl           2.38-1                       amd64        perl module for simple terminal control
+ii  libtext-charwidth-perl         0.04-7.1+b1                  amd64        get display widths of characters on the terminal
+ii  libtext-iconv-perl             1.7-5+b7                     amd64        converts between character sets in Perl
+ii  libtext-wrapi18n-perl          0.06-7.1                     all          internationalized substitute of Text::Wrap
+ii  libtimedate-perl               2.3000-2+deb10u1             all          collection of modules to manipulate date/time information
+ii  libtinfo6:amd64                6.1+20181013-2+deb10u2       amd64        shared low-level terminfo library for terminal handling
+ii  libtsan0:amd64                 8.3.0-6                      amd64        ThreadSanitizer -- a Valgrind-based detector of data races (runtime)
+ii  libubsan1:amd64                8.3.0-6                      amd64        UBSan -- undefined behaviour sanitizer (runtime)
+ii  libuchardet0:amd64             0.0.6-3                      amd64        universal charset detection library - shared library
+ii  libudev1:amd64                 241-7~deb10u7                amd64        libudev shared library
+ii  libunistring2:amd64            0.9.10-1                     amd64        Unicode string library for C
+ii  libunwind8:amd64               1.2.1-10~deb10u1             amd64        library to determine the call-chain of a program - runtime
+ii  liburi-perl                    1.76-1                       all          module to manipulate and access URI strings
+ii  libusb-0.1-4:amd64             2:0.1.12-32                  amd64        userspace USB programming library
+ii  libusb-1.0-0:amd64             2:1.0.22-2                   amd64        userspace USB programming library
+ii  libutempter0:amd64             1.1.6-3                      amd64        privileged helper for utmp/wtmp updates (runtime)
+ii  libuuid1:amd64                 2.33.1-0.1                   amd64        Universally Unique ID library
+ii  libuv1:amd64                   1.24.1-1                     amd64        asynchronous event notification library - runtime library
+ii  libwrap0:amd64                 7.6.q-28                     amd64        Wietse Venema's TCP wrappers library
+ii  libx11-6:amd64                 2:1.6.7-1+deb10u1            amd64        X11 client-side library
+ii  libx11-data                    2:1.6.7-1+deb10u1            all          X11 client-side library
+ii  libxau6:amd64                  1:1.0.8-1+b2                 amd64        X11 authorisation library
+ii  libxcb1:amd64                  1.13.1-2                     amd64        X C Binding
+ii  libxdmcp6:amd64                1:1.1.2-3                    amd64        X11 Display Manager Control Protocol library
+ii  libxext6:amd64                 2:1.3.3-1+b2                 amd64        X11 miscellaneous extension library
+ii  libxml2:amd64                  2.9.4+dfsg1-7+deb10u1        amd64        GNOME XML library
+ii  libxmuu1:amd64                 2:1.1.2-2+b3                 amd64        X11 miscellaneous micro-utility library
+ii  libxtables12:amd64             1.8.2-4                      amd64        netfilter xtables library
+ii  libyaml-0-2:amd64              0.2.1-1                      amd64        Fast YAML 1.1 parser and emitter library
+ii  libzstd1:amd64                 1.3.8+dfsg-3+deb10u2         amd64        fast lossless compression algorithm
+ii  linux-base                     4.6                          all          Linux image base package
+ii  linux-image-4.19.0-16-amd64    4.19.181-1                   amd64        Linux 4.19 for 64-bit PCs (signed)
+ii  linux-image-amd64              4.19+105+deb10u11            amd64        Linux for 64-bit PCs (meta-package)
+ii  linux-libc-dev:amd64           4.19.181-1                   amd64        Linux support headers for userspace development
+ii  locales                        2.28-10                      all          GNU C Library: National Language (locale) data [support]
+ii  login                          1:4.5-1.1                    amd64        system login tools
+ii  logrotate                      3.14.0-4                     amd64        Log rotation utility
+ii  lsb-base                       10.2019051400                all          Linux Standard Base init script functionality
+ii  lsb-release                    10.2019051400                all          Linux Standard Base version reporting utility
+ii  lsof                           4.91+dfsg-1                  amd64        utility to list open files
+ii  lvm2                           2.03.02-3                    amd64        Linux Logical Volume Manager
+ii  make                           4.2.1-1.2                    amd64        utility for directing compilation
+ii  man-db                         2.8.5-2                      amd64        on-line manual pager
+ii  manpages                       4.16-2                       all          Manual pages about using a GNU/Linux system
+ii  manpages-dev                   4.16-2                       all          Manual pages about using GNU/Linux for development
+ii  mariadb-client-10.3            1:10.3.27-0+deb10u1          amd64        MariaDB database client binaries
+ii  mariadb-client-core-10.3       1:10.3.27-0+deb10u1          amd64        MariaDB database core client binaries
+ii  mariadb-common                 1:10.3.27-0+deb10u1          all          MariaDB common metapackage
+ii  mariadb-server                 1:10.3.27-0+deb10u1          all          MariaDB database server (metapackage depending on the latest version)
+ii  mariadb-server-10.3            1:10.3.27-0+deb10u1          amd64        MariaDB database server binaries
+ii  mariadb-server-core-10.3       1:10.3.27-0+deb10u1          amd64        MariaDB database core server files
+ii  mawk                           1.3.3-17+b3                  amd64        a pattern scanning and text processing language
+ii  mime-support                   3.62                         all          MIME files 'mime.types' & 'mailcap', and support programs
+ii  mount                          2.33.1-0.1                   amd64        tools for mounting and manipulating filesystems
+ii  mysql-common                   5.8+1.0.5                    all          MySQL database common files, e.g. /etc/mysql/my.cnf
+ii  nano                           3.2-3                        amd64        small, friendly text editor inspired by Pico
+ii  ncurses-base                   6.1+20181013-2+deb10u2       all          basic terminal type definitions
+ii  ncurses-bin                    6.1+20181013-2+deb10u2       amd64        terminal-related programs and man pages
+ii  ncurses-term                   6.1+20181013-2+deb10u2       all          additional terminal type definitions
+ii  net-tools                      1.60+git20180626.aebd88e-1   amd64        NET-3 networking toolkit
+ii  netbase                        5.6                          all          Basic TCP/IP networking system
+ii  netcat-traditional             1.10-41.1                    amd64        TCP/IP swiss army knife
+ii  netdata                        1.12.0-1+deb10u1             all          real-time performance monitoring (metapackage)
+ii  netdata-core                   1.12.0-1+deb10u1             amd64        real-time performance monitoring (core)
+ii  netdata-plugins-bash           1.12.0-1+deb10u1             all          real-time performance monitoring (bash plugins)
+ii  netdata-plugins-nodejs         1.12.0-1+deb10u1             all          real-time performance monitoring (nodejs plugins)
+ii  netdata-plugins-python         1.12.0-1+deb10u1             all          real-time performance monitoring (python plugins)
+ii  netdata-web                    1.12.0-1+deb10u1             all          real-time performance monitoring (web)
+ii  nginx-common                   1.14.2-2+deb10u3             all          small, powerful, scalable web/proxy server - common files
+ii  nginx-light                    1.14.2-2+deb10u3             amd64        nginx web/proxy server (basic version)
+ii  nodejs                         10.24.0~dfsg-1~deb10u1       amd64        evented I/O for V8 javascript - runtime executable
+ii  nodejs-doc                     10.24.0~dfsg-1~deb10u1       all          API documentation for Node.js, the javascript platform
+ii  openssh-client                 1:7.9p1-10+deb10u2           amd64        secure shell (SSH) client, for secure access to remote machines
+ii  openssh-server                 1:7.9p1-10+deb10u2           amd64        secure shell (SSH) server, for secure access from remote machines
+ii  openssh-sftp-server            1:7.9p1-10+deb10u2           amd64        secure shell (SSH) sftp server module, for SFTP access from remote machines
+ii  openssl                        1.1.1d-0+deb10u6             amd64        Secure Sockets Layer toolkit - cryptographic utility
+ii  os-prober                      1.77                         amd64        utility to detect other OSes on a set of drives
+ii  passwd                         1:4.5-1.1                    amd64        change and administer password and group data
+ii  patch                          2.7.6-3+deb10u1              amd64        Apply a diff file to an original
+ii  pciutils                       1:3.5.2-1                    amd64        Linux PCI Utilities
+ii  perl                           5.28.1-6+deb10u1             amd64        Larry Wall's Practical Extraction and Report Language
+ii  perl-base                      5.28.1-6+deb10u1             amd64        minimal Perl system
+ii  perl-modules-5.28              5.28.1-6+deb10u1             all          Core Perl modules
+ii  pinentry-curses                1.1.0-2                      amd64        curses-based PIN or pass-phrase entry dialog for GnuPG
+ii  powermgmt-base                 1.34                         all          common utils for power management
+ii  procps                         2:3.3.15-2                   amd64        /proc file system utilities
+ii  psmisc                         23.2-1                       amd64        utilities that use the proc file system
+ii  publicsuffix                   20190415.1030-1              all          accurate, machine-readable list of domain name suffixes
+ii  python                         2.7.16-1                     amd64        interactive high-level object-oriented language (Python2 version)
+ii  python-all                     2.7.16-1                     amd64        package depending on all supported Python2 runtime versions
+ii  python-all-dev                 2.7.16-1                     amd64        package depending on all supported Python2 development packages
+ii  python-apt-common              1.8.4.3                      all          Python interface to libapt-pkg (locales)
+ii  python-asn1crypto              0.24.0-1                     all          Fast ASN.1 parser and serializer (Python 2)
+ii  python-cffi-backend            1.12.2-1                     amd64        Foreign Function Interface for Python calling C code - backend
+ii  python-configparser            3.5.0b2-1                    all          backport of the enhanced config parser introduced in Python 3.2
+ii  python-crypto                  2.6.1-9+b1                   amd64        cryptographic algorithms and protocols for Python
+ii  python-cryptography            2.6.1-3+deb10u2              amd64        Python library exposing cryptographic recipes and primitives (Python 2)
+ii  python-dbus                    1.2.8-3                      amd64        simple interprocess messaging system (Python interface)
+ii  python-dev                     2.7.16-1                     amd64        header files and a static library for Python2
+ii  python-entrypoints             0.3-1                        all          Discover and load entry points from installed packages (Python 2)
+ii  python-enum34                  1.1.6-2                      all          backport of Python 3.4's enum package
+ii  python-gi                      3.30.4-1                     amd64        Python 2.x bindings for gobject-introspection libraries
+ii  python-ipaddress               1.0.17-1                     all          Backport of Python 3 ipaddress module (Python 2)
+ii  python-keyring                 17.1.1-1                     all          store and access your passwords safely
+ii  python-keyrings.alt            3.1.1-1                      all          alternate backend implementations for python-keyring
+ii  python-minimal                 2.7.16-1                     amd64        minimal subset of the Python2 language
+ii  python-pip                     18.1-5                       all          Python package installer
+ii  python-pip-whl                 18.1-5                       all          Python package installer
+ii  python-pkg-resources           40.8.0-1                     all          Package Discovery and Resource Access using pkg_resources
+ii  python-secretstorage           2.3.1-2                      all          Python module for storing secrets - Python 2.x version
+ii  python-setuptools              40.8.0-1                     all          Python Distutils Enhancements
+ii  python-six                     1.12.0-1                     all          Python 2 and 3 compatibility library (Python 2 interface)
+ii  python-wheel                   0.32.3-2                     all          built-package format for Python
+ii  python-xdg                     0.25-5                       all          Python 2 library to access freedesktop.org standards
+ii  python2                        2.7.16-1                     amd64        interactive high-level object-oriented language (Python2 version)
+ii  python2-dev                    2.7.16-1                     amd64        header files and a static library for Python2
+ii  python2-minimal                2.7.16-1                     amd64        minimal subset of the Python2 language
+ii  python2.7                      2.7.16-2+deb10u1             amd64        Interactive high-level object-oriented language (version 2.7)
+ii  python2.7-dev                  2.7.16-2+deb10u1             amd64        Header files and a static library for Python (v2.7)
+ii  python2.7-minimal              2.7.16-2+deb10u1             amd64        Minimal subset of the Python language (version 2.7)
+ii  python3                        3.7.3-1                      amd64        interactive high-level object-oriented language (default python3 version)
+ii  python3-apt                    1.8.4.3                      amd64        Python 3 interface to libapt-pkg
+ii  python3-certifi                2018.8.24-1                  all          root certificates for validating SSL certs and verifying TLS hosts (python3)
+ii  python3-chardet                3.0.4-3                      all          universal character encoding detector for Python3
+ii  python3-debconf                1.5.71                       all          interact with debconf from Python 3
+ii  python3-debian                 0.1.35                       all          Python 3 modules to work with Debian-related data formats
+ii  python3-debianbts              2.8.2                        all          Python interface to Debian's Bug Tracking System
+ii  python3-httplib2               0.11.3-2                     all          comprehensive HTTP client library written for Python3
+ii  python3-idna                   2.6-1                        all          Python IDNA2008 (RFC 5891) handling (Python 3)
+ii  python3-minimal                3.7.3-1                      amd64        minimal subset of the Python language (default python3 version)
+ii  python3-pkg-resources          40.8.0-1                     all          Package Discovery and Resource Access using pkg_resources
+ii  python3-pycurl                 7.43.0.2-0.1                 amd64        Python bindings to libcurl (Python 3)
+ii  python3-pysimplesoap           1.16.2-1                     all          simple and lightweight SOAP Library (Python 3)
+ii  python3-reportbug              7.5.3~deb10u1                all          Python modules for interacting with bug tracking systems
+ii  python3-requests               2.21.0-1                     all          elegant and simple HTTP library for Python3, built for human beings
+ii  python3-six                    1.12.0-1                     all          Python 2 and 3 compatibility library (Python 3 interface)
+ii  python3-urllib3                1.24.1-1                     all          HTTP library with thread-safe connection pooling for Python3
+ii  python3-yaml                   3.13-2                       amd64        YAML parser and emitter for Python3
+ii  python3.7                      3.7.3-2+deb10u3              amd64        Interactive high-level object-oriented language (version 3.7)
+ii  python3.7-minimal              3.7.3-2+deb10u3              amd64        Minimal subset of the Python language (version 3.7)
+ii  readline-common                7.0-5                        all          GNU readline and history libraries, common files
+ii  reportbug                      7.5.3~deb10u1                all          reports bugs in the Debian distribution
+ii  rsync                          3.1.3-6                      amd64        fast, versatile, remote (and local) file-copying tool
+ii  rsyslog                        8.1901.0-1                   amd64        reliable system and kernel logging daemon
+ii  screen                         4.6.2-3+deb10u1              amd64        terminal multiplexer with VT100/ANSI terminal emulation
+ii  sed                            4.7-1                        amd64        GNU stream editor for filtering/transforming text
+ii  sensible-utils                 0.0.12                       all          Utilities for sensible alternative selection
+ii  shared-mime-info               1.10-1                       amd64        FreeDesktop.org shared MIME database and spec
+ii  socat                          1.7.3.2-2                    amd64        multipurpose relay for bidirectional data transfer
+ii  strace                         4.26-0.2                     amd64        System call tracer
+ii  sudo                           1.8.27-1+deb10u3             amd64        Provide limited super user privileges to specific users
+ii  systemd                        241-7~deb10u7                amd64        system and service manager
+ii  systemd-sysv                   241-7~deb10u7                amd64        system and service manager - SysV links
+ii  sysvinit-utils                 2.93-8                       amd64        System-V-like utilities
+ii  tar                            1.30+dfsg-6                  amd64        GNU version of the tar archiving utility
+ii  task-english                   3.53                         all          General English environment
+ii  task-ssh-server                3.53                         all          SSH server
+ii  tasksel                        3.53                         all          tool for selecting tasks for installation on Debian systems
+ii  tasksel-data                   3.53                         all          official tasks used for installation of Debian systems
+ii  tcpdump                        4.9.3-1~deb10u2              amd64        command-line network traffic analyzer
+ii  telnet                         0.17-41.2                    amd64        basic telnet client
+ii  traceroute                     1:2.1.0-2                    amd64        Traces the route taken by packets over an IPv4/IPv6 network
+ii  tzdata                         2021a-0+deb10u1              all          time zone and daylight-saving time data
+ii  ucf                            3.0038+nmu1                  all          Update Configuration File(s): preserve user changes to config files
+ii  udev                           241-7~deb10u7                amd64        /dev/ and hotplug management daemon
+ii  usb.ids                        2019.07.27-0+deb10u1         all          USB ID Repository
+ii  usbutils                       1:010-3                      amd64        Linux USB utilities
+ii  util-linux                     2.33.1-0.1                   amd64        miscellaneous system utilities
+ii  util-linux-locales             2.33.1-0.1                   all          locales files for util-linux
+ii  vim                            2:8.1.0875-5                 amd64        Vi IMproved - enhanced vi editor
+ii  vim-common                     2:8.1.0875-5                 all          Vi IMproved - Common files
+ii  vim-runtime                    2:8.1.0875-5                 all          Vi IMproved - Runtime files
+ii  vim-tiny                       2:8.1.0875-5                 amd64        Vi IMproved - enhanced vi editor - compact version
+ii  w3m                            0.5.3-37                     amd64        WWW browsable pager with excellent tables/frames support
+ii  wamerican                      2018.04.16-1                 all          American English dictionary words for /usr/share/dict
+ii  wget                           1.20.1-1.1                   amd64        retrieves files from the web
+ii  whiptail                       0.52.20-8                    amd64        Displays user-friendly dialog boxes from shell scripts
+ii  xauth                          1:1.0.10-1                   amd64        X authentication utility
+ii  xdg-user-dirs                  0.17-2                       amd64        tool to manage well known user directories
+ii  xkb-data                       2.26-2                       all          X Keyboard Extension (XKB) configuration data
+ii  xxd                            2:8.1.0875-5                 amd64        tool to make (or reverse) a hex dump
+ii  xz-utils                       5.2.4-1                      amd64        XZ-format compression utilities
+ii  zlib1g:amd64                   1:1.2.11.dfsg-1              amd64        compression library - runtime

@@ -1,0 +1,6 @@
+[Unit]
+Description=EDDN Services
+Requires=eddn@eddn-relay.service eddn@eddn-monitor.service eddn@eddn-gateway.service
+
+[Install]
+WantedBy=multi-user.target
