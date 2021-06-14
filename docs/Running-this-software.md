@@ -23,7 +23,7 @@ A specific user was created:
 
 Some additional Debian packages and python modules are required:
 
-    apt install python-pip
+    apt install python-pip virtualenv
 
 You will need a mysql/mariab database:
 
@@ -115,11 +115,26 @@ appropriate `<VirtualHost>` section:
 
 ## In the 'eddn' account
 
+### Set up a python virtual environment
+So as to not have any python package version requirements clash with
+anything else it's best to use a Python virtual environment (venv).  You
+will have installed the Debian package 'virtualenv' above for this purpose.
+
+We'll put the venv in `~/eddn/python2.7-venv` with the following
+command:
+
+    virtualenv -p /usr/bin/python2.7 ${HOME}/python2.7-venv
+
+And now start using this venv:
+
+    . python2.7-venv/bin/activate
+
 ### Clone a copy of the application project from gitub
 
     mkdir -p ~/eddn/dev
     cd ~/eddn/dev
     git clone https://github.com/EDCD/EDDN.git
+    cd EDDN
 
 We'll assume this `~/eddn/dev/EDDN` path elsewhere in this document.
 
