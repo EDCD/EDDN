@@ -267,6 +267,9 @@ You have some choices for how to run the application components:
 
    to install under `~/.local/` instead.
 
+   There is an example systemd setup in `contrib/systemd` that assumes
+   this local installation.
+
    If you install into `/usr/local/` then there are SysV style init.d scripts
    in `contrib/init.d/` for running the components.  They will need the
    `DAEMON` lines tweaking for running from another location.
