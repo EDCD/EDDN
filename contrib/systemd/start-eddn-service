@@ -1,4 +1,4 @@
-#!/bin/bash -x
+#!/bin/sh
 # vim: tabstop=2 shiftwidth=2 textwidth=0 wrapmargin=0 expandtab
 #
 # Start an EDDN Service, including redirecting output to a log file.
@@ -26,12 +26,12 @@ fi
 . ./eddn_config
 
 # Use the python venv
-. "${PYTHON_VENV_ACTIVATE}"
+. "${PYTHON_VENV}/bin/activate"
 
-if [ ! -f eddn-${SERVICE} ];
+if [ ! -f "${PYTHON_VENV}/bin/${SERVICE}" ];
 then
-  echo "eddn-${SERVICE} is missing from $(pwd)"
+  echo "${SERVICE} is missing from ${PYTHON_VENV}/bin"
   exit 2
 fi
 
-./eddn-${SERVICE} --config "${CONFIG_OVERRIDE}" >> "${LOG_DIR}/eddn-${SERVICE}.log" 2>&1
+${PYTHON_VENV}/bin/${SERVICE} --config "${CONFIG_OVERRIDE}" >> "${LOG_DIR}/${SERVICE}.log" 2>&1
