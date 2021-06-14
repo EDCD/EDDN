@@ -13,7 +13,7 @@ DESC="eddn-monitor"
 PIDFILE="/var/run/${NAME}.pid"
 LOGFILE="/var/log/eddn/${NAME}.log"
 
-DAEMON="/usr/local/bin/${NAME}"
+DAEMON="/home/eddn/eddn/python-venv/bin/${NAME}"
 
 EXEC_AS_USER="root"
 
