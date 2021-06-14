@@ -155,22 +155,6 @@ You will need to get the database schema in place:
     mysql -p eddn < ${HOME}/eddn/dev/EDDN/schema.sql
     <the password you set in the "CREATE USER" statement above>
 
-### Monitor and Schema files
-The Monitor files are not currently installed anywhere by the `setup.py`
-script, so you'll need to manually copy them into somewhere convenient,
-e.g.:
-
-    mkdir -p ${HOME}/.local/share/eddn
-    cp -r ${HOME}/eddn/dev/EDDN/contrib/monitor ${HOME}/.local/share/eddn
-    chmod -R og+rX ${HOME} ${HOME}/.local ${HOME}/.local/share ${HOME}/.local/share/eddn
-
-You will need to ensure that the Monitor nginx setup can see the schema files
-in order to serve them for use by the Gateway. So perform, e.g.:
-
-    mkdir -p ${HOME}/.local/share/eddn
-    cp -r ${HOME}/eddn/dev/EDDN/schemas ${HOME}/.local/share/eddn
-    chmod -R og+rX ${HOME}/.local/share/eddn/schemas
-
 # Concepts
 There are three components to this application.
 
@@ -277,32 +261,27 @@ It sets:
 # Running
 You have some choices for how to run the application components:
 
-1. You can choose to run this application directly from the source using the
-  provided script in `contrib/run-from-source.sh`.
+1. If you are just testing out code changes then you can choose to run
+  this application directly from the source using the provided script in
+  `contrib/run-from-source.sh`.
 
-1. Or you can utilise the `setup.py` file to build and install the application
-  files.  By default this requires write permissions under `/usr/local`, but
-  you can run:
+1. Otherwise you will want to  utilise the `setup.py` file to build and
+  install the application files.  As we're using a python venv we can just
+   run:
 
-       python setup.py install --user
+       python setup.py install
 
-   to install under `${HOME}/.local/` instead.
+   to install it all.  This will install a python egg into the python
+   venv, and then also ensure that the monitor and schema files are in
+   place.
 
    There is an example systemd setup in `contrib/systemd` that assumes
    this local installation.
 
-   If you install into `/usr/local/` then there are SysV style init.d scripts
-   in `contrib/init.d/` for running the components.  They will need the
-   `DAEMON` lines tweaking for running from another location.
+   There are also some SysV style init.d scripts in `contrib/init.d/` for
+   running the components.  They will need the `DAEMON` lines tweaking for
+   running from another location.
 
-1. For quick testing purposes you can run them as follows, assuming you
-   installed into `${HOME}/.local/`, and have your override settings in
-   `${HOME}/etc/eddn-settings-overrides.json`:
-
-        ${HOME}/.local/bin/eddn-gateway --config ${HOME}/etc/eddn-settings-overrides.json >> ${HOME}/logs/eddn-gateway.log 2>&1 &
-        ${HOME}/.local/bin/eddn-monitor --config ${HOME}/etc/eddn-settings-overrides.json >> ${HOME}/logs/eddn-monitor.log 2>&1 &
-        ${HOME}/.local/bin/eddn-relay --config ${HOME}/etc/eddn-settings-overrides.json >> ${HOME}/logs/eddn-relay.log 2>&1 &
-  
 # Accessing the Monitor
 There is an EDDN Status web page usually provided at, e.g.
 https://eddn.edcd.io/.  This is enabled by the Monitor component through
@@ -311,6 +290,18 @@ by the Monitor process itself.
 
 You will need to configure a reverse proxy to actually enable access to this.
 There is an example nginx configuration in `contrib/nginx-eddn.conf`.
+
+The necessary files should be put in place by
+
+The 'monitor' files are what form the status/statistics page at
+https://eddn.edcd.io/, so they need to be installed somewhere in a
+static manner accessible to nginx.
+
+Although setup.py installs the files you might still need to ensure the
+permissions are correct for your web server to access them.
+
+    chmod -R og+rX ${HOME} ${HOME}/.local ${HOME}/.local/share ${HOME}/.local/share/eddn
+    chmod -R og+rX ${HOME}/.local/share/eddn/schemas
 
 ## Testing all of this in a VM
 In order to test all of this in a VM you might need to set up a double
