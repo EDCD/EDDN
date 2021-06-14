@@ -528,7 +528,7 @@ var doUpdateSchemas = function()
         success: function(schemasTodayYesterday){
             // Might happen when nothing is received...
             if(schemasTodayYesterday[yesterday] == undefined)
-                schemaTodayYesterday[yesterday] = [];
+                schemasTodayYesterday[yesterday] = [];
             if(schemasTodayYesterday[today] == undefined)
                 schemasTodayYesterday[today] = [];
 
