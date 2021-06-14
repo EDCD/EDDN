@@ -34,4 +34,4 @@ then
   exit 2
 fi
 
-${PYTHON_VENV}/bin/${SERVICE} --config "${CONFIG_OVERRIDE}" >> "${LOG_DIR}/${SERVICE}.log" 2>&1
+exec ${PYTHON_VENV}/bin/${SERVICE} --config "${CONFIG_OVERRIDE}" >> "${LOG_DIR}/${SERVICE}.log" 2>&1
