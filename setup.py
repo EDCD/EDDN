@@ -71,6 +71,7 @@ setup(
 )
 
 # Ensure the systemd-required start files are in place
+old_cwd = os.getcwd()
 if not os.path.isdir(START_SCRIPT_BIN):
     # We're still using Python 2.7, so no pathlib
     os.chdir('/')
@@ -87,10 +88,12 @@ if not os.path.isdir(START_SCRIPT_BIN):
         print "%s can't be created, aborting!!!" % (START_SCRIPT_BIN)
         exit(-1)
 
+os.chdir(old_cwd)
 for f in ( 'contrib/systemd/start-eddn-service', 'contrib/systemd/eddn_config'):
     shutil.copy(f, START_SCRIPT_BIN)
 
 # Ensure the latest monitor files are in place
+old_cwd = os.getcwd()
 if not os.path.isdir(SHARE_EDDN_FILES):
     # We're still using Python 2.7, so no pathlib
     os.chdir('/')
@@ -107,6 +110,7 @@ if not os.path.isdir(SHARE_EDDN_FILES):
         print "%s can't be created, aborting!!!" % (SHARE_EDDN_FILES)
         exit(-1)
 
+os.chdir(old_cwd)
 # Copy the monitor (Web page) files
 try:
     shutil.rmtree('%s/monitor' % ( SHARE_EDDN_FILES ))
@@ -121,4 +125,17 @@ except OSError:
 shutil.copytree('schemas', '%s/schemas' % ( SHARE_EDDN_FILES ))
 
 # You still need to make an override config file
-print "You now NEED to create and populate %s/config.json" % ( SHARE_EDDN_FILES )
+if not os.path.isfile('%s/config.json' % ( SHARE_EDDN_FILES )):
+    shutil.copy('docs/config-EXAMPLE.json', SHARE_EDDN_FILES)
+    print """
+******************************************************************************
+There was no config.json file in place, so docs/config-EXAMPLE.json was
+copied into:
+
+     %s
+     
+Please review, edit and rename this file to 'config.json' so that this
+software will actually work.
+See docs/Running-this-software.md for guidance.
+******************************************************************************
+""" % ( SHARE_EDDN_FILES )
