@@ -3,12 +3,25 @@
 #
 # Start an EDDN Service, including redirecting output to a log file.
 
+usage() {
+  echo "Usage: $(basename $0) [ gateway | monitor | relay ] [ dev | live ]"
+}
+
 if [ -z "${1}" ];
 then
-  echo "No EDDN service specified.  One of: ${SERVICE}, monitor, relay"
+  usage
+  echo "No EDDN service specified."
   exit 3
 fi
 SERVICE="${1}"
+
+if [ -z "${2}" ];
+then
+  usage
+  echo "No EDDN environment specified."
+  exit 3
+fi
+EDDN_ENV="${2}"
 
 EXEC_PATH=$(dirname $0)
 #echo "EXEC_PATH: ${EXEC_PATH}"
@@ -18,20 +31,20 @@ cd ${EXEC_PATH}
 #pwd
 
 # Bring in some common configuration
-if [ ! -f eddn_config ];
+if [ ! -f "eddn_${EDDN_ENV}_config" ];
 then
-  echo "eddn_config is missing from $(pwd)"
+  echo "eddn_${EDDN_ENV}_config is missing from $(pwd)"
   exit 1
 fi
-. ./eddn_config
+. "./eddn_${EDDN_ENV}_config"
 
 # Use the python venv
 . "${PYTHON_VENV}/bin/activate"
 
-if [ ! -f "${PYTHON_VENV}/bin/${SERVICE}" ];
+if [ ! -f "${PYTHON_VENV}/bin/eddn-${SERVICE}" ];
 then
   echo "${SERVICE} is missing from ${PYTHON_VENV}/bin"
   exit 2
 fi
 
-exec ${PYTHON_VENV}/bin/${SERVICE} --config "${CONFIG_OVERRIDE}" >> "${LOG_DIR}/${SERVICE}.log" 2>&1
+exec ${PYTHON_VENV}/bin/eddn-${SERVICE} --config "${CONFIG_OVERRIDE}" >> "${LOG_DIR}/${SERVICE}.log" 2>&1
