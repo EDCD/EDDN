@@ -1,3 +1,0 @@
-CONFIG_OVERRIDE="${HOME}/.local/share/eddn/config.json"
-LOG_DIR="${HOME}/.var/log/eddn"
-PYTHON_VENV="${HOME}/eddn/python-venv"
