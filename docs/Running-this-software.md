@@ -51,11 +51,6 @@ alternative ACME client).
 
     apt install certbot
 
-### Reverse Proxy with nginx
-If you don't yet have nginx installed then start with:
-
-    apt install nginx-light
-
 #### LetsEncrypt TLS Certificates
 
 You will need a LetsEncrypt/ACME client in order to keep the TLS certificate
@@ -73,6 +68,11 @@ renewed.
     # greater number if the certificate has ever been renewed.
     ln -s ../../archive/eddn.edcd.io/fullchain1.pem fullchain.pem
     ln -s ../../archive/eddn.edcd.io/privkey1.pem privkey.pem
+
+### Reverse Proxy with nginx
+If you don't yet have nginx installed then start with:
+
+    apt install nginx-light
 
 #### nginx configuration
 There is an example configuration in `contrib/nginx-eddn.conf` which makes
