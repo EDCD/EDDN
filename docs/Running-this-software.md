@@ -1,3 +1,5 @@
+<!-- vim: tabstop=2 softtabstop=2 shiftwidth=2 expandtab smartindent smarttab wrapmargin=0 textwidth=0
+-->
 These instructions are based on getting the software up and running from
 scratch on a Debian Buster (10.9, stable as of 2021-05-16) system.
 
@@ -68,6 +70,16 @@ renewed.
     # greater number if the certificate has ever been renewed.
     ln -s ../../archive/eddn.edcd.io/fullchain1.pem fullchain.pem
     ln -s ../../archive/eddn.edcd.io/privkey1.pem privkey.pem
+
+### Reverse Proxy with Apache
+If you already have an Apache installation it will be easier to just use
+it for the reverse proxy.
+
+Ensure you have the module installed and active:
+
+    a2enmod proxy 
+
+#### Apache configuration
 
 ### Reverse Proxy with nginx
 If you don't yet have nginx installed then start with:
