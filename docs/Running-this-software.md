@@ -80,6 +80,28 @@ Ensure you have the module installed and active:
     a2enmod proxy 
 
 #### Apache configuration
+There is an example VirtualHost configuration in
+`contrib/apache-eddn.conf` which makes the following assumptions:
+
+  1. The usual Apache default configuration is in place elsewhere.
+  1. The hostname being used - `ServerName`.
+  1. The location of the monitor files - `DocumentRoot`.
+  1. The location of the schema files - `Alias /schemas/ ...`.
+  1. The location of the TLS certificate files - `SSLCertificateFile` and
+   `SSLCertificateKeyFile.
+
+You should be able to:
+
+  1. Copy `contrib/apache-eddn.conf` into `/etc/apache/sites-available/`
+   *as an appropriate filename for the hostname you're using*.
+  1. Edit to suit the local situation/setup.  **Remember to ensure the
+   configured log directory exists.**
+  1. Enable the site:
+
+         a2ensite <filename without trailing .conf>
+         apache2ctl configtest
+         # CHECK THE OUTPUT
+         apache2ctl graceful
 
 ### Reverse Proxy with nginx
 If you don't yet have nginx installed then start with:
@@ -95,7 +117,7 @@ some assumptions:
   1. The location of the monitor files - `root` directive.
   1. The location of the schema files - `location` directive.
   1. The location of the TLS certificate files - `ssl_certificate` and
-     `ssl_certificate_key` directives.
+   `ssl_certificate_key` directives.
 
 You should be able to:
 
@@ -107,23 +129,9 @@ You should be able to:
          ln -s /etc/nginx/sites-available/eddn        
          systemctl restart nginx.service
 
-If you're already using another web server, such as Apache, you'll need to
+If you're already using another web server you'll need to
 duplicate at least the use of a TLS certificate and the Reverse Proxying as
 required.
-
-For Apache you would reverse proxy using something like the following in an
-appropriate `<VirtualHost>` section:
-
-        <IfModule mod_proxy.c>
-                SSLProxyEngine On
-                SSLProxyVerify none
-                ProxyPreserveHost On
-
-                # Pass through 'gateway' upload URL to Debian VM
-                ProxyPass "/upload/" "https://EDDNHOST:8081/upload/"
-                # Pass through 'monitor' URLs to Debian VM
-                ProxyPass "/" "https://EDDNHOST/"
-        </IfModule>
 
 ## In the 'eddn' account
 
