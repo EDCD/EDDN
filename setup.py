@@ -17,11 +17,13 @@ except EnvironmentError:
     print "unable to find version in %s" % (VERSIONFILE,)
     raise RuntimeError("if %s exists, it is required to be well-formed" % (VERSIONFILE,))
 
-EDDN_ENV="dev"
+# Read environment-specific settings
+import setup_env
+
 # Location of start-eddn-service script and its config file
 START_SCRIPT_BIN='%s/.local/bin' % ( os.environ['HOME'] )
 # Location of web files
-SHARE_EDDN_FILES='%s/.local/share/eddn/%s' % ( os.environ['HOME'], EDDN_ENV )
+SHARE_EDDN_FILES='%s/.local/share/eddn/%s' % ( os.environ['HOME'], setup_env.EDDN_ENV )
 
 setup(
     name='eddn',
@@ -96,12 +98,12 @@ if not os.path.isdir(START_SCRIPT_BIN):
 os.chdir(old_cwd)
 
 shutil.copy(
-    'contrib/systemd/eddn_%s_config' % ( EDDN_ENV),
-    '%s/eddn_%s_config' % ( START_SCRIPT_BIN, EDDN_ENV )
+    'contrib/systemd/eddn_%s_config' % ( setup_env.EDDN_ENV),
+    '%s/eddn_%s_config' % ( START_SCRIPT_BIN, setup_env.EDDN_ENV )
 )
 shutil.copy(
     'contrib/systemd/start-eddn-service',
-    '%s/start-eddn-%s-service' % ( START_SCRIPT_BIN, EDDN_ENV )
+    '%s/start-eddn-%s-service' % ( START_SCRIPT_BIN, setup_env.EDDN_ENV )
 )
 
 # Ensure the latest monitor files are in place

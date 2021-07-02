@@ -1,6 +1,6 @@
-# Hoping this can be a per environment config, so needs to not be merged
-# by git, so not *in* git.
+# These need to be per-environment, so not changed by git merges.
 setup.cfg
+setup_env.py
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
