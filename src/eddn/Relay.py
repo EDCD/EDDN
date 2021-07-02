@@ -22,7 +22,7 @@ from eddn.conf.Settings import Settings, loadConfig
 
 from gevent import monkey
 monkey.patch_all()
-from bottle import Bottle, get, response, run
+from bottle import Bottle, get, request, response, run
 app = Bottle()
 
 # This import must be done post-monkey-patching!
