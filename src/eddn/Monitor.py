@@ -240,6 +240,7 @@ def main():
     loadConfig()
     m = Monitor()
     m.start()
+    app.install(EnableCors())
     app.run(
         host=Settings.MONITOR_HTTP_BIND_ADDRESS,
         port=Settings.MONITOR_HTTP_PORT,
