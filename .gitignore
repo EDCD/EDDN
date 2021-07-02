@@ -1,3 +1,7 @@
+# Hoping this can be a per environment config, so needs to not be merged
+# by git, so not *in* git.
+setup.cfg
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
