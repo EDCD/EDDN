@@ -1,0 +1,35 @@
+###########################################################################
+# Copy a certificate's files into place, with appropriate ownership and
+# mode.
+#
+# $1 - Name of certificate (i.e. letsencrypt directory names).
+# $2 - Source Directory
+# $3 - Destination filename for fullchain.pem
+# $4 - Destination filename for privkey.pem
+# $5 - File ownership to set (user:group)
+# $6 - File mode to set (as passed to 'chmod')
+###########################################################################
+copy_cert() {
+  CERT_NAME="$1"
+  SRC_DIR="$2"
+  DST_FILE_FULLCHAIN="$3"
+  DST_FILE_PRIVKEY="$4"
+  CERT_NEW_OWNER="$5"
+  CERT_NEW_PERMS="$6"
+
+  echo "${CERT_NAME}: Copying new files into place..."
+
+  # Preserve only the mode as it should be 0600, and thus we won't
+  # temporarily open up the files for *all* users to read,
+  # BUT don't preserve the timestamp as we want it to be 'now' so
+  # that a `find ... -newer <this file>` check works later.
+  cp -v --preserve=mode ${SRC_DIR}/fullchain.pem ${DST_FILE_FULLCHAIN}
+  cp -v --preserve=mode ${SRC_DIR}/privkey.pem ${DST_FILE_PRIVKEY}
+  chown -v ${CERT_NEW_OWNER} ${DST_FILE_FULLCHAIN} ${DST_FILE_PRIVKEY}
+  chmod -v ${CERT_NEW_PERMS} ${DST_FILE_FULLCHAIN} ${DST_FILE_PRIVKEY}
+
+  echo "${CERT_NAME}: Copying new files into place DONE"
+}
+###########################################################################
+
+# vim: :set filetype=sh tabstop=2 shiftwidth=2 expandtab wrapmargin=0 textwidth=0

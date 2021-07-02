@@ -1,0 +1,89 @@
+#!/bin/bash
+# Add " -x" above to debug
+#
+# certbot deploy hook
+#
+#  This should be triggered by being present in:
+#
+#     /etc/letsencrypt/renewal-hooks/deploy/
+#
+#  It can be linked into the 'post' directory for testing with:
+#
+#     certbot renew --dry-run
+#
+#  which you might want to do because deploy hooks aren't run for that
+#  command.
+#
+#  You can also just straight up run this script, including to get into place
+#  any certificate files it's configured for, but have never been deployed.
+
+# Paranoia re-enforcement of no group/other perms on created files
+chmod -R og-rwx /etc/letsencrypt/archive
+
+echo "$0 - Running in: $(pwd)"
+# Import common code and settings.
+. /etc/scripts/certbot-common
+
+# As of 2021-07-02 and certbot 0.31.0 (current in Debian buster)
+# there is **zero** information passed in (CL args or environment) to
+# this hook.  So we just need to check each potentially renewed
+# certificate.
+
+###########################################################################
+# MAIN_HOST_NAME
+###########################################################################
+CERT_NAME="MAIN_HOST_NAME"
+# We're only interested if it's newer than when the files were last copied
+SRC_DIR="/etc/letsencrypt/live/${CERT_NAME}"
+DST_FILE_FULLCHAIN="/etc/exim4/exim.crt"
+DST_FILE_PRIVKEY="/etc/exim4/exim.key"
+CERT_NEW_OWNER="root:Debian-exim"
+CERT_NEW_PERMS="440"
+
+#############################################################
+# Needs to be in place for exim to use
+#############################################################
+# 'find' doesn't set exit status depending on if it found anything, that's
+# for actual errors, so we test against the output.
+if [ "$(find ${SRC_DIR} -newer ${DST_FILE_FULLCHAIN} -o -newer ${DST_FILE_PRIVKEY} )" != "" ];
+then
+  echo "${CERT_NAME}: (Re)new(ed) certificate..."
+
+  copy_cert "${CERT_NAME}" "${SRC_DIR}" "${DST_FILE_FULLCHAIN}" "${DST_FILE_PRIVKEY}" "${CERT_NEW_OWNER}" "${CERT_NEW_PERMS}"
+
+  echo "${CERT_NAME}: DONE"
+fi
+#############################################################
+
+###########################################################################
+
+###########################################################################
+# eddn.edcd.io and related names
+###########################################################################
+CERT_NEW_OWNER="eddn:eddn"
+CERT_NEW_PERMS="400"
+
+for eddn in eddn.edcd.io test.eddn.edcd.io staging.eddn.edcd.io ;
+do
+  CERT_NAME="${eddn}"
+  SRC_DIR="/etc/letsencrypt/live/${CERT_NAME}"
+  DST_FILE_FULLCHAIN="/home/eddn/etc/${CERT_NAME}-fullchain.pem"
+  DST_FILE_PRIVKEY="/home/eddn/etc/${CERT_NAME}-privkey.pem"
+  
+  if [ -d "${SRC_DIR}" ];
+  then
+    if [ ! -f "${DST_FILE_FULLCHAIN}" \
+        -o ! -f "${DST_FILE_PRIVKEY}" \
+        -o "$(find ${SRC_DIR} -newer ${DST_FILE_FULLCHAIN} -o -newer ${DST_FILE_PRIVKEY} )" != "" ];
+    then
+      echo "${CERT_NAME}: (Re)New(ed) certificate..."
+  
+      copy_cert "${CERT_NAME}" "${SRC_DIR}" "${DST_FILE_FULLCHAIN}" "${DST_FILE_PRIVKEY}" "${CERT_NEW_OWNER}" "${CERT_NEW_PERMS}"
+  
+      echo "${CERT_NAME}: DONE"
+    fi
+  fi
+done
+###########################################################################
+
+# vim: tabstop=2 shiftwidth=2 expandtab wrapmargin=0 textwidth=0
