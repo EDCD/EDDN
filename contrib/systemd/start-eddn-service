@@ -4,7 +4,7 @@
 # Start an EDDN Service, including redirecting output to a log file.
 
 usage() {
-  echo "Usage: $(basename $0) [ gateway | monitor | relay ] [ dev | live ]"
+  echo "Usage: $(basename $0) [ gateway | monitor | relay ] [ live | beta | dev ]"
 }
 
 if [ -z "${1}" ];
