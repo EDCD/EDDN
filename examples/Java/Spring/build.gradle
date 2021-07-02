@@ -1,0 +1,48 @@
+plugins {
+    id 'org.springframework.boot' version '2.5.0'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java'
+    id 'org.springframework.experimental.aot' version '0.10.0-SNAPSHOT'
+}
+
+group = 'com.edcm'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    maven { url 'https://repo.spring.io/snapshot' }
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    //implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
+    implementation 'org.springframework.boot:spring-boot-starter-data-rest'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.integration:spring-integration-http'
+    //implementation 'org.springframework.integration:spring-integration-mongodb'
+    implementation group: 'org.springframework.integration', name: 'spring-integration-zeromq', version: '5.5.0'
+    compileOnly 'org.projectlombok:lombok'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'de.flapdoodle.embed:de.flapdoodle.embed.mongo'
+    testImplementation 'org.springframework.integration:spring-integration-test'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+bootBuildImage {
+    builder = 'paketobuildpacks/builder:tiny'
+    environment = ['BP_NATIVE_IMAGE': 'true']
+}
