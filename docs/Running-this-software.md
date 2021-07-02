@@ -47,16 +47,25 @@ need to install netdata.  On Debian-based systems:
 The default configuration should be all you need, listening on
 `127.0.0.1:19999`.
 
-### LetsEncrypt: certbot
-It will be necessary to renew the TLS certificate using certbot (or some
-alternative ACME client).
+### LetsEncrypt
+We assume that you're using a TLS certificate from
+[LetsEncrypt](https://letsencrypt.org/), it's free!
+
+It will be necessary to renew the TLS certificate using certbot, or some
+alternative ACME client.  We'll assume certbot.
+
+#### Install certbot
+On a Debian system simply:
 
     apt install certbot
 
-#### LetsEncrypt TLS Certificates
+Although this version might be a little old now, it does work.
 
-You will need a LetsEncrypt/ACME client in order to keep the TLS certificate
-renewed.
+#### LetsEncrypt TLS Certificates
+If you are taking over hosting the EDDN relay then hopefully you have access
+to the existing certificate files.
+
+So, first copy those into place:
 
     cd /etc/letsencrypt
     mkdir -p archive/eddn.edcd.io
@@ -70,6 +79,39 @@ renewed.
     # greater number if the certificate has ever been renewed.
     ln -s ../../archive/eddn.edcd.io/fullchain1.pem fullchain.pem
     ln -s ../../archive/eddn.edcd.io/privkey1.pem privkey.pem
+
+After this you need to ensure that the certificate stays renewed.  With a
+Debian system using certbot:
+
+1. There should already be a systemd timer set up:
+
+    `systemctl status certbot.timer`
+
+    If that doesn't show "`; enabled;`" in:
+  
+    `Loaded: loaded (/lib/systemd/system/certbot.timer; enabled; vendor preset: enabled)`
+
+    then:
+
+    `systemctl enable certbot.timer`
+
+    This will renew the certificate as necessary (i.e. when <= 30 days until
+    it expires, or whatever current LetsEncrypt and certbot policy causes).
+    But it will not ensure the files are in all the places you might need
+    them to be.
+
+1. Ensure the certificate files are deployed to where they're needed.  When
+  using the certbot timer the easiest thing to do is to utilise a script in
+  `/etc/letsencrypt/renewal-hooks/deploy/`.
+
+    There are example files for this in `contrib/letsencrypt/`:
+
+        mkdir -p /etc/letsencrypt/renewal-hooks/deploy
+        cp contrib/letsencrypt/deploy-changed-certs /etc/letsencrypt/renewal-hooks/deploy
+        mkdir -p /etc/scripts
+        cp contrib/letsencrypt/certbot-common /etc/scripts/
+
+    **Remember to edit them to suit your setup!**
 
 ### Reverse Proxy with Apache
 If you already have an Apache installation it will be easier to just use
