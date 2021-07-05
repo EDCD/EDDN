@@ -54,7 +54,7 @@ setup(
     # work, for instance.
     install_requires=[
         "argparse",
-        "bottle==0.12.15",
+        "bottle==0.12.19",
         "enum34==1.1.6",
         "gevent==1.3.7",
         "jsonschema==2.6.0",
