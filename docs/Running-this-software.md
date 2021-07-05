@@ -306,16 +306,8 @@ from the Gateway to the Relay and Monitor.
 As the code currently (2021-05-16) stands it MUST run on a standalone host
 such that everything is served relative to the path root, not a path prefix.
 
-Also all of the `contrib/monitor` files have `eddn.edcd.io` hard-coded.  You
-will need to perform search and replace on the installed/live files to use a
-test host.  The files in question are:
-
-    monitor/js/eddn.js
-    monitor/schemas.html
-
-Replace the string `eddn.edcd.io` with the hostname you're using. You'll need
-to perform similar substitutions if you change the configuration to use any
-different port numbers.
+See also the [post-installation notes](#post-installation-steps) for some
+caveats about running this other than on the actual eddn.edcd.io host.
 
 ---
 
@@ -403,55 +395,73 @@ It sets:
 # Running
 You have some choices for how to run the application components:
 
-1. If you are just testing out code changes then you can choose to run
-  this application directly from the source using the provided script in
-  `contrib/run-from-source.sh`.
+## Running scripts from source
+If you are just testing out code changes then you can choose to run
+this application directly from the source using the provided script in
+`contrib/run-from-source.sh`.  This assumes the `dev` environment.
 
-1. Otherwise you will want to  utilise the `setup.py` file to build and
-  install the application files.  You'll need to do some setup first as
-  there are necessary files *not* checked into git, because they're per
-  environment:
+## Running from installation
+Otherwise you will want to  utilise the `setup.py` file to build and
+install the application files.  You'll need to do some setup first as
+there are necessary files *not* checked into git, because they're per
+environment:
 
-    1. Change directory to the top level of the git clone.
+### Performing the installation
+1. Change directory to the top level of the git clone.
 
-    1. Create a file `setup_env.py` with contents:
+1. Create a file `setup_env.py` with contents:
 
-        ```
-        EDDN_ENV="dev"
-        ```
-  
-        Replace `dev` with the environment you're setting up for.
+    ```
+    EDDN_ENV="dev"
+    ```
 
-    1. As we're using a python venv we can now just run:
+    Replace `dev` with the environment you're setting up for.
 
-        `python setup.py install`
+1. As we're using a python venv we can now just run:
 
-        to install it all.  This will install a python egg into the python
-        venv, and then also ensure that the monitor and schema files are in
-        place, along with support scripts.
-  
-        There is an example systemd setup in `contrib/systemd` that assumes
-        this local installation.
-  
-        There are also some SysV style init.d scripts in `contrib/init.d/` for
-        running the components.  They will need the `DAEMON` lines tweaking for
-        running from another location.
+    `python setup.py install`
 
-    You should now have:
-  
-    1. `~/.local/bin` - with some scripts and per-environment config files:
+    to install it all.  This will install a python egg into the python
+    venv, and then also ensure that the monitor and schema files are in
+    place, along with support scripts.
 
-        1. `start-eddn-dev-service` - script that runs a specified EDDN service.
-          This is intended to be used by the contrib systemd setup, but will
-          work standalone as well.
-        
-        1. `eddn-logs-archive` - script that potentially archives and expires
-          existing archival logs for the specified environment.
-  
-    1. `~/.local/share/eddn/dev` - with the monitor and schema files, along
-      with an example config override file if you didn't already have a
-      `config.json` here.
-  
+    There is an example systemd setup in `contrib/systemd` that assumes
+    this local installation.
+
+    There are also some SysV style init.d scripts in `contrib/init.d/` for
+    running the components.  They will need the `DAEMON` lines tweaking for
+    running from another location.
+
+You should now have:
+
+1. `~/.local/bin` - with some scripts and per-environment config files:
+
+    1. `start-eddn-dev-service` - script that runs a specified EDDN service.
+      This is intended to be used by the contrib systemd setup, but will
+      work standalone as well.
+    
+    1. `eddn-logs-archive` - script that potentially archives and expires
+      existing archival logs for the specified environment.
+
+1. `~/.local/share/eddn/dev` - with the monitor and schema files, along
+  with an example config override file if you didn't already have a
+  `config.json` here.
+
+### Post-installation steps
+If you're not using the `live` environment then there are some edits you
+need to make.
+
+All of the `contrib/monitor` files have the hostname `eddn.edcd.io`
+ hard-coded.  You will need to perform search and replace on the
+ installed/live files to use a test host.  The files in question are:
+
+    monitor/js/eddn.js
+    monitor/schemas.html
+
+Replace the string `eddn.edcd.io` with the hostname you're using.
+You'll need to perform similar substitutions if you change the
+configuration to use any different port numbers.
+
 ---
 
 # Accessing the Monitor
