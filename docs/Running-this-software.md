@@ -236,6 +236,9 @@ required.
 ## In the 'eddn' account
 
 ### Clone a copy of the application project from gitub
+We'll assume you're setting up a development environment so use `dev` in the
+path and some other configuration.  The scripts currently support three
+environments: `live`, `beta` and `dev`.
 
     mkdir -p ${HOME}/dev
     cd ${HOME}/dev
@@ -405,22 +408,50 @@ You have some choices for how to run the application components:
   `contrib/run-from-source.sh`.
 
 1. Otherwise you will want to  utilise the `setup.py` file to build and
-  install the application files.  As we're using a python venv we can just
-   run:
+  install the application files.  You'll need to do some setup first as
+  there are necessary files *not* checked into git, because they're per
+  environment:
 
-       python setup.py install
+    1. Change directory to the top level of the git clone.
 
-   to install it all.  This will install a python egg into the python
-   venv, and then also ensure that the monitor and schema files are in
-   place.
+    1. Create a file `setup_env.py` with contents:
 
-   There is an example systemd setup in `contrib/systemd` that assumes
-   this local installation.
+        ```
+        EDDN_ENV="dev"
+        ```
+  
+        Replace `dev` with the environment you're setting up for.
 
-   There are also some SysV style init.d scripts in `contrib/init.d/` for
-   running the components.  They will need the `DAEMON` lines tweaking for
-   running from another location.
+    1. As we're using a python venv we can now just run:
 
+        `python setup.py install`
+
+        to install it all.  This will install a python egg into the python
+        venv, and then also ensure that the monitor and schema files are in
+        place, along with support scripts.
+  
+        There is an example systemd setup in `contrib/systemd` that assumes
+        this local installation.
+  
+        There are also some SysV style init.d scripts in `contrib/init.d/` for
+        running the components.  They will need the `DAEMON` lines tweaking for
+        running from another location.
+
+    You should now have:
+  
+    1. `~/.local/bin` - with some scripts and per-environment config files:
+
+        1. `start-eddn-dev-service` - script that runs a specified EDDN service.
+          This is intended to be used by the contrib systemd setup, but will
+          work standalone as well.
+        
+        1. `eddn-logs-archive` - script that potentially archives and expires
+          existing archival logs for the specified environment.
+  
+    1. `~/.local/share/eddn/dev` - with the monitor and schema files, along
+      with an example config override file if you didn't already have a
+      `config.json` here.
+  
 ---
 
 # Accessing the Monitor
