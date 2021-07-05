@@ -159,9 +159,8 @@ def parse_and_error_handle(data):
         return "FAIL: " + str(validationResults.messages)
 
 
-@app.post('/upload/')
+@app.route('/upload/', method=['OPTIONS', 'POST'])
 def upload():
-    response.set_header("Access-Control-Allow-Origin", "*")
     try:
         # Body may or may not be compressed.
         message_body = get_decompressed_message()
@@ -182,7 +181,7 @@ def upload():
     return parse_and_error_handle(message_body)
 
 
-@app.get('/health_check/')
+@app.route('/health_check/', method=['OPTIONS', 'GET'])
 def health_check():
     """
     This should only be used by the gateway monitoring script. It is used
@@ -192,9 +191,8 @@ def health_check():
     return Settings.EDDN_VERSION
 
 
-@app.get('/stats/')
+@app.route('/stats/', method=['OPTIONS', 'GET'])
 def stats():
-    response.set_header("Access-Control-Allow-Origin", "*")
     stats = statsCollector.getSummary()
     stats["version"] = Settings.EDDN_VERSION
     return simplejson.dumps(stats)
@@ -209,9 +207,29 @@ class MalformedUploadError(Exception):
     pass
 
 
+class EnableCors(object):
+    name = 'enable_cors'
+    api = 2
+
+    def apply(self, fn, context):
+        def _enable_cors(*args, **kwargs):
+            # set CORS headers
+            response.headers['Access-Control-Allow-Origin'] = '*'
+            response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, OPTIONS'
+            response.headers['Access-Control-Allow-Headers'] = 'Origin, Accept, Content-Type, X-Requested-With, X-CSRF-Token'
+
+            if request.method != 'OPTIONS':
+                # actual request; reply with the actual response
+                return fn(*args, **kwargs)
+
+        return _enable_cors
+
+
 def main():
     loadConfig()
     configure()
+
+    app.install(EnableCors())
     app.run(
         host=Settings.GATEWAY_HTTP_BIND_ADDRESS, 
         port=Settings.GATEWAY_HTTP_PORT, 

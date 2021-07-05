@@ -13,11 +13,12 @@ import collections
 import zmq.green as zmq
 import re
 
-from bottle import get, request, response, run as bottle_run
 from eddn.conf.Settings import Settings, loadConfig
 
 from gevent import monkey
 monkey.patch_all()
+from bottle import Bottle, get, request, response, run
+app = Bottle()
 
 # This import must be done post-monkey-patching!
 if Settings.RELAY_DUPLICATE_MAX_MINUTES:
@@ -31,12 +32,12 @@ def date(__format):
     return d.strftime(__format)
 
 
-@get('/ping')
+@app.route('/ping', method=['OPTIONS', 'GET'])
 def ping():
     return 'pong'
 
 
-@get('/getTotalSoftwares/')
+@app.route('/getTotalSoftwares/', method=['OPTIONS', 'GET'])
 def getTotalSoftwares():
     response.set_header("Access-Control-Allow-Origin", "*")
     db = mariadb.connect(user=Settings.MONITOR_DB['user'], password=Settings.MONITOR_DB['password'], database=Settings.MONITOR_DB['database'])
@@ -62,7 +63,7 @@ def getTotalSoftwares():
     return simplejson.dumps(softwares)
 
 
-@get('/getSoftwares/')
+@app.route('/getSoftwares/', method=['OPTIONS', 'GET'])
 def getSoftwares():
     response.set_header("Access-Control-Allow-Origin", "*")
     db = mariadb.connect(user=Settings.MONITOR_DB['user'], password=Settings.MONITOR_DB['password'], database=Settings.MONITOR_DB['database'])
@@ -91,7 +92,7 @@ def getSoftwares():
     return simplejson.dumps(softwares)
 
 
-@get('/getTotalSchemas/')
+@app.route('/getTotalSchemas/', method=['OPTIONS', 'GET'])
 def getTotalSchemas():
     response.set_header("Access-Control-Allow-Origin", "*")
     db = mariadb.connect(user=Settings.MONITOR_DB['user'], password=Settings.MONITOR_DB['password'], database=Settings.MONITOR_DB['database'])
@@ -113,7 +114,7 @@ def getTotalSchemas():
     return simplejson.dumps(schemas)
 
 
-@get('/getSchemas/')
+@app.route('/getSchemas/', method=['OPTIONS', 'GET'])
 def getSchemas():
     response.set_header("Access-Control-Allow-Origin", "*")
     db = mariadb.connect(user=Settings.MONITOR_DB['user'], password=Settings.MONITOR_DB['password'], database=Settings.MONITOR_DB['database'])
@@ -211,11 +212,36 @@ class Monitor(Thread):
             gevent.spawn(monitor_worker, inboundMessage)
 
 
+class EnableCors(object):
+    """Enable CORS responses."""
+
+    name = 'enable_cors'
+    api = 2
+
+    def apply(self, fn, context):
+        """
+        Apply a CORS handler.
+
+        Ref: <https://stackoverflow.com/a/17262900>
+        """
+        def _enable_cors(*args, **kwargs):
+            """Set CORS Headers."""
+            response.headers['Access-Control-Allow-Origin'] = '*'
+            response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, OPTIONS'
+            response.headers['Access-Control-Allow-Headers'] = 'Origin, Accept, Content-Type, X-Requested-With, X-CSRF-Token'
+
+            if request.method != 'OPTIONS':
+                # actual request; reply with the actual response
+                return fn(*args, **kwargs)
+
+        return _enable_cors
+
 def main():
     loadConfig()
     m = Monitor()
     m.start()
-    bottle_run(
+    app.install(EnableCors())
+    app.run(
         host=Settings.MONITOR_HTTP_BIND_ADDRESS,
         port=Settings.MONITOR_HTTP_PORT,
         server='gevent',

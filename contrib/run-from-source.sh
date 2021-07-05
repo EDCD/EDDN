@@ -17,8 +17,17 @@ do
 		echo "$d: Already running as $(cat ${LOGPATH}/${d}.pid)"
 		continue
 	fi
+	if [ -f "${BASEPATH}/etc/settings.json" ];
+	then
+		CONFIG="--config ${BASEPATH}/etc/settings.json"
+	else
+		echo "WARNING: No override settings found, you'll be using defaults"
+		echo "WARNING: Did you forget to make ${BASEPATH}/etc/settings.json ?"
+		echo "         Continuing anyway..."
+		CONFIG=""
+	fi
 	${PYTHON} -m eddn.${d} \
-		--config ${BASEPATH}/etc/settings.json \
+		${CONFIG} \
 		> ${LOGPATH}/$d.log \
 		2>&1 &
 	echo $! > "${LOGPATH}/${d}.pid"

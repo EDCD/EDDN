@@ -18,11 +18,12 @@ import simplejson
 import hashlib
 import uuid
 import zmq.green as zmq
-from bottle import get, response, run as bottle_run
 from eddn.conf.Settings import Settings, loadConfig
 
 from gevent import monkey
 monkey.patch_all()
+from bottle import Bottle, get, request, response, run
+app = Bottle()
 
 # This import must be done post-monkey-patching!
 from eddn.core.StatsCollector import StatsCollector
@@ -36,9 +37,8 @@ if Settings.RELAY_DUPLICATE_MAX_MINUTES:
     duplicateMessages.start()
 
 
-@get('/stats/')
+@app.route('/stats/', method=['OPTIONS', 'GET'])
 def stats():
-    response.set_header("Access-Control-Allow-Origin", "*")
     stats = statsCollector.getSummary()
     stats["version"] = Settings.EDDN_VERSION
     return simplejson.dumps(stats)
@@ -145,11 +145,38 @@ class Relay(Thread):
             gevent.spawn(relay_worker, inboundMessage)
 
 
+class EnableCors(object):
+    """Enable CORS responses."""
+
+    name = 'enable_cors'
+    api = 2
+
+    def apply(self, fn, context):
+        """
+        Apply a CORS handler.
+
+        Ref: <https://stackoverflow.com/a/17262900>
+        """
+        def _enable_cors(*args, **kwargs):
+            """Set CORS Headers."""
+            response.headers['Access-Control-Allow-Origin'] = '*'
+            response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, OPTIONS'
+            response.headers['Access-Control-Allow-Headers'] = 'Origin, Accept, Content-Type, X-Requested-With, X-CSRF-Token'
+
+            if request.method != 'OPTIONS':
+                # actual request; reply with the actual response
+                return fn(*args, **kwargs)
+
+        return _enable_cors
+
+
 def main():
     loadConfig()
     r = Relay()
     r.start()
-    bottle_run(
+
+    app.install(EnableCors())
+    app.run(
         host=Settings.RELAY_HTTP_BIND_ADDRESS,
         port=Settings.RELAY_HTTP_PORT,
         server='gevent',

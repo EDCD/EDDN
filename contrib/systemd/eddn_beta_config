@@ -1,0 +1,3 @@
+CONFIG_OVERRIDE="${HOME}/.local/share/eddn/beta/config.json"
+LOG_DIR="${HOME}/beta/logs"
+PYTHON_VENV="${HOME}/beta/python-venv"

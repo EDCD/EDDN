@@ -1,3 +1,7 @@
+# These need to be per-environment, so not changed by git merges.
+setup.cfg
+setup_env.py
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -61,3 +65,5 @@ target/
 
 # Editors
 .idea
+# VIM swap files
+.*.sw?
