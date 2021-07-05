@@ -106,6 +106,16 @@ shutil.copy(
     '%s/start-eddn-%s-service' % ( START_SCRIPT_BIN, setup_env.EDDN_ENV )
 )
 
+# Ensure the service log file archiving script is in place
+print """
+******************************************************************************
+Ensuring the service log file archiving script is in place
+"""
+shutil.copy(
+    'contrib/eddn-logs-archive',
+    START_SCRIPT_BIN
+)
+
 # Ensure the latest monitor files are in place
 old_umask = os.umask(022)
 print """
