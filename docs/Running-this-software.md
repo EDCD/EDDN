@@ -19,6 +19,8 @@ A specific user was created:
 
     useradd -c 'EDDN Gateway' -m -s /bin/bash eddn
 
+---
+
 # Further installation
 
 ## As 'root'
@@ -38,6 +40,8 @@ You will need a mysql/mariab database:
     > GRANT ALL PRIVILEGES on eddn.* TO 'eddn'@'localhost';
     > \q
 
+---
+
 ### Netdata
 In order to get host performance metrics (CPU, RAM and network usage) you will
 need to install netdata.  On Debian-based systems:
@@ -46,6 +50,8 @@ need to install netdata.  On Debian-based systems:
 
 The default configuration should be all you need, listening on
 `127.0.0.1:19999`.
+
+---
 
 ### LetsEncrypt
 We assume that you're using a TLS certificate from
@@ -113,15 +119,63 @@ Debian system using certbot:
 
     **Remember to edit them to suit your setup!**
 
-### Reverse Proxy with Apache
+---
+
+### Network Configuration
+There are multiple ports that you'll have to ensure are allowed through any
+firewall, and some of them also require being reverse proxied correctly.
+
+The reverse proxies pertain to:
+
+1. The port for the Gateway to receive uploads from senders (e.g. Elite
+  Dangerous Market Connector).  This is also used for the 'monitor' web
+  page to obtain stats about messages passing through the Gateway.
+
+1. A set of URLs for accessing [netdata](#netdata).
+
+#### Necessary ports
+These all for TCP, no UDP:
+
+1. `443` - a web server capable of reverse proxying set up for TLS on the
+  public host name of the EDDN service.  This is used to serve the schemas,
+  the monitor web page, and to reverse proxy URLs beginning `/netdata/` to
+  the [netdata](#netdata) service.
+
+1. Default: `4430` - Gateway 'http' port, used both for EDDN senders to
+  upload, and also for the Gateway message rate stats on the monitor web
+  page.
+
+    But that's the *public* port.  The Gateway process itself listens on `8081`.
+    So you'll need a reverse proxy listening on port `4430` and forwarding
+    *all* requests to `127.0.0.1:8081`.
+
+1. Default: `9091` - Monitor 'http' port, used for the monitor web page to
+  query schema and software statistics. No reverse proxy setup.
+
+1. Default: `9500` - The port on the Relay that EDDN listeners connect to in
+  order to receive the zeromq stream.  No reverse proxy setup.
+
+1. Default: `9090` - The Relay 'http' port for its portion of the message
+  statistics on the monitor web page.  No reverse proxy setup.
+
+There's also the internal `8500` port, but that's literally only used for
+the Monitor and Relay to pick up zeromq messages forwarded from the
+Gateway, so all over localhost.
+
+See [Configuration](#configuration) for guidance on what override config
+settings can be used to change any of these ports.
+
+---
+
+#### Reverse Proxy with Apache
 If you already have an Apache installation it will be easier to just use
 it for the reverse proxy.
 
-Ensure you have the module installed and active:
+Ensure you have these modules installed and active:
 
-    a2enmod proxy 
+    a2enmod proxy proxy_http
 
-#### Apache configuration
+##### Apache configuration
 There is an example VirtualHost configuration in
 `contrib/apache-eddn.conf` which makes the following assumptions:
 
@@ -145,12 +199,14 @@ You should be able to:
          # CHECK THE OUTPUT
          apache2ctl graceful
 
-### Reverse Proxy with nginx
+---
+
+#### Reverse Proxy with nginx
 If you don't yet have nginx installed then start with:
 
     apt install nginx-light
 
-#### nginx configuration
+##### nginx configuration
 There is an example configuration in `contrib/nginx-eddn.conf` which makes
 some assumptions:
 
@@ -175,18 +231,29 @@ If you're already using another web server you'll need to
 duplicate at least the use of a TLS certificate and the Reverse Proxying as
 required.
 
+---
+
 ## In the 'eddn' account
+
+### Clone a copy of the application project from gitub
+
+    mkdir -p ${HOME}/dev
+    cd ${HOME}/dev
+    git clone https://github.com/EDCD/EDDN.git EDDN.git
+    cd EDDN.git
+
+We'll assume this `${HOME}/dev/EDDN.git` path elsewhere in this document.
 
 ### Set up a python virtual environment
 So as to not have any python package version requirements clash with
 anything else it's best to use a Python virtual environment (venv).  You
-will have installed the Debian package 'virtualenv' above for this purpose.
+will have installed the Debian package 'virtualenv' [above](#as-root) for
+this purpose.
 
-We'll put the venv in `${HOME}/eddn/python2.7-venv` with the following
+We'll put the venv in `${HOME}/dev/python2.7-venv` with the following
 command:
 
-    mkdir -p ${HOME}/eddn
-    cd ${HOME}/eddn
+    cd ${HOME}/dev
     virtualenv -p /usr/bin/python2.7 ${HOME}/python2.7-venv
 
 And for future ease of changing python versions:
@@ -196,15 +263,6 @@ And for future ease of changing python versions:
 And now start using this venv:
 
     . python-venv/bin/activate
-
-### Clone a copy of the application project from gitub
-
-    mkdir -p ${HOME}/eddn/dev
-    cd ${HOME}/eddn/dev
-    git clone https://github.com/EDCD/EDDN.git
-    cd EDDN
-
-We'll assume this `${HOME}/eddn/dev/EDDN` path elsewhere in this document.
 
 ### Ensure necessary python modules are installed
 Installing extra necessary python modules is simple:
@@ -216,6 +274,10 @@ You will need to get the database schema in place:
 
     mysql -p eddn < ${HOME}/eddn/dev/EDDN/schema.sql
     <the password you set in the "CREATE USER" statement above>
+
+Ref: [As root](#as-root).
+
+---
 
 # Concepts
 There are three components to this application.
@@ -248,7 +310,11 @@ test host.  The files in question are:
     monitor/js/eddn.js
     monitor/schemas.html
 
-Replace the string `eddn.edcd.io` with the hostname you're using.
+Replace the string `eddn.edcd.io` with the hostname you're using. You'll need
+to perform similar substitutions if you change the configuration to use any
+different port numbers.
+
+---
 
 # Configuration
 Default application configuration is in the file `src/eddn/conf/Settings.py`.
@@ -258,36 +324,45 @@ another file.
 1. You will need to obtain a TLS certificate from, e.g. LetsEncrypt.  The
    application will need access to this and its private key file.
 
-       CERT_FILE = '/etc/letsencrypt/live/eddn.edcd.io/fullchain.pem'
-       KEY_FILE  = '/etc/letsencrypt/live/eddn.edcd.io/privkey.pem'
+       CERT_FILE = '/etc/letsencrypt/live/YOUROWN.eddn.edcd.io/fullchain.pem'
+       KEY_FILE  = '/etc/letsencrypt/live/YOUROWN.eddn.edcd.io/privkey.pem'
 
 1. Network configuration
     1. `RELAY_HTTP_BIND_ADDRESS` and `RELAY_HTTP_PORT` define the IP and port
        on which the Relay listens for, e.g. `/stats/` requests.
+
     1. `RELAY_RECEIVER_BINDINGS` defines where the Relay connects in order to
        subscribe to messages from the Gateway.  Should match
        `GATEWAY_SENDER_BINDINGS`.
+
     1. `RELAY_SENDER_BINDINGS` defines the address the application listens on
        for connections from listeners such as eddb.io.
+
     1. `RELAY_DUPLICATE_MAX_MINUTES` how many minutes to keep messages hashes
        cached for so as to detect, and not Relay out, duplicate messages.  If
        you set this to the literal string `false` the duplication checks will be
        disabled.  This is **very handy** when testing the code.
+
     1. `GATEWAY_HTTP_BIND_ADDRESS` and `GATEWAY_HTTP_PORT` define where the
        Gateway listens to for incoming messages from senders.  Might be
        forwarded from nginx or other reverse proxy.
+
     1. `GATEWAY_SENDER_BINDINGS` is where the Gateway listens for connections
        from the Relay and Monitor in order to send them messages that passed
        schema checks.
+
     1. `GATEWAY_JSON_SCHEMAS` defines the schemas used for validation.  Note
-       that these are full public URLs which are served by nginx (or whatever
-       else you're using as the reverse proxy).
+       that these are full public URLs which are served by your web server.
+
     1. `GATEWAY_OUTDATED_SCHEMAS` any past schemas that are no longer valid.
+
     1. `MONITOR_HTTP_BIND_ADDRESS` and `MONITOR_HTTP_PORT` define where the
        Monitor listens to for web connections, e.g. the statistics page.
+
     1. `MONITOR_RECEIVER_BINDINGS` defines where the Monitor connects in order
        to subscribe to messages from the Gateway.  Should match
        `GATEWAY_SENDER_BINDINGS`.
+
     1. `MONITOR_UA` appears to be unused.
 
 1. Database Configuration
@@ -295,8 +370,8 @@ another file.
        connect to a mysql/mariadb database for storing stats.
         1. `database` - the name of the database
         1. `user` - the user to connect as
-        1. `password` - the secure password you set above when installing and
-           configuring mariadb/mysql.
+        1. `password` - the secure password you set [above](#as-root) when
+          installing and configuring mariadb/mysql.
 
     It is assumed that the database is on `localhost`.
 
@@ -319,6 +394,8 @@ It sets:
     when testing in a VM).
   1. Configures the database connection and credentials.
   1. Turns off the relay duplicate check.
+
+---
 
 # Running
 You have some choices for how to run the application components:
@@ -344,6 +421,8 @@ You have some choices for how to run the application components:
    running the components.  They will need the `DAEMON` lines tweaking for
    running from another location.
 
+---
+
 # Accessing the Monitor
 There is an EDDN Status web page usually provided at, e.g.
 https://eddn.edcd.io/.  This is enabled by the Monitor component through
@@ -365,7 +444,9 @@ permissions are correct for your web server to access them.
     chmod -R og+rX ${HOME} ${HOME}/.local ${HOME}/.local/share ${HOME}/.local/share/eddn
     chmod -R og+rX ${HOME}/.local/share/eddn/schemas
 
-## Testing all of this in a VM
+---
+
+# Testing all of this in a VM
 In order to test all of this in a VM you might need to set up a double
 proxying:
 
