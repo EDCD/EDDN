@@ -1,3 +1,4 @@
 CONFIG_OVERRIDE="${HOME}/.local/share/eddn/live/config.json"
 LOG_DIR="${HOME}/live/logs"
 PYTHON_VENV="${HOME}/live/python-venv"
+SRC_DIR="${HOME}/live/EDDN.git"

@@ -1,27 +1,42 @@
-#!/bin/sh
-# vim: tabstop=2 shiftwidth=2 textwidth=0 wrapmargin=0 expandtab
+#!/bin/bash
+# Add ' -x' above to debug
 #
 # Start an EDDN Service, including redirecting output to a log file.
 
+EXIT_CONFIG_MISSING=1
+EXIT_SERVICE_BIN_MISSING=2
+EXIT_CL_ARGS=3
+
 usage() {
-  echo "Usage: $(basename $0) [ gateway | monitor | relay ] [ live | beta | dev ]"
+  echo "Usage: $(basename $0) ( live | beta | dev ) ( gateway | monitor | relay ) [ --from-source ]"
 }
 
 if [ -z "${1}" ];
 then
   usage
-  echo "No EDDN service specified."
-  exit 3
+  echo "No EDDN environment specified."
+  exit ${EXIT_CL_ARGS}
 fi
-SERVICE="${1}"
+EDDN_ENV="${1}"
 
 if [ -z "${2}" ];
 then
   usage
-  echo "No EDDN environment specified."
-  exit 3
+  echo "No EDDN service specified."
+  exit ${EXIT_CL_ARGS}
 fi
-EDDN_ENV="${2}"
+SERVICE="${2}"
+
+if [ ! -z "${3}" ];
+then
+  if [ "${3}" != "--from-source" ];
+  then
+    usage
+    echo "Un-recognised argument: ${3}"
+    exit ${EXIT_CL_ARGS}
+  fi
+  FROM_SOURCE="1"
+fi
 
 EXEC_PATH=$(dirname $0)
 #echo "EXEC_PATH: ${EXEC_PATH}"
@@ -34,17 +49,39 @@ cd ${EXEC_PATH}
 if [ ! -f "eddn_${EDDN_ENV}_config" ];
 then
   echo "eddn_${EDDN_ENV}_config is missing from $(pwd)"
-  exit 1
+  exit ${EXIT_CONFIG_MISSING}
 fi
 . "./eddn_${EDDN_ENV}_config"
 
 # Use the python venv
 . "${PYTHON_VENV}/bin/activate"
 
-if [ ! -f "${PYTHON_VENV}/bin/eddn-${SERVICE}" ];
+# Running from source or install ?
+if [ -z "${FROM_SOURCE}" ];
 then
-  echo "${SERVICE} is missing from ${PYTHON_VENV}/bin"
-  exit 2
+  # From install
+  if [ ! -f "${PYTHON_VENV}/bin/eddn-${SERVICE}" ];
+  then
+    echo "${SERVICE} is missing from ${PYTHON_VENV}/bin"
+    exit ${EXIT_SERVICE_BIN_MISSING}
+  fi
+  
+  ${PYTHON_VENV}/bin/eddn-${SERVICE} --config "${CONFIG_OVERRIDE}" >> "${LOG_DIR}/${SERVICE}.log" 2>&1 &
+  echo $! > "${LOG_DIR}/${SERVICE}.pid"
+  wait $(cat "${LOG_DIR}/${SERVICE}.pid")
+else
+  # From source
+  cd "${SRC_DIR}/src/eddn"
+  #pwd
+  # For now the source file has Camel case.
+  #echo ${SERVICE}
+  SERVICE_CAMEL=$(echo ${SERVICE} | sed -s 's/^\(.\)/\u\1/;')
+  #echo ${SERVICE_CAMEL}
+  ${PYTHON_VENV}/bin/python ${SERVICE_CAMEL}.py --config "${CONFIG_OVERRIDE}" >> "${LOG_DIR}/${SERVICE}.log" 2>&1 &
+  PID=$!
+  echo ${PID} > "${LOG_DIR}/${SERVICE}.pid"
+  echo "${SERVICE_CAMEL}.py started with PID: ${PID}"
 fi
 
-exec ${PYTHON_VENV}/bin/eddn-${SERVICE} --config "${CONFIG_OVERRIDE}" >> "${LOG_DIR}/${SERVICE}.log" 2>&1
+
+# vim: tabstop=2 shiftwidth=2 textwidth=0 wrapmargin=0 expandtab

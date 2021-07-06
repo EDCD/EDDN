@@ -1,3 +1,4 @@
 CONFIG_OVERRIDE="${HOME}/.local/share/eddn/dev/config.json"
 LOG_DIR="${HOME}/dev/logs"
 PYTHON_VENV="${HOME}/dev/python-venv"
+SRC_DIR="${HOME}/dev/EDDN.git"
