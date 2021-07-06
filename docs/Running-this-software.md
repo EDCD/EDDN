@@ -257,7 +257,7 @@ We'll put the venv in `${HOME}/dev/python2.7-venv` with the following
 command:
 
     cd ${HOME}/dev
-    virtualenv -p /usr/bin/python2.7 ${HOME}/python2.7-venv
+    virtualenv -p /usr/bin/python2.7 ${HOME}/dev/python2.7-venv
 
 And for future ease of changing python versions:
 
