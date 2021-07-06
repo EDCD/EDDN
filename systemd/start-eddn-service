@@ -6,6 +6,7 @@
 EXIT_CONFIG_MISSING=1
 EXIT_SERVICE_BIN_MISSING=2
 EXIT_CL_ARGS=3
+EXIT_SERVICE_ALREADY_RUNNING=4
 
 usage() {
   echo "Usage: $(basename $0) ( live | beta | dev ) ( gateway | monitor | relay ) [ --from-source [ --background ] ]"
@@ -91,6 +92,16 @@ else
     echo "Starting ${SERVICE_CAMEL} in foreground..."
     ${PYTHON_VENV}/bin/python ${SERVICE_CAMEL}.py --config "${CONFIG_OVERRIDE}"
   else
+    # We need to ensure there isn't already one, via the .pid file
+    if [ -f "${LOG_DIR}/${SERVICE}.pid" ];
+    then
+      if ps -C python $(cat "${LOG_DIR}/${SERVICE}.pid") > /dev/null 2>&1;
+      then
+        echo "${SERVICE}: already running as PID $(cat "${LOG_DIR}/${SERVICE}.pid")"
+        exit ${EXIT_SERVICE_ALREADY_RUNNING}
+      fi
+    fi
+
     echo "Starting ${SERVICE_CAMEL} in background..."
     ${PYTHON_VENV}/bin/python ${SERVICE_CAMEL}.py --config "${CONFIG_OVERRIDE}" >> "${LOG_DIR}/${SERVICE}.log" 2>&1 &
     PID=$!
