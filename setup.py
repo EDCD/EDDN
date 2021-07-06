@@ -73,6 +73,21 @@ setup(
     }
 )
 
+def open_file_perms_recursive(dirname):
+    """Open up file perms on the given directory and its contents."""
+    print 'open_file_perms_recursive: %s' % ( dirname )
+    names = os.listdir(dirname)
+    for name in names:
+        n = '%s/%s' % ( dirname, name )
+        print 'open_file_perms_recursive: %s' % ( n )
+        if (os.path.isdir(n)):
+            os.chmod(n, 0755)
+            # Recurse
+            open_file_perms_recursive(n)
+         
+        else:
+            os.chmod(n, 0644)
+
 # Ensure the systemd-required start files are in place
 print """
 ******************************************************************************
@@ -151,7 +166,12 @@ try:
     shutil.rmtree('%s/monitor' % ( SHARE_EDDN_FILES ))
 except OSError:
     pass
-shutil.copytree('contrib/monitor', '%s/monitor' % ( SHARE_EDDN_FILES ))
+shutil.copytree(
+    'contrib/monitor',
+    '%s/monitor' % ( SHARE_EDDN_FILES ),
+    # Not in Python 2.7
+    # copy_function=shutil.copyfile,
+)
 # And a copy of the schemas too
 print """
 ******************************************************************************
@@ -161,7 +181,19 @@ try:
     shutil.rmtree('%s/schemas' % ( SHARE_EDDN_FILES ))
 except OSError:
     pass
-shutil.copytree('schemas', '%s/schemas' % ( SHARE_EDDN_FILES ))
+shutil.copytree(
+    'schemas',
+    '%s/schemas' % ( SHARE_EDDN_FILES ),
+    # Not in Python 2.7
+    # copy_function=shutil.copyfile,
+)
+
+print """
+******************************************************************************
+Opening up permissions on monitor and schema files...
+"""
+os.chmod(SHARE_EDDN_FILES, 0755)
+open_file_perms_recursive(SHARE_EDDN_FILES)
 
 # You still need to make an override config file
 if not os.path.isfile('%s/config.json' % ( SHARE_EDDN_FILES )):
