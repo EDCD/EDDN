@@ -98,11 +98,11 @@ if not os.path.isdir(START_SCRIPT_BIN):
 os.chdir(old_cwd)
 
 shutil.copy(
-    'contrib/systemd/eddn_%s_config' % ( setup_env.EDDN_ENV),
+    'systemd/eddn_%s_config' % ( setup_env.EDDN_ENV),
     '%s/eddn_%s_config' % ( START_SCRIPT_BIN, setup_env.EDDN_ENV )
 )
 shutil.copy(
-    'contrib/systemd/start-eddn-service',
+    'systemd/start-eddn-service',
     '%s/start-eddn-%s-service' % ( START_SCRIPT_BIN, setup_env.EDDN_ENV )
 )
 
@@ -112,7 +112,7 @@ print """
 Ensuring the service log file archiving script is in place
 """
 shutil.copy(
-    'contrib/eddn-logs-archive',
+    'eddn-logs-archive',
     START_SCRIPT_BIN
 )
 
