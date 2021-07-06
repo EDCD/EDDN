@@ -7,7 +7,7 @@
 
 [Unit]
 Description=EDDN Service %i
-AssertPathExists=/home/eddn/eddn/python-venv/bin/%i
+AssertPathExists=/home/eddn/live/python-venv/bin/eddn-%i
 PartOf=eddn.service
 ReloadPropagatedFrom=eddn.service
 Before=eddn.service
@@ -18,7 +18,7 @@ After=network.target
 Type=simple
 User=eddn
 Group=eddn
-ExecStart=/home/eddn/.local/bin/start-eddn-service %i
+ExecStart=/home/eddn/.local/bin/start-eddn-live-service live %i
 TimeoutStartSec=10s
 TimeoutStopSec=10s
 SyslogIdentifier=eddn@%i

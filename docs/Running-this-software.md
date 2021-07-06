@@ -456,6 +456,34 @@ You should now have:
   with an example config override file if you didn't already have a
   `config.json` here.
 
+### Using systemd to run the live service
+`systemd/` contains two systemd unit files to enable starting the services
+via system, including at boot time.
+
+1. `systemd/eddn@.service` - a systemd template unit file that can be used
+  to start/stop any of the EDDN services **in the live environment**.
+  You would invoke it like:
+
+    `systemctl start eddn@eddn-gateway.service`
+
+1. `systemd/eddn.target` - a system target until file which will start all
+  of:
+
+    ```
+    eddn@eddn-relay.service
+    eddn@eddn-monitor.service
+    eddn@eddn-gateway.service
+    ```
+To get them working:
+
+  1. copy both files into `/etc/systemd/system/`.
+
+  1. Enable the target and services:
+    1. `systemctl enable eddn.target`
+    1. `systemctl enable eddn@eddn-gateway.service`
+    1. `systemctl enable eddn@eddn-monitor.service`
+    1. `systemctl enable eddn@eddn-relay.service`
+
 ### Post-installation steps
 If you're not using the `live` environment then there are some edits you
 need to make.
