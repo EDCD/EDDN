@@ -425,7 +425,7 @@ environment:
     venv, and then also ensure that the monitor and schema files are in
     place, along with support scripts.
 
-    There is an example systemd setup in `contrib/systemd` that assumes
+    There is an example systemd setup in `systemd` that assumes
     this local installation.
 
     There are also some SysV style init.d scripts in `contrib/init.d/` for
