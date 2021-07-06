@@ -101,6 +101,8 @@ shutil.copy(
     'systemd/eddn_%s_config' % ( setup_env.EDDN_ENV),
     '%s/eddn_%s_config' % ( START_SCRIPT_BIN, setup_env.EDDN_ENV )
 )
+# NB: We copy to a per-environment version so that, e.g.live use won't break
+#     due to changes in the other environments.
 shutil.copy(
     'systemd/start-eddn-service',
     '%s/start-eddn-%s-service' % ( START_SCRIPT_BIN, setup_env.EDDN_ENV )
