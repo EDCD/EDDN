@@ -397,8 +397,17 @@ You have some choices for how to run the application components:
 
 ## Running scripts from source
 If you are just testing out code changes then you can choose to run
-this application directly from the source using the provided script in
-`scripts/run-from-source.sh`.  This assumes the `dev` environment.
+this application directly from the source using the script
+`systemd/start-eddn-service`. You'll need to run it as, e.g.
+
+    systemd/start-eddn-service dev gateway --from-source
+
+When using `--from-source` you can also supply a `--background` argument to
+put the process into the background with a `.pid` file written in the logs
+directory.
+
+Check the `systemd/eddn_<environment>_config` files for the location of
+the logs directory.
 
 ## Running from installation
 Otherwise you will want to  utilise the `setup.py` file to build and

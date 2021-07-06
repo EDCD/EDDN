@@ -8,7 +8,7 @@ EXIT_SERVICE_BIN_MISSING=2
 EXIT_CL_ARGS=3
 
 usage() {
-  echo "Usage: $(basename $0) ( live | beta | dev ) ( gateway | monitor | relay ) [ --from-source ]"
+  echo "Usage: $(basename $0) ( live | beta | dev ) ( gateway | monitor | relay ) [ --from-source [ --background ] ]"
 }
 
 if [ -z "${1}" ];
@@ -36,6 +36,15 @@ then
     exit ${EXIT_CL_ARGS}
   fi
   FROM_SOURCE="1"
+  if [ ! -z "${4}" ];
+  then
+    if [ "${4}" != "--background" ];
+    then
+      usage
+      echo "Un-recognised argument: ${4}"
+    fi
+    BACKGROUND=1
+  fi
 fi
 
 EXEC_PATH=$(dirname $0)
@@ -77,10 +86,17 @@ else
   #echo ${SERVICE}
   SERVICE_CAMEL=$(echo ${SERVICE} | sed -s 's/^\(.\)/\u\1/;')
   #echo ${SERVICE_CAMEL}
-  ${PYTHON_VENV}/bin/python ${SERVICE_CAMEL}.py --config "${CONFIG_OVERRIDE}" >> "${LOG_DIR}/${SERVICE}.log" 2>&1 &
-  PID=$!
-  echo ${PID} > "${LOG_DIR}/${SERVICE}.pid"
-  echo "${SERVICE_CAMEL}.py started with PID: ${PID}"
+  if [ -z "${BACKGROUND}" ];
+  then
+    echo "Starting ${SERVICE_CAMEL} in foreground..."
+    ${PYTHON_VENV}/bin/python ${SERVICE_CAMEL}.py --config "${CONFIG_OVERRIDE}"
+  else
+    echo "Starting ${SERVICE_CAMEL} in background..."
+    ${PYTHON_VENV}/bin/python ${SERVICE_CAMEL}.py --config "${CONFIG_OVERRIDE}" >> "${LOG_DIR}/${SERVICE}.log" 2>&1 &
+    PID=$!
+    echo ${PID} > "${LOG_DIR}/${SERVICE}.pid"
+    echo "${SERVICE_CAMEL}.py started with PID: ${PID}"
+  fi
 fi
 
 
