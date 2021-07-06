@@ -398,7 +398,7 @@ You have some choices for how to run the application components:
 ## Running scripts from source
 If you are just testing out code changes then you can choose to run
 this application directly from the source using the provided script in
-`contrib/run-from-source.sh`.  This assumes the `dev` environment.
+`scripts/run-from-source.sh`.  This assumes the `dev` environment.
 
 ## Running from installation
 Otherwise you will want to  utilise the `setup.py` file to build and
