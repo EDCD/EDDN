@@ -112,7 +112,7 @@ print """
 Ensuring the service log file archiving script is in place
 """
 shutil.copy(
-    'eddn-logs-archive',
+    'contrib/eddn-logs-archive',
     START_SCRIPT_BIN
 )
 
