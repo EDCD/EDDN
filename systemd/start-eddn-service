@@ -76,6 +76,12 @@ then
     exit ${EXIT_SERVICE_BIN_MISSING}
   fi
   
+  if ps -C python $(cat "${LOG_DIR}/${SERVICE}.pid") > /dev/null 2>&1;
+  then
+    echo "${SERVICE}: already running as PID $(cat "${LOG_DIR}/${SERVICE}.pid")"
+    exit ${EXIT_SERVICE_ALREADY_RUNNING}
+  fi
+
   ${PYTHON_VENV}/bin/eddn-${SERVICE} --config "${CONFIG_OVERRIDE}" >> "${LOG_DIR}/${SERVICE}.log" 2>&1 &
   echo $! > "${LOG_DIR}/${SERVICE}.pid"
   wait $(cat "${LOG_DIR}/${SERVICE}.pid")
