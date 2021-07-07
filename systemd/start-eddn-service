@@ -9,13 +9,13 @@ EXIT_CL_ARGS=3
 EXIT_SERVICE_ALREADY_RUNNING=4
 
 usage() {
-  echo "Usage: $(basename $0) ( live | beta | dev ) ( gateway | monitor | relay ) [ --from-source [ --background ] ]" >2
+  echo "Usage: $(basename $0) ( live | beta | dev ) ( gateway | monitor | relay ) [ --from-source [ --background ] ]" >&2
 }
 
 if [ -z "${1}" ];
 then
   usage
-  echo "No EDDN environment specified." >2
+  echo "No EDDN environment specified." >&2
   exit ${EXIT_CL_ARGS}
 fi
 EDDN_ENV="${1}"
@@ -23,7 +23,7 @@ EDDN_ENV="${1}"
 if [ -z "${2}" ];
 then
   usage
-  echo "No EDDN service specified." >2
+  echo "No EDDN service specified." >&2
   exit ${EXIT_CL_ARGS}
 fi
 SERVICE="${2}"
@@ -33,7 +33,7 @@ then
   if [ "${3}" != "--from-source" ];
   then
     usage
-    echo "Un-recognised argument: ${3}" >2
+    echo "Un-recognised argument: ${3}" >&2
     exit ${EXIT_CL_ARGS}
   fi
   FROM_SOURCE="1"
@@ -42,7 +42,7 @@ then
     if [ "${4}" != "--background" ];
     then
       usage
-      echo "Un-recognised argument: ${4}" >2
+      echo "Un-recognised argument: ${4}" >&2
     fi
     BACKGROUND=1
   fi
@@ -58,7 +58,7 @@ cd ${EXEC_PATH}
 # Bring in some common configuration
 if [ ! -f "eddn_${EDDN_ENV}_config" ];
 then
-  echo "eddn_${EDDN_ENV}_config is missing from $(pwd)" >2
+  echo "eddn_${EDDN_ENV}_config is missing from $(pwd)" >&2
   exit ${EXIT_CONFIG_MISSING}
 fi
 . "./eddn_${EDDN_ENV}_config"
@@ -73,7 +73,7 @@ then
   # From install
   if [ ! -f "${PYTHON_VENV}/bin/eddn-${SERVICE}" ];
   then
-    echo "${SERVICE} is missing from ${PYTHON_VENV}/bin" >2
+    echo "${SERVICE} is missing from ${PYTHON_VENV}/bin" >&2
     exit ${EXIT_SERVICE_BIN_MISSING}
   fi
   
@@ -81,7 +81,7 @@ then
   then
     if ps -C python $(cat "${LOG_DIR}/${SERVICE}.pid") > /dev/null 2>&1;
     then
-      echo "${SERVICE}: already running as PID $(cat "${LOG_DIR}/${SERVICE}.pid")" >2
+      echo "${SERVICE}: already running as PID $(cat "${LOG_DIR}/${SERVICE}.pid")" >&2
       exit ${EXIT_SERVICE_ALREADY_RUNNING}
     fi
   fi
@@ -107,7 +107,7 @@ else
     then
       if ps -C python $(cat "${LOG_DIR}/${SERVICE}.pid") > /dev/null 2>&1;
       then
-        echo "${SERVICE}: already running as PID $(cat "${LOG_DIR}/${SERVICE}.pid")" >2
+        echo "${SERVICE}: already running as PID $(cat "${LOG_DIR}/${SERVICE}.pid")" >&2
         exit ${EXIT_SERVICE_ALREADY_RUNNING}
       fi
     fi
