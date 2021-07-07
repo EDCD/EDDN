@@ -18,20 +18,47 @@ MIN_ROTATE_SIZE="100M"
 # Print program usage information.
 ##################################################
 usage() {
-  echo "Usage: $(basename $1) [ live | beta | dev ]"
+  echo "Usage: $(basename $1) ( live | beta | dev ) [ --quiet ]" >&2
 }
 ##################################################
 
+##################################################
+# Output depending on 'quiet' flag
+##################################################
+log() {
+  if [ -z "${QUIET}" ];
+  then
+    echo $@
+  fi
+}
+##################################################
 ###########################################################################
 
 ###########################################################################
 # Check command line arguments
 ###########################################################################
+EXIT_ARG_NO_ENV=1
+EXIT_BAD_ARG=2
+EXIT_NO_LOGS_DIR=3
+EXIT_NO_CD_LOGS_DIR=4
+EXIT_FAILED_COPY=5
+
 EDDN_ENV="$1"
 if [ -z "${EDDN_ENV}" ];
 then
   usage $0
-  exit 1
+  exit ${EXIT_ARG_NO_ENV}
+fi
+
+if [ ! -z "${2}" ];
+then
+  if [ "${2}" == "--quiet" ];
+  then
+    QUIET="1"
+  else
+    usage
+    exit ${EXIT_BAD_ARG}
+  fi
 fi
 ###########################################################################
 
@@ -41,40 +68,40 @@ fi
 LOGS_DIR="${HOME}/${EDDN_ENV}/logs"
 if [ ! -d "${LOGS_DIR}" ];
 then
-  echo "$(dirname): Logs directory doesn't exist: ${LOGS_DIR}"
-  exit 2
+  echo "$(dirname): Logs directory doesn't exist: ${LOGS_DIR}" >&2
+  exit ${EXIT_NO_LOGS_DIR}
 fi
 
-cd ${LOGS_DIR} || exit 3
+cd ${LOGS_DIR} || exit ${EXIT_NO_CD_LOGS_DIR}
 
 for service in gateway monitor relay ;
 do
-  echo "Service: ${service}"
-  echo "         Expiring old logs..."
+  log "Service: ${service}"
+  log "         Expiring old logs..."
   find . -name "${service}.log.*.gz" -a -atime +${MAX_LOGFILE_AGE} -exec rm -fv {} \;
-  echo "         DONE"
+  log "         DONE"
 
-  echo "         Checking if current logfile needs archiving..."
+  log "         Checking if current logfile needs archiving..."
   if [ ! -z "$(find . -name ${service}.log -a -size +${MIN_ROTATE_SIZE})" ];
   then
-    echo "         Archiving ${service}.log ..."
+    log "         Archiving ${service}.log ..."
     # We have no means to tell the service to close and re-open output, it's
     # to stdout/err anyway.  So we copy it.
     COMPRESSED_NAME="${service}.log.$(date --iso-8601=seconds)"
     cp ${service}.log "${COMPRESSED_NAME}"
     if [ $? -ne 0 ];
     then
-      echo "         FAILED copying live log file to new archive!!!"
-      echo "         Exiting from any further processing."
-      exit 4
+      echo "         FAILED copying live log file to new archive!!!" >&2
+      echo "         Exiting from any further processing." >&2
+      exit ${EXIT_FAILED_COPY}
     fi
     # Truncate the live file.
     :> ${service}.log
     # Now compress the newly archived log
     gzip -9v "${COMPRESSED_NAME}"
-    echo "         DONE"
+    log "         DONE"
   else
-    echo "         No"
+    log "         No"
   fi
 done
 ###########################################################################
