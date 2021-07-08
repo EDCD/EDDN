@@ -19,8 +19,7 @@ Architecture:
   2. The payload is extracted using `get_decompressed_message()`, as the
     message *may* be compressed, but might not be.
 
-  3. The result of that, which XXX,
-    is passed on to forward_message()
+  3. The result of that is passed on to forward_message()
     which spawns a greenlet to actually send the message on using
     `push_message()`.
 
@@ -41,7 +40,6 @@ from pkg_resources import resource_string
 # import os
 
 from eddn.conf.Settings import Settings, loadConfig
-from eddn.core.Validator import Validator, ValidationSeverity
 
 from gevent import monkey
 monkey.patch_all()
