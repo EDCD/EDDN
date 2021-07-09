@@ -19,7 +19,7 @@ EXIT_SERVICE_ALREADY_RUNNING=4
 # Print usage information
 ##################################################
 usage() {
-  echo "Usage: $(basename $0) ( live | beta | dev ) ( gateway | monitor | relay | bounce ) [ --from-source [ --background ] ]" >&2
+  echo "Usage: $(basename $0) ( live | beta | dev ) ( gateway | monitor | relay | bouncer ) [ --from-source [ --background ] ]" >&2
 }
 ##################################################
 
@@ -77,6 +77,15 @@ then
   exit ${EXIT_CL_ARGS}
 fi
 SERVICE="${2}"
+case "${SERVICE}" in
+  gateway|monitor|relay|bouncer)
+    ;;
+  *)
+    usage
+    echo "Invalid EDDN service: ${SERVICE}"
+    exit ${EXIT_CL_ARGS}
+    ;;
+esac
 
 if [ ! -z "${3}" ];
 then

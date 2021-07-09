@@ -69,6 +69,7 @@ setup(
             'eddn-gateway = eddn.Gateway:main',
             'eddn-relay = eddn.Relay:main',
             'eddn-monitor = eddn.Monitor:main',
+            'eddn-bouncer = eddn.Bouncer:main',
         ],
     }
 )
