@@ -3,14 +3,64 @@
 #
 # Start an EDDN Service, including redirecting output to a log file.
 
+###########################################################################
+# Exit codes
+###########################################################################
 EXIT_CONFIG_MISSING=1
 EXIT_SERVICE_BIN_MISSING=2
 EXIT_CL_ARGS=3
 EXIT_SERVICE_ALREADY_RUNNING=4
+###########################################################################
 
+###########################################################################
+# Functions
+###########################################################################
+##################################################
+# Print usage information
+##################################################
 usage() {
   echo "Usage: $(basename $0) ( live | beta | dev ) ( gateway | monitor | relay | bounce ) [ --from-source [ --background ] ]" >&2
 }
+##################################################
+
+##################################################
+# Check if the given PID is running, owned by the expected user, and with
+# the expected command.
+#
+# Returns:  0 if PID, user and command all match
+#           1 if no process
+#           2 if PID exists, but not as user
+#           3 if PID exists, as user, but isn't the command.
+##################################################
+check_process() {
+  PROC_PID="$1"
+  PROC_USER="$2"
+  PROC_CMD="$3"
+
+  # Check if a process of the given PID even exists.
+  if ! PROC_PS=$(ps --pid "${PROC_PID}" --format euser,comm --no-headers) ;
+  then
+    return 1
+  fi
+
+  # Check if the user matches
+  PROC_PS_USER=$( echo "${PROC_PS}" | awk '{print $1;'})
+  if [ "${PROC_PS_USER}" != "${PROC_USER}" ];
+  then
+    return 2
+  fi
+
+  # Check if the command matches
+  PROC_PS_CMD=$( echo "${PROC_PS}" | awk '{print $2;'})
+  if [ "${PROC_PS_CMD}" != "${PROC_CMD}" ];
+  then
+    return 3
+  fi
+
+  return 0
+}
+##################################################
+###########################################################################
 
 if [ -z "${1}" ];
 then
@@ -79,7 +129,7 @@ then
   
   if [ -f "${LOG_DIR}/${SERVICE}.pid" ];
   then
-    if ps -p $(cat "${LOG_DIR}/${SERVICE}.pid") > /dev/null 2>&1;
+    if check_process "$(cat ${LOG_DIR}/${SERVICE}.pid)" eddn eddn-${SERVICE} ;
     then
       echo "${SERVICE}: already running as PID $(cat "${LOG_DIR}/${SERVICE}.pid")" >&2
       exit ${EXIT_SERVICE_ALREADY_RUNNING}
@@ -105,7 +155,7 @@ else
     # We need to ensure there isn't already one, via the .pid file
     if [ -f "${LOG_DIR}/${SERVICE}.pid" ];
     then
-      if ps -p $(cat "${LOG_DIR}/${SERVICE}.pid") > /dev/null 2>&1;
+      if check_process "$(cat ${LOG_DIR}/${SERVICE}.pid)" eddn eddn-${SERVICE} ;
       then
         echo "${SERVICE}: already running as PID $(cat "${LOG_DIR}/${SERVICE}.pid")" >&2
         exit ${EXIT_SERVICE_ALREADY_RUNNING}
