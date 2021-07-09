@@ -129,7 +129,7 @@ then
   
   if [ -f "${LOG_DIR}/${SERVICE}.pid" ];
   then
-    if check_process "$(cat ${LOG_DIR}/${SERVICE}.pid)" eddn eddn-${SERVICE} ;
+    if check_process "$(cat ${LOG_DIR}/${SERVICE}.pid)" "${USER}" eddn-${SERVICE} ;
     then
       echo "${SERVICE}: already running as PID $(cat "${LOG_DIR}/${SERVICE}.pid")" >&2
       exit ${EXIT_SERVICE_ALREADY_RUNNING}
@@ -155,7 +155,7 @@ else
     # We need to ensure there isn't already one, via the .pid file
     if [ -f "${LOG_DIR}/${SERVICE}.pid" ];
     then
-      if check_process "$(cat ${LOG_DIR}/${SERVICE}.pid)" eddn eddn-${SERVICE} ;
+      if check_process "$(cat ${LOG_DIR}/${SERVICE}.pid)" "${USER}" eddn-${SERVICE} ;
       then
         echo "${SERVICE}: already running as PID $(cat "${LOG_DIR}/${SERVICE}.pid")" >&2
         exit ${EXIT_SERVICE_ALREADY_RUNNING}
