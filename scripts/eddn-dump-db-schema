@@ -1,0 +1,53 @@
+#!/bin/bash
+# Add ' -x' above to debug
+#
+# Produce a dump of the eddn database schema
+
+###########################################################################
+# Exit codes
+###########################################################################
+EXIT_CONFIG_MISSING=1
+EXIT_CL_ARGS=3
+###########################################################################
+
+###########################################################################
+# Functions
+###########################################################################
+##################################################
+# Print usage information
+##################################################
+usage() {
+  echo "Usage: $(basename $0) ( live | beta | dev )" >&2
+}
+##################################################
+###########################################################################
+
+if [ -z "${1}" ];
+then
+  usage
+  echo "No EDDN environment specified." >&2
+  exit ${EXIT_CL_ARGS}
+fi
+EDDN_ENV="${1}"
+
+# Bring in some common configuration
+if [ ! -f "${HOME}/.local/bin/eddn_${EDDN_ENV}_config" ];
+then
+  echo "eddn_${EDDN_ENV}_config is missing from $(pwd)" >&2
+  exit ${EXIT_CONFIG_MISSING}
+fi
+. "${HOME}/.local/bin/eddn_${EDDN_ENV}_config"
+
+
+EDDN_HOME="${HOME}/${EDDN_ENV}"
+BACKUPS_DIR="${EDDN_HOME}/backups"
+
+mkdir -p ${BACKUPS_DIR} || exit 1
+
+DATETIME=$(date --iso-8601=seconds)
+
+# This relies on ~root/.my.cnf containing the password
+mysqldump -u eddn --no-data --skip-lock-tables --databases eddn_${EDDN_ENV} > "${BACKUPS_DIR}/schema-${EDDN_ENV}-${DATETIME}.sql"
+
+# vim: tabstop=2 shiftwidth=2 textwidth=0 wrapmargin=0 expandtab
+
