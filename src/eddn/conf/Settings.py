@@ -99,8 +99,13 @@ class _Settings(object):
 
     MONITOR_UA                              = "UA-496332-23"
 
+    ##########################################################################
+    #  Bouncer settings
+    ##########################################################################
+    BOUNCER_HTTP_BIND_ADDRESS               = "127.0.0.1"
+    BOUNCER_HTTP_PORT                       = 8081
 
-
+    BOUNCER_LIVE_GATEWAY_URL = 'https://eddn.edcd.io:4430/upload/'
 
     def loadFrom(self, fileName):
         f = open(fileName, 'r')

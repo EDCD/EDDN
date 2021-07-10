@@ -57,8 +57,6 @@ from eddn.core.StatsCollector import StatsCollector
 statsCollector = StatsCollector()
 statsCollector.start()
 
-LIVE_GATEWAY_URL = 'https://beta.eddn.edcd.io:4431/upload/'
-
 def push_message(message_body):
     """
     Spawned as a greenlet to push messages (strings) through ZeroMQ.
@@ -67,7 +65,7 @@ def push_message(message_body):
     """
     try:
         r = requests.post(
-            LIVE_GATEWAY_URL,
+            Settings.BOUNCER_LIVE_GATEWAY_URL,
             data=message_body,
         )
 
@@ -76,7 +74,7 @@ def push_message(message_body):
 
     else:
         if r.status_code != requests.codes.ok:
-            logger.error('Response from %s:\n%s\n' % (LIVE_GATEWAY_URL,
+            logger.error('Response from %s:\n%s\n' % (BOUNCER_LIVE_GATEWAY_URL,
             r.text))
 
         else:
@@ -254,8 +252,8 @@ def main():
     app.install(CustomLogging())
     logger.info('Running bottle app ...')
     app.run(
-        host=Settings.GATEWAY_HTTP_BIND_ADDRESS, 
-        port=Settings.GATEWAY_HTTP_PORT, 
+        host=Settings.BOUNCER_HTTP_BIND_ADDRESS, 
+        port=Settings.BOUNCER_HTTP_PORT, 
         server='gevent', 
         certfile=Settings.CERT_FILE,
         keyfile=Settings.KEY_FILE,
