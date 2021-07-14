@@ -1,0 +1,59 @@
+#!/bin/bash
+# Add ' -x' above to debug
+#
+# Use a dump to replace data in the given environment's database
+
+###########################################################################
+# Exit codes
+###########################################################################
+EXIT_CONFIG_MISSING=1
+EXIT_CL_ARGS=3
+###########################################################################
+
+###########################################################################
+# Functions
+###########################################################################
+##################################################
+# Print usage information
+##################################################
+usage() {
+  echo "Usage: $(basename $0) ( live | beta | dev ) <dump file name>" >&2
+}
+##################################################
+###########################################################################
+
+if [ -z "${1}" ];
+then
+  usage
+  echo "No EDDN environment specified." >&2
+  exit ${EXIT_CL_ARGS}
+fi
+EDDN_ENV="${1}"
+
+if [ -z "${2}" ];
+then
+  usage
+  echo "No database dump file name specified." >&2
+  exit ${EXIT_CL_ARGS}
+fi
+DBDUMP_FILE="${2}"
+
+# Bring in some common configuration
+if [ ! -f "${HOME}/.local/bin/eddn_${EDDN_ENV}_config" ];
+then
+  echo "eddn_${EDDN_ENV}_config is missing from $(pwd)" >&2
+  exit ${EXIT_CONFIG_MISSING}
+fi
+. "${HOME}/.local/bin/eddn_${EDDN_ENV}_config"
+
+
+# This relies on ~/.my.cnf containing the password
+if [ "$(basename ${DBDUMP_FILE})" != "$(basename ${DBDUMP_FILE} .gz)" ];
+then
+  gunzip -c - < "${DBDUMP_FILE}" | mysql -u eddn "eddn_${EDDN_ENV}"
+else
+  mysql -u eddn "eddn_${EDDN_ENV}" < "${DBDUMP_FILE}"
+fi
+
+# vim: tabstop=2 shiftwidth=2 textwidth=0 wrapmargin=0 expandtab
+
