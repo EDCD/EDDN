@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import zlib
 import zmq
 import simplejson
@@ -200,12 +202,12 @@ def main():
                         for __commodity in __json['message']['commodities']:
                             echoLog('            - Name: ' + __commodity['name'])
                             echoLog('                - Buy Price: ' + str(__commodity['buyPrice']))
-                            echoLog('                - Supply: ' + str(__commodity['supply'])
-                                + ((' (' + __commodity['supplyLevel'] + ')') if 'supplyLevel' in __commodity else '')
+                            echoLog('                - Supply: ' + str(__commodity['stock'])
+                                + ((' (' + str(__commodity['stockBracket']) + ')') if 'stockBracket' in __commodity else '')
                             )
                             echoLog('                - Sell Price: ' + str(__commodity['sellPrice']))
                             echoLog('                - Demand: ' + str(__commodity['demand'])
-                                + ((' (' + __commodity['demandLevel'] + ')') if 'demandLevel' in __commodity else '')
+                                + ((' (' + str(__commodity['demandBracket']) + ')') if 'demandBracket' in __commodity else '')
                             )
                         # End example
 
