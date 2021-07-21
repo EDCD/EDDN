@@ -40,7 +40,7 @@
                     "format"        : "date-time"
                 },
                 "event" : {
-                    "enum"          : [ "Docked", "FSDJump", "Scan", "Location", "SAASignalsFound", "CarrierJump" ]
+                    "enum"          : [ "Docked", "FSDJump", "Scan", "Location", "SAASignalsFound", "CarrierJump", "CodexEntry" ]
                 },
                 "horizons": {
                     "type"          : "boolean",
@@ -84,15 +84,19 @@
                     }
                 },
                 
-                "ActiveFine"        : { "$ref" : "#/definitions/disallowed" },
-                "CockpitBreach"     : { "$ref" : "#/definitions/disallowed" },
-                "BoostUsed"         : { "$ref" : "#/definitions/disallowed" },
-                "FuelLevel"         : { "$ref" : "#/definitions/disallowed" },
-                "FuelUsed"          : { "$ref" : "#/definitions/disallowed" },
-                "JumpDist"          : { "$ref" : "#/definitions/disallowed" },
-                "Latitude"          : { "$ref" : "#/definitions/disallowed" },
-                "Longitude"         : { "$ref" : "#/definitions/disallowed" },
-                "Wanted"            : { "$ref" : "#/definitions/disallowed" }
+                "ActiveFine"          : { "$ref" : "#/definitions/disallowed" },
+                "CockpitBreach"       : { "$ref" : "#/definitions/disallowed" },
+                "BoostUsed"           : { "$ref" : "#/definitions/disallowed" },
+                "FuelLevel"           : { "$ref" : "#/definitions/disallowed" },
+                "FuelUsed"            : { "$ref" : "#/definitions/disallowed" },
+                "JumpDist"            : { "$ref" : "#/definitions/disallowed" },
+                "Latitude"            : { "$ref" : "#/definitions/disallowed" },
+                "Longitude"           : { "$ref" : "#/definitions/disallowed" },
+                "Wanted"              : { "$ref" : "#/definitions/disallowed" },
+                "IsNewEntry"          : { "$ref" : "#/definitions/disallowed" },
+                "NewTraitsDiscovered" : { "$ref" : "#/definitions/disallowed" },
+                "Traits"              : { "$ref" : "#/definitions/disallowed" },
+                "VoucherAmount"       : { "$ref" : "#/definitions/disallowed" }
             },
             "patternProperties"     : {
                 "_Localised$"       : { "$ref" : "#/definitions/disallowed" },
