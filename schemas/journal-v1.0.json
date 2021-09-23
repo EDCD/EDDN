@@ -40,7 +40,7 @@
                     "format"        : "date-time"
                 },
                 "event" : {
-                    "enum"          : [ "Docked", "FSDJump", "Scan", "Location", "SAASignalsFound", "CarrierJump", "CodexEntry", "ScanBaryCentre", "FSSDiscoveryScan", "NavBeaconScan" ]
+                    "enum"          : [ "Docked", "FSDJump", "Scan", "Location", "SAASignalsFound", "CarrierJump", "CodexEntry" ]
                 },
                 "horizons": {
                     "type"          : "boolean",
@@ -102,7 +102,7 @@
                 "_Localised$"       : { "$ref" : "#/definitions/disallowed" },
                 "^(Materials|StationEconomies|Signals)$" : {
                     "type"          : "array",
-                    "description"   : "Present in Scan, ScanBaryCentre, Docked and SAASignalsFound messages",
+                    "description"   : "Present in Scan, Docked and SAASignalsFound messages",
                     "items" : {
                         "type"      : "object",
                         "patternProperties"     : {
