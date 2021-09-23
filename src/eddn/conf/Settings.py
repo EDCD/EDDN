@@ -59,6 +59,21 @@ class _Settings(object):
 
         "https://eddn.edcd.io/schemas/journal/1"                    : "schemas/journal-v1.0.json",
         "https://eddn.edcd.io/schemas/journal/1/test"               : "schemas/journal-v1.0.json",
+
+        "https://eddn.edcd.io/schemas/scanbarycentre/1"                    : "schemas/scanbarycentre-v1.0.json",
+        "https://eddn.edcd.io/schemas/scanbarycentre/1/test"               : "schemas/scanbarycentre-v1.0.json",
+
+        "https://eddn.edcd.io/schemas/fssdiscoveryscan/1"                    : "schemas/fssdiscoveryscan-v1.0.json",
+        "https://eddn.edcd.io/schemas/fssdiscoveryscan/1/test"               : "schemas/fssdiscoveryscan-v1.0.json",
+
+        "https://eddn.edcd.io/schemas/codexentry/1"                    : "schemas/codexentry-v1.0.json",
+        "https://eddn.edcd.io/schemas/codexentry/1/test"               : "schemas/codexentry-v1.0.json",
+
+        "https://eddn.edcd.io/schemas/navbeaconscan/1"                    : "schemas/navbeaconscan-v1.0.json",
+        "https://eddn.edcd.io/schemas/navbeaconscan/1/test"               : "schemas/navbeaconscan-v1.0.json",
+
+        "https://eddn.edcd.io/schemas/navroute/1"                    : "schemas/navroute-v1.0.json",
+        "https://eddn.edcd.io/schemas/navroute/1/test"               : "schemas/navroute-v1.0.json",
     }
 
     GATEWAY_OUTDATED_SCHEMAS                = [
