@@ -4,8 +4,8 @@
 Here we document how to take data from an ED `CodexEntry` Journal Event and
 properly structure it for sending to EDDN.
 
-Please see [EDDN Schemas](...) for general documentation for a schema such as
-this.
+Please consult [EDDN Schemas README](./README-EDDN-schemas.md) for general 
+documentation for a schema such as this.
 
 ## Senders
 The primary data source for this schema is the ED Journal event `CodexEntry`.
