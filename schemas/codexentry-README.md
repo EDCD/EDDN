@@ -34,7 +34,7 @@ and add keys/values for these.
 For `BodyName` you MUST retrieve this from the latest `Status.json` data, 
 using the `Body` value there-in.
 
-You can obtain the `BodyID` from a `ApproachBody` or `Location` event.  
+You SHOULD obtain the `BodyID` from an `ApproachBody` or `Location` event.  
 You MUST cross-check the `Body` value in this to ensure it has the same 
 name as you got from `Status.json`.  One possible issue is binary bodies where
 you might get an `ApproachBody` for one before descending towards the other, 
@@ -46,4 +46,14 @@ e.g. for `Bestia A 2 a`
     "BodyID": 15,
 ```
 
+If you cannot properly obtain the values for `BodyName` or `BodyID` then 
+you MUST NOT include them.
+
 ## Receivers
+
+As per ['BodyID and BodyName'](#bodyid-and-bodyname) above be aware that 
+you are not guaranteed to reveice these values for any given event.  Some 
+codex entries will be in space and thus they aren't even relevant.  In 
+other cases it may not have been possible to properly determine both of them.
+
+Adjust your local processing accordingly.
