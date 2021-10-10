@@ -12,15 +12,15 @@ EDDN accepts HTTP POST uploads in a defined format representing this game data
 and then passes it on to any interested listeners.
 
 ---
-
 ## Sources
 
-There are two sources of game data, both provided, and approved for use, by
-Frontier Developments, the publisher of the game.
+There are two sources of game data, both provided by the publisher of the game,
+Frontier Developerments.  They are both explicitly approved for use by 
+third-party software.
 
 ### Journal Files
 
-On the PC version of the game "Journal files" are written during any game
+On the PC version of the game, "Journal files" are written during any game
 session. These are in newline-delimited JSON format, with each line
 representing a single JSON object. Frontier Developments publishes
 documentation for the various events in their
@@ -31,7 +31,8 @@ In general the documentation is made available in a file named something like:
 
     Journal_Manual-v<version>
 
-as both a MicroSoft word `.doc` file, or a `.pdf` file.
+as both a MicroSoft word `.doc` file, or a `.pdf` file.  Historically the 
+use of `_` versus `-` in those filenames has varied.
 
 Consult the latest of these for documentation on individual events.  
 However, be aware that sometimes the documentation is in error, possibly due to
@@ -39,8 +40,9 @@ not having been updated after a game client change.
 
 ### Companion API (CAPI) data
 
-Historically Frontier Developments provided an API for use by its short-lived
-iOS "Companion" app. This was only intended to be used by that app, with no
+Frontier Developments provides an API to retrieve certain game data, even 
+without the game running.  Historically this was for use by its short-lived
+iOS "Companion" app, and was only intended to be used by that app. There was no
 public documentation, or even admission of its existence.
 
 Eventually, after some enterprising players had snooped the connections and
@@ -62,7 +64,7 @@ by Athanasius.
 
 When using the Companion API please be aware that the server that supplies this
 data sometimes lags behind the game - usually by a few seconds, sometimes by
-minutes. You MUST check in the data from the API that the Cmdr is
+minutes. You MUST check in the data from the CAPI that the Cmdr is
 docked (`["commander"]["docked"]` is `True`) and that the station and
 system (`["lastStarport"]["name"]` and `["lastSystem"]["name"]`) match those
 reported from the Journal before using the data for the commodity, outfitting
@@ -72,12 +74,8 @@ and shipyard schemas.
 
 ## Uploading messages
 
-To upload market data to EDDN, you'll need to make a POST request to the URL:
-
-* https://eddn.edcd.io:4430/upload/
-
 ### Send only live data to the live schemas
-You MUST NOT send information from any non-live (e.g. alpha or beta)
+You MUST **NOT** send information from any non-live (e.g. alpha or beta)
 version of the game to the main schemas on this URL.
 
 You MAY send such to this URL so long as you append `/test` to the `$schemaRef`
@@ -85,16 +83,28 @@ value, e.g.
 
     "$schemaRef": "https://eddn.edcd.io/schemas/shipyard/2/test",
 
-You can also utilise these test forms of the schemas when first testing your
+You MUST also utilise these test forms of the schemas when first testing your
 code. There might also be a beta.eddn.edcd.io, or dev.eddn.edcd.io, service
 available from time to time as necessary, e.g. for testing new schemas or
 changes to existing ones.
+
+### Sending data
+To upload market data to EDDN, you'll need to make a POST request to the URL:
+
+* https://eddn.edcd.io:4430/upload/
+
+The body of this is a JSON object, so you SHOULD set a `Content-Type` header of
+`applicaton/json`, and NOT any of:
+
+* `application/x-www-form-urlencoded`
+* `multipart/form-data`
+* `text/plain`
 
 ### Format of uploaded messages
 Each message is a JSON object in utf-8 encoding containing the following
 key+value pairs:
 
-1. `$schemaRef` - Which schema (and version) this message is for.
+1. `$schemaRef` - Which schema (including version) this message is for.
 2. `header` - Object containing mandatory information about the upload;
     1. `uploaderID` - a unique ID for the player uploading this data.  
        Don't worry about privacy, the EDDN service will hash this with a key
@@ -104,9 +114,10 @@ key+value pairs:
 
    Listeners MAY make decisions about whether to utilise the data in any
    message based on the combination of `softwareName` and `softwareVersion`.
-   NB: **DO not** add `gatewaytimestamp` yourself. The EDDN Gateway will add
+   
+   **DO not** add `gatewaytimestamp` yourself. The EDDN Gateway will add
    this and will overwrite any that you provide, so don't bother.
-3. `message` - Object containing the data for this message. Consult the
+4. `message` - Object containing the data for this message. Consult the
    relevant README file within this documentation, e.g.
    [codexentry-README.md](./codexentry-README.md). There are some general
    guidelines [below](#contents-of-message).
@@ -152,6 +163,9 @@ Each `message` object must have, at bare minimum:
    UTC, aka 'Zulu Time' as in the example above. You MUST ensure that you are
    doing this properly. Do not claim 'Z' whilst actually using a local time
    that is offset from UTC.
+   
+   Listeners MAY make decisions on accepting data based on this time stamp,
+   i.e. "too old".
 2. One other key/value pair representing the data. In general there will be
    much more than this. Again, consult the
    [schemas and their documentation](./).
