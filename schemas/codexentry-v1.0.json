@@ -109,7 +109,7 @@
                     "type"          : "integer"
                 },
                 "BodyName": {
-                    "type"          : "string",
+                    "type"          : "string"
                 },
                 "IsNewEntry": {
                     "$ref"          : "#/definitions/disallowed",
