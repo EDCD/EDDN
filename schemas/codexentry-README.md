@@ -31,14 +31,53 @@ e.g. if the system is `Alpha Centauri`:
 You SHOULD attempt to track the BodyName and BodyID where the player is 
 and add keys/values for these.
 
-For `BodyName` you MUST retrieve this from the latest `Status.json` data, 
-using the `Body` value there-in.
+You MUST track `BodyName` both from Status.json *and* also from some
+[Journal](./README-EDDN-schemas.md#journal-files)
+events in order to cross-check it before using the `BodyID` from 
+[Journal](./README-EDDN-schemas.md#journal-files) events.
 
-You SHOULD obtain the `BodyID` from an `ApproachBody` or `Location` event.  
-You MUST cross-check the `Body` value in this to ensure it has the same 
-name as you got from `Status.json`.  One possible issue is binary bodies where
-you might get an `ApproachBody` for one before descending towards the other, 
-without an additional `ApproachBody` to correct things.
+The following is correct as of game version 4.0.0.801 (Odyssey initial 
+release, Update 7, plus one patch).
+
+1. Record `journal_body_name` and `journal_body_id` from the 
+   `BodyName` and `BodyID` values in `ApproachBody` events.
+
+   This will occur when the player flies below Orbital Cruise altitude 
+   around a body.
+2. Also record these from `Location` events to cover logging in already there.
+3. Unset both `journal_body_name` and `journal_body_id` on `LeaveBody` and
+   `FSDJump` events.
+   Do NOT do so for `SupercruiseEntry`, because a player can enter supercruise
+   below max Orbital Cruise altitude and then come back down without a new 
+   `ApproachBody` event occurring.
+4. If Status.json has `BodyName` present, record that as `status_body_name`.  
+
+   This key and its value will be present whenever the player comes close 
+   enough to a body for the Orbital Cruise/Glide HUD elements to appear.
+   It will disappear again when they fly back above that altitude, or jump 
+   away.
+5. If Status.json does **not** have `BodyName` then clear `status_body_name`.
+6. For a `CodexEntry` event:
+    1. Check that `status_body_name` is set.
+    2. ONLY if it is, check if it matches `journal_body_name`.
+    3. ONLY if they match, set both `BodyName` and `BodyID` in the EDDN 
+       `codexentry`  schema message to the recorded values.
+       As you just checked that `status_body_name` was set, and it matches 
+       `journal_body_name` it doesn't matter which of the two you use.
+
+One possible issue is binary bodies where you might get an `ApproachBody` for
+one before descending towards the other, without an additional `ApproachBody`
+to correct things.
+
+An example of this is `Baliscii 7 a` and `Baliscii 7 b`.  Approaching one 
+and going below Orbital Cruise altitude will set `journal_body_name` and 
+`journal_body_id` to it, but you can then turn and approach the other 
+without a new `ApproachBody` event, but `status_body_name` will change to 
+the other when you are close enough.
+
+In this case due to `status_body_name` and `journal_body_name` not matching 
+the `codexentry` message MUST be sent **without** either `BodyName` or 
+`BodyID`.
 
 e.g. for `Bestia A 2 a`
 ```json
