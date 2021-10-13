@@ -100,8 +100,19 @@ you MUST NOT include them.
 ## Receivers
 
 As per ['BodyID and BodyName'](#bodyid-and-bodyname) above be aware that 
-you are not guaranteed to reveice these values for any given event.  Some 
-codex entries will be in space and thus they aren't even relevant.  In 
+you are not guaranteed to receive these values for any given event.  Some 
+codex entries will be in space, and thus they aren't even relevant.  In 
 other cases it may not have been possible to properly determine both of them.
+
+So you might receive any of:
+
+1. Neither `BodyName` nor `BodyID` present in the message, not even the 
+   key names.  This SHOULD indicate a codex entry object which is not on a 
+   body  surface.
+2. `BodyName` key present with a value, but no `BodyID` key.  This SHOULD
+   indicate a codex entry object which is on a body surface, but probably 
+   where there is a close-orbiting binary companion which has confused things.
+3. Both `BodyName` and `BodyID` keys present, with values.  This SHOULD 
+   indicate a codex entry object which is on a body surface.
 
 Adjust your local processing accordingly.
