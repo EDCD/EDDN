@@ -58,12 +58,21 @@ release, Update 7, plus one patch).
    away.
 5. If Status.json does **not** have `BodyName` then clear `status_body_name`.
 6. For a `CodexEntry` event:
-    1. Check that `status_body_name` is set.
-    2. ONLY if it is, check if it matches `journal_body_name`.
-    3. ONLY if they match, set both `BodyName` and `BodyID` in the EDDN 
-       `codexentry`  schema message to the recorded values.
-       As you just checked that `status_body_name` was set, and it matches 
-       `journal_body_name` it doesn't matter which of the two you use.
+    1. Check that `status_body_name` is set. If it is not, exit.
+        1. Set the EDDN `codexentry` schema message `BodyName` to this value.
+        2. Check if it matches the `journal_body_name` value, and 
+           ONLY if they match, set `BodyID` in the EDDN `codexentry`
+           schema message to the value of `journal_body_id`.
+    
+   If `status_body_name` is not set then you MUST NOT include `BodyName` or
+   `BodyID` keys/values in the EDDN message.
+
+   If `status_body_name` is set, but does not match with 
+   `journal_body_name` then you MUST NOT include a `BodyID` key+value in the
+   EDDN message.
+
+   For emphasis, in both of these cases you MUST NOT include the keys with a 
+   `null`, `''`, or otherwise 'empty' value.  Do not include the key(s) at all.
 
 One possible issue is binary bodies where you might get an `ApproachBody` for
 one before descending towards the other, without an additional `ApproachBody`
@@ -76,8 +85,8 @@ without a new `ApproachBody` event, but `status_body_name` will change to
 the other when you are close enough.
 
 In this case due to `status_body_name` and `journal_body_name` not matching 
-the `codexentry` message MUST be sent **without** either `BodyName` or 
-`BodyID`.
+the `codexentry` message MUST be sent **without**  `BodyID`, but SHOULD be 
+sent with the `status_body_name` value on the `BodyName` key.
 
 e.g. for `Bestia A 2 a`
 ```json
