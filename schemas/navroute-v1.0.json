@@ -39,7 +39,7 @@
                     "format"        : "date-time"
                 },
                 "event": {
-                    "enum"      : [ "Route" ]
+                    "enum"      : [ "NavRoute" ]
                 },                
                 "Route": {
                     "type"      : "array",
