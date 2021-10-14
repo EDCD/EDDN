@@ -96,7 +96,7 @@
                     "minLength"     : 1
                 },
                 "VoucherAmount": {
-                    "type"          : "integer",
+                    "type"          : "integer"
                 },
                 "Traits": {
                     "type"          : "array",
