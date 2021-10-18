@@ -1,6 +1,7 @@
 {
     "$schema"               : "http://json-schema.org/draft-04/schema#",
     "id"                    : "https://eddn.edcd.io/schemas/codexentry/1#",
+    "description"           : "EDDN schema for CodexEntry Journal events.  Full documentation at https://github.com/EDCD/EDDN/tree/master/schemas/codexentry-README.md",
     "type"                  : "object",
     "additionalProperties"  : false,
     "required": [ "$schemaRef", "header", "message" ],
@@ -95,7 +96,7 @@
                     "minLength"     : 1
                 },
                 "VoucherAmount": {
-                    "type"          : "integer",
+                    "type"          : "integer"
                 },
                 "Traits": {
                     "type"          : "array",
@@ -103,6 +104,12 @@
                         "type"          : "string",
                         "minLength"     : 1
                     }
+                },
+                "BodyID": {
+                    "type"          : "integer"
+                },
+                "BodyName": {
+                    "type"          : "string"
                 },
                 "IsNewEntry": {
                     "$ref"          : "#/definitions/disallowed",
