@@ -13,8 +13,12 @@ class Validator(object):
     def addSchemaResource(self, schemaRef, schema):
         if schemaRef in self.schemas.keys():
             raise Exception("Attempted to redefine schema for " + schemaRef)
-        schema = simplejson.loads(schema)
-        self.schemas[schemaRef] = schema
+        try:
+            schema = simplejson.loads(schema)
+            self.schemas[schemaRef] = schema
+
+        except simplejson.errors.JSONDecodeError as e:
+            raise Exception('SCHEMA: Failed to load: ' + schemaRef)
 
     def validate(self, json_object):
         results = ValidationResults()
