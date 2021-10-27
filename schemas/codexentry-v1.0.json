@@ -92,8 +92,7 @@
                     "minLength"     : 1
                 },
                 "NearestDestination": {
-                    "type"          : "string",
-                    "minLength"     : 1
+                    "type"          : "string"
                 },
                 "VoucherAmount": {
                     "type"          : "integer"
