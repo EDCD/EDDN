@@ -1,4 +1,4 @@
-# EDDN BlackMarket Schema
+# EDDN Commodity Schema
 
 ## Introduction
 Here we document how to take data from an ED `Market` Journal Event and
