@@ -27,11 +27,13 @@ Rename the `StarSystem` key name to `systemName`.
 
 ### Elisions
 #### Remove _Localised key/values
+All keys whose name ends with `_Localised`, i.e. the `Name_Localised`
+key/values in Items.
+
+#### Other Elisions
 You MUST remove the following key/value pairs from the data:
 
-  - `StationType` key/value.
-  - All keys whose name ends with `_Localised`, i.e. the `Name_Localised` 
-    key/values in Items.
+- `StationType` key/value.
   - `Producer` key/value pair in Items.
   - `Rare` key/value pair in Items.
   - `id` key/value pair in Items.
