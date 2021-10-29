@@ -48,6 +48,3 @@ from the prior `Docked` or `Location` event.
 
 #### stationName
 From the `StationName` value on the prior `Docked` or `Location` event.
-
-#### timestamp
-An additional timsestamp, presumably from the `MarketSell` event.
