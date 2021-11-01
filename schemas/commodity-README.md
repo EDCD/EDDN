@@ -44,9 +44,10 @@ Remove not only the `Category_Localised` key/value, as above, but also the
 
 ### Augmentations
 #### horizons flag
-Use the value from the `LoadGame` event.
+You SHOULD add this key/value pair, using the value from the `LoadGame` event.
+
 #### odyssey flag
-Use the value from the `LoadGame` event.
+You SHOULD add this key/value pair, using the value from the `LoadGame` event.
 
 ### Using CAPI data
 It is *not* recommended to use CAPI data as the source as it's fraught with 

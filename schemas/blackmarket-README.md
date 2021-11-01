@@ -42,6 +42,12 @@ You MUST remove the following key/value pairs from the data:
   - `BlackMarket` - Because we're using this schema, so this is un-necessary. 
 
 ### Augmentations
+#### horizons flag
+You SHOULD add this key/value pair, using the value from the `LoadGame` event.
+
+#### odyssey flag
+You SHOULD add this key/value pair, using the value from the `LoadGame` event.
+
 #### systemName
 The star system name for where this market is.   Use the `StarSystem` value
 from the prior `Docked` or `Location` event.

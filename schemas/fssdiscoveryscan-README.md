@@ -31,9 +31,10 @@ Remove not only the `Category_Localised` key/value, as above, but also the
 
 ### Augmentations
 #### horizons flag
-Use the value from the `LoadGame` event.
+You SHOULD add this key/value pair, using the value from the `LoadGame` event.
+
 #### odyssey flag
-Use the value from the `LoadGame` event.
+You SHOULD add this key/value pair, using the value from the `LoadGame` event.
 
 #### StarPos
 You MUST add a `StarPos` array containing the system co-ordinates from the 
