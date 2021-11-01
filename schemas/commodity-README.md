@@ -34,9 +34,15 @@ key/values in Items.
 You MUST remove the following key/value pairs from the data:
 
 - `StationType` key/value.
-  - `Producer` key/value pair in Items.
-  - `Rare` key/value pair in Items.
-  - `id` key/value pair in Items.
+- `Producer` key/value pair in Items.
+- `Rare` key/value pair in Items.
+- `id` key/value pair in Items.
+
+In the list of commodites:
+
+- Skip commodities with `"categoryname": "NonMarketable"` (i.e.
+  Limpets - not purchasable in station market) or a *non-empty*`"legality":` 
+  string (not normally traded at this station market).
 
 #### Item Category
 Remove not only the `Category_Localised` key/value, as above, but also the

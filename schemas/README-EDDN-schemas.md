@@ -180,9 +180,6 @@ the local map. To that end, uploading applications MUST ensure that messages do
 not contain any Cmdr-specific data (other than "uploaderID" and the "horizons"
 flag). In practice as of E:D 3.3 this means:
 
-* commodity: Skip commodities with `"categoryname": "NonMarketable"` (i.e.
-  Limpets - not purchasable in station market) or `"legality":` *non-empty
-  string* (not normally traded at this station market).
 * outfitting: Skip items whose availability depends on the Cmdr's status rather
   than on the station. Namely:
     - Items that aren't weapons/utilities (`Hpt_*`), standard/internal
