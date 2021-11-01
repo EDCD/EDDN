@@ -170,6 +170,10 @@ Each `message` object must have, at bare minimum:
    much more than this. Again, consult the
    [schemas and their documentation](./).
 
+Note that many of the key names chosen in the schemas are based on the CAPI 
+data, not Journal events, because the CAPI came first.  This means renaming 
+many of the keys from Journal events to match the schema.
+
 EDDN is intended to transport generic data not specific to any particular Cmdr
 and to reflect the data that a player would see in-game in station services or
 the local map. To that end, uploading applications MUST ensure that messages do
