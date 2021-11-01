@@ -180,8 +180,6 @@ the local map. To that end, uploading applications MUST ensure that messages do
 not contain any Cmdr-specific data (other than "uploaderID" and the "horizons"
 flag). In practice as of E:D 3.3 this means:
 
-* shipyard: *Include* ships listed in the `"unavailable_list"` property (i.e.
-  available at this station, but not to this Cmdr).
 * journal: Strip out `"..._Localised"` properties throughout the data
   structure.
 * journal/Docked: Strip out `"Wanted"`, `"ActiveFine"`, `"CockpitBreach"`
