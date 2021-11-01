@@ -178,19 +178,10 @@ EDDN is intended to transport generic data not specific to any particular Cmdr
 and to reflect the data that a player would see in-game in station services or
 the local map. To that end, uploading applications MUST ensure that messages do
 not contain any Cmdr-specific data (other than "uploaderID" and the "horizons"
-flag). In practice as of E:D 3.3 this means:
+flag).
 
-* journal: Strip out `"..._Localised"` properties throughout the data
-  structure.
-* journal/Docked: Strip out `"Wanted"`, `"ActiveFine"`, `"CockpitBreach"`
-  properties
-* journal/FSDJump: Strip out `"Wanted"`, `"BoostUsed"`, `"FuelLevel"`
-  , `"FuelUsed"` and `"JumpDist"` properties.
-* journal/Location: Strip out `"Wanted"`, `"Latitude"` and `"Longitude"`
-  properties.
-* journal/Location and journal/FSDJump: strip out `"HappiestSystem"`
-  , `"HomeSystem"`, `"MyReputation"` and `"SquadronFaction"` properties within
-  the list of `"Factions"`.
+The individual schemas will instruct you on various elisions (removals) to 
+be made to comply with this.
 
 Some of these requirements are also enforced by the schemas, and some things
 the schemas enforce might not be explicitly called out here, so **do**
