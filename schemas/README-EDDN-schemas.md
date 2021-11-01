@@ -180,15 +180,6 @@ the local map. To that end, uploading applications MUST ensure that messages do
 not contain any Cmdr-specific data (other than "uploaderID" and the "horizons"
 flag). In practice as of E:D 3.3 this means:
 
-* outfitting: Skip items whose availability depends on the Cmdr's status rather
-  than on the station. Namely:
-    - Items that aren't weapons/utilities (`Hpt_*`), standard/internal
-      modules (`Int_*`) or armour (`*_Armour_*`) (i.e. bobbleheads, decals,
-      paintjobs and shipkits).
-    - Items that have a non-null `"sku"` property, unless
-      it's `"ELITE_HORIZONS_V_PLANETARY_LANDINGS"` (i.e. PowerPlay and tech
-      broker items).
-    - The `"Int_PlanetApproachSuite"` module (for historical reasons).
 * shipyard: *Include* ships listed in the `"unavailable_list"` property (i.e.
   available at this station, but not to this Cmdr).
 * journal: Strip out `"..._Localised"` properties throughout the data
