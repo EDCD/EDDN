@@ -81,8 +81,12 @@ using CAPI as the source.
 Now you will need to construct the necessary additional fields:
 
 #### CAPI horizons flag
-You will need to check if any of the economies from the `/market` data have 
-a `name` are `Colony`, if so, set this flag true.
+If your application can be certain that the game client is still running, 
+and logged into the game (not just run to the main menu), then you can 
+simply use the value from the `LoadGame` journal event.
+
+Otherwise, you MUST check if any of the economies from the `/market` 
+data have a `name` of `Colony`, if so, set this flag true.
 
 Additionally, you should retrieve the CAPI `/shipyard` endpoint and check if 
 any of the listed ships or modules have a `sku` value of 
