@@ -18,6 +18,11 @@ the event.
 It *is* also possible to construct this data from a CAPI `/market` query.  
 See [Using CAPI data](#using-capi-data) below.
 
+### Statusflags
+`statusFlags` is an optional augmentation that can be used to identify
+`Producer`, `Consumer`, and `Rare` goods from the output of `Market.json`.  
+So, as per the schema, do include it if available.
+
 ### Key Renames
 Many of the key names have a different case defined in this schema, make 
 sure you are renaming them as appropriate.
