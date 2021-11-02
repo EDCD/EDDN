@@ -10,7 +10,7 @@ What follows below is only for historical curiosity.
 
 ---
 
-Here we document how to take data from an ED `BlackMArket` Journal Event and
+Here we document how to take data from an ED `MarketSell` Journal Event and
 properly structure it for sending to EDDN.
 
 Please consult [EDDN Schemas README](./README-EDDN-schemas.md) for general
