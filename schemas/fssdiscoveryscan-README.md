@@ -16,18 +16,9 @@ Many of the key names have a different case defined in this schema, make
 sure you are renaming them as appropriate.
 
 ### Elisions
-#### Remove _Localised key/values
-All keys whose name ends with `_Localised`, i.e. the `Name_Localised`
-key/values in Items.
-
-#### Other Elisions
 You MUST remove the following key/value pairs from the data:
 
   - `Progress` key/value pair.
-
-#### Item Category
-Remove not only the `Category_Localised` key/value, as above, but also the
-`Category` key/value pair from each Item.
 
 ### Augmentations
 #### horizons flag
