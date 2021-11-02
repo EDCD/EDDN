@@ -35,7 +35,6 @@ The Journal documentation says this is `MarketID`, but in the schema the
 ### Elisions
 You MUST remove the following key/value pairs from the data:
 
-  - `Count`
   - `TotalSale`
   - `AvgPricePaid`
   - `StolenGoods`
