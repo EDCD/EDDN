@@ -75,7 +75,7 @@ def stats() -> str:
 
     :return: JSON stats data
     """
-    stats = stats_collector.getSummary()
+    stats = stats_collector.get_summary()
     stats["version"] = Settings.EDDN_VERSION
     return simplejson.dumps(stats)
 
