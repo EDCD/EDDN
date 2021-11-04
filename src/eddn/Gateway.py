@@ -322,7 +322,7 @@ def health_check() -> str:
 
 
 @app.route('/stats/', method=['OPTIONS', 'GET'])
-def stats():
+def stats() -> str:
     """
     Return some stats about the Gateway's operation so far.
 
