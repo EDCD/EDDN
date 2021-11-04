@@ -405,7 +405,7 @@ class EnableCors(object):
         return _enable_cors
 
 
-def main():
+def main() -> None:
     """Handle setting up and running the bottle app."""
     cl_args = parse_cl_args()
     if cl_args.loglevel:
