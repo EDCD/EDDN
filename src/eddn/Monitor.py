@@ -198,7 +198,7 @@ class Monitor(Thread):
         context = zmq.Context()
 
         receiver = context.socket(zmq.SUB)
-        receiver.setsockopt(zmq.SUBSCRIBE, '')
+        receiver.setsockopt_string(zmq.SUBSCRIBE, '')
 
         for binding in Settings.MONITOR_RECEIVER_BINDINGS:
             receiver.connect(binding)
@@ -219,6 +219,7 @@ class Monitor(Thread):
             else:
                 message = message_split[0]
 
+            print(f'message: {message}')
             message_text = zlib.decompress(message)
             json = simplejson.loads(message_text)
 
