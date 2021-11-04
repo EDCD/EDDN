@@ -8,6 +8,7 @@ import time
 import uuid
 import zlib
 from threading import Thread
+from typing import Callable
 
 # Logging has to be configured first before we do anything.
 logger = logging.getLogger(__name__)
@@ -194,7 +195,7 @@ class EnableCors(object):
     api = 2
 
     @staticmethod
-    def apply(fn, context):
+    def apply(self, fn: Callable, context: str):
         """
         Apply a CORS handler.
 
