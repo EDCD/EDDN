@@ -17,6 +17,12 @@ You MUST remove any key where the key name ends in
 You MUST remove the two keys `IsNewEntry` and `NewTraitsDiscovered`.
 
 ### Augmentations
+#### horizons flag
+You SHOULD add this key/value pair, using the value from the `LoadGame` event.
+
+#### odyssey flag
+You SHOULD add this key/value pair, using the value from the `LoadGame` event.
+
 #### StarPos
 You MUST **add** a `StarPos` key with value of type `array` containing the 
 galaxy co-ordinates of the system.  You will need to have obtained these 
