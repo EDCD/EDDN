@@ -36,7 +36,7 @@ class DuplicateMessages(Thread):
                     if self.caches[key] + timedelta(minutes=self.max_minutes) < max_time:
                         del self.caches[key]
 
-    def isDuplicated(self, json):
+    def is_duplicated(self, json):
         with self.lock:
             # Test messages are never duplicate, would be a pain to wait for another test :D
             if re.search('test', json['$schemaRef'], re.I):

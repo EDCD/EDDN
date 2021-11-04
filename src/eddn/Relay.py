@@ -156,7 +156,7 @@ class Relay(Thread):
 
             # Handle duplicate message
             if Settings.RELAY_DUPLICATE_MAX_MINUTES:
-                if duplicate_messages.isDuplicated(json):
+                if duplicate_messages.is_duplicated(json):
                     # We've already seen this message recently. Discard it.
                     stats_collector.tally("duplicate")
                     return
