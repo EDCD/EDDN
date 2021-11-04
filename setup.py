@@ -98,7 +98,6 @@ setup(
         "gevent==1.3.7",
         "jsonschema==2.6.0",
         "pyzmq==17.1.2",
-        "strict_rfc3339==0.7",
         "simplejson==3.16.0",
         "mysql-connector-python==8.0.17"
     ],

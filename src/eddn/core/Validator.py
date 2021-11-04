@@ -1,9 +1,11 @@
 # coding: utf8
+"""Handle validating incoming messages against the schemas."""
+
+from enum import IntEnum
 
 import simplejson
-import strict_rfc3339
-from enum import IntEnum
-from jsonschema import validate as jsValidate, ValidationError, FormatChecker
+from jsonschema import FormatChecker, ValidationError
+from jsonschema import validate as jsValidate
 
 
 class Validator(object):

@@ -7,5 +7,4 @@ jsonschema==4.2.0
 pyzmq==22.3.0
 requests==2.25.1
 simplejson==3.16.0
-strict_rfc3339==0.7
 mysql-connector-python==8.0.27
