@@ -97,13 +97,13 @@ setup(
     # work, for instance.
     install_requires=[
         "argparse",
-        "bottle==0.12.15",
-        "enum34==1.1.6",
-        "gevent==1.3.7",
-        "jsonschema==2.6.0",
-        "pyzmq==17.1.2",
-        "simplejson==3.16.0",
-        "mysql-connector-python==8.0.17"
+        "bottle",
+        "enum34",
+        "gevent",
+        "jsonschema",
+        "pyzmq",
+        "simplejson",
+        "mysql-connector-python"
     ],
 
     entry_points={
