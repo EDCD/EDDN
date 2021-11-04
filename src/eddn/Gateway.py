@@ -45,8 +45,8 @@ logger.info('Made logger')
 
 
 # This socket is used to push market data out to the Announcers over ZeroMQ.
-context = zmq.Context()
-sender = context.socket(zmq.PUB)
+zmq_context = zmq.Context()
+sender = zmq_context.socket(zmq.PUB)
 
 validator = Validator()
 
@@ -328,9 +328,9 @@ def stats() -> str:
 
     :return: JSON stats data
     """
-    stats = stats_collector.getSummary()
-    stats["version"] = Settings.EDDN_VERSION
-    return simplejson.dumps(stats)
+    stats_current = stats_collector.getSummary()
+    stats_current["version"] = Settings.EDDN_VERSION
+    return simplejson.dumps(stats_current)
 
 
 class MalformedUploadError(Exception):
