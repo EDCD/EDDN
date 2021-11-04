@@ -229,7 +229,7 @@ class Monitor(Thread):
 
             # Duplicates?
             if Settings.RELAY_DUPLICATE_MAX_MINUTES:
-                if duplicate_messages.isDuplicated(json):
+                if duplicate_messages.is_duplicated(json):
                     schema_id = 'DUPLICATE MESSAGE'
 
                     c = db.cursor()
