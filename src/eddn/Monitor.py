@@ -278,31 +278,24 @@ class Monitor(Thread):
             gevent.spawn(monitor_worker, inbound_message)
 
 
-class EnableCors(object):
-    """Enable CORS responses."""
+def apply_cors() -> None:
+    """
+    Apply a CORS handler.
 
-    name = 'enable_cors'
-    api = 2
-
-    @staticmethod
-    def apply(self, fn: Callable):
-        """
-        Apply a CORS handler.
-
-        Ref: <https://stackoverflow.com/a/17262900>
-        """
-        def _enable_cors(*args, **kwargs):
-            """Set CORS Headers."""
-            response.headers['Access-Control-Allow-Origin'] = '*'
-            response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, OPTIONS'
-            response.headers['Access-Control-Allow-Headers'] = \
-                'Origin, Accept, Content-Type, X-Requested-With, X-CSRF-Token'
-
-            if request.method != 'OPTIONS':
-                # actual request; reply with the actual response
-                return fn(*args, **kwargs)
-
-        return _enable_cors
+    Ref: <https://stackoverflow.com/a/17262900>
+    """
+    response.set_header(
+        'Access-Control-Allow-Origin',
+        '*'
+    )
+    response.set_header(
+        'Access-Control-Allow-Methods',
+        'GET, POST, PUT, OPTIONS'
+    )
+    response.set_header(
+        'Access-Control-Allow-Headers',
+        'Origin, Accept, Content-Type, X-Requested-With, X-CSRF-Token'
+    )
 
 def main() -> None:
     """Handle setting up and running the bottle app."""
@@ -311,7 +304,7 @@ def main() -> None:
 
     m = Monitor()
     m.start()
-    app.install(EnableCors())
+    app.add_hook('after_request', apply_cors)
     app.run(
         host=Settings.MONITOR_HTTP_BIND_ADDRESS,
         port=Settings.MONITOR_HTTP_PORT,
