@@ -1,11 +1,11 @@
-# These are the versions we *know* work under Python 2.7.16
-argparse==1.2.1
-bottle==0.12.15
-enum34==1.1.6
-gevent==1.3.7
-jsonschema==2.6.0
-pyzmq==17.1.2
+# Versions that installed under Python 3.9.7 Thu Nov  4 12:03:41 GMTST 2021
+argparse==1.4.0
+bottle==0.12.19
+enum34==1.1.10
+gevent==21.8.0
+jsonschema==4.2.0
+pyzmq==22.3.0
 requests==2.25.1
 simplejson==3.16.0
 strict_rfc3339==0.7
-mysql-connector-python==8.0.17
+mysql-connector-python==8.0.27
