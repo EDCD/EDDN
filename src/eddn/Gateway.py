@@ -351,7 +351,8 @@ class EnableCors(object):
     name = 'enable_cors'
     api = 2
 
-    def apply(self, fn, context):
+    @staticmethod
+    def apply(fn, context):
         """
         Apply CORS headers to the calling bottle app.
 
