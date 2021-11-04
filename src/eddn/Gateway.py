@@ -220,7 +220,7 @@ def get_decompressed_message() -> bytes:
     return message_body
 
 
-def parse_and_error_handle(data):
+def parse_and_error_handle(data: str) -> str:
     """
     Parse an incoming message and handle errors.
 
@@ -250,7 +250,7 @@ def parse_and_error_handle(data):
             pass
 
         response.status = 400
-        logger.error(f"Error to {get_remote_address()}: {exc.message}")
+        logger.error(f"Error to {get_remote_address()}: {exc}")
         return str(exc)
         return 'FAIL: JSON parsing: ' + str(exc)
 
