@@ -201,3 +201,29 @@ Some of these requirements are also enforced by the schemas, and some things
 the schemas enforce might not be explicitly called out here, so **do**
 check what you're sending against the schema when implementing sending new
 events.
+
+## Receiving messages
+
+EDDN provides a continuous stream of information from uploaders. To use this
+data you'll need to connect to the stream using ZeroMQ (a library is probably
+available for your language of choice).
+
+The URL for the live Relay is:
+
+    tcp://eddn.edcd.io:9500
+
+Once you've connected to that you will receive messages.  To access the 
+data you will first need to zlib-decompress each message.  Then you will 
+have a textual JSON object as per the schemas.
+
+In general, check the guidance for [Uploading messages](#uploading-messages)
+for the expected format of the messages.
+
+Consumers can utilise the `$schemaRef` value to determine which schema a 
+particular message is for.  There is no need to validate the messages 
+against the schemas yourself, as that is performed on the EDDN Gateway.  
+Messages that do not pass the schema validation there are not forwarded to 
+receivers.
+
+There is [example code](https://github.com/EDCD/EDDN/tree/master/examples)
+available for a variety of programming languages to help you get started.
