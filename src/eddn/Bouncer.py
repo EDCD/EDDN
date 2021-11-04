@@ -258,7 +258,7 @@ class EnableCors(object):
     name = 'enable_cors'
     api = 2
 
-    def apply(self, fn: Callable, context: str):
+    def apply(self, fn: Callable):
         """
         Apply CORS headers to the calling bottle app.
 
@@ -286,7 +286,7 @@ class CustomLogging(object):
     name = 'custom_logging'
     api = 2
 
-    def apply(self, fn: Callable, context: str):
+    def apply(self, fn: Callable):
         """
         Apply custom logging to bottle request.
 

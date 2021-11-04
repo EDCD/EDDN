@@ -134,7 +134,7 @@ class _Settings(object):
     def load_from(self, file_name: str) -> None:
         f = open(file_name, 'r')
         conf = simplejson.load(f)
-        for key, value in conf.iteritems():
+        for key, value in conf.items():
             if key in dir(self):
                 self.__setattr__(key, value)
 
