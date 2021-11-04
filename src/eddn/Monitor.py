@@ -285,7 +285,7 @@ class EnableCors(object):
     api = 2
 
     @staticmethod
-    def apply(self, fn: Callable, context: str):
+    def apply(self, fn: Callable):
         """
         Apply a CORS handler.
 

@@ -118,9 +118,9 @@ class Relay(Thread):
 
         # Filters on topics or not...
         if Settings.RELAY_RECEIVE_ONLY_GATEWAY_EXTRA_JSON is True:
-            for schema_ref, schema_file in Settings.GATEWAY_JSON_SCHEMAS.iteritems():
+            for schema_ref, schema_file in Settings.GATEWAY_JSON_SCHEMAS.items():
                 receiver.setsockopt(zmq.SUBSCRIBE, schema_ref)
-            for schema_ref, schema_file in Settings.RELAY_EXTRA_JSON_SCHEMAS.iteritems():
+            for schema_ref, schema_file in Settings.RELAY_EXTRA_JSON_SCHEMAS.items():
                 receiver.setsockopt(zmq.SUBSCRIBE, schema_ref)
         else:
             receiver.setsockopt(zmq.SUBSCRIBE, '')
@@ -195,7 +195,7 @@ class EnableCors(object):
     api = 2
 
     @staticmethod
-    def apply(self, fn: Callable, context: str):
+    def apply(self, fn: Callable):
         """
         Apply a CORS handler.
 

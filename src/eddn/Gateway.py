@@ -119,7 +119,7 @@ def configure() -> None:
     for binding in Settings.GATEWAY_SENDER_BINDINGS:
         sender.bind(binding)
 
-    for schema_ref, schema_file in Settings.GATEWAY_JSON_SCHEMAS.iteritems():
+    for schema_ref, schema_file in Settings.GATEWAY_JSON_SCHEMAS.items():
         validator.add_schema_resource(schema_ref, resource_string('eddn.Gateway', schema_file))
 
 
@@ -137,7 +137,7 @@ def push_message(parsed_message: Dict, topic: str) -> None:
     # announcers with schema as topic
     compressed_msg = zlib.compress(string_message)
 
-    send_message = f"{str(topic)!r} |-| {compressed_msg!r}"
+    send_message = f"{str(topic)!r} |-| {compressed_msg!r}".encode('utf8')
 
     sender.send(send_message)
     stats_collector.tally("outbound")
@@ -345,34 +345,26 @@ class MalformedUploadError(Exception):
     pass
 
 
-class EnableCors(object):
-    """Handle enabling CORS headers in all responses."""
+def apply_cors() -> None:
+    """
+    Apply CORS headers to the calling bottle app.
 
-    name = 'enable_cors'
-    api = 2
-
-    @staticmethod
-    def apply(self, fn: Callable, context: str):
-        """
-        Apply CORS headers to the calling bottle app.
-
-        :param fn:
-        :param context:
-        :return:
-        """
-        def _enable_cors(*args, **kwargs):
-            # set CORS headers
-            response.headers['Access-Control-Allow-Origin'] = '*'
-            response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, OPTIONS'
-            response.headers['Access-Control-Allow-Headers'] = \
-                'Origin, Accept, Content-Type, X-Requested-With, X-CSRF-Token'
-
-            if request.method != 'OPTIONS':
-                # actual request; reply with the actual response
-                return fn(*args, **kwargs)
-
-        return _enable_cors
-
+    :param fn:
+    :param context:
+    :return:
+    """
+    response.set_header(
+        'Access-Control-Allow-Origin',
+         '*'
+        )
+    response.set_header(
+        'Access-Control-Allow-Methods',
+        'GET, POST, PUT, OPTIONS'
+    )
+    response.set_header(
+        'Access-Control-Allow-Headers',
+        'Origin, Accept, Content-Type, X-Requested-With, X-CSRF-Token'
+    )
 
 def main() -> None:
     """Handle setting up and running the bottle app."""
@@ -383,7 +375,7 @@ def main() -> None:
     load_config(cl_args)
     configure()
 
-    app.install(EnableCors())
+    app.add_hook('after_request', apply_cors)
     app.run(
         host=Settings.GATEWAY_HTTP_BIND_ADDRESS,
         port=Settings.GATEWAY_HTTP_PORT,
