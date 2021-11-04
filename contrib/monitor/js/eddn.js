@@ -75,8 +75,8 @@ var drillDownSoftware = false;
 var currentDrillDown  = false;
 
 var softwaresSort     = { field: 'today', order: 'desc' }; // Very first load sort order
-var softwaresData     = new Array();     // The last data we got from API
-var softwaresViewData = new Array(); // The data for the current view
+var softwaresData     = [];     // The last data we got from API
+var softwaresViewData = []; // The data for the current view
 var softwaresVersion  = {};
 
 var softwaresJsGridDataController = function () {
@@ -212,7 +212,7 @@ var softwaresNewJsGrid = function () {
             /*
              * No longer drilling down, so need to reset the data
              */
-            softwaresViewData = new Array();
+            softwaresViewData = [];
             softwaresData.forEach(function(software, s) {
                 softwareSplit = software.name.split(' | ');
                 name = softwareSplit[0];
@@ -296,7 +296,7 @@ var softwaresNewJsGrid = function () {
                     /*
                      * The data we need for this drilldown
                      */
-                    softwaresViewData = new Array();
+                    softwaresViewData = [];
                     softwaresData.forEach(function(software, s) {
                         softwareSplit = software.name.split(' | ');
                         var name = "";
@@ -453,7 +453,7 @@ var doUpdateSoftwares = function()
                      * 	key: software name, including the version
                      * 	value: dictionary with counts for: today, yesterday, total (all time)
                      */
-                    softwaresData = new Array();
+                    softwaresData = [];
                     $.each(softwaresTotals, function(softwareName, total){
                         var sw = { 'name': softwareName, 'today': 0, 'yesterday': 0, 'total': parseInt(total)};
 
@@ -466,7 +466,7 @@ var doUpdateSoftwares = function()
                     /*
                      * Now the data we need for the current view (overall data or a drilldown of a software)
                      */
-                    softwaresViewData = new Array();
+                    softwaresViewData = [];
                     softwaresData.forEach(function(software, s) {
                         softwareSplit = software.name.split(' | ');
                         var name = "";
@@ -512,7 +512,7 @@ var doUpdateSoftwares = function()
 
 
 var schemasSort = { field: 'today', order: 'desc' }; // Very first load sort order
-var schemasData    = new Array();
+var schemasData    = [];
 
 var doUpdateSchemas = function()
 {
@@ -542,7 +542,7 @@ var doUpdateSchemas = function()
                     /*
                      * Prepare 'schemasData' dictionary
                      */
-                    schemasData = new Array();
+                    schemasData = [];
                     $.each(schemasTotals, function(schema, total) {
                         schemaName = schema.replace('http://schemas.elite-markets.net/eddn/', 'https://eddn.edcd.io/schemas/');
                         // Due to the schema renames and us merging them there could be more than one
