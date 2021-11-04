@@ -1,15 +1,20 @@
 # coding: utf8
+"""Detect duplicate messages from senders."""
+
 import hashlib
 import re
-import simplejson
-
 from datetime import datetime, timedelta
-from eddn.conf.Settings import Settings
 from threading import Lock, Thread
 from time import sleep
 
+import simplejson
+
+from eddn.conf.Settings import Settings
+
 
 class DuplicateMessages(Thread):
+    """Class holding all code for duplicate message detection."""
+
     max_minutes = Settings.RELAY_DUPLICATE_MAX_MINUTES
 
     caches = {}
@@ -21,13 +26,14 @@ class DuplicateMessages(Thread):
         self.daemon = True
 
     def run(self):
+        """Expire duplicate messages."""
         while True:
             sleep(60)
             with self.lock:
-                maxTime = datetime.utcnow()
+                max_time = datetime.utcnow()
 
                 for key in self.caches.keys():
-                    if self.caches[key] + timedelta(minutes=self.max_minutes) < maxTime:
+                    if self.caches[key] + timedelta(minutes=self.max_minutes) < max_time:
                         del self.caches[key]
 
     def isDuplicated(self, json):
