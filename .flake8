@@ -25,7 +25,7 @@ per-file-ignores = ./EDMC.py:E402
 
 # https://github.com/best-doctor/flake8-annotations-coverage
 # Checks code for type annotations
-min-coverage-percents = 50
+# min-coverage-percents = 50
 
 # https://pypi.org/project/flake8-isort/
 # Ensures imports are well sorted
