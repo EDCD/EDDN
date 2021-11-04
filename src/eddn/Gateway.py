@@ -1,6 +1,8 @@
 # coding: utf8
 
 """
+EDDN Gateway, which receives message from uploaders.
+
 Contains the necessary ZeroMQ socket and a helper function to publish
 market data to the Announcer daemons.
 """
