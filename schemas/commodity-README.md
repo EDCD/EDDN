@@ -65,13 +65,9 @@ It is *not* recommended to use CAPI data as the source as it's fraught with
 additional issues.  EDMarketConnector does so in order to facilitate 
 obtaining data without the player needing to open the commodities screen.
 
-1. Retrieve the commander data from the `/profile` CAPI endpoint.
-2. Check that `commander['docked']` is true.  If not, abort.
-3. Retrieve the data from the `/market` and `/shipyard` CAPI endpoints.
-4. Compare the system and station name from the CAPI market data to that 
-   from the last `Docked` or `Location` journal event.  If either does not 
-   match then you MUST **abort**.  This likely indicates that the CAPI data is 
-   lagging behind the game client state and thus should not be used.
+Please read
+[the guidance on checking for CAPI lag](README-EDDN-schemas.md#detecting-capi-data-lag)
+before utilising CAPI data for EDDN messages.
 
 Note that CAPI `/market` data will sometimes have the `StatusFlasg` per 
 item, which are defined as optional in this schema (because they're not in 

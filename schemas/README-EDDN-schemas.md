@@ -62,13 +62,27 @@ the available endpoints and how they work. There is some
 [third-party documentation](https://github.com/Athanasius/fd-api/blob/main/docs/README.md)
 by Athanasius.
 
+It is *not* recommended to use CAPI data as the source as it's fraught with
+additional issues.  EDMarketConnector does so in order to facilitate
+obtaining data without the player needing to open the commodities screen.
+
+#### Detecting CAPI data lag
+
 When using the Companion API please be aware that the server that supplies this
 data sometimes lags behind the game - usually by a few seconds, sometimes by
 minutes. You MUST check in the data from the CAPI that the Cmdr is
-docked (`["commander"]["docked"]` is `True`) and that the station and
-system (`["lastStarport"]["name"]` and `["lastSystem"]["name"]`) match those
+docked, and that the station and system names match those
 reported from the Journal before using the data for the commodity, outfitting
-and shipyard schemas.
+and shipyard schemas:
+
+1. Retrieve the commander data from the `/profile` CAPI endpoint.
+2. Check that `commander['docked']` is true.  If not, abort.
+3. Retrieve the data from the `/market` and `/shipyard` CAPI endpoints.
+4. Compare the system and station name from the CAPI market data,
+   `["lastStarport"]["name"]` and `["lastSystem"]["name"]`,
+   to that from the last `Docked` or `Location` journal event.  If either does
+   not match then you MUST **abort**.  This likely indicates that the CAPI 
+   data is lagging behind the game client state and thus should not be used.
 
 ---
 
