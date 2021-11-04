@@ -235,8 +235,8 @@ def parse_and_error_handle(data):
     validation_results = validator.validate(parsed_message)
 
     if validation_results.severity <= ValidationSeverity.WARN:
-        parsed_message['header']['gatewayTimestamp']    = datetime.utcnow().isoformat() + 'Z'
-        parsed_message['header']['uploaderIP']          = get_remote_address()        
+        parsed_message['header']['gatewayTimestamp'] = datetime.utcnow().isoformat() + 'Z'
+        parsed_message['header']['uploaderIP'] = get_remote_address()
 
         # Sends the parsed message to the Relay/Monitor as compressed JSON.
         gevent.spawn(push_message, parsed_message, parsed_message['$schemaRef'])
@@ -364,7 +364,8 @@ class EnableCors(object):
             # set CORS headers
             response.headers['Access-Control-Allow-Origin'] = '*'
             response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, OPTIONS'
-            response.headers['Access-Control-Allow-Headers'] = 'Origin, Accept, Content-Type, X-Requested-With, X-CSRF-Token'
+            response.headers['Access-Control-Allow-Headers'] = \
+                'Origin, Accept, Content-Type, X-Requested-With, X-CSRF-Token'
 
             if request.method != 'OPTIONS':
                 # actual request; reply with the actual response
@@ -384,12 +385,13 @@ def main():
 
     app.install(EnableCors())
     app.run(
-        host=Settings.GATEWAY_HTTP_BIND_ADDRESS, 
-        port=Settings.GATEWAY_HTTP_PORT, 
-        server='gevent', 
+        host=Settings.GATEWAY_HTTP_BIND_ADDRESS,
+        port=Settings.GATEWAY_HTTP_PORT,
+        server='gevent',
         certfile=Settings.CERT_FILE,
         keyfile=Settings.KEY_FILE
     )
+
 
 if __name__ == '__main__':
     main()
