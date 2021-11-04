@@ -62,13 +62,27 @@ the available endpoints and how they work. There is some
 [third-party documentation](https://github.com/Athanasius/fd-api/blob/main/docs/README.md)
 by Athanasius.
 
+It is *not* recommended to use CAPI data as the source as it's fraught with
+additional issues.  EDMarketConnector does so in order to facilitate
+obtaining data without the player needing to open the commodities screen.
+
+#### Detecting CAPI data lag
+
 When using the Companion API please be aware that the server that supplies this
 data sometimes lags behind the game - usually by a few seconds, sometimes by
 minutes. You MUST check in the data from the CAPI that the Cmdr is
-docked (`["commander"]["docked"]` is `True`) and that the station and
-system (`["lastStarport"]["name"]` and `["lastSystem"]["name"]`) match those
+docked, and that the station and system names match those
 reported from the Journal before using the data for the commodity, outfitting
-and shipyard schemas.
+and shipyard schemas:
+
+1. Retrieve the commander data from the `/profile` CAPI endpoint.
+2. Check that `commander['docked']` is true.  If not, abort.
+3. Retrieve the data from the `/market` and `/shipyard` CAPI endpoints.
+4. Compare the system and station name from the CAPI market data,
+   `["lastStarport"]["name"]` and `["lastSystem"]["name"]`,
+   to that from the last `Docked` or `Location` journal event.  If either does
+   not match then you MUST **abort**.  This likely indicates that the CAPI 
+   data is lagging behind the game client state and thus should not be used.
 
 ---
 
@@ -170,39 +184,46 @@ Each `message` object must have, at bare minimum:
    much more than this. Again, consult the
    [schemas and their documentation](./).
 
+Note that many of the key names chosen in the schemas are based on the CAPI 
+data, not Journal events, because the CAPI came first.  This means renaming 
+many of the keys from Journal events to match the schema.
+
 EDDN is intended to transport generic data not specific to any particular Cmdr
 and to reflect the data that a player would see in-game in station services or
 the local map. To that end, uploading applications MUST ensure that messages do
 not contain any Cmdr-specific data (other than "uploaderID" and the "horizons"
-flag). In practice as of E:D 3.3 this means:
+flag).
 
-* commodity: Skip commodities with `"categoryname": "NonMarketable"` (i.e.
-  Limpets - not purchasable in station market) or `"legality":` *non-empty
-  string* (not normally traded at this station market).
-* outfitting: Skip items whose availability depends on the Cmdr's status rather
-  than on the station. Namely:
-    - Items that aren't weapons/utilities (`Hpt_*`), standard/internal
-      modules (`Int_*`) or armour (`*_Armour_*`) (i.e. bobbleheads, decals,
-      paintjobs and shipkits).
-    - Items that have a non-null `"sku"` property, unless
-      it's `"ELITE_HORIZONS_V_PLANETARY_LANDINGS"` (i.e. PowerPlay and tech
-      broker items).
-    - The `"Int_PlanetApproachSuite"` module (for historical reasons).
-* shipyard: *Include* ships listed in the `"unavailable_list"` property (i.e.
-  available at this station, but not to this Cmdr).
-* journal: Strip out `"..._Localised"` properties throughout the data
-  structure.
-* journal/Docked: Strip out `"Wanted"`, `"ActiveFine"`, `"CockpitBreach"`
-  properties
-* journal/FSDJump: Strip out `"Wanted"`, `"BoostUsed"`, `"FuelLevel"`
-  , `"FuelUsed"` and `"JumpDist"` properties.
-* journal/Location: Strip out `"Wanted"`, `"Latitude"` and `"Longitude"`
-  properties.
-* journal/Location and journal/FSDJump: strip out `"HappiestSystem"`
-  , `"HomeSystem"`, `"MyReputation"` and `"SquadronFaction"` properties within
-  the list of `"Factions"`.
+The individual schemas will instruct you on various elisions (removals) to 
+be made to comply with this.
 
 Some of these requirements are also enforced by the schemas, and some things
 the schemas enforce might not be explicitly called out here, so **do**
 check what you're sending against the schema when implementing sending new
 events.
+
+## Receiving messages
+
+EDDN provides a continuous stream of information from uploaders. To use this
+data you'll need to connect to the stream using ZeroMQ (a library is probably
+available for your language of choice).
+
+The URL for the live Relay is:
+
+    tcp://eddn.edcd.io:9500
+
+Once you've connected to that you will receive messages.  To access the 
+data you will first need to zlib-decompress each message.  Then you will 
+have a textual JSON object as per the schemas.
+
+In general, check the guidance for [Uploading messages](#uploading-messages)
+for the expected format of the messages.
+
+Consumers can utilise the `$schemaRef` value to determine which schema a 
+particular message is for.  There is no need to validate the messages 
+against the schemas yourself, as that is performed on the EDDN Gateway.  
+Messages that do not pass the schema validation there are not forwarded to 
+receivers.
+
+There is [example code](https://github.com/EDCD/EDDN/tree/master/examples)
+available for a variety of programming languages to help you get started.
