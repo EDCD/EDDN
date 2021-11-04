@@ -308,13 +308,15 @@ def upload() -> str:
 
 
 @app.route('/health_check/', method=['OPTIONS', 'GET'])
-def health_check():
+def health_check() -> str:
     """
     Return our version string in as an 'am I awake' signal.
 
     This should only be used by the gateway monitoring script. It is used
     to detect whether the gateway is still alive, and whether it should remain
     in the DNS rotation.
+
+    :returns: Version of this software.
     """
     return Settings.EDDN_VERSION
 
