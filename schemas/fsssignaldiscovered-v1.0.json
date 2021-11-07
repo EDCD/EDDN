@@ -70,7 +70,20 @@
                         }
                     }
                 }
-            }
+            },
+                "systemName": {
+                    "type"          : "string",
+                    "minLength"     : 1,
+                    "description": "Should be added by the sender"
+                },
+                "StarPos": {
+                    "type"          : "array",
+                    "items"         : { "type": "number" },
+                    "minItems"      : 3,
+                    "maxItems"      : 3,
+                    "description"   : "Should be added by the sender"
+                }
+
 
             }
         }
