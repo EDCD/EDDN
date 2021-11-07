@@ -50,3 +50,73 @@ last `FSDJump`, `CarrierJump`, or `Location` event. There exists problem when yo
 ## Receivers
 Receivers should remember: `horizons`, `odyssey`, `systemName`, `StarPos` are optional key/value pairs, it means you
 should not rely on it will appear in every EDDN event.
+
+## Examples
+This is a few example of messages that passes current `FSSSignalDiscovered` schema.
+1. A message without `horizons`, `odyssey`, `systemName`, `StarPos` fields.
+```json
+{
+   "$schemaRef":"https://eddn.edcd.io/schemas/fsssignaldiscovered/1",
+   "header":{
+      "gatewayTimestamp":"2021-11-06T22:48:43.483147Z",
+      "softwareName":"an software",
+      "softwareVersion":"a version",
+      "uploaderID":"an uploader"
+   },
+   "message":{
+      "event":"FSSSignalDiscovered",
+      "signals":[
+         {
+            "timestamp":"2021-07-30T19:03:08Z",
+            "event":"FSSSignalDiscovered",
+            "SystemAddress":1774711381,
+            "SignalName":"EXPLORER-CLASS X2X-74M",
+            "IsStation":true
+         }
+      ]
+   }
+}
+```
+
+2. A message with `horizons`, `odyssey`, `systemName`, `StarPos` fields.
+```json
+{
+   "$schemaRef":"https://eddn.edcd.io/schemas/fsssignaldiscovered/1",
+   "header":{
+      "gatewayTimestamp":"2021-11-06T22:48:43.483147Z",
+      "softwareName":"an software",
+      "softwareVersion":"a version",
+      "uploaderID":"an uploader"
+   },
+   "message":{
+      "event":"FSSSignalDiscovered",
+      "signals":[
+         {
+            "timestamp":"2021-07-30T19:03:08Z",
+            "event":"FSSSignalDiscovered",
+            "SystemAddress":1774711381,
+            "SignalName":"EXPLORER-CLASS X2X-74M",
+            "IsStation":true
+         },
+         { 
+            "timestamp":"2020-12-31T14:14:01Z", 
+            "event":"FSSSignalDiscovered", 
+            "SystemAddress":216054883492, 
+            "SignalName":"$USS_NonHumanSignalSource;", 
+            "USSType":"$USS_Type_NonHuman;",
+            "SpawningState":"$FactionState_None;", 
+            "SpawningFaction":"$faction_none;",
+            "ThreatLevel":5
+            }
+      ],
+        "StarPos": [
+          8.1875,
+          124.21875,
+          -38.5
+        ],
+        "StarSystem": "HIP 56186",
+        "horizons": true,
+        "odyssey": true
+   }
+}
+```
