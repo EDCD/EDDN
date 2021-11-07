@@ -63,7 +63,11 @@
                             },
                             "SignalName": { "type":  "string" },
                             "IsStation": { "type": "boolean" },
+                            "USSType": { "type": "string" },
                             "TimeRemaining": {"$ref" : "#/definitions/disallowed"},
+                            "SpawningState": {"type":  "string"},
+                            "SpawningFaction" : {"type":  "string"},
+                            "ThreatLevel": {"type": "integer" },
 
                             "patternProperties": {
                                 "_Localised$"       : { "$ref" : "#/definitions/disallowed" }
