@@ -210,23 +210,12 @@ class Monitor(Thread):
                 database=Settings.MONITOR_DB['database']
             )
 
-            # Separate topic from message
-            message_split = message.split(b' |-| ')
-
-            # Handle gateway not sending topic
-            if len(message_split) > 1:
-                message = message_split[1]
-            else:
-                message = message_split[0]
-
-            print(f'message: {message}')
             message_text = zlib.decompress(message)
             json = simplejson.loads(message_text)
 
             # Default variables
             schema_id = json['$schemaRef']
-            software_id = json['header']['softwareName'].encode('utf8') + ' | ' \
-                + json['header']['softwareVersion'].encode('utf8')
+            software_id = f'{json["header"]["softwareName"]} | {json["header"]["softwareVersion"]}'
 
             # Duplicates?
             if Settings.RELAY_DUPLICATE_MAX_MINUTES:

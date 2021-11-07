@@ -135,11 +135,9 @@ def push_message(parsed_message: Dict, topic: str) -> None:
 
     # Push a zlib compressed JSON representation of the message to
     # announcers with schema as topic
-    compressed_msg = zlib.compress(string_message)
+    compressed_message = zlib.compress(string_message)
 
-    send_message = f"{str(topic)!r} |-| {compressed_msg!r}".encode('utf8')
-
-    sender.send(send_message)
+    sender.send(compressed_message)
     stats_collector.tally("outbound")
 
 
