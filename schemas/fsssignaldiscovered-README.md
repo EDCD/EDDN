@@ -78,7 +78,7 @@ This is a few example of messages that passes current `FSSSignalDiscovered` sche
 }
 ```
 
-2. A message with `horizons`, `odyssey`, `systemName`, `StarPos` fields.
+2. A message with `horizons`, `odyssey`, `systemName`, `StarPos` fields which says it sent from Odyssey.
 ```json
 {
    "$schemaRef":"https://eddn.edcd.io/schemas/fsssignaldiscovered/1",
