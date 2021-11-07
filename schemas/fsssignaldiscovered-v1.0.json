@@ -76,10 +76,10 @@
 
                             "patternProperties": {
                                 "_Localised$"       : { "$ref" : "#/definitions/disallowed" }
+                            }
                         }
                     }
-                }
-            },
+                },
                 "systemName": {
                     "type"          : "string",
                     "minLength"     : 1,
@@ -92,8 +92,6 @@
                     "maxItems"      : 3,
                     "description"   : "Should be added by the sender"
                 }
-
-
             }
         }
     },
