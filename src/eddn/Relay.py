@@ -115,15 +115,7 @@ class Relay(Thread):
         context = zmq.Context()
 
         receiver = context.socket(zmq.SUB)
-
-        # Filters on topics or not...
-        if Settings.RELAY_RECEIVE_ONLY_GATEWAY_EXTRA_JSON is True:
-            for schema_ref, schema_file in Settings.GATEWAY_JSON_SCHEMAS.items():
-                receiver.setsockopt(zmq.SUBSCRIBE, schema_ref)
-            for schema_ref, schema_file in Settings.RELAY_EXTRA_JSON_SCHEMAS.items():
-                receiver.setsockopt(zmq.SUBSCRIBE, schema_ref)
-        else:
-            receiver.setsockopt(zmq.SUBSCRIBE, '')
+        receiver.setsockopt_string(zmq.SUBSCRIBE, '')
 
         for binding in Settings.RELAY_RECEIVER_BINDINGS:
             # Relays bind upstream to an Announcer, or another Relay.
@@ -142,15 +134,6 @@ class Relay(Thread):
 
             :param message: Message to be passed on.
             """
-            # Separate topic from message
-            message_split = message.split(b' |-| ')
-
-            # Handle gateway not sending topic
-            if len(message_split) > 1:
-                message = message_split[1]
-            else:
-                message = message_split[0]
-
             message_text = zlib.decompress(message)
             json = simplejson.loads(message_text)
 
@@ -188,31 +171,24 @@ class Relay(Thread):
             gevent.spawn(relay_worker, inbound_message)
 
 
-class EnableCors(object):
-    """Enable CORS responses."""
+def apply_cors():
+    """
+    Apply a CORS handler.
 
-    name = 'enable_cors'
-    api = 2
-
-    @staticmethod
-    def apply(self, fn: Callable):
-        """
-        Apply a CORS handler.
-
-        Ref: <https://stackoverflow.com/a/17262900>
-        """
-        def _enable_cors(*args, **kwargs):
-            """Set CORS Headers."""
-            response.headers['Access-Control-Allow-Origin'] = '*'
-            response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, OPTIONS'
-            response.headers['Access-Control-Allow-Headers'] = \
-                'Origin, Accept, Content-Type, X-Requested-With, X-CSRF-Token'
-
-            if request.method != 'OPTIONS':
-                # actual request; reply with the actual response
-                return fn(*args, **kwargs)
-
-        return _enable_cors
+    Ref: <https://stackoverflow.com/a/17262900>
+    """
+    response.set_header(
+        'Access-Control-Allow-Origin',
+        '*'
+    )
+    response.set_header(
+        'Access-Control-Allow-Methods',
+        'GET, POST, PUT, OPTIONS'
+    )
+    response.set_header(
+        'Access-Control-Allow-Headers',
+        'Origin, Accept, Content-Type, X-Requested-With, X-CSRF-Token'
+    )
 
 
 def main() -> None:
@@ -226,7 +202,7 @@ def main() -> None:
     r = Relay()
     r.start()
 
-    app.install(EnableCors())
+    app.add_hook('after_request', apply_cors)
     app.run(
         host=Settings.RELAY_HTTP_BIND_ADDRESS,
         port=Settings.RELAY_HTTP_PORT,
