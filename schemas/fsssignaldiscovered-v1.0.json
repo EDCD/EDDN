@@ -63,7 +63,12 @@
                             },
                             "SignalName": { "type":  "string" },
                             "IsStation": { "type": "boolean" },
-                            "USSType": { "type": "string" },
+                            "USSType": {
+                              "type": "string",
+                               "not": {
+                                    "pattern": "^\\$USS_Type_MissionTarget;$"
+                                }
+                            },
                             "TimeRemaining": {"$ref" : "#/definitions/disallowed"},
                             "SpawningState": {"type":  "string"},
                             "SpawningFaction" : {"type":  "string"},
