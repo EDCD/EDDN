@@ -4,3 +4,4 @@ omit =
 	tests/*
 	# Any venv files
 	venv/*
+	venv-3.9/*
