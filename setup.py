@@ -1,14 +1,16 @@
 """Setup for EDDN software."""
 import glob
 import os
+import pathlib
 import re
 import shutil
 import subprocess
 import sys
 from setuptools import setup, find_packages
 
-import setup_env
 from setuptools import find_packages, setup
+
+import setup_env
 
 VERSIONFILE = "src/eddn/conf/Version.py"
 verstr = "unknown"
@@ -64,9 +66,9 @@ if setup_env.EDDN_ENV == 'live':
 ###########################################################################
 
 # Location of start-eddn-service script and its config file
-START_SCRIPT_BIN = f'{os.environ["HOME"]}/.local/bin'
+START_SCRIPT_BIN = pathlib.Path(f'{os.environ["HOME"]}/.local/bin')
 # Location of web files
-SHARE_EDDN_FILES = f'{os.environ["HOME"]}/.local/share/eddn/{setup_env.EDDN_ENV}'
+SHARE_EDDN_FILES = pathlib.Path(f'{os.environ["HOME"]}/.local/share/eddn/{setup_env.EDDN_ENV}')
 
 setup(
     name='eddn',
@@ -117,20 +119,18 @@ setup(
 )
 
 
-def open_file_perms_recursive(dirname: str) -> None:
+def open_file_perms_recursive(dirname: pathlib.Path) -> None:
     """Open up file perms on the given directory and its contents."""
     print(f'open_file_perms_recursive: {dirname}')
-    names = os.listdir(dirname)
-    for name in names:
-        n = f'{dirname}/{name}'
-        print(f'open_file_perms_recursive: {n}')
-        if (os.path.isdir(n)):
-            os.chmod(n, 0o755)
-            # Recurse
-            open_file_perms_recursive(n)
+
+    for name in dirname.glob('*'):
+        print(f'open_file_perms_recursive: {name}')
+        if name.is_dir():
+            name.chmod(0o755)
+            open_file_perms_recursive(name)
 
         else:
-            os.chmod(n, 0o644)
+            name.chmod(0o644)
 
 
 # Ensure the systemd-required start files are in place
@@ -138,34 +138,22 @@ print("""
 ******************************************************************************
 Ensuring start script and its config file are in place...
 """)
-old_cwd = os.getcwd()
-if not os.path.isdir(START_SCRIPT_BIN):
-    # We're still using Python 2.7, so no pathlib
-    os.chdir('/')
-    for pc in START_SCRIPT_BIN[1:].split('/'):
-        try:
-            os.mkdir(pc)
+try:
+    START_SCRIPT_BIN.mkdir(mode=0o700, parents=True, exist_ok=True)
 
-        except OSError:
-            pass
-
-        os.chdir(pc)
-
-    if not os.path.isdir(START_SCRIPT_BIN):
-        print(f"{START_SCRIPT_BIN} can't be created, aborting!!!")
-        exit(-1)
-
-os.chdir(old_cwd)
+except Exception as e:
+    print(f"{START_SCRIPT_BIN} can't be created, aborting!!!\n{e!r}")
+    exit(-1)
 
 shutil.copy(
     f'systemd/eddn_{setup_env.EDDN_ENV}_config',
-    f'{START_SCRIPT_BIN}/eddn_{setup_env.EDDN_ENV}_config'
+    START_SCRIPT_BIN / f'eddn_{setup_env.EDDN_ENV}_config'
 )
 # NB: We copy to a per-environment version so that, e.g.live use won't break
 #     due to changes in the other environments.
 shutil.copy(
     'systemd/start-eddn-service',
-    f'{START_SCRIPT_BIN}/start-eddn-{setup_env.EDDN_ENV}-service'
+    START_SCRIPT_BIN / f'start-eddn-{setup_env.EDDN_ENV}-service'
 )
 
 # Ensure the service log file archiving script is in place
@@ -184,38 +172,28 @@ print(f"""
 ******************************************************************************
 Ensuring {SHARE_EDDN_FILES} exists...
 """)
-old_cwd = os.getcwd()
-if not os.path.isdir(SHARE_EDDN_FILES):
-    # We're still using Python 2.7, so no pathlib
-    os.chdir('/')
-    for pc in SHARE_EDDN_FILES[1:].split('/'):
-        try:
-            os.mkdir(pc)
+try:
+    SHARE_EDDN_FILES.mkdir(mode=0o700, parents=True, exist_ok=True)
 
-        except OSError:
-            pass
+except Exception as e:
+    print(f"{SHARE_EDDN_FILES} can't be created, aborting!!!\n{e!r}")
+    exit(-1)
 
-        os.chdir(pc)
-
-    if not os.path.isdir(SHARE_EDDN_FILES):
-        print(f"{SHARE_EDDN_FILES} can't be created, aborting!!!")
-        exit(-1)
-
-os.chdir(old_cwd)
 print("""
 ******************************************************************************
 Ensuring latest monitor files are in place...
 """)
 # Copy the monitor (Web page) files
 try:
-    shutil.rmtree(f'{SHARE_EDDN_FILES}/monitor')
+    shutil.rmtree(SHARE_EDDN_FILES / 'monitor')
+
 except OSError:
     pass
+
 shutil.copytree(
     'contrib/monitor',
-    f'{SHARE_EDDN_FILES}/monitor',
-    # Not in Python 2.7
-    # copy_function=shutil.copyfile,
+    SHARE_EDDN_FILES / 'monitor',
+    copy_function=shutil.copyfile,  # type: ignore
 )
 # And a copy of the schemas too
 print("""
@@ -223,16 +201,15 @@ print("""
 Ensuring latest schema files are in place for web access...
 """)
 try:
-    shutil.rmtree(f'{SHARE_EDDN_FILES}/schemas')
+    shutil.rmtree(SHARE_EDDN_FILES / 'schemas')
 
 except OSError:
     pass
 
 shutil.copytree(
     'schemas',
-    f'{SHARE_EDDN_FILES}/schemas',
-    # Not in Python 2.7
-    # copy_function=shutil.copyfile,
+    SHARE_EDDN_FILES / 'schemas',
+    copy_function=shutil.copyfile,  # type: ignore
 )
 
 print("""
@@ -243,7 +220,7 @@ os.chmod(SHARE_EDDN_FILES, 0o755)
 open_file_perms_recursive(SHARE_EDDN_FILES)
 
 # You still need to make an override config file
-if not os.path.isfile(f'{SHARE_EDDN_FILES}/config.json'):
+if not (SHARE_EDDN_FILES / 'config.json').is_file():
     shutil.copy('docs/config-EXAMPLE.json', SHARE_EDDN_FILES)
     print(f"""
 ******************************************************************************
