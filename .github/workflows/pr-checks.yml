@@ -12,7 +12,7 @@ on:
     branches: [ develop ]
 
 jobs:
-  flake8:
+  linting:
     runs-on: ubuntu-18.04
 
     steps:
@@ -92,10 +92,6 @@ jobs:
         git diff "refs/remotes/${BASE_REPO_OWNER}/${BASE_REF}" -- | flake8 . --count --statistics --diff --extend-ignore D
     ####################################################################
 
-  schemas_load:
-    runs-on: ubuntu-18.04
-
-    steps:
-      - name: Check schemas
-        run: |
-          scripts/check-schemas-load.py
+    - name: Check schemas
+      run: |
+        scripts/check-schemas-load.py
