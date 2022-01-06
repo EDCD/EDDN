@@ -21,7 +21,9 @@ from eddn.core.Validator import Validator, ValidationSeverity
 
 from gevent import monkey
 monkey.patch_all()
+import bottle
 from bottle import Bottle, run, request, response, get, post
+bottle.BaseRequest.MEMFILE_MAX = 1024 * 1024 # 1MiB, default is/was 100KiB
 app = Bottle()
 
 logger = logging.getLogger(__name__)
