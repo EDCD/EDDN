@@ -184,7 +184,7 @@ def parse_and_error_handle(data):
                     '<<UNKNOWN>>',
                     '<<UNKNOWN>>',
                     get_remote_address(),
-                    data
+                    data[:512]
             ))
 
         except Exception as e:
