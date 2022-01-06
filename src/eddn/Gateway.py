@@ -27,6 +27,10 @@ bottle.BaseRequest.MEMFILE_MAX = 1024 * 1024 # 1MiB, default is/was 100KiB
 app = Bottle()
 
 logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+logger.addHandler(logging.StreamHandler())
+logger.info('Made logger')
+
 
 # This socket is used to push market data out to the Announcers over ZeroMQ.
 context = zmq.Context()
@@ -151,10 +155,25 @@ def parse_and_error_handle(data):
 
         # Sends the parsed message to the Relay/Monitor as compressed JSON.
         gevent.spawn(push_message, parsed_message, parsed_message['$schemaRef'])
-        logger.info("Accepted %s upload from %s" % (
-            parsed_message, get_remote_address()
-        ))
+
+        try:
+            logger.info('Accepted (%d, "%s", "%s", "%s", "%s", "%s") upload from %s' % (
+                request.content_length,
+                parsed_message['header']['uploaderID'],
+                parsed_message['header']['softwareName'],
+                parsed_message['header']['softwareVersion'],
+                parsed_message['$schemaRef'],
+                parsed_message['message']['event'] if '/journal' in
+                    parsed_message['$schemaRef'] else '-',
+                get_remote_address()
+            ))
+
+        except Exception as e:
+            print('Logging of Accepted request failed: %s' % (e.message))
+            pass
+
         return 'OK'
+
     else:
         response.status = 400
         statsCollector.tally("invalid")
