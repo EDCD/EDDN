@@ -51,6 +51,37 @@ statsCollector = StatsCollector()
 statsCollector.start()
 
 
+def extract_message_details(parsed_message):
+    uploader_id = '<<UNKNOWN>>'
+    software_name = '<<UNKNOWN>>'
+    software_version = '<<UNKNOWN>>'
+    schema_ref = '<<UNKNOWN>>'
+    journal_event = '<<UNKNOWN>>'
+
+    if 'header' in parsed_message:
+        if 'uploaderID' in parsed_message['header']:
+            uploader_id = parsed_message['header']['uploaderID']
+
+        if 'softwareName' in parsed_message['header']:
+            software_name = parsed_message['header']['softwareName']
+
+        if 'softwareVersion' in parsed_message['header']:
+            software_version = parsed_message['header']['softwareVersion']
+
+    if '$schemaRef' in parsed_message:
+        schema_ref = parsed_message['$schemaRef']
+
+
+        if '/journal/' in schema_ref:
+            if 'message' in parsed_message:
+                if 'event' in parsed_message['message']:
+                    journal_event = parsed_message['message']['event']
+
+        else:
+            journal_event = '-'
+
+    return uploader_id, software_name, software_version, schema_ref, journal_event
+
 def configure():
     # Get the list of transports to bind from settings. This allows us to PUB
     # messages to multiple announcers over a variety of socket types
@@ -144,9 +175,24 @@ def parse_and_error_handle(data):
     ) as exc:
         # Something bad happened. We know this will return at least a
         # semi-useful error message, so do so.
+        try:
+            logger.error('Error - JSON parse failed (%d, "%s", "%s", "%s", "%s", "%s") from %s:\n%s\n' % (
+                    request.content_length,
+                    '<<UNKNOWN>>',
+                    '<<UNKNOWN>>',
+                    '<<UNKNOWN>>',
+                    '<<UNKNOWN>>',
+                    '<<UNKNOWN>>',
+                    get_remote_address(),
+                    data
+            ))
+
+        except Exception as e:
+            print('Logging of "JSON parse failed" failed: %s' % (e.message))
+            pass
+
         response.status = 400
-        logger.error("Error to %s: %s" % (get_remote_address(), exc.message))
-        return str(exc)
+        return 'FAIL: ' + str(exc)
 
     # Here we check if an outdated schema has been passed
     if parsed_message["$schemaRef"] in Settings.GATEWAY_OUTDATED_SCHEMAS:
@@ -164,14 +210,10 @@ def parse_and_error_handle(data):
         gevent.spawn(push_message, parsed_message, parsed_message['$schemaRef'])
 
         try:
-            logger.info('Accepted (%d, "%s", "%s", "%s", "%s", "%s") upload from %s' % (
+            uploader_id, software_name, software_version, schema_ref, journal_event = extract_message_details(parsed_message)
+            logger.info('Accepted (%d, "%s", "%s", "%s", "%s", "%s") from %s' % (
                 request.content_length,
-                parsed_message['header']['uploaderID'],
-                parsed_message['header']['softwareName'],
-                parsed_message['header']['softwareVersion'],
-                parsed_message['$schemaRef'],
-                parsed_message['message']['event'] if '/journal' in
-                    parsed_message['$schemaRef'] else '-',
+                uploader_id, software_name, software_version, schema_ref, journal_event,
                 get_remote_address()
             ))
 
@@ -182,6 +224,19 @@ def parse_and_error_handle(data):
         return 'OK'
 
     else:
+        try:
+            uploader_id, software_name, software_version, schema_ref, journal_event = extract_message_details(parsed_message)
+            logger.error('Failed Validation "%s" (%d, "%s", "%s", "%s", "%s", "%s") from %s' % (
+                    str(validationResults.messages),
+                    request.content_length,
+                    uploader_id, software_name, software_version, schema_ref, journal_event,
+                    get_remote_address()
+            ))
+
+        except Exception as e:
+            print('Logging of Failed Validation failed: %s' % (e.message))
+            pass
+
         response.status = 400
         statsCollector.tally("invalid")
         return "FAIL: " + str(validationResults.messages)
@@ -192,17 +247,34 @@ def upload():
     try:
         # Body may or may not be compressed.
         message_body = get_decompressed_message()
+
     except zlib.error as exc:
         # Some languages and libs do a crap job zlib compressing stuff. Provide
         # at least some kind of feedback for them to try to get pointed in
         # the correct direction.
         response.status = 400
-        logger.error("gzip error with %s: %s" % (get_remote_address(), exc.message))
+        try:
+            logger.error('gzip error (%d, "%s", "%s", "%s", "%s", "%s") from %s' % (
+                    request.content_length,
+                    '<<UNKNOWN>>',
+                    '<<UNKNOWN>>',
+                    '<<UNKNOWN>>',
+                    '<<UNKNOWN>>',
+                    '<<UNKNOWN>>',
+                    get_remote_address()
+            ))
+
+        except Exception as e:
+            print('Logging of "gzip error" failed: %s' % (e.message))
+            pass
+
         return exc.message
+
     except MalformedUploadError as exc:
         # They probably sent an encoded POST, but got the key/val wrong.
         response.status = 400
-        logger.error("Error to %s: %s" % (get_remote_address(), exc.message))
+        logger.error("MalformedUploadError from %s: %s" % (get_remote_address(), exc.message))
+
         return exc.message
 
     statsCollector.tally("inbound")
