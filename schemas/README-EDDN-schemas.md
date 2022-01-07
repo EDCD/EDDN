@@ -103,7 +103,8 @@ available from time to time as necessary, e.g. for testing new schemas or
 changes to existing ones.
 
 ### Sending data
-To upload market data to EDDN, you'll need to make a POST request to the URL:
+To upload market data to EDDN, you'll need to make a **POST** request to the 
+URL:
 
 * https://eddn.edcd.io:4430/upload/
 
@@ -113,6 +114,38 @@ The body of this is a JSON object, so you SHOULD set a `Content-Type` header of
 * `application/x-www-form-urlencoded`
 * `multipart/form-data`
 * `text/plain`
+
+You *MAY* use gzip compression on the body of the message, but it is not 
+required.
+
+You should be prepared to handle all scenarios where sending of a message 
+fails:
+
+1. Connect refused.
+2. Connection timed out.
+3. Other possible responses as documented in
+   [Server responses](#server-responses).
+
+Carefully consider whether you should queue a 'failed' message for later 
+retry.  In particular, you should ensure that one 'bad' message does not 
+block other messages from being successfully sent.
+
+You **MUST** wait some reasonable time (minimum 1 minute) before retrying 
+any failed message.
+
+You **MUST NOT** retry any message that received a HTTP `400` or `426` code.
+An exception can be made if, **and only if**, *you have manually verified that 
+you have fixed the issues with it (i.e. updated the schema/version to a
+currently supported one and adjusted the data to fit that schema/version).*
+
+You **MAY** retry a message that initially received a `413` response (in 
+the hopes that the EDDN service admins decided to increase the maximum 
+allowed request size), but should not do so too quickly or in perpetuity.
+
+In general:
+
+- No data is better than bad data.
+- Delayed good data is better than degrading the EDDN service for others.
 
 ### Format of uploaded messages
 Each message is a JSON object in utf-8 encoding containing the following
@@ -201,6 +234,76 @@ Some of these requirements are also enforced by the schemas, and some things
 the schemas enforce might not be explicitly called out here, so **do**
 check what you're sending against the schema when implementing sending new
 events.
+
+### Server responses
+There are three possible sources of HTTP responses when sending an upload 
+to EDDN.
+
+1. The reverse proxy that initially accepts the request.
+2. The python `bottle` module that the Gateway uses to process the 
+   forwarded requests.  This might object to a message before the actual 
+   EDDN code gets to process it at all.
+3. The actual EDDN Gateway code.
+
+Once a message has cleared the EDDN Gateway then there is no mechanism for any 
+further issue (such as a message being detected as a duplicate in the 
+Monitor downstream of the Gateway) to be reported back to the sender.
+
+To state the obvious, if there are no issues with a request then an HTTP 
+200 response will be received by the sender.
+
+#### Reverse Proxy responses
+In addition to generic "you typoed the URL" and other such "you just didn't 
+make a valid request" responses you might experience the following:
+
+1. `408` - `Request Timed Out` - the sender took too long to make/complete 
+   its request and the reverse proxy rejected it as a result.
+2. `503` - `Service Unavailable` - the EDDN Gateway process is either not 
+   running, or not responding.
+
+#### bottle responses
+1. `413` - `Payload Too Large` - `bottle` enforces a maximum request size 
+   and the request exceeds that.  As of 2022-01-07 the limit is 1MiB, and 
+   pertains to the plain-text size, not after gzip compression if used.
+   To verify the current limit check for the line that looks like:
+
+      ```
+      bottle.BaseRequest.MEMFILE_MAX = 1024 * 1024 # 1MiB, default is/was 100KiB
+      ```
+   
+   in
+   [src/eddn/Gateway.py](https://github.com/EDCD/EDDN/blob/master/src/eddn/Gateway.py),
+   as added in
+   [commit  0e80c76cb564771465f61825e694227dcc3be312](https://github.com/EDCD/EDDN/commit/0e80c76cb564771465f61825e694227dcc3be312).
+
+#### EDDN Gateway responses
+1. `400` - `Bad Request` - this can be for a variety of reasons, and should 
+   come with a response body with prefix `OK: ` or `FAIL: `:
+    1. `FAIL: <python simplejson exception message>` - the request couldn't be 
+       parsed as valid JSON.  e.g.
+
+    ```
+    FAIL: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)
+    ```
+    2. `FAIL: [<ValidationError: "<schema validation failure>"]` - the JSON 
+       message failed to pass schema validation.  e.g.
+
+    ```
+    FAIL: [<ValidationError: "'StarPos' is a required property">]
+    ```
+
+    3. Other python exception message, e.g. if a message appeared to be 
+       gzip compressed, but a failure was experienced when attempting to 
+       decompress it.  **NB: As of 2022-07-01 such messages won't have the 
+       `FAIL: ` prefix.**
+
+2. `426` - `Upgrade Required` - You sent a message with an outdated 
+   `$schemaRef` value.  This could be either an old, deprecated version of 
+   a schema, or an entirely deprecated schema.  e.g.
+
+   ```
+   FAIL: The schema you have used is no longer supported. Please check for an updated version of your application.
+   ```
 
 ## Receiving messages
 
