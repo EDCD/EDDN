@@ -130,14 +130,18 @@ def get_decompressed_message():
     content_encoding = request.headers.get('Content-Encoding', '')
 
     if content_encoding in ['gzip', 'deflate']:
+        logger.debug('Content-Encoding of gzip or deflate...')
         # Compressed request. We have to decompress the body, then figure out
         # if it's form-encoded.
         try:
             # Auto header checking.
+            logger.debug('Trying zlib.decompress (15 + 32)...')
             message_body = zlib.decompress(request.body.read(), 15 + 32)
         except zlib.error:
+            logger.error('zlib.error, trying zlib.decompress (-15)')
             # Negative wbits suppresses adler32 checksumming.
             message_body = zlib.decompress(request.body.read(), -15)
+            logger.debug('Resulting message_body:\n%s\n' % (message_body))
 
         # At this point, we're not sure whether we're dealing with a straight
         # un-encoded POST body, or a form-encoded POST. Attempt to parse the
@@ -268,7 +272,7 @@ def upload():
             print('Logging of "gzip error" failed: %s' % (e.message))
             pass
 
-        return exc.message
+        return 'FAIL: zlib.error: ' + exc.message
 
     except MalformedUploadError as exc:
         # They probably sent an encoded POST, but got the key/val wrong.
