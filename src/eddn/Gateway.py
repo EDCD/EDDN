@@ -128,6 +128,7 @@ def get_decompressed_message():
     :returns: The de-compressed request body.
     """
     content_encoding = request.headers.get('Content-Encoding', '')
+    logger.debug('Content-Encoding: ' + content_encoding)
 
     if content_encoding in ['gzip', 'deflate']:
         logger.debug('Content-Encoding of gzip or deflate...')
@@ -148,6 +149,7 @@ def get_decompressed_message():
         # body. If it's not form-encoded, this will return an empty dict.
         form_enc_parsed = urlparse.parse_qs(message_body)
         if form_enc_parsed:
+            logger.debug('Request is form-encoded')
             # This is a form-encoded POST. The value of the data attrib will
             # be the body we're looking for.
             try:
@@ -157,6 +159,10 @@ def get_decompressed_message():
                     "No 'data' POST key/value found. Check your POST key "
                     "name for spelling, and make sure you're passing a value."
                 )
+
+        else:
+            logger.debug('Request is *NOT* form-encoded')
+
     else:
         # Uncompressed request. Bottle handles all of the parsing of the
         # POST key/vals, or un-encoded body.
@@ -279,7 +285,7 @@ def upload():
         response.status = 400
         logger.error("MalformedUploadError from %s: %s" % (get_remote_address(), exc.message))
 
-        return exc.message
+        return 'FAIL: ' + exc.message
 
     statsCollector.tally("inbound")
     return parse_and_error_handle(message_body)
