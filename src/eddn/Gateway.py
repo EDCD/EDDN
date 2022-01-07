@@ -1,6 +1,7 @@
 
 # coding: utf8
 
+THIS NEEDS UPDATING FOR THE SIZE LIMIT TWEAK AND EXTRA LOGGING
 """
 EDDN Gateway, which receives message from uploaders.
 
