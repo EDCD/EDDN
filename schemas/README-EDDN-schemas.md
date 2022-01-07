@@ -295,7 +295,9 @@ make a valid request" responses you might experience the following:
     3. Other python exception message, e.g. if a message appeared to be 
        gzip compressed, but a failure was experienced when attempting to 
        decompress it.  **NB: As of 2022-07-01 such messages won't have the 
-       `FAIL: ` prefix.**
+       `FAIL: ` prefix.**  See
+       [#161 - Gateway: Improve reporting of 'misc' errors ](https://github.com/EDCD/EDDN/issues/161)
+       for any progress/resolution on this.
 
 2. `426` - `Upgrade Required` - You sent a message with an outdated 
    `$schemaRef` value.  This could be either an old, deprecated version of 
