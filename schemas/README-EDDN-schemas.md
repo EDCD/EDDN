@@ -126,7 +126,8 @@ set a `Content-Type` header of `applicaton/json`, and NOT any of:
 * `text/plain`
 
 For historical reasons URL form-encoded data *is* supported, **but this is 
-deprecated and no new software should attempt this method**.
+deprecated and no new software should attempt this method**.  We 
+purposefully do not further document the exact format for this.
 
 You *MAY* use gzip compression on the body of the message, but it is not 
 required.
