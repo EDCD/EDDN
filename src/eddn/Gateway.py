@@ -128,22 +128,28 @@ def get_decompressed_message():
     :returns: The de-compressed request body.
     """
     content_encoding = request.headers.get('Content-Encoding', '')
+    logger.debug('Content-Encoding: ' + content_encoding)
 
     if content_encoding in ['gzip', 'deflate']:
+        logger.debug('Content-Encoding of gzip or deflate...')
         # Compressed request. We have to decompress the body, then figure out
         # if it's form-encoded.
         try:
             # Auto header checking.
+            logger.debug('Trying zlib.decompress (15 + 32)...')
             message_body = zlib.decompress(request.body.read(), 15 + 32)
         except zlib.error:
+            logger.error('zlib.error, trying zlib.decompress (-15)')
             # Negative wbits suppresses adler32 checksumming.
             message_body = zlib.decompress(request.body.read(), -15)
+            logger.debug('Resulting message_body:\n%s\n' % (message_body))
 
         # At this point, we're not sure whether we're dealing with a straight
         # un-encoded POST body, or a form-encoded POST. Attempt to parse the
         # body. If it's not form-encoded, this will return an empty dict.
         form_enc_parsed = urlparse.parse_qs(message_body)
         if form_enc_parsed:
+            logger.debug('Request is form-encoded')
             # This is a form-encoded POST. The value of the data attrib will
             # be the body we're looking for.
             try:
@@ -153,14 +159,33 @@ def get_decompressed_message():
                     "No 'data' POST key/value found. Check your POST key "
                     "name for spelling, and make sure you're passing a value."
                 )
-    else:
-        # Uncompressed request. Bottle handles all of the parsing of the
-        # POST key/vals, or un-encoded body.
-        data_key = request.forms.get('data')
-        if data_key:
-            # This is a form-encoded POST. Support the silly people.
-            message_body = data_key
+
         else:
+            logger.debug('Request is *NOT* form-encoded')
+
+    else:
+        logger.debug('Content-Encoding indicates *not* compressed...')
+
+        form_enc_parsed = urlparse.parse_qs(request.body.read())
+        if form_enc_parsed:
+            logger.debug('Request is form-encoded')
+
+            # Uncompressed request. Bottle handles all of the parsing of the
+            # POST key/vals, or un-encoded body.
+            data_key = request.forms.get('data')
+            if data_key:
+                logger.debug('form-encoded POST request detected...')
+                # This is a form-encoded POST. Support the silly people.
+                message_body = data_key
+    
+            else:
+                raise MalformedUploadError(
+                    "No 'data' POST key/value found. Check your POST key "
+                    "name for spelling, and make sure you're passing a value."
+                )
+
+        else:
+            logger.debug('Plain POST request detected...')
             # This is a non form-encoded POST body.
             message_body = request.body.read()
 
@@ -171,7 +196,7 @@ def parse_and_error_handle(data):
     try:
         parsed_message = simplejson.loads(data)
     except (
-        MalformedUploadError, TypeError, ValueError
+        TypeError, ValueError
     ) as exc:
         # Something bad happened. We know this will return at least a
         # semi-useful error message, so do so.
@@ -192,13 +217,14 @@ def parse_and_error_handle(data):
             pass
 
         response.status = 400
-        return 'FAIL: ' + str(exc)
+        return 'FAIL: JSON parsing: ' + str(exc)
 
     # Here we check if an outdated schema has been passed
     if parsed_message["$schemaRef"] in Settings.GATEWAY_OUTDATED_SCHEMAS:
         response.status = '426 Upgrade Required'  # Bottle (and underlying httplib) don't know this one
         statsCollector.tally("outdated")
-        return "FAIL: The schema you have used is no longer supported. Please check for an updated version of your application."
+        return "FAIL: Outdated Schema: The schema you have used is no longer supported. Please check for an updated " \
+               "version of your application."
 
     validationResults = validator.validate(parsed_message)
 
@@ -239,7 +265,7 @@ def parse_and_error_handle(data):
 
         response.status = 400
         statsCollector.tally("invalid")
-        return "FAIL: " + str(validationResults.messages)
+        return "FAIL: Schema Validation: " + str(validationResults.messages)
 
 
 @app.route('/upload/', method=['OPTIONS', 'POST'])
@@ -268,14 +294,14 @@ def upload():
             print('Logging of "gzip error" failed: %s' % (e.message))
             pass
 
-        return exc.message
+        return 'FAIL: zlib.error: ' + exc.message
 
     except MalformedUploadError as exc:
         # They probably sent an encoded POST, but got the key/val wrong.
         response.status = 400
         logger.error("MalformedUploadError from %s: %s" % (get_remote_address(), exc.message))
 
-        return exc.message
+        return 'FAIL: Malformed Upload: ' + exc.message
 
     statsCollector.tally("inbound")
     return parse_and_error_handle(message_body)

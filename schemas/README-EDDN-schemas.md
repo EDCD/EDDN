@@ -126,7 +126,8 @@ set a `Content-Type` header of `applicaton/json`, and NOT any of:
 * `text/plain`
 
 For historical reasons URL form-encoded data *is* supported, **but this is 
-deprecated and no new software should attempt this method**.
+deprecated and no new software should attempt this method**.  We 
+purposefully do not further document the exact format for this.
 
 You *MAY* use gzip compression on the body of the message, but it is not 
 required.
@@ -310,35 +311,62 @@ make a valid request" responses you might experience the following:
    [commit  0e80c76cb564771465f61825e694227dcc3be312](https://github.com/EDCD/EDDN/commit/0e80c76cb564771465f61825e694227dcc3be312).
 
 #### EDDN Gateway responses
-1. `400` - `Bad Request` - this can be for a variety of reasons, and should 
-   come with a response body with prefix `OK: ` or `FAIL: `:
-    1. `FAIL: <python simplejson exception message>` - the request couldn't be 
-       parsed as valid JSON.  e.g.
+For all failures the response body will contain text that begins `FAIL: `.  Currently two different HTTP status codes are utilised:
 
-    ```
-    FAIL: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)
-    ```
-    2. `FAIL: [<ValidationError: "<schema validation failure>"]` - the JSON 
-       message failed to pass schema validation.  e.g.
+1. `400` - `Bad Request` - This indicates something wrong with the request 
+   body.  Possibly due to a format issue (compression, form encoding), or 
+   the actual content of the EDDN message:
+   1. `FAIL: zlib.error: <detail>` - A failure to decompress a message that 
+      claimed to be compressed.
 
-    ```
-    FAIL: [<ValidationError: "'StarPos' is a required property">]
-    ```
+   2. `FAIL: Malformed Upload: <detail>` - the message appeared to be 
+      form-encoded, but either the format was bad or there was no `data` 
+      key.
 
-    3. Other python exception message, e.g. if a message appeared to be 
-       gzip compressed, but a failure was experienced when attempting to 
-       decompress it.  **NB: As of 2022-07-01 such messages won't have the 
-       `FAIL: ` prefix.**  See
-       [#161 - Gateway: Improve reporting of 'misc' errors ](https://github.com/EDCD/EDDN/issues/161)
-       for any progress/resolution on this.
-
-2. `426` - `Upgrade Required` - You sent a message with an outdated 
-   `$schemaRef` value.  This could be either an old, deprecated version of 
-   a schema, or an entirely deprecated schema.  e.g.
+   3. `FAIL: JSON parsing: <detail>` - the 
+       message couldn't be parsed as valid JSON.  e.g.
 
    ```
-   FAIL: The schema you have used is no longer supported. Please check for an updated version of your application.
+   FAIL: JSON parsing: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)
    ```
+   
+   4. `FAIL: Schema Validation: <detail>` - the message failed to validate 
+      against the cited schema. e.g.
+   
+   ```
+   FAIL: Schema Validation: [<ValidationError: "'StarPos' is a required property">]
+   ```
+   
+   The exact detail will be very much dependent on both the schema the 
+   message cited and the contents of the message that failed to pass the 
+   validation.
+
+   In particular, if the message contains a key that is tagged 'disallowed' in 
+   the schema the response will look like:
+
+   ```
+   FAIL: Schema Validation: "[<ValidationError: "{'type': ['array', 'boolean', 'integer', 'number', 'null', 'object', 'string']} is not allowed for 'BadKey'">]"
+   ```
+   This is due to the use of a JSON schema stanza that says "don't allow 
+   any valid type for the value of this key" to trigger the error for such
+   disallowed keys.
+
+2. `426` - `Upgrade Required` - This indicates that the cited schema, or 
+   version thereof, is outdated.  The body of the response will be:
+
+   ```
+   FAIL: Oudated Schema: The schema you have used is no longer supported. Please check for an updated version of your application.
+   ```
+   The wording here is aimed at users of applications that send messages 
+   over EDDN.  If you're the developer of such an application then 
+   obviously you need to update your code to use a currently supported 
+   schema and version thereof.
+
+
+There shouldn't be any other variants of a 'FAIL' message.  If you find
+any then please
+[open an issue on GitHub](https://github.com/EDCD/EDDN/issues/new)
+with as much detail as possible so that we can update this documentation.
 
 ## Receiving messages
 
