@@ -320,28 +320,32 @@ make a valid request" responses you might experience the following:
       key.
 
    3. `FAIL: JSON parsing: <detail>` - the 
-       request couldn't be parsed as valid JSON.  e.g.
+       message couldn't be parsed as valid JSON.  e.g.
 
    ```
    FAIL: JSON parsing: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)
    ```
    
-   4. `FAIL: Outdated Schema: <detail>` - message cites a schema (or 
-      version of) that is no longer supported.
+   4. `FAIL: Schema Validation: <detail>` - the message failed to validate 
+      against the cited schema. e.g.
+   
+   ```
+   FAIL: Schema Validation: [<ValidationError: "'StarPos' is a required property">]
+   ```
+   
+   The exact detail will be very much dependent on both the schema the 
+   message cited and the contents of the message that failed to pass the 
+   validation.
 
-   6. `FAIL: [<ValidationError: "<schema validation failure>"]` - the JSON 
-       message failed to pass schema validation.  e.g.
+   In particular, if the message contains a key that is tagged 'disallowed' in 
+   the schema the response will look like:
 
    ```
-   FAIL: [<ValidationError: "'StarPos' is a required property">]
+   FAIL: Schema Validation: "[<ValidationError: "{'type': ['array', 'boolean', 'integer', 'number', 'null', 'object', 'string']} is not allowed for 'BadKey'">]"
    ```
-
-   6. Other python exception message, e.g. if a message appeared to be 
-       gzip compressed, but a failure was experienced when attempting to 
-       decompress it.  **NB: As of 2022-07-01 such messages won't have the 
-       `FAIL: ` prefix.**  See
-       [#161 - Gateway: Improve reporting of 'misc' errors ](https://github.com/EDCD/EDDN/issues/161)
-       for any progress/resolution on this.
+   This is due to the use of a JSON schema stanza that says "don't allow 
+   any valid type for the value of this key" to trigger the error for such
+   disallowed keys.
 
 3. `426` - `Upgrade Required` - You sent a message with an outdated 
    `$schemaRef` value.  This could be either an old, deprecated version of 
@@ -350,6 +354,13 @@ make a valid request" responses you might experience the following:
    ```
    FAIL: The schema you have used is no longer supported. Please check for an updated version of your application.
    ```
+   4. `FAIL: Outdated Schema: <detail>` - message cites a schema (or
+      version of) that is no longer supported.
+
+
+There shouldn't be any other variants of a 'FAIL' message.  If you find
+any then please open an issue with as much detail as possible so we can
+update this documentation.
 
 ## Receiving messages
 

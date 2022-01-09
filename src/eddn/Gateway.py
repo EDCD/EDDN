@@ -265,7 +265,7 @@ def parse_and_error_handle(data):
 
         response.status = 400
         statsCollector.tally("invalid")
-        return "FAIL: " + str(validationResults.messages)
+        return "FAIL: Schema Validation: " + str(validationResults.messages)
 
 
 @app.route('/upload/', method=['OPTIONS', 'POST'])
