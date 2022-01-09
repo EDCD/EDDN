@@ -217,7 +217,7 @@ def parse_and_error_handle(data):
             pass
 
         response.status = 400
-        return 'FAIL: ' + str(exc)
+        return 'FAIL: JSON parsing: ' + str(exc)
 
     # Here we check if an outdated schema has been passed
     if parsed_message["$schemaRef"] in Settings.GATEWAY_OUTDATED_SCHEMAS:

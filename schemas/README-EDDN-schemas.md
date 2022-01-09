@@ -311,12 +311,12 @@ make a valid request" responses you might experience the following:
 
 #### EDDN Gateway responses
 1. `400` - `Bad Request` - this can be for a variety of reasons, and should 
-   come with a response body with prefix `OK: ` or `FAIL: `:
-    1. `FAIL: <python simplejson exception message>` - the request couldn't be 
-       parsed as valid JSON.  e.g.
+   come with a response body with a `FAIL: ` prefix:
+    1. `FAIL: JSON parsing: <detail>` - the 
+       request couldn't be parsed as valid JSON.  e.g.
 
     ```
-    FAIL: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)
+    FAIL: JSON parsing: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)
     ```
     2. `FAIL: [<ValidationError: "<schema validation failure>"]` - the JSON 
        message failed to pass schema validation.  e.g.
