@@ -310,8 +310,11 @@ make a valid request" responses you might experience the following:
    [commit  0e80c76cb564771465f61825e694227dcc3be312](https://github.com/EDCD/EDDN/commit/0e80c76cb564771465f61825e694227dcc3be312).
 
 #### EDDN Gateway responses
-1. `400` - `Bad Request` - this can be for a variety of reasons, and should 
-   come with a response body with a `FAIL: ` prefix:
+For all failures the response body will contain text that begins `FAIL: `.
+
+1. `400` - `Bad Request` - This indicates something wrong with the request 
+   body.  Possibly due to a format issue (compression, form encoding), or 
+   the actual content of the EDDN message:
    1. `FAIL: zlib.error: <detail>` - A failure to decompress a message that 
       claimed to be compressed.
 
@@ -347,15 +350,16 @@ make a valid request" responses you might experience the following:
    any valid type for the value of this key" to trigger the error for such
    disallowed keys.
 
-3. `426` - `Upgrade Required` - You sent a message with an outdated 
-   `$schemaRef` value.  This could be either an old, deprecated version of 
-   a schema, or an entirely deprecated schema.  e.g.
+2. `426` - `Upgrade Required` - This indicates that the cited schema, or 
+   version thereof, is outdated.  The body of the response will be:
 
    ```
-   FAIL: The schema you have used is no longer supported. Please check for an updated version of your application.
+   FAIL: Oudated Schema: The schema you have used is no longer supported. Please check for an updated version of your application.
    ```
-   4. `FAIL: Outdated Schema: <detail>` - message cites a schema (or
-      version of) that is no longer supported.
+   The wording here is aimed at users of applications that send messages 
+   over EDDN.  If you're the developer of such an application then 
+   obviously you need to update your code to use a currently supported 
+   schema and version thereof.
 
 
 There shouldn't be any other variants of a 'FAIL' message.  If you find
