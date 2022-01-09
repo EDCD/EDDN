@@ -4,6 +4,13 @@ import re
 import shutil
 from setuptools import setup, find_packages
 
+# TODO: Enforce only using the `live` branch if `live` is in cwd, or
+# `beta` branch if `beta` is in cwd.
+#  The idea is to have the `live` branch, *which includes documentation*
+#  always match what is actually running as the live service (modulo the
+#  small window between pull/install/restart).  Thus it shouldn't use
+#  `master` which may have changes merged some time before they become
+#  live.
 
 VERSIONFILE = "src/eddn/conf/Version.py"
 verstr      = "unknown"
