@@ -98,22 +98,35 @@ value, e.g.
     "$schemaRef": "https://eddn.edcd.io/schemas/shipyard/2/test",
 
 You MUST also utilise these test forms of the schemas when first testing your
-code. There might also be a beta.eddn.edcd.io, or dev.eddn.edcd.io, service
+code.
+
+There might also be a beta.eddn.edcd.io, or dev.eddn.edcd.io, service
 available from time to time as necessary, e.g. for testing new schemas or
-changes to existing ones.
+changes to existing ones.  Ask on the `#eddn` channel of the EDCD Discord 
+(see https://edcd.github.io/ for an invite link).
+
+Alternatively you could attempt
+[running your own test instance of EDDN](../docs/Running-this-software.md).
 
 ### Sending data
-To upload market data to EDDN, you'll need to make a **POST** request to the 
-URL:
+Messages sent to EDDN **MUST**:
 
-* https://eddn.edcd.io:4430/upload/
+- Use the URL: `https://eddn.edcd.io:4430/upload/`.  Note the use of 
+  TLS-encrypted HTTPS.  A plain HTTP request will elicit a `400 Bad 
+  Request` response.
+- Use the HTTP 1.1 protocol.  HTTP/2 is not supported at this time.
+- Use a **POST** request, with the body containing the EDDN message.  No
+  query parameters in the URL are supported or necessary.
 
-The body of this is a JSON object, so you SHOULD set a `Content-Type` header of
-`applicaton/json`, and NOT any of:
+The body of an EDDN message is a JSON object in UTF-8 encoding.  You SHOULD 
+set a `Content-Type` header of `applicaton/json`, and NOT any of:
 
 * `application/x-www-form-urlencoded`
 * `multipart/form-data`
 * `text/plain`
+
+For historical reasons URL form-encoded data *is* supported, **but this is 
+deprecated and no new software should attempt this method**.
 
 You *MAY* use gzip compression on the body of the message, but it is not 
 required.
@@ -121,7 +134,7 @@ required.
 You should be prepared to handle all scenarios where sending of a message 
 fails:
 
-1. Connect refused.
+1. Connection refused.
 2. Connection timed out.
 3. Other possible responses as documented in
    [Server responses](#server-responses).
@@ -145,10 +158,10 @@ allowed request size), but should not do so too quickly or in perpetuity.
 In general:
 
 - No data is better than bad data.
-- Delayed good data is better than degrading the EDDN service for others.
+- *Delayed* good data is better than degrading the EDDN service for others.
 
 ### Format of uploaded messages
-Each message is a JSON object in utf-8 encoding containing the following
+Each message is a JSON object in UTF-8 encoding containing the following
 key+value pairs:
 
 1. `$schemaRef` - Which schema (including version) this message is for.
@@ -202,10 +215,17 @@ For example, a shipyard message, version 2, might look like:
 ```
 
 ### Contents of `message`
+Every message MUST comply with the schema its `$schemaRef` value cites.  
+
+Apart from short time windows during deployment of a new version the live 
+EDDN service should always be using
+[the schemas as present in the live branch](https://github.com/EDCD/EDDN/tree/live/schemas).
+So, be sure you're checking those and not, e.g. those in the `master` or 
+other branches.
 
 Each `message` object must have, at bare minimum:
 
-1. `timestamp` - string date and time in ISO8601 format. Whilst that
+1. `timestamp` - string date and time in ISO8601 format. Whilst this
    technically allows for any timezone to be cited you SHOULD provide this in
    UTC, aka 'Zulu Time' as in the example above. You MUST ensure that you are
    doing this properly. Do not claim 'Z' whilst actually using a local time
@@ -213,27 +233,32 @@ Each `message` object must have, at bare minimum:
    
    Listeners MAY make decisions on accepting data based on this time stamp,
    i.e. "too old".
-2. One other key/value pair representing the data. In general there will be
-   much more than this. Again, consult the
+2. At least one other key/value pair representing the data. In general there 
+   will be much more than this. Consult the
    [schemas and their documentation](./).
 
-Note that many of the key names chosen in the schemas are based on the CAPI 
-data, not Journal events, because the CAPI came first.  This means renaming 
-many of the keys from Journal events to match the schema.
+Because the first versions of some schemas were defined when only the CAPI 
+data was available, before Journal files existed, many of the key names chosen
+in the schemas are based on the equivalent in CAPI data, not Journal events.
+This means ouy MUST rename many of the keys from Journal events to match the
+schemas.
 
 EDDN is intended to transport generic data not specific to any particular Cmdr
-and to reflect the data that a player would see in-game in station services or
-the local map. To that end, uploading applications MUST ensure that messages do
-not contain any Cmdr-specific data (other than "uploaderID" and the "horizons"
-flag).
+and to reflect only the data that every player would see in-game in station 
+services or the local map. To that end, uploading applications MUST ensure
+that messages do not contain any Cmdr-specific data (other than "uploaderID",
+the "horizons" flag, and the "odyssey" flag).
 
 The individual schemas will instruct you on various elisions (removals) to 
 be made to comply with this.
 
 Some of these requirements are also enforced by the schemas, and some things
-the schemas enforce might not be explicitly called out here, so **do**
-check what you're sending against the schema when implementing sending new
-events.
+the schemas enforce might not be explicitly called out here.  So, **do**
+check what you're sending against the relevant schema(s) when making any 
+changes to your code.
+
+It is also advisable to Watch this repository on GitHub so as to be aware 
+of any changes to schemas.
 
 ### Server responses
 There are three possible sources of HTTP responses when sending an upload 
@@ -250,7 +275,8 @@ further issue (such as a message being detected as a duplicate in the
 Monitor downstream of the Gateway) to be reported back to the sender.
 
 To state the obvious, if there are no issues with a request then an HTTP 
-200 response will be received by the sender.
+200 response will be received by the sender.  The body of the response 
+should be the string `OK`.
 
 #### Reverse Proxy responses
 In addition to generic "you typoed the URL" and other such "you just didn't 
