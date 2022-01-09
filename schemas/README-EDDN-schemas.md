@@ -312,27 +312,30 @@ make a valid request" responses you might experience the following:
 #### EDDN Gateway responses
 1. `400` - `Bad Request` - this can be for a variety of reasons, and should 
    come with a response body with a `FAIL: ` prefix:
-    1. `FAIL: JSON parsing: <detail>` - the 
+   1. `FAIL: zlib.error: <detail>` - A failure to decompress a message that 
+      claimed to be compressed.
+
+   2. `FAIL: JSON parsing: <detail>` - the 
        request couldn't be parsed as valid JSON.  e.g.
 
-    ```
-    FAIL: JSON parsing: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)
-    ```
-    2. `FAIL: [<ValidationError: "<schema validation failure>"]` - the JSON 
+   ```
+   FAIL: JSON parsing: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)
+   ```
+   3. `FAIL: [<ValidationError: "<schema validation failure>"]` - the JSON 
        message failed to pass schema validation.  e.g.
 
-    ```
-    FAIL: [<ValidationError: "'StarPos' is a required property">]
-    ```
+   ```
+   FAIL: [<ValidationError: "'StarPos' is a required property">]
+   ```
 
-    3. Other python exception message, e.g. if a message appeared to be 
+   4. Other python exception message, e.g. if a message appeared to be 
        gzip compressed, but a failure was experienced when attempting to 
        decompress it.  **NB: As of 2022-07-01 such messages won't have the 
        `FAIL: ` prefix.**  See
        [#161 - Gateway: Improve reporting of 'misc' errors ](https://github.com/EDCD/EDDN/issues/161)
        for any progress/resolution on this.
 
-2. `426` - `Upgrade Required` - You sent a message with an outdated 
+3. `426` - `Upgrade Required` - You sent a message with an outdated 
    `$schemaRef` value.  This could be either an old, deprecated version of 
    a schema, or an entirely deprecated schema.  e.g.
 

@@ -300,7 +300,7 @@ def upload():
         response.status = 400
         logger.error("MalformedUploadError from %s: %s" % (get_remote_address(), exc.message))
 
-        return 'FAIL: ' + exc.message
+        return 'FAIL: Malformed Upload: ' + exc.message
 
     statsCollector.tally("inbound")
     return parse_and_error_handle(message_body)
