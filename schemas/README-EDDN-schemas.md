@@ -315,20 +315,24 @@ make a valid request" responses you might experience the following:
    1. `FAIL: zlib.error: <detail>` - A failure to decompress a message that 
       claimed to be compressed.
 
-   2. `FAIL: JSON parsing: <detail>` - the 
+   2. `FAIL: Malformed Upload: <detail>` - the message looked to be 
+      form-encoded, but either the format was bad or there was no `data` 
+      key.
+
+   3. `FAIL: JSON parsing: <detail>` - the 
        request couldn't be parsed as valid JSON.  e.g.
 
    ```
    FAIL: JSON parsing: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)
    ```
-   3. `FAIL: [<ValidationError: "<schema validation failure>"]` - the JSON 
+   4. `FAIL: [<ValidationError: "<schema validation failure>"]` - the JSON 
        message failed to pass schema validation.  e.g.
 
    ```
    FAIL: [<ValidationError: "'StarPos' is a required property">]
    ```
 
-   4. Other python exception message, e.g. if a message appeared to be 
+   5. Other python exception message, e.g. if a message appeared to be 
        gzip compressed, but a failure was experienced when attempting to 
        decompress it.  **NB: As of 2022-07-01 such messages won't have the 
        `FAIL: ` prefix.**  See
