@@ -196,7 +196,7 @@ def parse_and_error_handle(data):
     try:
         parsed_message = simplejson.loads(data)
     except (
-        MalformedUploadError, TypeError, ValueError
+        TypeError, ValueError
     ) as exc:
         # Something bad happened. We know this will return at least a
         # semi-useful error message, so do so.
