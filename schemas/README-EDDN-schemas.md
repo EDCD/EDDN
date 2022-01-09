@@ -231,6 +231,13 @@ Each `message` object must have, at bare minimum:
    doing this properly. Do not claim 'Z' whilst actually using a local time
    that is offset from UTC.
    
+   If you are only utilising Journal-sourced data then simply using the 
+   value from there should be sufficient as the PC game client is meant to 
+   always be correctly citing UTC for this.  Indeed it has been observed, 
+   in the Odyssey 4.0.0.1002 client, that with the Windows clock behind UTC 
+   by 21 seconds both the in-game UI clock *and* the Journal event 
+   timestamps are still properly UTC to the nearest second.
+
    Listeners MAY make decisions on accepting data based on this time stamp,
    i.e. "too old".
 2. At least one other key/value pair representing the data. In general there 
