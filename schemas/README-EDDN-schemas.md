@@ -310,7 +310,7 @@ make a valid request" responses you might experience the following:
    [commit  0e80c76cb564771465f61825e694227dcc3be312](https://github.com/EDCD/EDDN/commit/0e80c76cb564771465f61825e694227dcc3be312).
 
 #### EDDN Gateway responses
-For all failures the response body will contain text that begins `FAIL: `.
+For all failures the response body will contain text that begins `FAIL: `.  Currently two different HTTP status codes are utilised:
 
 1. `400` - `Bad Request` - This indicates something wrong with the request 
    body.  Possibly due to a format issue (compression, form encoding), or 
@@ -318,7 +318,7 @@ For all failures the response body will contain text that begins `FAIL: `.
    1. `FAIL: zlib.error: <detail>` - A failure to decompress a message that 
       claimed to be compressed.
 
-   2. `FAIL: Malformed Upload: <detail>` - the message looked to be 
+   2. `FAIL: Malformed Upload: <detail>` - the message appeared to be 
       form-encoded, but either the format was bad or there was no `data` 
       key.
 
@@ -363,8 +363,9 @@ For all failures the response body will contain text that begins `FAIL: `.
 
 
 There shouldn't be any other variants of a 'FAIL' message.  If you find
-any then please open an issue with as much detail as possible so we can
-update this documentation.
+any then please
+[open an issue on GitHub](https://github.com/EDCD/EDDN/issues/new)
+with as much detail as possible so that we can update this documentation.
 
 ## Receiving messages
 
