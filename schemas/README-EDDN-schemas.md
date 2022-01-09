@@ -220,8 +220,8 @@ Every message MUST comply with the schema its `$schemaRef` value cites.
 Apart from short time windows during deployment of a new version the live 
 EDDN service should always be using
 [the schemas as present in the live branch](https://github.com/EDCD/EDDN/tree/live/schemas).
-So, be sure you're checking those and not, e.g. those in the `master` or 
-other branches.
+So, be sure you're checking the live versions and not, e.g. those in the 
+`master` or other branches.
 
 Each `message` object must have, at bare minimum:
 
