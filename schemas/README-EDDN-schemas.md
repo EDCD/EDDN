@@ -325,14 +325,18 @@ make a valid request" responses you might experience the following:
    ```
    FAIL: JSON parsing: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)
    ```
-   4. `FAIL: [<ValidationError: "<schema validation failure>"]` - the JSON 
+   
+   4. `FAIL: Outdated Schema: <detail>` - message cites a schema (or 
+      version of) that is no longer supported.
+
+   6. `FAIL: [<ValidationError: "<schema validation failure>"]` - the JSON 
        message failed to pass schema validation.  e.g.
 
    ```
    FAIL: [<ValidationError: "'StarPos' is a required property">]
    ```
 
-   5. Other python exception message, e.g. if a message appeared to be 
+   6. Other python exception message, e.g. if a message appeared to be 
        gzip compressed, but a failure was experienced when attempting to 
        decompress it.  **NB: As of 2022-07-01 such messages won't have the 
        `FAIL: ` prefix.**  See
