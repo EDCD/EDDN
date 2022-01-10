@@ -6,40 +6,6 @@ import subprocess
 import sys
 from setuptools import setup, find_packages
 
-# TODO: Enforce only using the `live` branch if `live` is in cwd, or
-# `beta` branch if `beta` is in cwd.
-#  The idea is to have the `live` branch, *which includes documentation*
-#  always match what is actually running as the live service (modulo the
-#  small window between pull/install/restart).  Thus it shouldn't use
-#  `master` which may have changes merged some time before they become
-#  live.
-
-cwd = os.getcwd()
-# e.g. /home/eddn/live/EDDN.git
-if '/live/' in cwd:
-
-    try:
-        git_cmd = subprocess.Popen(
-            'git symbolic-ref -q --short HEAD'.split(),
-            stdout=subprocess.PIPE,
-            stderr=subprocess.STDOUT
-        )
-        out, err = git_cmd.communicate()
-
-    except Exception as e:
-        print("Couldn't run git command to check branch: %s" % (e))
-
-    else:
-        branch = out.decode().rstrip('\n')
-        # - For any other branch checked out at its head this will be a
-        #   different name.
-        # - For any 'detached HEAD' (i.e. specific commit ID) it will be
-        #   empty.  That includes checking out a tag.
-        if branch != 'live':
-            print("CWD is '%s', but branch is '%s', aborting!" % (cwd, branch))
-            sys.exit(-1)
-
-
 VERSIONFILE = "src/eddn/conf/Version.py"
 verstr      = "unknown"
 try:
@@ -54,6 +20,44 @@ except EnvironmentError:
 
 # Read environment-specific settings
 import setup_env
+
+
+###########################################################################
+# Enforce the git status being "branch 'live' checked out, at its HEAD"
+# if setup_env.py says this is the live environment.
+#
+# The idea is to have the `live` branch, *which includes documentation*
+# always match what is actually running as the live service (modulo the
+# small window between pull/install/restart).  Thus it shouldn't use
+# `master`, or any other branch than `live`, which may have changes merged
+# some time before they become live.
+###########################################################################
+cwd = os.getcwd()
+# e.g. /home/eddn/live/EDDN.git
+if setup_env.EDDN_ENV == 'live':
+
+    try:
+        git_cmd = subprocess.Popen(
+            'git symbolic-ref -q --short HEAD'.split(),
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT
+        )
+        out, err = git_cmd.communicate()
+
+    except Exception as e:
+        print("Couldn't run git command to check branch: %s" % (e))
+
+    else:
+        branch = out.decode().rstrip('\n')
+        # - For any other branch checked out at its HEAD this will be a
+        #   different name.
+        # - For any 'detached HEAD' (i.e. specific commit ID, or tag) it
+        #   will be empty.
+        if branch != 'live':
+            print("EDDN_ENV is '%s' (and CWD is %s), but branch is '%s', aborting!" % (setup_env.EDDN_ENV, cwd, branch))
+            sys.exit(-1)
+
+###########################################################################
 
 # Location of start-eddn-service script and its config file
 START_SCRIPT_BIN='%s/.local/bin' % ( os.environ['HOME'] )
