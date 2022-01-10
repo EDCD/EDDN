@@ -2,6 +2,8 @@ import glob
 import os
 import re
 import shutil
+import subprocess
+import sys
 from setuptools import setup, find_packages
 
 # TODO: Enforce only using the `live` branch if `live` is in cwd, or
@@ -11,6 +13,32 @@ from setuptools import setup, find_packages
 #  small window between pull/install/restart).  Thus it shouldn't use
 #  `master` which may have changes merged some time before they become
 #  live.
+
+cwd = os.getcwd()
+# e.g. /home/eddn/live/EDDN.git
+if '/live/' in cwd:
+
+    try:
+        git_cmd = subprocess.Popen(
+            'git symbolic-ref -q --short HEAD'.split(),
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT
+        )
+        out, err = git_cmd.communicate()
+
+    except Exception as e:
+        print("Couldn't run git command to check branch: %s" % (e))
+
+    else:
+        branch = out.decode().rstrip('\n')
+        # - For any other branch checked out at its head this will be a
+        #   different name.
+        # - For any 'detached HEAD' (i.e. specific commit ID) it will be
+        #   empty.  That includes checking out a tag.
+        if branch != 'live':
+            print("CWD is '%s', but branch is '%s', aborting!" % (cwd, branch))
+            sys.exit(-1)
+
 
 VERSIONFILE = "src/eddn/conf/Version.py"
 verstr      = "unknown"
