@@ -166,23 +166,13 @@ def get_decompressed_message():
     else:
         logger.debug('Content-Encoding indicates *not* compressed...')
 
-        form_enc_parsed = urlparse.parse_qs(request.body.read())
-        if form_enc_parsed:
-            logger.debug('Request is form-encoded')
-
-            # Uncompressed request. Bottle handles all of the parsing of the
-            # POST key/vals, or un-encoded body.
-            data_key = request.forms.get('data')
-            if data_key:
-                logger.debug('form-encoded POST request detected...')
-                # This is a form-encoded POST. Support the silly people.
-                message_body = data_key
-    
-            else:
-                raise MalformedUploadError(
-                    "No 'data' POST key/value found. Check your POST key "
-                    "name for spelling, and make sure you're passing a value."
-                )
+        # Uncompressed request. Bottle handles all of the parsing of the
+        # POST key/vals, or un-encoded body.
+        data_key = request.forms.get('data')
+        if data_key:
+            logger.debug('form-encoded POST request detected...')
+            # This is a form-encoded POST. Support the silly people.
+            message_body = data_key
 
         else:
             logger.debug('Plain POST request detected...')

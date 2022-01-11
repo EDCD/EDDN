@@ -13,7 +13,7 @@ with open(sys.argv[1], 'r') as f:
 
   s = requests.Session()
 
-  r = s.post('https://beta.eddn.edcd.io:4431/upload/', data=msg)
+  r = s.post('https://dev.eddn.edcd.io:4432/upload/', data=msg)
 
   print(f'Response: {r!r}')
   print(f'Body: {r.content.decode()}')

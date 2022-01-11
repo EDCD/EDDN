@@ -29,7 +29,7 @@ with open(sys.argv[1], 'r') as f:
   # This apparently causes compression to actually happen
   s.headers['Content-Encoding'] = 'gzip'
   r = s.post(
-    'https://beta.eddn.edcd.io:4431/upload/',
+    'https://dev.eddn.edcd.io:4432/upload/',
     data=msg,
   )
 
