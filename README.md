@@ -70,3 +70,7 @@ and statistics for, the live service.
 Hosting is currently provided by the
 [Elite: Dangerous Community Developers](https://edcd.github.io/).
 
+## Contacting the EDDN team
+
+* [EDCD Discord](https://discord.gg/XBsdCq9) - **Use the `#eddn` channel**.
+* [E:D forum thread](https://forums.frontier.co.uk/threads/elite-dangerous-data-network-eddn.585701/#post-9400060)
