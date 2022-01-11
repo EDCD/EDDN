@@ -294,6 +294,8 @@ make a valid request" responses you might experience the following:
    its request and the reverse proxy rejected it as a result.
 2. `503` - `Service Unavailable` - the EDDN Gateway process is either not 
    running, or not responding.
+3. `400` - `Bad Request` - if you attempt to use plain HTTP, rather than
+   HTTPS.
 
 #### bottle responses
 1. `413` - `Payload Too Large` - `bottle` enforces a maximum request size 
@@ -306,7 +308,7 @@ make a valid request" responses you might experience the following:
       ```
    
    in
-   [src/eddn/Gateway.py](https://github.com/EDCD/EDDN/blob/master/src/eddn/Gateway.py),
+   [src/eddn/Gateway.py](https://github.com/EDCD/EDDN/blob/live/src/eddn/Gateway.py),
    as added in
    [commit  0e80c76cb564771465f61825e694227dcc3be312](https://github.com/EDCD/EDDN/commit/0e80c76cb564771465f61825e694227dcc3be312).
 
@@ -345,11 +347,16 @@ For all failures the response body will contain text that begins `FAIL: `.  Curr
    the schema the response will look like:
 
    ```
-   FAIL: Schema Validation: "[<ValidationError: "{'type': ['array', 'boolean', 'integer', 'number', 'null', 'object', 'string']} is not allowed for 'BadKey'">]"
+   FAIL: Schema Validation: "[<ValidationError: "{'type': ['array', 'boolean', 'integer', 'number', 'null', 'object', 'string']} is not allowed for 'BadVALUE'">]"
    ```
    This is due to the use of a JSON schema stanza that says "don't allow 
    any valid type for the value of this key" to trigger the error for such
    disallowed keys.
+
+   Note how the **value** for the disallowed key is cited, not the key *name*
+   itself.  This is a limitation of how the `jsonschema` python module
+   reports errors, and we are
+   [hoping to improve this](https://github.com/EDCD/EDDN/issues/163).
 
 2. `426` - `Upgrade Required` - This indicates that the cited schema, or 
    version thereof, is outdated.  The body of the response will be:
@@ -377,6 +384,16 @@ available for your language of choice).
 The URL for the live Relay is:
 
     tcp://eddn.edcd.io:9500
+
+Depending on the programming language and library used, you might need
+to explicitly subscribe to an empty topic, `''`, in order to receive
+anything.
+
+Unfortunately at this time we're using an old version of
+ZeroMQ which does not support server-side subscription filtering.  So by
+all means specify a more specific topic filter if it suits your needs,
+but realise that the dropping of not-matching messages will happen at
+your end, not the server.
 
 Once you've connected to that you will receive messages.  To access the 
 data you will first need to zlib-decompress each message.  Then you will 
