@@ -20,7 +20,7 @@ with open(sys.argv[1], 'r') as f:
   # Send that data as a POST body
   r = http.request(
     'POST',
-    'https://beta.eddn.edcd.io:4431/upload/',
+    'https://dev.eddn.edcd.io:4432/upload/',
     body=msg
   )
 
