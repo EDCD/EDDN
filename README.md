@@ -95,11 +95,6 @@ any other) branch on GitHub truly reflects the current live service!
 
 ## Misc
 
-### Documentation
-There is also a [wiki page](https://github.com/EDSM-NET/EDDN/wiki), but its 
-contents are currently being migrated into the source code tree (so that 
-they always match the in-use code).
-
 ### Service Status
 Consult [EDDN Status](https://eddn.edcd.io/) for some information about, 
 and statistics for, the live service.
