@@ -6,15 +6,22 @@ import requests
 
 upload_url = 'https://dev.eddn.edcd.io:4432/upload/'
 
-def send_message(url, message_filename):
+def send_message(url, args):
     print(f'''
 send_message:
     URL: {url}
-    input file: "{message_filename}"
+    input file: "{args.messagefile}"
 ''')
 
-    with open(message_filename, 'r') as f:
+    with open(args.messagefile, 'r') as f:
         msg = f.read()
+
+        if args.formdata:
+            if args.formdata == 'good':
+                msg = 'data=' + msg
+
+            elif args.formdata == 'bad':
+                msg = 'BADLYENCODED=' + msg
 
         s = requests.Session()
 
@@ -32,6 +39,12 @@ if __name__ == "__main__":
         '--url',
         metavar='<full URL of /upload/ endpoint>',
         help='The full URL of an EDDN /upload/ endpoint',
+    )
+
+    __parser.add_argument(
+        '--formdata',
+        choices=('good', 'bad'),
+        help='Specify to form-encode the request body',
     )
 
     __parser.add_argument(
@@ -53,4 +66,4 @@ if __name__ == "__main__":
         else:
             upload_url = args.url
 
-    send_message(upload_url, args.messagefile)
+    send_message(upload_url, args)
