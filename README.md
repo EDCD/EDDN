@@ -90,15 +90,14 @@ uploading data to EDDN then please consult
 **DO NOT** assume that any code or documentation in the `master` (or 
 any other) branch on GitHub truly reflects the current live service!
 
+Anyone planning to send data too EDDN **MUST** comply with all the advice in
+that document, and the individual schema README files as applicable.  It's
+also the best resource for those listening to the EDDN data stream.
+
 ---
 ---
 
 ## Misc
-
-### Documentation
-There is also a [wiki page](https://github.com/EDSM-NET/EDDN/wiki), but its 
-contents are currently being migrated into the source code tree (so that 
-they always match the in-use code).
 
 ### Service Status
 Consult [EDDN Status](https://eddn.edcd.io/) for some information about, 
