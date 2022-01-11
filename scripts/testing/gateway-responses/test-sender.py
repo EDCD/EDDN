@@ -27,9 +27,14 @@ send_message:
         s = requests.Session()
 
         if args.gzip:
-            if args.gzip == 'good':
-                msg = zlib.compress(msg.encode('utf-8'))
-                s.headers['Content-Encoding'] = 'gzip'
+            # We assume that the argparse setup is enforcing the value being
+            # valid, i.e. `'good'` if it's not `'bad'`.
+            msg = zlib.compress(msg.encode('utf-8'))
+            s.headers['Content-Encoding'] = 'gzip'
+
+            if args.gzip == 'bad':
+                # Prepend a character so it's not a valid gzip header
+                msg = b'w' + msg
 
         r = s.post(upload_url, data=msg)
 
@@ -55,7 +60,7 @@ if __name__ == "__main__":
 
     __parser.add_argument(
         '--gzip',
-        choices=('good'),
+        choices=('good', 'bad'),
         help='Specify to gzip-compress the request body',
     )
 
