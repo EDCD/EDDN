@@ -1,20 +1,42 @@
 #!/usr/bin/env python3
+# vim: tabstop=4 shiftwidth=4 expandtab smarttab textwidth=0 wrapmargin=0
 
-import json
+import argparse
 import requests
-import sys
 
-if len(sys.argv) != 2:
-  print('test-sender.py <filename>')
-  sys.exit(-1)
+upload_url = 'https://dev.eddn.edcd.io:4432/upload/'
 
-with open(sys.argv[1], 'r') as f:
-  msg = f.read()
+def send_message(url, message_filename):
+    with open(message_filename, 'r') as f:
+        msg = f.read()
 
-  s = requests.Session()
+        s = requests.Session()
 
-  r = s.post('https://dev.eddn.edcd.io:4432/upload/', data=msg)
+        r = s.post(upload_url, data=msg)
 
-  print(f'Response: {r!r}')
-  print(f'Body: {r.content.decode()}')
+        print(f'Response: {r!r}')
+        print(f'Body: {r.content.decode()}')
 
+if __name__ == "__main__":
+    __parser = argparse.ArgumentParser(
+        description='Send test messages to an EDDN /upload/ endpoint',
+    )
+
+    __parser.add_argument(
+        '--url',
+        metavar='<full URL of /upload/ endpoint>',
+        help='The full URL of an EDDN /upload/ endpoint',
+    )
+
+    __parser.add_argument(
+        'messagefile',
+        metavar='<input file name>',
+        help='Name of a file containing the body of the EDDN message to be sent',
+    )
+
+    args = __parser.parse_args()
+
+    if args.url:
+        upload_url = args.url
+
+    send_message(upload_url, args.messagefile)
