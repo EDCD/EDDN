@@ -3,6 +3,7 @@
 
 import argparse
 import requests
+import zlib
 
 upload_url = 'https://dev.eddn.edcd.io:4432/upload/'
 
@@ -25,6 +26,11 @@ send_message:
 
         s = requests.Session()
 
+        if args.gzip:
+            if args.gzip == 'good':
+                msg = zlib.compress(msg.encode('utf-8'))
+                s.headers['Content-Encoding'] = 'gzip'
+
         r = s.post(upload_url, data=msg)
 
         print(f'Response: {r!r}')
@@ -45,6 +51,12 @@ if __name__ == "__main__":
         '--formdata',
         choices=('good', 'bad'),
         help='Specify to form-encode the request body',
+    )
+
+    __parser.add_argument(
+        '--gzip',
+        choices=('good'),
+        help='Specify to gzip-compress the request body',
     )
 
     __parser.add_argument(
