@@ -7,6 +7,12 @@ import requests
 upload_url = 'https://dev.eddn.edcd.io:4432/upload/'
 
 def send_message(url, message_filename):
+    print(f'''
+send_message:
+    URL: {url}
+    input file: "{message_filename}"
+''')
+
     with open(message_filename, 'r') as f:
         msg = f.read()
 
@@ -37,6 +43,14 @@ if __name__ == "__main__":
     args = __parser.parse_args()
 
     if args.url:
-        upload_url = args.url
+        # Allow for some short aliases, but NOT!!! for live !!!
+        if args.url == 'beta':
+            upload_url = 'https://beta.eddn.edcd.io:4431/upload/'
+
+        elif args.url == 'dev':
+            upload_url = 'https://dev.eddn.edcd.io:4432/upload/'
+
+        else:
+            upload_url = args.url
 
     send_message(upload_url, args.messagefile)
