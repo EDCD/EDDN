@@ -175,7 +175,7 @@ def process_file(input_file: str) -> None:
               print(line)
 
         elif matches.group('software_name') == 'EliteLogAgent':
-          # Apparently a Barry Carylon project, but no home page ?
+          # <https://github.com/DarkWanderer/Elite-Log-Agent>
           if matches.group('software_version') == '2.0.0.660':
             print(line)
 
