@@ -179,6 +179,24 @@ def process_file(input_file: str) -> None:
           if matches.group('software_version') == '2.0.0.660':
             print(line)
 
+        # <https://edcodex.info/?m=tools&entry=440>
+        # <https://bitbucket.org/JuustoKakku/moonlight/src/master/>
+        elif matches.group('software_name') == 'Moonlight':
+          if matches.group('software_version') == '1.3.4':
+            if matches.group('schema_ref') == 'https://eddn.edcd.io/schemas/journal/1':
+              if matches.group('journal_event') == 'Scan':
+                # Ref: <https://bitbucket.org/JuustoKakku/moonlight/issues/5/bad-scan-events-being-sent-to-eddn>
+                if not matches.group('err_msg').startswith(
+                    'Failed Validation "[<ValidationError: "{\'type\': [\'array\', \'boolean\', \'integer\', \'number\', \'null\', \'object\', \'string\']} is not allowed for \''
+                  ):
+                  print(matches.group('err_msg'))
+                  print(line)
+
+              else:
+                print(line)
+
+            else:
+              print(line)
         ###################################################################
         # Issues we know about, but haven't yet alerted developers to
         ###################################################################
