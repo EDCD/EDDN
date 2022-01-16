@@ -87,7 +87,8 @@ do
     log "         Archiving ${service}.log ..."
     # We have no means to tell the service to close and re-open output, it's
     # to stdout/err anyway.  So we copy it.
-    COMPRESSED_NAME="${service}.log.$(date --iso-8601=seconds)"
+    TIMESTAMP="$(date --iso-8601=seconds)"
+    COMPRESSED_NAME="${service}.log.${TIMESTAMP}"
     cp ${service}.log "${COMPRESSED_NAME}"
     if [ $? -ne 0 ];
     then
@@ -97,6 +98,11 @@ do
     fi
     # Truncate the live file.
     :> ${service}.log
+
+    # Produce a report on the just-rotated log
+    ${HOME}/.local/bin/eddn-report-log-errors "${COMPRESSED_NAME}" > \
+      "${HOME}/reports/eddn-errors/by-log-rotation/eddn-errors-${TIMESTMAP}.txt"
+
     # Now compress the newly archived log
     gzip -9v "${COMPRESSED_NAME}"
     log "         DONE"
