@@ -21,10 +21,23 @@ from eddn.core.Validator import Validator, ValidationSeverity
 
 from gevent import monkey
 monkey.patch_all()
+import bottle
 from bottle import Bottle, run, request, response, get, post
+bottle.BaseRequest.MEMFILE_MAX = 1024 * 1024 # 1MiB, default is/was 100KiB
 app = Bottle()
 
 logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+__logger_channel = logging.StreamHandler()
+__logger_formatter = logging.Formatter(
+    '%(asctime)s - %(levelname)s - %(module)s:%(lineno)d: %(message)s'
+)
+__logger_formatter.default_time_format = '%Y-%m-%d %H:%M:%S'
+__logger_formatter.default_msec_format = '%s.%03d'
+__logger_channel.setFormatter(__logger_formatter)
+logger.addHandler(__logger_channel)
+logger.info('Made logger')
+
 
 # This socket is used to push market data out to the Announcers over ZeroMQ.
 context = zmq.Context()
@@ -37,6 +50,37 @@ from eddn.core.StatsCollector import StatsCollector
 statsCollector = StatsCollector()
 statsCollector.start()
 
+
+def extract_message_details(parsed_message):
+    uploader_id = '<<UNKNOWN>>'
+    software_name = '<<UNKNOWN>>'
+    software_version = '<<UNKNOWN>>'
+    schema_ref = '<<UNKNOWN>>'
+    journal_event = '<<UNKNOWN>>'
+
+    if 'header' in parsed_message:
+        if 'uploaderID' in parsed_message['header']:
+            uploader_id = parsed_message['header']['uploaderID']
+
+        if 'softwareName' in parsed_message['header']:
+            software_name = parsed_message['header']['softwareName']
+
+        if 'softwareVersion' in parsed_message['header']:
+            software_version = parsed_message['header']['softwareVersion']
+
+    if '$schemaRef' in parsed_message:
+        schema_ref = parsed_message['$schemaRef']
+
+
+        if '/journal/' in schema_ref:
+            if 'message' in parsed_message:
+                if 'event' in parsed_message['message']:
+                    journal_event = parsed_message['message']['event']
+
+        else:
+            journal_event = '-'
+
+    return uploader_id, software_name, software_version, schema_ref, journal_event
 
 def configure():
     # Get the list of transports to bind from settings. This allows us to PUB
@@ -84,22 +128,28 @@ def get_decompressed_message():
     :returns: The de-compressed request body.
     """
     content_encoding = request.headers.get('Content-Encoding', '')
+    logger.debug('Content-Encoding: ' + content_encoding)
 
     if content_encoding in ['gzip', 'deflate']:
+        logger.debug('Content-Encoding of gzip or deflate...')
         # Compressed request. We have to decompress the body, then figure out
         # if it's form-encoded.
         try:
             # Auto header checking.
+            logger.debug('Trying zlib.decompress (15 + 32)...')
             message_body = zlib.decompress(request.body.read(), 15 + 32)
         except zlib.error:
+            logger.error('zlib.error, trying zlib.decompress (-15)')
             # Negative wbits suppresses adler32 checksumming.
             message_body = zlib.decompress(request.body.read(), -15)
+            logger.debug('Resulting message_body:\n%s\n' % (message_body))
 
         # At this point, we're not sure whether we're dealing with a straight
         # un-encoded POST body, or a form-encoded POST. Attempt to parse the
         # body. If it's not form-encoded, this will return an empty dict.
         form_enc_parsed = urlparse.parse_qs(message_body)
         if form_enc_parsed:
+            logger.debug('Request is form-encoded')
             # This is a form-encoded POST. The value of the data attrib will
             # be the body we're looking for.
             try:
@@ -109,14 +159,23 @@ def get_decompressed_message():
                     "No 'data' POST key/value found. Check your POST key "
                     "name for spelling, and make sure you're passing a value."
                 )
+
+        else:
+            logger.debug('Request is *NOT* form-encoded')
+
     else:
+        logger.debug('Content-Encoding indicates *not* compressed...')
+
         # Uncompressed request. Bottle handles all of the parsing of the
         # POST key/vals, or un-encoded body.
         data_key = request.forms.get('data')
         if data_key:
+            logger.debug('form-encoded POST request detected...')
             # This is a form-encoded POST. Support the silly people.
             message_body = data_key
+
         else:
+            logger.debug('Plain POST request detected...')
             # This is a non form-encoded POST body.
             message_body = request.body.read()
 
@@ -127,19 +186,35 @@ def parse_and_error_handle(data):
     try:
         parsed_message = simplejson.loads(data)
     except (
-        MalformedUploadError, TypeError, ValueError
+        TypeError, ValueError
     ) as exc:
         # Something bad happened. We know this will return at least a
         # semi-useful error message, so do so.
+        try:
+            logger.error('Error - JSON parse failed (%d, "%s", "%s", "%s", "%s", "%s") from %s:\n%s\n' % (
+                    request.content_length,
+                    '<<UNKNOWN>>',
+                    '<<UNKNOWN>>',
+                    '<<UNKNOWN>>',
+                    '<<UNKNOWN>>',
+                    '<<UNKNOWN>>',
+                    get_remote_address(),
+                    data[:512]
+            ))
+
+        except Exception as e:
+            print('Logging of "JSON parse failed" failed: %s' % (e.message))
+            pass
+
         response.status = 400
-        logger.error("Error to %s: %s" % (get_remote_address(), exc.message))
-        return str(exc)
+        return 'FAIL: JSON parsing: ' + str(exc)
 
     # Here we check if an outdated schema has been passed
     if parsed_message["$schemaRef"] in Settings.GATEWAY_OUTDATED_SCHEMAS:
         response.status = '426 Upgrade Required'  # Bottle (and underlying httplib) don't know this one
         statsCollector.tally("outdated")
-        return "FAIL: The schema you have used is no longer supported. Please check for an updated version of your application."
+        return "FAIL: Outdated Schema: The schema you have used is no longer supported. Please check for an updated " \
+               "version of your application."
 
     validationResults = validator.validate(parsed_message)
 
@@ -149,14 +224,38 @@ def parse_and_error_handle(data):
 
         # Sends the parsed message to the Relay/Monitor as compressed JSON.
         gevent.spawn(push_message, parsed_message, parsed_message['$schemaRef'])
-        logger.info("Accepted %s upload from %s" % (
-            parsed_message, get_remote_address()
-        ))
+
+        try:
+            uploader_id, software_name, software_version, schema_ref, journal_event = extract_message_details(parsed_message)
+            logger.info('Accepted (%d, "%s", "%s", "%s", "%s", "%s") from %s' % (
+                request.content_length,
+                uploader_id, software_name, software_version, schema_ref, journal_event,
+                get_remote_address()
+            ))
+
+        except Exception as e:
+            print('Logging of Accepted request failed: %s' % (e.message))
+            pass
+
         return 'OK'
+
     else:
+        try:
+            uploader_id, software_name, software_version, schema_ref, journal_event = extract_message_details(parsed_message)
+            logger.error('Failed Validation "%s" (%d, "%s", "%s", "%s", "%s", "%s") from %s' % (
+                    str(validationResults.messages),
+                    request.content_length,
+                    uploader_id, software_name, software_version, schema_ref, journal_event,
+                    get_remote_address()
+            ))
+
+        except Exception as e:
+            print('Logging of Failed Validation failed: %s' % (e.message))
+            pass
+
         response.status = 400
         statsCollector.tally("invalid")
-        return "FAIL: " + str(validationResults.messages)
+        return "FAIL: Schema Validation: " + str(validationResults.messages)
 
 
 @app.route('/upload/', method=['OPTIONS', 'POST'])
@@ -164,18 +263,35 @@ def upload():
     try:
         # Body may or may not be compressed.
         message_body = get_decompressed_message()
+
     except zlib.error as exc:
         # Some languages and libs do a crap job zlib compressing stuff. Provide
         # at least some kind of feedback for them to try to get pointed in
         # the correct direction.
         response.status = 400
-        logger.error("gzip error with %s: %s" % (get_remote_address(), exc.message))
-        return exc.message
+        try:
+            logger.error('gzip error (%d, "%s", "%s", "%s", "%s", "%s") from %s' % (
+                    request.content_length,
+                    '<<UNKNOWN>>',
+                    '<<UNKNOWN>>',
+                    '<<UNKNOWN>>',
+                    '<<UNKNOWN>>',
+                    '<<UNKNOWN>>',
+                    get_remote_address()
+            ))
+
+        except Exception as e:
+            print('Logging of "gzip error" failed: %s' % (e.message))
+            pass
+
+        return 'FAIL: zlib.error: ' + exc.message
+
     except MalformedUploadError as exc:
         # They probably sent an encoded POST, but got the key/val wrong.
         response.status = 400
-        logger.error("Error to %s: %s" % (get_remote_address(), exc.message))
-        return exc.message
+        logger.error("MalformedUploadError from %s: %s" % (get_remote_address(), exc.message))
+
+        return 'FAIL: Malformed Upload: ' + exc.message
 
     statsCollector.tally("inbound")
     return parse_and_error_handle(message_body)
