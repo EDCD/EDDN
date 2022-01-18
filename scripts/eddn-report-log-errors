@@ -105,6 +105,23 @@ def process_file(input_file: str) -> None:
                 print(matches.group('err_msg'))
                 print(line)
 
+            elif matches.group('schema_ref') == 'https://eddn.edcd.io/schemas/journal/1':
+              # <https://github.com/EDCD/EDMarketConnector/issues/1403>
+              if matches.group('err_msg') == 'Failed Validation "[<ValidationError: "\'SystemAddress\' is a required property">]"':
+                # <https://github.com/EDCD/EDMarketConnector/issues/1403>
+                pass
+
+              elif matches.group('err_msg').startswith(
+                'Failed Validation "[<ValidationError: "{\'type\': [\'array\', \'boolean\', \'integer\', \'number\', \'null\', \'object\', \'string\']} is not allowed for'
+                ):
+                # <https://github.com/EDCD/EDMarketConnector/issues/1403>
+                pass
+
+            elif matches.group('schema_ref') == 'https://eddn.edcd.io/schemas/fssdiscoveryscan/1':
+              if matches.group('err_msg') == 'Failed Validation "[<ValidationError: "None is not of type \'boolean\'">]"':
+                # <https://github.com/EDCD/EDMarketConnector/issues/1403>
+                pass
+
             else:
               print(line)
 
