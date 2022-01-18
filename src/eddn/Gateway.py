@@ -4,6 +4,7 @@
 Contains the necessary ZeroMQ socket and a helper function to publish
 market data to the Announcer daemons.
 """
+import argparse
 import gevent
 import hashlib
 import logging
@@ -49,6 +50,27 @@ validator = Validator()
 from eddn.core.StatsCollector import StatsCollector
 statsCollector = StatsCollector()
 statsCollector.start()
+
+
+def parse_cl_args():
+    parser = argparse.ArgumentParser(
+        prog='Gateway',
+        description='EDDN Gateway server',
+    )
+
+    parser.add_argument(
+        '--loglevel',
+        help='Logging level to output at',
+    )
+
+    parser.add_argument(
+        '-c', '--config',
+        metavar='config filename',
+        nargs='?',
+        default=None,
+    )
+
+    return parser.parse_args()
 
 
 def extract_message_details(parsed_message):
@@ -342,7 +364,12 @@ class EnableCors(object):
 
 
 def main():
-    loadConfig()
+
+    cl_args = parse_cl_args()
+    if cl_args.loglevel:
+        logger.setLevel(cl_args.loglevel)
+
+    loadConfig(cl_args)
     configure()
 
     app.install(EnableCors())

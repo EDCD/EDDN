@@ -26,6 +26,7 @@ Architecture:
   4. `push_message()` then sends the message to the configured live/real
     Gateway.
 """
+import argparse
 import gevent
 import hashlib
 import logging
@@ -47,8 +48,15 @@ from bottle import Bottle, run, request, response, get, post
 app = Bottle()
 
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
-logger.addHandler(logging.StreamHandler())
+logger.setLevel(logging.INFO)
+__logger_channel = logging.StreamHandler()
+__logger_formatter = logging.Formatter(
+    '%(asctime)s - %(levelname)s - %(module)s:%(lineno)d: %(message)s'
+    )
+__logger_formatter.default_time_format = '%Y-%m-%d %H:%M:%S'
+__logger_formatter.default_msec_format = '%s.%03d'
+__logger_channel.setFormatter(__logger_formatter)
+logger.addHandler(__logger_channel)
 logger.info('Made logger')
 
 
@@ -56,6 +64,27 @@ logger.info('Made logger')
 from eddn.core.StatsCollector import StatsCollector
 statsCollector = StatsCollector()
 statsCollector.start()
+
+
+def parse_cl_args():
+    parser = argparse.ArgumentParser(
+        prog='Gateway',
+        description='EDDN Gateway server',
+    )
+
+    parser.add_argument(
+        '--loglevel',
+        help='Logging level to output at',
+    )
+
+    parser.add_argument(
+        '-c', '--config',
+        metavar='config filename',
+        nargs='?',
+        default=None,
+    )
+
+    return parser.parse_args()
 
 def push_message(message_body):
     """
@@ -243,8 +272,12 @@ class CustomLogging(object):
         return _log_to_logger
 
 def main():
+    cl_args = parse_cl_args()
+    if cl_args.loglevel:
+        logger.setLevel(cl_args.loglevel)
+
     logger.info('Loading config...')
-    loadConfig()
+    loadConfig(cl_args)
 
     logger.info('Installing EnableCors ...')
     app.install(EnableCors())
