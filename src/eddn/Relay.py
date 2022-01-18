@@ -4,26 +4,39 @@
 Relays sit below an announcer, or another relay, and simply repeat what
 they receive over PUB/SUB.
 """
-# Logging has to be configured first before we do anything.
+import argparse
+import gevent
+import hashlib
 import logging
+import simplejson
+import time
+import uuid
+import zlib
 from threading import Thread
 
-import time
-
-logger = logging.getLogger(__name__)
-import zlib
-
-import gevent
-import simplejson
-import hashlib
-import uuid
 import zmq.green as zmq
+
+
+# Logging has to be configured first before we do anything.
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+__logger_channel = logging.StreamHandler()
+__logger_formatter = logging.Formatter(
+    '%(asctime)s - %(levelname)s - %(module)s:%(lineno)d: %(message)s'
+    )
+__logger_formatter.default_time_format = '%Y-%m-%d %H:%M:%S'
+__logger_formatter.default_msec_format = '%s.%03d'
+__logger_channel.setFormatter(__logger_formatter)
+logger.addHandler(__logger_channel)
+logger.info('Made logger')
+
 from eddn.conf.Settings import Settings, loadConfig
 
 from gevent import monkey
 monkey.patch_all()
 from bottle import Bottle, get, request, response, run
 app = Bottle()
+
 
 # This import must be done post-monkey-patching!
 from eddn.core.StatsCollector import StatsCollector
@@ -36,6 +49,26 @@ if Settings.RELAY_DUPLICATE_MAX_MINUTES:
     duplicateMessages = DuplicateMessages()
     duplicateMessages.start()
 
+
+def parse_cl_args():
+    parser = argparse.ArgumentParser(
+        prog='Gateway',
+        description='EDDN Gateway server',
+    )
+
+    parser.add_argument(
+        '--loglevel',
+        help='Logging level to output at',
+    )
+
+    parser.add_argument(
+        '-c', '--config',
+        metavar='config filename',
+        nargs='?',
+        default=None,
+    )
+
+    return parser.parse_args()
 
 @app.route('/stats/', method=['OPTIONS', 'GET'])
 def stats():
@@ -171,7 +204,12 @@ class EnableCors(object):
 
 
 def main():
-    loadConfig()
+    cl_args = parse_cl_args()
+    if cl_args.loglevel:
+        logger.setLevel(cl_args.loglevel)
+
+    loadConfig(cl_args)
+
     r = Relay()
     r.start()
 
