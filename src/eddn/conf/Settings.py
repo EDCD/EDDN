@@ -1,6 +1,5 @@
 # coding: utf8
 
-import argparse
 import simplejson
 from eddn.conf.Version import __version__ as version
 
