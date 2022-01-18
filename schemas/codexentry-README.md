@@ -17,6 +17,12 @@ You MUST remove any key where the key name ends in
 You MUST remove the two keys `IsNewEntry` and `NewTraitsDiscovered`.
 
 ### Augmentations
+#### horizons flag
+You SHOULD add this key/value pair, using the value from the `LoadGame` event.
+
+#### odyssey flag
+You SHOULD add this key/value pair, using the value from the `LoadGame` event.
+
 #### StarPos
 You MUST **add** a `StarPos` key with value of type `array` containing the 
 galaxy co-ordinates of the system.  You will need to have obtained these 
@@ -58,7 +64,7 @@ release, Update 7, plus one patch).
    away.
 5. If Status.json does **not** have `BodyName` then clear `status_body_name`.
 6. For a `CodexEntry` event:
-    1. Check that `status_body_name` is set. If it is not, exit.
+    1. Only if `status_body_name` is set:
         1. Set the EDDN `codexentry` schema message `BodyName` to this value.
         2. Check if it matches the `journal_body_name` value, and 
            ONLY if they match, set `BodyID` in the EDDN `codexentry`

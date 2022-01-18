@@ -4,6 +4,7 @@
 Monitor sit below gateways, or another relay, and simply parse what it receives over SUB.
 """
 from threading import Thread
+import argparse
 import zlib
 import gevent
 import simplejson
@@ -26,6 +27,26 @@ if Settings.RELAY_DUPLICATE_MAX_MINUTES:
     duplicateMessages = DuplicateMessages()
     duplicateMessages.start()
 
+
+def parse_cl_args():
+    parser = argparse.ArgumentParser(
+        prog='Gateway',
+        description='EDDN Gateway server',
+    )
+
+    parser.add_argument(
+        '--loglevel',
+        help='CURRENTLY NO EFFECT - Logging level to output at',
+    )
+
+    parser.add_argument(
+        '-c', '--config',
+        metavar='config filename',
+        nargs='?',
+        default=None,
+    )
+
+    return parser.parse_args()
 
 def date(__format):
     d = datetime.datetime.utcnow()
@@ -237,7 +258,9 @@ class EnableCors(object):
         return _enable_cors
 
 def main():
-    loadConfig()
+    cl_args = parse_cl_args()
+    loadConfig(cl_args)
+
     m = Monitor()
     m.start()
     app.install(EnableCors())
