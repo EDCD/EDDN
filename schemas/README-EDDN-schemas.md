@@ -245,6 +245,17 @@ Each `message` object must have, at bare minimum:
    will be much more than this. Consult the
    [schemas and their documentation](./).
 
+Where the schema allows for them, add the `horizons` and `odyssey`
+keys with boolean values.  `null` is not allowed in the values, so if
+you cannot determine a value do not include that key at all.  The best
+source of these is the `LoadGame` event from journals.  It's present
+both in the PC local files and the CAPI journal data.  If you're
+composing a shipyard or outfitting message from CAPI data then it is
+possible to synthesise the `horizons` flag.  For now consult the function
+`capi_is_horizons()` in
+[EDMarketConnector:plugins/eddn.py](https://github.com/EDCD/EDMarketConnector/blob/stable/plugins/eddn.py)
+for a method to achieve this.
+
 Because the first versions of some schemas were defined when only the CAPI 
 data was available, before Journal files existed, many of the key names chosen
 in the schemas are based on the equivalent in CAPI data, not Journal events.
