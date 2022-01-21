@@ -332,8 +332,10 @@ make a valid request" responses you might experience the following:
 
 #### bottle responses
 1. `413` - `Payload Too Large` - `bottle` enforces a maximum request size 
-   and the request exceeds that.  As of 2022-01-07 the limit is 1MiB, and 
-   pertains to the plain-text size, not after gzip compression if used.
+   and the request exceeds that.  As of 2022-01-07 the limit is 1MiB,
+   which is versus the compressed size of the body, if compression is
+   used.  Thus compression *will* allow for sending approximately 10x
+   larger messages.
    To verify the current limit check for the line that looks like:
 
       ```
