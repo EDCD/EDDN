@@ -1,4 +1,4 @@
-# EDDN FSSDiscoveryScan Schema
+# EDDN FSSAllBodiesFound Schema
 
 ## Introduction
 Here we document how to take data from an ED `FSSAllBodiesFound` Journal 
