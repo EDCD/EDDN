@@ -244,6 +244,10 @@ Each `message` object must have, at bare minimum:
 2. At least one other key/value pair representing the data. In general there 
    will be much more than this. Consult the
    [schemas and their documentation](./).
+3. Where the data is sourced from a Journal event please do preserve the
+   event key and value.  Yes, where we use an event-specific schema this
+   might seem redundant, but it might aid an EDDN listener in streamlining
+   their code, and it does no harm.
 
 Because the first versions of some schemas were defined when only the CAPI 
 data was available, before Journal files existed, many of the key names chosen
