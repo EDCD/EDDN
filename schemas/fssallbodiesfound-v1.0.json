@@ -31,13 +31,16 @@
         },
         "message": {
             "type"                  : "object",
-            "description"           : "Contains all properties from the listed events in the client's journal minus the event key, Localised strings and the properties marked below as 'disallowed'",
+            "description"           : "Contains all properties from the listed events in the client's journal, minus the Localised strings and the properties marked below as 'disallowed'",
             "additionalProperties"  : false,
             "required"              : [ "timestamp", "SystemName", "StarPos", "SystemAddress", "Count" ],
             "properties"            : {
                 "timestamp": {
                     "type"          : "string",
                     "format"        : "date-time"
+                },
+                "event" : {
+                    "enum"          : [ "FSSAllBodiesFound" ]
                 },
                 "horizons": {
                     "type"          : "boolean",
