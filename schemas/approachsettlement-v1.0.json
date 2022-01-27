@@ -53,6 +53,7 @@
                 "StarSystem": {
                     "type"          : "string",
                     "minLength"     : 1
+                    "description"   : "Must be added by the sender"
                 },
                 "StarPos": {
                     "type"          : "array",
@@ -67,17 +68,17 @@
                 "Name"             : {
                     "type"          : "string",
                     "description"   : "Name of settlement"
-				},
+                },
                 "MarketID": {
                     "type"          : "integer"
                 },		
-			    "BodyID": {
+                "BodyID": {
                     "type"          : "integer"
                 },
                 "BodyName": {
                     "type"          : "string"
                 },	
-				"Latitude": {
+                "Latitude": {
                     "type"          : "number"
                 },
                 "Longitude": {
