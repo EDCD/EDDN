@@ -258,7 +258,7 @@ Each `message` object must have, at bare minimum:
 Because the first versions of some schemas were defined when only the CAPI 
 data was available, before Journal files existed, many of the key names chosen
 in the schemas are based on the equivalent in CAPI data, not Journal events.
-This means ouy MUST rename many of the keys from Journal events to match the
+This means you MUST rename many of the keys from Journal events to match the
 schemas.
 
 EDDN is intended to transport generic data not specific to any particular Cmdr
