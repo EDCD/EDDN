@@ -118,7 +118,7 @@ Messages sent to EDDN **MUST**:
 - Use a **POST** request, with the body containing the EDDN message.  No
   query parameters in the URL are supported or necessary.
 
-The body of an EDDN message is a JSON object in UTF-8 encoding.  You SHOULD 
+The body of an EDDN message is a JSON object in UTF-8 encoding.  You MUST
 set a `Content-Type` header of `applicaton/json`, and NOT any of:
 
 * `application/x-www-form-urlencoded`
@@ -130,7 +130,8 @@ deprecated and no new software should attempt this method**.  We
 purposefully do not further document the exact format for this.
 
 You *MAY* use gzip compression on the body of the message, but it is not 
-required.
+required.  If you do compress the body then you **MUST* send a `Content-Type`
+header with `gzip` value instead of `application/json`.
 
 You should be prepared to handle all scenarios where sending of a message 
 fails:
