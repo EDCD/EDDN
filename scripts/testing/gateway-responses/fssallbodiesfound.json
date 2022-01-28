@@ -1,0 +1,18 @@
+{
+  "$schemaRef": "https://eddn.edcd.io/schemas/fssallbodiesfound/1",
+  "message": {
+    "timestamp":"2022-01-26T16:21:00Z",
+    "event":"FSSAllBodiesFound",
+    "SystemName":"Zeta Doradus",
+    "StarPos": [
+      30.40625,-22.65625,-2.18750
+    ],
+    "SystemAddress":44853889387,
+    "Count":1
+  },
+  "header": {
+    "uploaderID": "from Athanasius Testing",
+    "softwareName": "Athanasius Testing script",
+    "softwareVersion": "v0.0.1"
+  }
+}
