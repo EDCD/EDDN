@@ -99,8 +99,6 @@ class _Settings(object):
         "http://schemas.elite-markets.net/eddn/blackmarket/1/test",
         "http://schemas.elite-markets.net/eddn/journal/1",
         "http://schemas.elite-markets.net/eddn/journal/1/test",
-        "http://schemas.elite-markets.net/eddn/fssallbodiesfound/1",
-        "http://schemas.elite-markets.net/eddn/fssallbodiesfound/1/test",
     ]
 
     ###############################################################################
