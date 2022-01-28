@@ -244,6 +244,10 @@ Each `message` object must have, at bare minimum:
 2. At least one other key/value pair representing the data. In general there 
    will be much more than this. Consult the
    [schemas and their documentation](./).
+3. Where the data is sourced from a Journal event please do preserve the
+   event key and value.  Yes, where we use an event-specific schema this
+   might seem redundant, but it might aid an EDDN listener in streamlining
+   their code, and it does no harm.
 
 Because the first versions of some schemas were defined when only the CAPI 
 data was available, before Journal files existed, many of the key names chosen
@@ -267,6 +271,39 @@ changes to your code.
 
 It is also advisable to Watch this repository on GitHub so as to be aware 
 of any changes to schemas.
+
+#### `horizons` and `odyssey` flags
+
+Where the schema allows for them, add the `horizons` and `odyssey`
+keys with boolean values.  `null` is not allowed in the values, so if
+you cannot determine a value do not include that key at all.  The best
+source of these is the `LoadGame` event from journals.  It's present
+both in the PC local files and the CAPI journal data.  If you're
+composing a shipyard or outfitting message from CAPI data then it is
+possible to synthesise the `horizons` flag.  For now consult the function
+`capi_is_horizons()` in
+[EDMarketConnector:plugins/eddn.py](https://github.com/EDCD/EDMarketConnector/blob/stable/plugins/eddn.py)
+for a method to achieve this.
+
+As of 2022-01-22 the following was observed for the `LoadGame` events as
+present in CAPI-sourced Journal files (which were confirmed to match the
+PC-local files for these events):
+
+- PC Odyssey Client, game version `4.0.0.1002`:
+    ```json
+    { "timestamp":"2022-01-20T11:15:22Z", "event":"LoadGame", "FID":"F<elided>", "Commander":"<elided>", "Horizons":true, "Odyssey":true,...
+    ```
+- PC Horizons Client, game version `3.8.0.403`, no `Odyssey` key was
+   present:
+    ```json
+    { "timestamp":"2022-01-20T11:20:17Z", "event":"LoadGame", "FID":"F<elided>", "Commander":"<elided>", "Horizons":true,...
+    ```
+
+- PC 'base' Client, game version `3.8.0.403`, no `Odyssey` key was
+   present:
+    ```json
+    { "timestamp":"2022-01-20T11:22:54Z", "event":"LoadGame", "FID":"F<elided>", "Commander":"<elided>", "Horizons":false,...
+    ```
 
 ### Server responses
 There are three possible sources of HTTP responses when sending an upload 
@@ -299,8 +336,10 @@ make a valid request" responses you might experience the following:
 
 #### bottle responses
 1. `413` - `Payload Too Large` - `bottle` enforces a maximum request size 
-   and the request exceeds that.  As of 2022-01-07 the limit is 1MiB, and 
-   pertains to the plain-text size, not after gzip compression if used.
+   and the request exceeds that.  As of 2022-01-07 the limit is 1MiB,
+   which is versus the compressed size of the body, if compression is
+   used.  Thus compression *will* allow for sending approximately 10x
+   larger messages.
    To verify the current limit check for the line that looks like:
 
       ```

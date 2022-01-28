@@ -105,6 +105,23 @@ def process_file(input_file: str) -> None:
                 print(matches.group('err_msg'))
                 print(line)
 
+            elif matches.group('schema_ref') == 'https://eddn.edcd.io/schemas/journal/1':
+              # <https://github.com/EDCD/EDMarketConnector/issues/1403>
+              if matches.group('err_msg') == 'Failed Validation "[<ValidationError: "\'SystemAddress\' is a required property">]"':
+                # <https://github.com/EDCD/EDMarketConnector/issues/1403>
+                pass
+
+              elif matches.group('err_msg').startswith(
+                'Failed Validation "[<ValidationError: "{\'type\': [\'array\', \'boolean\', \'integer\', \'number\', \'null\', \'object\', \'string\']} is not allowed for'
+                ):
+                # <https://github.com/EDCD/EDMarketConnector/issues/1403>
+                pass
+
+            elif matches.group('schema_ref') == 'https://eddn.edcd.io/schemas/fssdiscoveryscan/1':
+              if matches.group('err_msg') == 'Failed Validation "[<ValidationError: "None is not of type \'boolean\'">]"':
+                # <https://github.com/EDCD/EDMarketConnector/issues/1403>
+                pass
+
             else:
               print(line)
 
@@ -178,6 +195,12 @@ def process_file(input_file: str) -> None:
           # <https://github.com/DarkWanderer/Elite-Log-Agent>
           if matches.group('software_version') == '2.0.0.660':
             print(line)
+
+        # Abandoned/unmaintained project
+        # <https://forums.frontier.co.uk/threads/release-eva-elite-virtual-assistant-for-iphone-ipad-no-longer-working-jan-2020.245900/page-18>
+        # <https://apps.apple.com/gb/app/eva/id1098763533>
+        elif matches.group('software_name') in ('EVA [iPhone]', 'EVA [iPad]'):
+          pass
 
         ###################################################################
         # Issues we know about, but haven't yet alerted developers to

@@ -4,6 +4,7 @@
 Contains the necessary ZeroMQ socket and a helper function to publish
 market data to the Announcer daemons.
 """
+import argparse
 import gevent
 import hashlib
 import logging
@@ -49,6 +50,27 @@ validator = Validator()
 from eddn.core.StatsCollector import StatsCollector
 statsCollector = StatsCollector()
 statsCollector.start()
+
+
+def parse_cl_args():
+    parser = argparse.ArgumentParser(
+        prog='Gateway',
+        description='EDDN Gateway server',
+    )
+
+    parser.add_argument(
+        '--loglevel',
+        help='Logging level to output at',
+    )
+
+    parser.add_argument(
+        '-c', '--config',
+        metavar='config filename',
+        nargs='?',
+        default=None,
+    )
+
+    return parser.parse_args()
 
 
 def extract_message_details(parsed_message):
@@ -138,6 +160,7 @@ def get_decompressed_message():
             # Auto header checking.
             logger.debug('Trying zlib.decompress (15 + 32)...')
             message_body = zlib.decompress(request.body.read(), 15 + 32)
+
         except zlib.error:
             logger.error('zlib.error, trying zlib.decompress (-15)')
             # Negative wbits suppresses adler32 checksumming.
@@ -149,12 +172,14 @@ def get_decompressed_message():
         # body. If it's not form-encoded, this will return an empty dict.
         form_enc_parsed = urlparse.parse_qs(message_body)
         if form_enc_parsed:
-            logger.debug('Request is form-encoded')
+            logger.info('Request is form-encoded, compressed, from %s' % (get_remote_address()))
             # This is a form-encoded POST. The value of the data attrib will
             # be the body we're looking for.
             try:
                 message_body = form_enc_parsed['data'][0]
+
             except (KeyError, IndexError):
+                logger.error('form-encoded, compressed, upload did not contain a "data" key. From %s', get_remote_address())
                 raise MalformedUploadError(
                     "No 'data' POST key/value found. Check your POST key "
                     "name for spelling, and make sure you're passing a value."
@@ -170,7 +195,7 @@ def get_decompressed_message():
         # POST key/vals, or un-encoded body.
         data_key = request.forms.get('data')
         if data_key:
-            logger.debug('form-encoded POST request detected...')
+            logger.info('Request is form-encoded, uncompressed, from %s' % (get_remote_address()))
             # This is a form-encoded POST. Support the silly people.
             message_body = data_key
 
@@ -342,7 +367,12 @@ class EnableCors(object):
 
 
 def main():
-    loadConfig()
+
+    cl_args = parse_cl_args()
+    if cl_args.loglevel:
+        logger.setLevel(cl_args.loglevel)
+
+    loadConfig(cl_args)
     configure()
 
     app.install(EnableCors())

@@ -87,8 +87,9 @@ do
     log "         Archiving ${service}.log ..."
     # We have no means to tell the service to close and re-open output, it's
     # to stdout/err anyway.  So we copy it.
-    COMPRESSED_NAME="${service}.log.$(date --iso-8601=seconds)"
-    cp ${service}.log "${COMPRESSED_NAME}"
+    TIMESTAMP="$(date --iso-8601=seconds)"
+    ARCHIVED_NAME="${service}.log.${TIMESTAMP}"
+    cp ${service}.log "${ARCHIVED_NAME}"
     if [ $? -ne 0 ];
     then
       echo "         FAILED copying live log file to new archive!!!" >&2
@@ -97,8 +98,15 @@ do
     fi
     # Truncate the live file.
     :> ${service}.log
+
+    if [ "${service}" == "gateway" ];
+    then
+      # Produce a report of interesting errors
+      ${HOME}/.local/bin/eddn-report-log-errors "${ARCHIVED_NAME}" > "${HOME}/reports/eddn-errors/by-log-rotation/eddn-errors-${TIMESTAMP}.txt"
+    fi
+
     # Now compress the newly archived log
-    gzip -9v "${COMPRESSED_NAME}"
+    gzip -9v "${ARCHIVED_NAME}"
     log "         DONE"
   else
     log "         No"

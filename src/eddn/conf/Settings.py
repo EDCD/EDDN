@@ -1,6 +1,5 @@
 # coding: utf8
 
-import argparse
 import simplejson
 from eddn.conf.Version import __version__ as version
 
@@ -74,6 +73,11 @@ class _Settings(object):
 
         "https://eddn.edcd.io/schemas/navroute/1"                    : "schemas/navroute-v1.0.json",
         "https://eddn.edcd.io/schemas/navroute/1/test"               : "schemas/navroute-v1.0.json",
+
+        "https://eddn.edcd.io/schemas/approachsettlement/1"                    : "schemas/approachsettlement-v1.0.json",
+        "https://eddn.edcd.io/schemas/approachsettlement/1/test"               : "schemas/approachsettlement-v1.0.json",
+        "https://eddn.edcd.io/schemas/fssallbodiesfound/1"                    : "schemas/fssallbodiesfound-v1.0.json",
+        "https://eddn.edcd.io/schemas/fssallbodiesfound/1/test"               : "schemas/fssallbodiesfound-v1.0.json",
     }
 
     GATEWAY_OUTDATED_SCHEMAS                = [
@@ -134,15 +138,14 @@ class _Settings(object):
 Settings = _Settings()
 
 
-def loadConfig():
-    '''
-    Loads in a settings file specified on the commandline if one has been specified.
+def loadConfig(cl_args):
+    """
+    Load in a commandline-specified settings file, if applicable.
+
     A convenience method if you don't need other things specified as commandline
     options. Otherwise, point the filename to Settings.loadFrom().
-    '''
-    parser = argparse.ArgumentParser()
-    parser.add_argument("-c", "--config", nargs="?", default=None)
-    args = parser.parse_args()
 
-    if args.config:
-        Settings.loadFrom(args.config)
+    :param cl_args: An `argparse.parse_args()` return.
+    """
+    if cl_args.config:
+        Settings.loadFrom(cl_args.config)
