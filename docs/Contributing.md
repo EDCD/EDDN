@@ -37,7 +37,7 @@ several things you should consider:
       this yet, but see
       [discussion of adding support for FSSSignalDiscovered](https://github.com/EDCD/EDDN/issues/152)
       .
-   5. What's the likely size range of the new messages?  The Gateway has a
+   4. What's the likely size range of the new messages?  The Gateway has a
       limit on the size of the *body* of `/upload/` requests.  Check
       [live branch src/eddn/Gateway.py](https://github.com/EDCD/EDDN/blob/live/src/eddn/Gateway.py)
       `bottle.BaseRequest.MEMFILE_MAX = ...` for the current limit.
@@ -129,3 +129,38 @@ include:
    Please ensure you use the current hostname as per the entries for already
    existing Schemas.  Keep the trailing comma on the final entry, Python
    allows it, and it will reduce the diff on adding any further Schemas.
+
+#### Schema file requirements
+
+1. The file **MUST** actually be valid JSON, without any special extensions
+   (so no comments).
+2. The file **MUST** comply with the relevant JSON Schema definition.
+3. The file **MUST** actually load using Python's `simplejson` module, as this
+   is what the Gateway code uses.
+4. All new Schemas **MUST** comply with all requirements outlined in the
+   [general Schemas documentation](https://github.com/EDCD/EDDN/blob/live/schemas/README-EDDN-schemas.md).
+5. If the data source is a game Journal event then you **MUST** include the
+   `event` key and its value as in the source data.  This might seem redundant
+   when we mandate a separate schema for any newly handled Journal event, but
+   it does no harm and might make data handling for Listeners easier, i.e.
+   they can just pass all "oh, that's from Journal data" messages through the
+   same initial handling.
+
+#### Schema README requirements
+
+The per-Schema README **MUST** give both Senders and Listeners sufficient
+information to correctly handle the pertinent data.  You do not need to repeat
+anything already specified in the general Schema README.  Referring to it via
+MarkDown linking is helpful.
+
+1. The reason(s) for any augmentations to a message must be clearly explained.
+   1. **DO** outline where the additional data comes from.  e.g. `StarPos`
+      added to many events should come from a prior `Location`, `FSDJump` or
+      `CarrierJump` Journal event.
+
+2. The reason(s) why any property is optional must be clearly explained.
+   Perhaps it's not always present in the source data.
+
+3. The reason(s) why any data in the source is not in the message, i.e. because
+   it's personal to the player, or maybe it's just not useful (always the same
+   in every instance of the source data).
