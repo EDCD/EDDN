@@ -73,7 +73,7 @@ data sometimes lags behind the game - usually by a few seconds, sometimes by
 minutes. You MUST check in the data from the CAPI that the Cmdr is
 docked, and that the station and system names match those
 reported from the Journal before using the data for the commodity, outfitting
-and shipyard schemas:
+and shipyard Schemas:
 
 1. Retrieve the commander data from the `/profile` CAPI endpoint.
 2. Check that `commander['docked']` is true.  If not, abort.
@@ -88,21 +88,21 @@ and shipyard schemas:
 
 ## Uploading messages
 
-### Send only live data to the live schemas
+### Send only live data to the live Schemas
 You MUST **NOT** send information from any non-live (e.g. alpha or beta)
-version of the game to the main schemas on this URL.
+version of the game to the main Schemas on this URL.
 
 You MAY send such to this URL so long as you append `/test` to the `$schemaRef`
 value, e.g.
 
     "$schemaRef": "https://eddn.edcd.io/schemas/shipyard/2/test",
 
-You MUST also utilise these test forms of the schemas when first testing your
-code.
+You MUST also utilise these test forms of the Schemas whenever you are
+testing your EDDN-handling code, be that new code or changes to existing code.
 
 As well as the Live service there are also `beta` and `dev`
 [endpoints](../README.md#eddn-endpoints) which might be available from time
-to time as necessary, e.g. for testing new schemas or changes to existing
+to time as necessary, e.g. for testing new Schemas or changes to existing
 ones.  Ask on the `#eddn` channel of the
 [EDCD Discord](https://edcd.github.io/) (check at the bottom for the invite
 link).
@@ -152,8 +152,8 @@ any failed message.
 
 You **MUST NOT** retry any message that received a HTTP `400` or `426` code.
 An exception can be made if, **and only if**, *you have manually verified that 
-you have fixed the issues with it (i.e. updated the schema/version to a
-currently supported one and adjusted the data to fit that schema/version).*
+you have fixed the issues with it (i.e. updated the Schema/version to a
+currently supported one and adjusted the data to fit that Schema/version).*
 
 You **MAY** retry a message that initially received a `413` response (in 
 the hopes that the EDDN service admins decided to increase the maximum 
@@ -168,7 +168,7 @@ In general:
 Each message is a JSON object in UTF-8 encoding containing the following
 key+value pairs:
 
-1. `$schemaRef` - Which schema (including version) this message is for.
+1. `$schemaRef` - Which Schema (including version) this message is for.
 2. `header` - Object containing mandatory information about the upload;
     1. `uploaderID` - a unique ID for the player uploading this data.  
        Don't worry about privacy, the EDDN service will hash this with a key
@@ -219,11 +219,11 @@ For example, a shipyard message, version 2, might look like:
 ```
 
 ### Contents of `message`
-Every message MUST comply with the schema its `$schemaRef` value cites.  
+Every message MUST comply with the Schema its `$schemaRef` value cites.  
 
 Apart from short time windows during deployment of a new version the live 
 EDDN service should always be using
-[the schemas as present in the live branch](https://github.com/EDCD/EDDN/tree/live/schemas).
+[the Schemas as present in the live branch](https://github.com/EDCD/EDDN/tree/live/schemas).
 So, be sure you're checking the live versions and not, e.g. those in the 
 `master` or other branches.
 
@@ -246,20 +246,20 @@ Each `message` object must have, at bare minimum:
    i.e. "too old".
 2. At least one other key/value pair representing the data. In general there 
    will be much more than this. Consult the
-   [schemas and their documentation](./).
+   [Schemas and their documentation](./).
 3. Where the data is sourced from a Journal event please do preserve the
-   `event` key and value.  Yes, where we use an event-specific schema this
+   `event` key and value.  Yes, where we use an event-specific Schema this
    might seem redundant, but it might aid an EDDN listener in streamlining
    their code, and it does no harm.
 
-   Any new schema based on Journal data **MUST** make `event` a required
+   Any new Schema based on Journal data **MUST** make `event` a required
    property of the `message` dictionary.
 
-Because the first versions of some schemas were defined when only the CAPI 
+Because the first versions of some Schemas were defined when only the CAPI 
 data was available, before Journal files existed, many of the key names chosen
-in the schemas are based on the equivalent in CAPI data, not Journal events.
+in the Schemas are based on the equivalent in CAPI data, not Journal events.
 This means you MUST rename many of the keys from Journal events to match the
-schemas.
+Schemas.
 
 EDDN is intended to transport generic data not specific to any particular Cmdr
 and to reflect only the data that every player would see in-game in station 
@@ -267,20 +267,20 @@ services or the local map. To that end, uploading applications MUST ensure
 that messages do not contain any Cmdr-specific data (other than "uploaderID",
 the "horizons" flag, and the "odyssey" flag).
 
-The individual schemas will instruct you on various elisions (removals) to 
+The individual Schemas will instruct you on various elisions (removals) to 
 be made to comply with this.
 
-Some of these requirements are also enforced by the schemas, and some things
-the schemas enforce might not be explicitly called out here.  So, **do**
-check what you're sending against the relevant schema(s) when making any 
+Some of these requirements are also enforced by the Schemas, and some things
+the Schemas enforce might not be explicitly called out here.  So, **do**
+check what you're sending against the relevant Schema(s) when making any 
 changes to your code.
 
-It is also advisable to Watch this repository on GitHub so as to be aware 
-of any changes to schemas.
+It is also advisable to Watch this repository on GitHub so that you are aware 
+of any changes to Schemas.
 
 #### `horizons` and `odyssey` flags
 
-Where the schema allows for them, add the `horizons` and `odyssey`
+Where the Schema allows for them, add the `horizons` and `odyssey`
 keys with boolean values.  `null` is not allowed in the values, so if
 you cannot determine a value do not include that key at all.  The best
 source of these is the `LoadGame` event from journals.  It's present
@@ -378,18 +378,18 @@ For all failures the response body will contain text that begins `FAIL: `.  Curr
    ```
    
    4. `FAIL: Schema Validation: <detail>` - the message failed to validate 
-      against the cited schema. e.g.
+      against the cited Schema. e.g.
    
    ```
    FAIL: Schema Validation: [<ValidationError: "'StarPos' is a required property">]
    ```
    
-   The exact detail will be very much dependent on both the schema the 
+   The exact detail will be very much dependent on both the Schema the 
    message cited and the contents of the message that failed to pass the 
    validation.
 
    In particular, if the message contains a key that is tagged 'disallowed' in 
-   the schema the response will look like:
+   the Schema, then the response will look like:
 
    ```
    FAIL: Schema Validation: "[<ValidationError: "{'type': ['array', 'boolean', 'integer', 'number', 'null', 'object', 'string']} is not allowed for 'BadVALUE'">]"
@@ -403,7 +403,7 @@ For all failures the response body will contain text that begins `FAIL: `.  Curr
    reports errors, and we are
    [hoping to improve this](https://github.com/EDCD/EDDN/issues/163).
 
-2. `426` - `Upgrade Required` - This indicates that the cited schema, or 
+2. `426` - `Upgrade Required` - This indicates that the cited Schema, or 
    version thereof, is outdated.  The body of the response will be:
 
    ```
@@ -412,7 +412,7 @@ For all failures the response body will contain text that begins `FAIL: `.  Curr
    The wording here is aimed at users of applications that send messages 
    over EDDN.  If you're the developer of such an application then 
    obviously you need to update your code to use a currently supported 
-   schema and version thereof.
+   Schema and version thereof.
 
 
 There shouldn't be any other variants of a 'FAIL' message.  If you find
@@ -442,14 +442,14 @@ your end, not the server.
 
 Once you've connected to that you will receive messages.  To access the 
 data you will first need to zlib-decompress each message.  Then you will 
-have a textual JSON object as per the schemas.
+have a textual JSON object as per the Schemas.
 
 In general, check the guidance for [Uploading messages](#uploading-messages)
 for the expected format of the messages.
 
-Consumers can utilise the `$schemaRef` value to determine which schema a 
+Consumers can utilise the `$schemaRef` value to determine which Schema a 
 particular message is for.  There is no need to validate the messages 
-against the schemas yourself, as that is performed on the EDDN Gateway.  
+against the Schemas yourself, as that is performed on the EDDN Gateway.  
 Messages that do not pass the schema validation there are not forwarded to 
 receivers.
 
