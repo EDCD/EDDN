@@ -18,7 +18,7 @@ with the
 
 This project utilises a number of Git branches:
 
-- `live` - The Live service should, outside of bried periods during deployment,
+- `live` - The Live service should, outside of brief periods during deployment,
    always be running using the software and supporting files from this branch.
    This is where you should be looking if checking current behaviour of the
    service.
