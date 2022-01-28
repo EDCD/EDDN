@@ -111,7 +111,7 @@ include:
 
 2. You **MUST** also create the README file for the new Schema.  This is also
   placed in the `schemas/` directory.  The name should match that of the
-  Schema file itself, without the version, and with a `.md` extentions instead
+  Schema file itself, without the version, and with a `.md` extention instead
   of `.json`.
   An example is `fssdiscoveryscan-README.md` documents the
   `fssdiscoveryscan-v1.0.json` Schema file.
@@ -133,15 +133,20 @@ include:
 #### Schema file requirements
 
 1. The file **MUST** actually be valid JSON, without any special extensions
-   (so no comments).
+   (so no comments).  Remember that JSON does **not** allow for a trailing
+   comma on the last entry of an array or dictionary.
 2. The file **MUST** comply with the relevant JSON Schema definition.
 3. The file **MUST** actually load using Python's `simplejson` module, as this
-   is what the Gateway code uses.
+   is what the Gateway code uses.  The script `contrib/test-schema.py` will
+   check both this and that the validation code doesn't choke on it.
 4. All new Schemas **MUST** comply with all requirements outlined in the
    [general Schemas documentation](https://github.com/EDCD/EDDN/blob/live/schemas/README-EDDN-schemas.md).
+   If you have a good reason why your new Schema can't and shouldn't comply
+   with any such then consensus will need to be achieved on changing those
+   requirements and/or allowing the exception.
 5. If the data source is a game Journal event then you **MUST** include the
    `event` key and its value as in the source data.  This might seem redundant
-   when we mandate a separate schema for any newly handled Journal event, but
+   when we mandate a separate Schema for any newly handled Journal event, but
    it does no harm and might make data handling for Listeners easier, i.e.
    they can just pass all "oh, that's from Journal data" messages through the
    same initial handling.
@@ -164,3 +169,10 @@ MarkDown linking is helpful.
 3. The reason(s) why any data in the source is not in the message, i.e. because
    it's personal to the player, or maybe it's just not useful (always the same
    in every instance of the source data).
+
+4. If your Schema only works whilst not complying with any main Schema 
+   requirements, and this has been approved, then you need to explicitly
+   document which requirement(s) are waived and why.
+
+5. If you use another Schema's README as the basis for yours then you MUST
+   remove any text that isn't relevant to your Schema.
