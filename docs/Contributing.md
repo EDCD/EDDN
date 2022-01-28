@@ -171,15 +171,8 @@ several things you should consider:
    EDDN plugin, or [ED Discovery](https://github.com/EDDiscovery/EDDiscovery).
 
 The Schema files are placed in the `schemas/` directory, located in the root
-of the project structure.
-
-They are [JSON](https://www.json.org/json-en.html) files, conforming to the
-[JSON Schema](https://json-schema.org/) specification.
-As of 2022-01-28 we still use 'draft 04' of this specification.
-We are looking into updating to the latest in
-[#139 - Update to latest JSON schema version(s) ](https://github.com/EDCD/EDDN/issues/139).
-
-All Schema files MUST be accompanied by a MarkDown formatted README file.
+of the project structure.  See [Schema file requirements](#schema-file-requirements)
+for more information.
 
 ### Always start a new Schema at version 1
 
@@ -255,10 +248,17 @@ include:
 
 #### Schema file requirements
 
-1. The file **MUST** be valid JSON, without any special extensions
-   (so no comments).  Remember that JSON does **not** allow for a trailing
-   comma on the last entry of an array or dictionary.
-2. The file **MUST** comply with the relevant JSON Schema definition.
+
+1. The file **MUST** be valid [JSON](https://www.json.org/json-en.html),
+   without any special extensions (so no comments).  Remember that JSON does
+   **not** allow for a trailing comma on the last entry of an array or
+   dictionary.
+2. The file **MUST** comply with the relevant
+   [JSON Schema](https://json-schema.org/) definition.
+
+   As of 2022-01-28 we still use 'draft 04' of this specification.
+   We are looking into updating to the latest in
+   [#139 - Update to latest JSON schema version(s) ](https://github.com/EDCD/EDDN/issues/139).
 3. The file **MUST** load using Python's `simplejson` module, as this
    is what the Gateway code uses.  The script `contrib/test-schema.py` will
    check both this and that the validation code doesn't choke on it.
@@ -273,6 +273,8 @@ include:
    it does no harm and might make data handling for Listeners easier, i.e.
    they can just pass all "oh, that's from Journal data" messages through the
    same initial handling.
+6. All Schema files MUST be accompanied by a MarkDown formatted
+   [README file](#schema-readme-requirements).
 
 #### Schema README requirements
 
