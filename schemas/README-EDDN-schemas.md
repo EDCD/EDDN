@@ -100,10 +100,12 @@ value, e.g.
 You MUST also utilise these test forms of the schemas when first testing your
 code.
 
-There might also be a beta.eddn.edcd.io, or dev.eddn.edcd.io, service
-available from time to time as necessary, e.g. for testing new schemas or
-changes to existing ones.  Ask on the `#eddn` channel of the EDCD Discord 
-(see https://edcd.github.io/ for an invite link).
+As well as the Live service there are also `beta` and `dev`
+[endpoints](../README.md#eddn-endpoints) which might be available from time
+to time as necessary, e.g. for testing new schemas or changes to existing
+ones.  Ask on the `#eddn` channel of the
+[EDCD Discord](https://edcd.github.io/) (check at the bottom for the invite
+link).
 
 Alternatively you could attempt
 [running your own test instance of EDDN](../docs/Running-this-software.md).
