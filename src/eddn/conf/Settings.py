@@ -76,6 +76,8 @@ class _Settings(object):
 
         "https://eddn.edcd.io/schemas/approachsettlement/1"                    : "schemas/approachsettlement-v1.0.json",
         "https://eddn.edcd.io/schemas/approachsettlement/1/test"               : "schemas/approachsettlement-v1.0.json",
+        "https://eddn.edcd.io/schemas/fssallbodiesfound/1"                    : "schemas/fssallbodiesfound-v1.0.json",
+        "https://eddn.edcd.io/schemas/fssallbodiesfound/1/test"               : "schemas/fssallbodiesfound-v1.0.json",
     }
 
     GATEWAY_OUTDATED_SCHEMAS                = [
