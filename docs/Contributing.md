@@ -265,8 +265,8 @@ include:
 4. All new Schemas **MUST** comply with all requirements outlined in the
    [general Schemas documentation](https://github.com/EDCD/EDDN/blob/live/schemas/README-EDDN-schemas.md).
    If you have a good reason why your new Schema can't and shouldn't comply
-   with any such then consensus will need to be achieved on changing those
-   requirements and/or allowing the exception.
+   with these requirements, then consensus will need to be achieved on changing
+   those requirements and/or allowing the exception.
 5. If the data source is a game Journal event then you **MUST** include the
    `event` key and its value as in the source data.  This might seem redundant
    when we mandate a separate Schema for any newly handled Journal event, but
