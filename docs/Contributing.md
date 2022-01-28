@@ -87,7 +87,7 @@ All Schema files MUST be accompanied by a MarkDown formatted README file.
 
 The first time a new Schema goes live it should be as version 1.
  - What should policy be on incrementing the version ?  I'm not confident
-   anything other than an integer is actually supported - Ath
+   anything other than an integer is supported - Ath
 
 Any breaking changes **MUST** increment the version number.  Use a git file
 rename to update the name of the file.  Examples of such breaking changes
@@ -117,7 +117,7 @@ include:
   `fssdiscoveryscan-v1.0.json` Schema file.
 
 3. You will need to add two lines to `src/eddn/conf/Settings.py` in order to
-  have the Gateway actually recognise the new Schema.  You are adding to the
+  have the Gateway recognise the new Schema.  You are adding to the
   end of the `GATEWAY_JSON_SCHEMAS` dictionary.  Both the live Schema *and*
   the `/test` version **MUST** be added.
   For `fssdiscoveryscan-v1.0.json` you would add:
@@ -130,13 +130,36 @@ include:
    existing Schemas.  Keep the trailing comma on the final entry, Python
    allows it, and it will reduce the diff on adding any further Schemas.
 
+4. You MUST add a file containing an example full EDDN message in the
+   `scripts/testing/gateway-responses/` directory.
+   1. Name the file as per the Schema name.  In the case of only adding a
+      single valid message you can use e.g. `newschema.json`.
+       1. If adding variants of valid messages then please annotate the
+          filename appropriately, e.g. `newschema-inspace.json` and
+          `newschema-onbody.json`.
+       2. If adding variants that are *invalid* in some manner them name
+          the files as e.g. `newschema-invalid-no-starpos.json`.
+   2. The file MUST contain the full plain-text of an EDDN upload, as would be
+      sent in the body of a request to the `/upload/` endpoint.  Test it with
+      the `scripts/testing/gateway-response/test-sender.py` script.
+   4. Base the `message` part of this on actual source data, e.g. a line
+      from a relevant Journal file.
+   5. Ensure the message `timestamp` value is sane, i.e. from a time period
+      in which the game was providing this data.
+   6. Ensure any data added as an augmentation is correct, i.e.
+      the proper co-ordinates of the named StarSystem in StarPos.
+
+   This will aid in confirming that the new schema actually works for a valid
+   message.  You MAY add additional examples that are invalid in various ways
+   that the schema will detect, but this is not required.
+
 #### Schema file requirements
 
-1. The file **MUST** actually be valid JSON, without any special extensions
+1. The file **MUST** be valid JSON, without any special extensions
    (so no comments).  Remember that JSON does **not** allow for a trailing
    comma on the last entry of an array or dictionary.
 2. The file **MUST** comply with the relevant JSON Schema definition.
-3. The file **MUST** actually load using Python's `simplejson` module, as this
+3. The file **MUST** load using Python's `simplejson` module, as this
    is what the Gateway code uses.  The script `contrib/test-schema.py` will
    check both this and that the validation code doesn't choke on it.
 4. All new Schemas **MUST** comply with all requirements outlined in the
