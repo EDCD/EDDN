@@ -94,6 +94,34 @@ Anyone planning to send data too EDDN **MUST** comply with all the advice in
 that document, and the individual schema README files as applicable.  It's
 also the best resource for those listening to the EDDN data stream.
 
+#### EDDN endpoints
+
+There are up to three separate services which might be running.
+
+| Service | Upload |           Listeners           | Notes                                                                                                                                                                                 |
+| ------: | :-----: |:-----------------------------:|:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Live | `https://eddn.edcd.io:4430/upload/` |   `tcp://eddn.edcd.io:9500/`    | The actual live service, which should always be running. It is automatically restarted every Thursday at 07:06:00 UTC                                                                 |
+| Beta | `https://beta.eddn.edcd.io:4431/upload/` | `tcp://beta.eddn.edcd.io:9510/` | The beta service, which should be running the current state of the `beta` branch.  Usually only active when either new schemas or forthcoming code changes are being actively tested. |
+| Dev | `https://dev.eddn.edcd.io:4432/upload/` | `tcp://dev.eddn.edcd.io:9520/`  | The dev service, which could be running any public branch of the code *or* a private branch.                                                                                          | 
+
+In general the Beta and Dev services will only be running so as to aid the core
+development team in testing changes.  Don't expect them to be generally
+available.
+
+You **MUST** use the correct hostname in the Upload URLs as these are
+TLS/HTTPS connections terminated on a Reverse Proxy.
+
+You can get away with using alternate hostnames on the Listener URLs, as
+they're purely a ZeroMQ endpoint, no TLS.  But don't be surprised if either
+the Beta or Dev service is actually running on a different IP, so don't
+chance it.
+
+If you need to test some of your own changes then please read
+[Running this software](docs/Running-this-software.md) for how to instantiate
+your own test service.  It is hoped that in the future the code will allow for
+easily running in a "local only" mode, not requiring any reverse proxy or
+internet-valid TLS certificates.
+
 ---
 ---
 
