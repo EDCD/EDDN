@@ -1,7 +1,7 @@
 # EDDN ApproachSettlement Schema
 
 ## Introduction
-Here we document how to take data from an ED `FSSAllBodiesFound` Journal 
+Here we document how to take data from an ED `ApproachSettlement` Journal 
 Event and properly structure it for sending to EDDN.
 
 Please consult [EDDN Schemas README](./README-EDDN-schemas.md) for general

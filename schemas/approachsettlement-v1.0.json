@@ -52,7 +52,7 @@
                 },
                 "StarSystem": {
                     "type"          : "string",
-                    "minLength"     : 1
+                    "minLength"     : 1,
                     "description"   : "Must be added by the sender"
                 },
                 "StarPos": {
@@ -63,7 +63,7 @@
                     "description"   : "Must be added by the sender"
                 },
                 "SystemAddress": {
-                    "type"          : "integer",
+                    "type"          : "integer"
                 },
                 "Name"             : {
                     "type"          : "string",
