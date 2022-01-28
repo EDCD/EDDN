@@ -40,7 +40,7 @@
                     "format"        : "date-time"
                 },
                 "event" : {
-                    "enum"          : [ "ApproachBody" ]
+                    "enum"          : [ "ApproachSettlement" ]
                 },
                 "horizons": {
                     "type"          : "boolean",
