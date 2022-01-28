@@ -227,48 +227,50 @@ EDDN service should always be using
 So, be sure you're checking the live versions and not, e.g. those in the 
 `master` or other branches.
 
-Each `message` object must have, at bare minimum:
+1. Each `message` object must have, at bare minimum:
 
-1. `timestamp` - string date and time in ISO8601 format. Whilst this
-   technically allows for any timezone to be cited you SHOULD provide this in
-   UTC, aka 'Zulu Time' as in the example above. You MUST ensure that you are
-   doing this properly. Do not claim 'Z' whilst actually using a local time
-   that is offset from UTC.
+   1. `timestamp` - string date and time in ISO8601 format. Whilst this
+      technically allows for any timezone to be cited you SHOULD provide this in
+      UTC, aka 'Zulu Time' as in the example above. You MUST ensure that you are
+      doing this properly. Do not claim 'Z' whilst actually using a local time
+      that is offset from UTC.
    
-   If you are only utilising Journal-sourced data then simply using the 
-   value from there should be sufficient as the PC game client is meant to 
-   always be correctly citing UTC for this.  Indeed it has been observed, 
-   in the Odyssey 4.0.0.1002 client, that with the Windows clock behind UTC 
-   by 21 seconds both the in-game UI clock *and* the Journal event 
-   timestamps are still properly UTC to the nearest second.
+      If you are only utilising Journal-sourced data then simply using the 
+      value from there should be sufficient as the PC game client is meant to 
+      always be correctly citing UTC for this.  Indeed it has been observed, 
+      in the Odyssey 4.0.0.1002 client, that with the Windows clock behind UTC 
+      by 21 seconds both the in-game UI clock *and* the Journal event 
+      timestamps are still properly UTC to the nearest second.
 
-   Listeners MAY make decisions on accepting data based on this time stamp,
-   i.e. "too old".
-2. At least one other key/value pair representing the data. In general there 
-   will be much more than this. Consult the
-   [Schemas and their documentation](./).
-3. Where the data is sourced from a Journal event please do preserve the
-   `event` key and value.  Yes, where we use an event-specific Schema this
-   might seem redundant, but it might aid an EDDN listener in streamlining
-   their code, and it does no harm.
+      Listeners MAY make decisions on accepting data based on this time stamp,
+      i.e. "too old".
+   2. At least one other key/value pair representing the data. In general there 
+      will be much more than this. Consult the
+      [Schemas and their documentation](./).
+   3. Where the data is sourced from a Journal event please do preserve the
+      `event` key and value.  Yes, where we use an event-specific Schema this
+      might seem redundant, but it might aid an EDDN listener in streamlining
+      their code, and it does no harm.
 
-   Any new Schema based on Journal data **MUST** make `event` a required
-   property of the `message` dictionary.
+      Any new Schema based on Journal data **MUST** make `event` a required
+      property of the `message` dictionary.
+   4. You should probably be including
+      [horizons and odyssey flags](#horizons-and-odyssey-flags).
 
-Because the first versions of some Schemas were defined when only the CAPI 
-data was available, before Journal files existed, many of the key names chosen
-in the Schemas are based on the equivalent in CAPI data, not Journal events.
-This means you MUST rename many of the keys from Journal events to match the
-Schemas.
+2. Because the first versions of some Schemas were defined when only the CAPI 
+   data was available, before Journal files existed, many of the key names chosen
+   in the Schemas are based on the equivalent in CAPI data, not Journal events.
+   This means you MUST rename many of the keys from Journal events to match the
+   Schemas.
 
-EDDN is intended to transport generic data not specific to any particular Cmdr
-and to reflect only the data that every player would see in-game in station 
-services or the local map. To that end, uploading applications MUST ensure
-that messages do not contain any Cmdr-specific data (other than "uploaderID",
-the "horizons" flag, and the "odyssey" flag).
+3. EDDN is intended to transport generic data not specific to any particular Cmdr
+   and to reflect only the data that every player would see in-game in station 
+   services or the local map. To that end, uploading applications MUST ensure
+   that messages do not contain any Cmdr-specific data (other than "uploaderID",
+   the "horizons" flag, and the "odyssey" flag).
 
-The individual Schemas will instruct you on various elisions (removals) to 
-be made to comply with this.
+   The individual Schemas will instruct you on various elisions (removals) to 
+   be made to comply with this.
 
 Some of these requirements are also enforced by the Schemas, and some things
 the Schemas enforce might not be explicitly called out here.  So, **do**
