@@ -217,7 +217,16 @@ For example, a shipyard message, version 2, might look like:
 ```
 
 ### Contents of `message`
-Every message MUST comply with the Schema its `$schemaRef` value cites.  
+Every message MUST comply with the Schema its `$schemaRef` value cites.  Each
+Schema file should have a matching `<schema>-README.md` file in the project
+root `schemas/` directory.  Always consult this so that you're aware of any
+Schema-specific requirements.
+
+The Schema file, `<schema>-v<version>.json`, is considered the authority on
+the format of messages for that Schema.  If anything in the accompanying
+documentation is in disagreement with this then please
+[open an issue on GitHub](https://github.com/EDCD/EDDN/issues/new/choose)
+so that we can investigate and correct, or clarify, as necessary.
 
 Apart from short time windows during deployment of a new version the live 
 EDDN service should always be using
