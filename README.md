@@ -121,6 +121,14 @@ your own test service.  It is hoped that in the future the code will allow for
 easily running in a "local only" mode, not requiring any reverse proxy or
 internet-valid TLS certificates.
 
+#### New Schemas
+*All* new Schema proposals **MUST** be started by opening
+[an issue on GitHub](https://github.com/EDCD/EDDN/issues/new/choose).  Please
+consult
+[docs/Contributing 'Adding a New Schema'](docs/Contributing.md#adding-a-new-schema)
+for further guidelines.
+
+
 ---
 ---
 
