@@ -161,7 +161,12 @@ several things you should consider:
    in order to propose the new Schema.  If a consensus appears to have been
    reached in comments therein then start work on a Pull Request.
 
-7. There must be at least one working Sender implementation before the Pull
+7. Consult
+   [the template for new Journal-based schemas](../schemas/TEMPLATES/journalevent-v1.0.json)
+   and [its README template](../schemas/TEMPLATES/journalevent-README.md) for
+   an outline and some further guidance.
+
+8. There must be at least one working Sender implementation before the Pull
    Request for a new Schema will be merged into the Live service.  Experience
    has demonstrated that there are often caveats and gotchas discovered during
    the development of a Sender for a new Schema.
