@@ -283,9 +283,10 @@ of any changes to Schemas.
 #### `horizons` and `odyssey` flags
 
 Where the Schema allows for them, add the `horizons` and `odyssey`
-keys with boolean values.  `null` is not allowed in the values, so if
-you cannot determine a value do not include that key at all.  The best
-source of these is the `LoadGame` event from journals.  It's present
+keys with boolean values.  `null` is not allowed in the values, so **if
+you cannot determine a value do not include that key at all**.
+
+The only source of these is the `LoadGame` event from journals.  It's present
 both in the PC local files and the CAPI journal data.  If you're
 composing a shipyard or outfitting message from CAPI data then it is
 possible to synthesise the `horizons` flag.  For now consult the function
@@ -293,25 +294,42 @@ possible to synthesise the `horizons` flag.  For now consult the function
 [EDMarketConnector:plugins/eddn.py](https://github.com/EDCD/EDMarketConnector/blob/stable/plugins/eddn.py)
 for a method to achieve this.
 
-As of 2022-01-22 the following was observed for the `LoadGame` events as
+As of 2022-01-29 the following was observed for the `LoadGame` events as
 present in CAPI-sourced Journal files (which were confirmed to match the
 PC-local files for these events):
 
-- PC Odyssey Client, game version `4.0.0.1002`:
+- PC Odyssey Client, game version `4.0.0.1100`:
     ```json
-    { "timestamp":"2022-01-20T11:15:22Z", "event":"LoadGame", "FID":"F<elided>", "Commander":"<elided>", "Horizons":true, "Odyssey":true,...
+    { "timestamp":"2022-01-29T16:17:02Z", "event":"LoadGame", "FID":"<elided>", "Commander":"<elided>", "Horizons":true, "Odyssey":true,...
     ```
-- PC Horizons Client, game version `3.8.0.403`, no `Odyssey` key was
+- PC Horizons Client, game version `3.8.0.404`, no `Odyssey` key was
    present:
     ```json
-    { "timestamp":"2022-01-20T11:20:17Z", "event":"LoadGame", "FID":"F<elided>", "Commander":"<elided>", "Horizons":true,...
+    { "timestamp":"2022-01-29T16:15:07Z", "event":"LoadGame", "FID":"<elided>", "Commander":"<elided>", "Horizons":true,...
     ```
 
-- PC 'base' Client, game version `3.8.0.403`, no `Odyssey` key was
+- PC 'base' Client, game version `3.8.0.404`, no `Odyssey` key was
    present:
     ```json
-    { "timestamp":"2022-01-20T11:22:54Z", "event":"LoadGame", "FID":"F<elided>", "Commander":"<elided>", "Horizons":false,...
+    { "timestamp":"2022-01-29T16:11:54Z", "event":"LoadGame", "FID":"<elided>", "Commander":"<elided>", "Horizons":false,...
     ```
+
+Do not attempt to use the value(s) from a `Fileheader` event as the semantics
+are different.  With clients 3.8.0.404 and 4.0.0.1100 the following was observed:
+
+| Game Client      | Fileheader       | LoadGame                        |
+| ---------------: | ---------------- | ------------------------------: |
+| Base             | "Odyssey":false  | "Horizons":false                |
+| Horizons         | "Odyssey":false  | "Horizons":true                 |
+| Odyssey          | "Odyssey":true   | "Horizons":true, "Odyssey":true |
+
+NB: The 'Base' client appears to simply be the Horizons client with any
+Horizons-only features disabled.
+
+- In the `Fileheader` event it's indicating whether it's an Odyssey game client.
+- In the `LoadGame` it's indicating whether Horizons and/or Odyssey features are
+   active, but in the non-Odyssey game client case you only get the Horizons
+   boolean.
 
 ### Server responses
 There are three possible sources of HTTP responses when sending an upload 
