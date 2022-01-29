@@ -1,1 +1,97 @@
 # This is not a valid JSON file
+# Removed all the 'comments' as you are sure you have complied with their
+# instructions!
+#
+# 1. Replace all instances of newjournalevent with the lower-case folded name
+#    of the Journal event this schema is for.
+# 2. Replace all instances of NewJournalEvent with the name of the journal
+#   event this schema is for, as it appears in the Journal.  Specifically,
+#   you must conserve the case.
+# 3. Leave the 'header' dictionary exactly as it is, it is mandatory.
+# 4. Add any additional schema-mandatory message properties to the 'required'
+#    array.
+# 5. If, and ONLY IF, you have good reason to believe there might be additional
+#    valid keys in the source data, change the 'additionalProperties' value
+#    to 'true'.
+#    EMPHASIS: You should really know about all of the possible keys and their
+#              values and be defining them, possibly as optional (not listed in
+#              'required') properties.  If needs be document, in the README for
+#              this Schema, that all but the defined properties should be
+#              elided when constructing a message.
+# 6. The 'horizons' and 'odyssey' properties in 'message' MUST BE RETAINED.
+#    Any message based on Journal data should be able to add them as
+#    appropriate.  Note that they *are optional in the resulting message*.
+#    You MUST NOT add these to the 'required' list, as the LoadGame Journal
+#    event is not guaranteed to contain either, depending on which client
+#    (base, horizons, odyssey) the player is running.
+# 7. 'some_disallowed_key' demonstrates how to specify that a key (and thus its
+#    value) is not allowed in this schema.
+# 8. Note the trailing comma after the 'some_disallowed_key' entry in
+#    'messages'.  If all you did was remove these comments you would NOT have
+#    a valid JSON file.  You should be adding **at least** one additional
+#    pertinent 'message' key:value definition.
+# 9. You MUST NOT remove the 'disallowed' key, or edit its value.  The purpose
+#    of this is to be cited as the allowed value on a disallowed key.  As it
+#    defines that the only valid type for the value is **not** any of the
+#    possible JSON types, its effect is to disallow any value for the key, and
+#    as a result disallow the key.
+{
+    "$schema"               : "http://json-schema.org/draft-04/schema#",
+    "id"                    : "https://eddn.edcd.io/schemas/newjournalevent/1#",
+    "type"                  : "object",
+    "additionalProperties"  : false,
+    "required": [ "$schemaRef", "header", "message" ],
+    "properties": {
+        "$schemaRef": {
+            "type"                  : "string"
+        },
+        "header": {
+            "type"                  : "object",
+            "additionalProperties"  : true,
+            "required"              : [ "uploaderID", "softwareName", "softwareVersion" ],
+            "properties"            : {
+                "uploaderID": {
+                    "type"          : "string"
+                },
+                "softwareName": {
+                    "type"          : "string"
+                },
+                "softwareVersion": {
+                    "type"          : "string"
+                },
+                "gatewayTimestamp": {
+                    "type"          : "string",
+                    "format"        : "date-time",
+                    "description"   : "Timestamp upon receipt at the gateway. If present, this property will be overwritten by the gateway; submitters are not intended to populate this property."
+                }
+            }
+        },
+        "message": {
+            "type"                  : "object",
+            "description"           : "Contains all properties from the listed events in the client's journal minus the Localised strings and the properties marked below as 'disallowed'",
+            "additionalProperties"  : false,
+            "required"              : [ "timestamp", "event" ],
+            "properties"            : {
+                "timestamp": {
+                    "type"          : "string",
+                    "format"        : "date-time"
+                },
+                "event" : {
+                    "enum"          : [ "NewJournalEvent" ]
+                },
+                "horizons": {
+                    "type"          : "boolean",
+                    "description"   : "Whether the game client logged that Horizons functionality was available."
+                },
+                "odyssey": {
+                    "type"      : "boolean",
+                    "description" : "Whether the game client logged that Odyssey functionality was available."
+                },
+                "some_disallowed_key" { "$ref" : "#/definitions/disallowed" },
+            }
+        }
+    },
+    "definitions": {
+        "disallowed" : { "not" : { "type": [ "array", "boolean", "integer", "number", "null", "object", "string" ] } }
+    }
+}
