@@ -30,7 +30,9 @@
 #    'messages'.  If all you did was remove these comments you would NOT have
 #    a valid JSON file.  You should be adding **at least** one additional
 #    pertinent 'message' key:value definition.
-# 9. You MUST NOT remove the 'disallowed' key, or edit its value.  The purpose
+# 9. Consult the journalevent-README.md file, particularly the section about
+#    `StarPos` and remove that section of this file if it is not needed.
+# 10. You MUST NOT remove the 'disallowed' key, or edit its value.  The purpose
 #    of this is to be cited as the allowed value on a disallowed key.  As it
 #    defines that the only valid type for the value is **not** any of the
 #    possible JSON types, its effect is to disallow any value for the key, and
@@ -86,6 +88,13 @@
                 "odyssey": {
                     "type"          : "boolean",
                     "description"   : "Boolean value copied from the Journal LoadGame event, when it is present there."
+                },
+                "StarPos": {
+                    "type"          : "array",
+                    "items"         : { "type": "number" },
+                    "minItems"      : 3,
+                    "maxItems"      : 3,
+                    "description"   : "Must be added by the sender"
                 },
                 "some_disallowed_key" { "$ref" : "#/definitions/disallowed" },
             }

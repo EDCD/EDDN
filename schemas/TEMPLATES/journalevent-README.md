@@ -48,10 +48,11 @@
       data contains a `SystemAddress` value,
    2. and a `StarPos` array is *not already present* in the source data.
    
-   then you MUST include the `StarPos` section in `Augmentations`.
+   then you MUST include the `StarPos` section in `Augmentations` and add
+   `StarPos` to the `required` message properties in the Schema file.
 
    If neither key is in the source data then remove the `StarPos` section from
-   this document.
+   this document and the Schema file.
 
 The line:
 
