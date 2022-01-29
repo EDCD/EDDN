@@ -94,7 +94,7 @@ several things you should consider:
 
 1. Ensure you read
    [the general Schemas README](https://github.com/EDCD/EDDN/blob/live/schemas/README-EDDN-schemas.md)
-   so as to be aware of general requirements that your new Schema will need to
+   to be aware of general requirements that your new Schema will need to
    adhere to.
 
    You might also find useful information in the other Schema-specific README
