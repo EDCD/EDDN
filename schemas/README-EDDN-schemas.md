@@ -251,18 +251,19 @@ So, be sure you're checking the live versions and not, e.g. those in the
 
       Listeners MAY make decisions on accepting data based on this time stamp,
       i.e. "too old".
-   2. At least one other key/value pair representing the data. In general there 
-      will be much more than this. Consult the
-      [Schemas and their documentation](./).
-   3. Where the data is sourced from a Journal event please do preserve the
+   2. Where the data is sourced from a Journal event please do preserve the
       `event` key and value.  Yes, where we use an event-specific Schema this
       might seem redundant, but it might aid an EDDN listener in streamlining
       their code, and it does no harm.
 
       Any new Schema based on Journal data **MUST** make `event` a required
       property of the `message` dictionary.
-   4. You should probably be including
-      [horizons and odyssey flags](#horizons-and-odyssey-flags).
+   3. At least one other key/value pair representing the data. In general there
+      will be much more than this. Consult the
+      [Schemas and their documentation](./).
+   4. Include
+      [horizons and odyssey flags](#horizons-and-odyssey-flags) where the
+      Schema requires them.
 
 2. Because the first versions of some Schemas were defined when only the CAPI 
    data was available, before Journal files existed, many of the key names chosen
