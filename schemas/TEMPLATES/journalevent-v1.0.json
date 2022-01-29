@@ -81,11 +81,11 @@
                 },
                 "horizons": {
                     "type"          : "boolean",
-                    "description"   : "Whether the game client logged that Horizons functionality was available."
+                    "description"   : "Boolean value copied from the Journal LoadGame event, when it is present there."
                 },
                 "odyssey": {
                     "type"      : "boolean",
-                    "description" : "Whether the game client logged that Odyssey functionality was available."
+                    "description"   : "Boolean value copied from the Journal LoadGame event, when it is present there."
                 },
                 "some_disallowed_key" { "$ref" : "#/definitions/disallowed" },
             }
