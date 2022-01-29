@@ -111,10 +111,9 @@ available.
 You **MUST** use the correct hostname in the Upload URLs as these are
 TLS/HTTPS connections terminated on a Reverse Proxy.
 
-You can get away with using alternate hostnames on the Listener URLs, as
-they're purely a ZeroMQ endpoint, no TLS.  But don't be surprised if either
-the Beta or Dev service is actually running on a different IP, so don't
-chance it.
+The Listener URLs are ZeroMQ endpoints, no TLS.  But whilst this means you
+don't strictly need to use the correct hostname there is no guarantee that the
+beta and dev hostnames won't be pointing at, or hosted on, a different IP.
 
 If you need to test some of your own changes then please read
 [Running this software](docs/Running-this-software.md) for how to instantiate
@@ -122,7 +121,7 @@ your own test service.  It is hoped that in the future the code will allow for
 easily running in a "local only" mode, not requiring any reverse proxy or
 internet-valid TLS certificates.
 
---
+---
 ---
 
 ## Misc
