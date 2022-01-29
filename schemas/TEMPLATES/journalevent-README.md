@@ -42,12 +42,16 @@
    mandatory that they are allowed (but are optional) in any Journal-based
    EDDN Schema.
 
-7. If the source Journal event contains information that includes the System
-   name (possibly as `StarSystem` or `SystemName`) then you MUST include the
-   `StarPos` section in `Augmentations`.
+7. If:
+   1. either the source Journal event contains information that includes the
+      System name (possibly as `StarSystem` or `SystemName`), **OR** the source
+      data contains a `SystemAddress` value,
+   2. and a `StarPos` array is *not already present* in the source data.
+   
+   then you MUST include the `StarPos` section in `Augmentations`.
 
-   Additionally, you must also include `StarPos` as required in the Schema
-   if the source data contains `SystemAddress`.
+   If neither key is in the source data then remove the `StarPos` section from
+   this document.
 
 The line:
 
@@ -67,8 +71,8 @@ Please consult [EDDN Schemas README](./README-EDDN-schemas.md) for general
 documentation for a schema such as this.
 
 If you find any discrepancies between what this document says and what is
-defined in the relevant Schema file you should, in the first instance, assume
-that it is the Schema file that is correct.
+defined in the relevant Schema file, then you should, in the first instance,
+assume that it is the Schema file that is correct.
 **PLEASE open
 [an issue on GitHub](https://github.com/EDCD/EDDN/issues/new/choose)
 to report any such anomalies you find so that we can check and resolve the

@@ -84,7 +84,7 @@
                     "description"   : "Boolean value copied from the Journal LoadGame event, when it is present there."
                 },
                 "odyssey": {
-                    "type"      : "boolean",
+                    "type"          : "boolean",
                     "description"   : "Boolean value copied from the Journal LoadGame event, when it is present there."
                 },
                 "some_disallowed_key" { "$ref" : "#/definitions/disallowed" },
