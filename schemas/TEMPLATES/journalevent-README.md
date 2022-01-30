@@ -29,14 +29,30 @@
    Where such renames *are* required do **NOT** attempt to list them all here.
    That would just require updating them both here and in the actual Schema.
 
-   If there are any, call them out in the `description` of the affected
-   property in the Schema.
+   If there are any, then the affected property object should contain a key
+   named `renamed` with its value being the original key name in the source
+   data, e.g. in the commodity/3 schema a Journal `StarSystem` is renamed
+   to `systemName` so we have:
 
-7. Do **NOT** remove the `horizons and odyssey flags` section.  It is
+      ```json
+        "message": {
+            "type"                  : "object",
+            "additionalProperties"  : false,
+            "required"              : [ "systemName", "stationName", "marketId", "timestamp", "commodities" ],
+            "properties"            : {
+                "systemName": {
+                    "type"      : "string",
+                    "renamed"   : "StarSystem",
+                    "minLength" : 1
+                },
+
+      ```
+
+6. Do **NOT** remove the `horizons and odyssey flags` section.  It is
    mandatory that they are allowed (but are optional) in any Journal-based
    EDDN Schema.
 
-8. If both:
+7. If both:
    1. either the source Journal event contains information that includes the
       System name (possibly as `StarSystem` or `SystemName`), **OR** the source
       data contains a `SystemAddress` value,
