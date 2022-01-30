@@ -25,7 +25,7 @@
 #    event is not guaranteed to contain either, depending on which client
 #    (base, horizons, odyssey) the player is running.
 # 7. 'some_disallowed_key' demonstrates how to specify that a key (and thus its
-#    value) is not allowed in this schema.
+#    value) is not allowed in this schema.  Note the **MANDATORY** description.
 # 8. Note the trailing comma after the 'some_disallowed_key' entry in
 #    'messages'.  If all you did was remove these comments you would NOT have
 #    a valid JSON file.  You should be adding **at least** one additional
@@ -96,7 +96,14 @@
                     "maxItems"      : 3,
                     "description"   : "Must be added by the sender"
                 },
-                "some_disallowed_key" { "$ref" : "#/definitions/disallowed" },
+                "ExampleRenamedKey" : {
+                    "type"          : "string",
+                    "renamed"       : "SomeOtherKey"
+                }
+                "some_disallowed_key" {
+                    "$ref"          : "#/definitions/disallowed",
+                    "description"   : "MANDATORY brief description of why this key must be removed from source data"
+                },
             }
         }
     },
