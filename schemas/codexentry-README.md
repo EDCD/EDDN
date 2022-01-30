@@ -32,9 +32,8 @@ You SHOULD attempt to track the BodyName and BodyID where the player is
 and add keys/values for these.
 
 You MUST track `BodyName` both from Status.json *and* also from some
-[Journal](./README-EDDN-schemas.md#journal-files)
-events in order to cross-check it before using the `BodyID` from 
-[Journal](./README-EDDN-schemas.md#journal-files) events.
+Journal events in order to cross-check it before using the `BodyID` from 
+Journal events.
 
 The following is correct as of game version 4.0.0.801 (Odyssey initial 
 release, Update 7, plus one patch).
