@@ -273,9 +273,12 @@ So, be sure you're checking the live versions and not, e.g. those in the
 
 3. EDDN is intended to transport generic data not specific to any particular Cmdr
    and to reflect only the data that every player would see in-game in station 
-   services or the local map. To that end, uploading applications MUST ensure
-   that messages do not contain any Cmdr-specific data (other than "uploaderID",
-   the "horizons" flag, and the "odyssey" flag).
+   services or the local map. To that end:
+      1. Uploading applications MUST ensure that messages do not contain any
+         Cmdr-specific data (other than "uploaderID", the "horizons" flag, and
+         the "odyssey" flag).
+      2. Uploading applications MUST remove any data where the name of the
+         relevant key has a `_Localised` suffix.
 
    The individual Schemas will instruct you on various elisions (removals) to 
    be made to comply with this.

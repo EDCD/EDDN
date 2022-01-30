@@ -281,6 +281,28 @@ include:
 6. All Schema files MUST be accompanied by a MarkDown formatted
    [README file](#schema-readme-requirements).
 
+#### Data that should be allowed in a new Schema
+
+The default is to define the new Schema such that all possible data in the
+source Journal event is allowed.
+
+However, you **MUST** consider which source data constitutes information
+personal to the player, e.g. their credit balance, or the specific amount they
+paid for something after the applicable discounts and mandate its removal in
+the Schema.
+
+Furthermore, the Schema **MUST** mandate removal of all keys (and thus their
+values as well) where the key name has the suffix `_Localised`.  These
+key:value pairs should be accompanied in the source data by a non-Localised
+version which will remain, unless otherwise elided.
+
+You should gather as many examples as possible of actual game Journal events,
+and then define the Schema such that anything (after mandated elisions as
+above) that is always in the source data is *required* in the new Schema.
+
+Anything that does not always occur in the source data, and is not defined and
+as a mandatory elision, should be defined, but remain optional.
+
 #### Schema README requirements
 
 The per-Schema README **MUST** give both Senders and Listeners sufficient
