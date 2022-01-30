@@ -20,8 +20,8 @@ The primary data source for this schema is the ED Journal event `CodexEntry`.
 
 ### Augmentations
 #### horizons and odyssey flags
-Please read [horizons and odyssey flags](../README-EDDN-schemas.md#horizons-and-odyssey-flags)
-in the main Schema documentation.
+Please read [horizons and odyssey flags](../docs/Developers.md#horizons-and-odyssey-flags)
+in the Developers' documentation.
 
 #### StarPos
 You MUST add a `StarPos` array containing the system co-ordinates from the

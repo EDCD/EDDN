@@ -21,7 +21,7 @@ The primary data source for this schema is the ED Journal event
 
 ### Augmentations
 #### horizons and odyssey flags
-Please read [horizons and odyssey flags](../../docs/Developers.md#horizons-and-odyssey-flags)
+Please read [horizons and odyssey flags](../docs/Developers.md#horizons-and-odyssey-flags)
 in the Developers' documentation.
 
 #### StarPos

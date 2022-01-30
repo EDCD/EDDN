@@ -57,7 +57,7 @@ Remove not only the `Category_Localised` key:values, but also the
 
 ### Augmentations
 #### horizons and odyssey flags
-Please read [horizons and odyssey flags](../../docs/Developers.md#horizons-and-odyssey-flags)
+Please read [horizons and odyssey flags](../docs/Developers.md#horizons-and-odyssey-flags)
 in the Developers' documentation.
 
 ### Using CAPI data

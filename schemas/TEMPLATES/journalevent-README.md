@@ -103,7 +103,7 @@ value is what the name would have been in the source Journal data.
 
 ### Augmentations
 #### horizons and odyssey flags
-Please read [horizons and odyssey flags](../../docs/Developers.md#horizons-and-odyssey-flags)
+Please read [horizons and odyssey flags](../docs/Developers.md#horizons-and-odyssey-flags)
 in the Developers' documentation.
 
 #### StarPos

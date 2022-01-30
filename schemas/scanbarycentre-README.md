@@ -24,7 +24,7 @@ senders SHOULD include any defined in the schema if it's in the source data.
 
 ### Augmentations
 #### horizons and odyssey flags
-Please read [horizons and odyssey flags](../../docs/Developers.md#horizons-and-odyssey-flags)
+Please read [horizons and odyssey flags](../docs/Developers.md#horizons-and-odyssey-flags)
 in the Developers' documentation.
 
 #### StarPos
