@@ -319,12 +319,21 @@ as a mandatory elision, should be defined, but remain optional.
 
 #### Schema README requirements
 
-The per-Schema README **MUST** give both Senders and Listeners sufficient
-information to correctly handle the pertinent data.  You do not need to repeat
-anything already specified in the general Schema README.  Referring to it via
-MarkDown linking is helpful.
+The combination of the Schema file itself and its README **MUST** give both
+Senders and Listeners sufficient information to correctly handle the pertinent
+data.
 
-1. The reason(s) for any augmentations to a message must be clearly explained.
+If the Schema signifies a field should be removed then you do not need
+to explicitly call it out in the README.
+
+Likewise, the Schema MUST note, with a `renamed` property, where the key name
+for some data differs from that in the Journal source data.  Because this is
+mandatory you do not then need to list such in the README.
+
+You do not need to repeat anything already specified in the general
+Schema README.  Referring to it via MarkDown linking is helpful.
+
+1. Any augmentations to a message must be clearly explained.
    1. **DO** outline where the additional data comes from.  e.g. `StarPos`
       added to many events should come from a prior `Location`, `FSDJump` or
       `CarrierJump` Journal event.
@@ -345,5 +354,3 @@ MarkDown linking is helpful.
 
 ---
 ---
-
-
