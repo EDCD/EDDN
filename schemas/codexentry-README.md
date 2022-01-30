@@ -7,31 +7,25 @@ properly structure it for sending to EDDN.
 Please consult [EDDN Schemas README](./README-EDDN-schemas.md) for general 
 documentation for a schema such as this.
 
+If you find any discrepancies between what this document says and what is
+defined in the relevant Schema file, then you should, in the first instance,
+assume that it is the Schema file that is correct.
+**PLEASE open
+[an issue on GitHub](https://github.com/EDCD/EDDN/issues/new/choose)
+to report any such anomalies you find so that we can check and resolve the
+discrepancy.**
+
 ## Senders
 The primary data source for this schema is the ED Journal event `CodexEntry`.
 
-### Elisions
-You MUST remove any key where the key name ends in 
-`_Localised`.
-
-You MUST remove the two keys `IsNewEntry` and `NewTraitsDiscovered`.
-
 ### Augmentations
-#### horizons flag
-You SHOULD add this key/value pair, using the value from the `LoadGame` event.
-
-#### odyssey flag
-You SHOULD add this key/value pair, using the value from the `LoadGame` event.
+#### horizons and odyssey flags
+Please read [horizons and odyssey flags](../README-EDDN-schemas.md#horizons-and-odyssey-flags)
+over in the main Schema documentation.
 
 #### StarPos
-You MUST **add** a `StarPos` key with value of type `array` containing the 
-galaxy co-ordinates of the system.  You will need to have obtained these 
-from prior event(s) upon the player arriving, or logging into, the system.
-
-e.g. if the system is `Alpha Centauri`:
-```json
-    "StarPos": [3.03125, -0.09375, 3.15625]
-```
+You MUST add a `StarPos` array containing the system co-ordinates from the
+last `FSDJump`, `CarrierJump`, or `Location` event.
 
 #### BodyID and BodyName
 You SHOULD attempt to track the BodyName and BodyID where the player is 
@@ -103,7 +97,7 @@ e.g. for `Bestia A 2 a`
 If you cannot properly obtain the values for `BodyName` or `BodyID` then 
 you MUST NOT include them.
 
-## Receivers
+## Listeners
 
 As per ['BodyID and BodyName'](#bodyid-and-bodyname) above be aware that 
 you are not guaranteed to receive these values for any given event.  Some 
