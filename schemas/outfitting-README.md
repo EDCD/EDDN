@@ -21,7 +21,7 @@ The primary data source for this schema is the ED Journal event
 
 You MAY also source this data from the CAPI `/shipyard` endpoint.
 Please read
-[the guidance on checking for CAPI lag](README-EDDN-schemas.md#detecting-capi-data-lag)
+[the guidance on checking for CAPI lag](../docs/Developers.md#detecting-capi-data-lag)
 before utilising CAPI data for EDDN messages.
 
 You only need the `name` key's value for each member of the `modules` array.
