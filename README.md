@@ -85,7 +85,7 @@ interact with EDDN - check the [EDDN tag](https://edcodex.info/?m=tools&cat=9).
 ### Developers
 If you are a developer of a third-party tool that could be enhanced by 
 uploading data to EDDN then please consult
-[the live branch documentation](https://github.com/EDCD/EDDN/blob/live/schemas/README-EDDN-schemas.md)
+[the live branch Developers' documentation](https://github.com/EDCD/EDDN/blob/live/docs/Developers.md)
 .
 **DO NOT** assume that any code or documentation in the `master` (or 
 any other) branch on GitHub truly reflects the current live service!
