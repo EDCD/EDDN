@@ -6,6 +6,8 @@ This document is intended to solidly and usefully define necessary information
 pertaining to either improving the EDDN software, or add a new Schema to the
 supported set.
 
+---
+
 ## File formatting and editor configuration
 
 The project contains an `.editorconfig` file at its root.  Please either ensure
@@ -13,6 +15,8 @@ your editor is taking note of those settings, or cross-check its contents
 with the
 [editorconfig documentation](https://github.com/editorconfig/editorconfig/wiki/EditorConfig-Properties)
 , and ensure your editor/IDE's settings match.
+
+---
 
 ## Branches and other project miscellanea
 
@@ -40,6 +44,9 @@ This project utilises a number of Git branches:
 You might also see 'work in progress' branches with a `fix/` or `enhancement/`
 prefix.
 
+---
+---
+
 ## Code Changes
 
 All code changes should start with
@@ -51,7 +58,7 @@ directed to do otherwise.  A Pull Request that is opened without prior
 discussion in a relevant Issue is liable to be closed without further
 consideration, but exceptions may be made for 'obvious' changes.
 
-## Testing
+### Testing
 
 As of 2022-01-28 the project still does not contain any automated tests,
 neither unit or functional.  But you should make every effort to test any
@@ -86,6 +93,9 @@ Where changes pertain to adding wholly new functionality, including adding a
 new schema, or improving an existing feature, then they should be in a branch
 named as per the convention `enhancement/<issue number>/<brief descrption>`
 , e.g. `enhancement/234/add-schema-somenewevent`.
+
+---
+---
 
 ## Adding a New Schema
 
@@ -179,6 +189,8 @@ The Schema files are placed in the `schemas/` directory, located in the root
 of the project structure.  See [Schema file requirements](#schema-file-requirements)
 for more information.
 
+---
+
 ### Always start a new Schema at version 1
 
 The first time a new Schema goes live it should be as version 1.
@@ -195,6 +207,8 @@ include:
   data no longer being present.
 - If you change a property from optional to required or disallowed.  Senders
   will need to update.  Listeners can no longer expect it, if disallowed.
+
+---
 
 ### Necessary file edits
 
@@ -328,3 +342,8 @@ MarkDown linking is helpful.
 
 5. If you use another Schema's README as the basis for yours then you MUST
    remove any text that isn't relevant to your Schema.
+
+---
+---
+
+
