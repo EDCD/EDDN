@@ -48,11 +48,11 @@
 
       ```
 
-6. Do **NOT** remove the `horizons and odyssey flags` section.  It is
+5. Do **NOT** remove the `horizons and odyssey flags` section.  It is
    mandatory that they are allowed (but are optional) in any Journal-based
    EDDN Schema.
 
-7. If both:
+6. If both:
    1. either the source Journal event contains information that includes the
       System name (possibly as `StarSystem` or `SystemName`), **OR** the source
       data contains a `SystemAddress` value,
@@ -63,6 +63,10 @@
 
    If neither key is in the source data then remove the `StarPos` section from
    this document and the Schema file.
+
+7. Do **NOT** add an 'Elisions'/'Removals' section.  Leave the Schema as the
+   sole reference for any data that is in the source but should not be in the
+   final EDDN message.
 
 The line:
 
@@ -99,8 +103,8 @@ value is what the name would have been in the source Journal data.
 
 ### Augmentations
 #### horizons and odyssey flags
-Please read [horizons and odyssey flags](../README-EDDN-schemas.md#horizons-and-odyssey-flags)
-over in the main Schema documentation.
+Please read [horizons and odyssey flags](../../docs/Developers.md#horizons-and-odyssey-flags)
+over in the Developers' documentation.
 
 #### StarPos
 You MUST add a `StarPos` array containing the system co-ordinates from the 

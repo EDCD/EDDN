@@ -282,7 +282,7 @@ include:
    is what the Gateway code uses.  The script `contrib/test-schema.py` will
    check both this and that the validation code doesn't choke on it.
 4. All new Schemas **MUST** comply with all requirements outlined in the
-   [general Schemas documentation](https://github.com/EDCD/EDDN/blob/live/schemas/README-EDDN-schemas.md).
+   [general Schemas documentation](../schemas/README-EDDN-schemas.md).
    If you have a good reason why your new Schema can't and shouldn't comply
    with these requirements, then consensus will need to be achieved on changing
    those requirements and/or allowing the exception.

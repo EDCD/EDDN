@@ -165,26 +165,9 @@ In general:
 - *Delayed* good data is better than degrading the EDDN service for others.
 
 ### Format of uploaded messages
-Each message is a JSON object in UTF-8 encoding containing the following
-key+value pairs:
-
-1. `$schemaRef` - Which Schema (including version) this message is for.
-2. `header` - Object containing mandatory information about the upload;
-    1. `uploaderID` - a unique ID for the player uploading this data.  
-       Don't worry about privacy, the EDDN service will hash this with a key
-       that is regularly changed so no-one knows who an uploader is in-game.
-    2. `softwareName` - an identifier for the software performing the upload.
-    3. `softwareVersion` - The version of that software being used.
-
-   Listeners MAY make decisions about whether to utilise the data in any
-   message based on the combination of `softwareName` and `softwareVersion`.
-
-   **DO not** add `gatewaytimestamp` yourself. The EDDN Gateway will add
-   this and will overwrite any that you provide, so don't bother.
-4. `message` - Object containing the data for this message. Consult the
-   relevant README file within this documentation, e.g.
-   [codexentry-README.md](./codexentry-README.md). There are some general
-   guidelines [below](#contents-of-message).
+Each message is a JSON object in UTF-8 encoding with contents that comply with
+the relevant Schema.  There is an outline in the general
+[EDDN Message README](../schemas/README-EDDN-schemas.md#mandatory-schema-file-contents).
 
 For example, a shipyard message, version 2, might look like:
 
@@ -251,6 +234,12 @@ services or the local map. To that end:
 
 The individual Schemas will instruct you on various elisions (removals) to
 be made to comply with this.
+
+Because the first versions of some Schemas were defined when only the CAPI
+data was available, before Journal files existed, many of the key names chosen
+in the Schemas are based on the equivalent in CAPI data, not Journal events.
+This means you MUST rename many of the keys from Journal events to match the
+Schemas.  Consult the relevant Schema for details.
 
 Some of these requirements are also enforced by the Schemas, and some things
 the Schemas enforce might not be explicitly called out in documentation.  So,
