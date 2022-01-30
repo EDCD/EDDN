@@ -36,14 +36,17 @@
             "properties"            : {
                 "systemName": {
                     "type"      : "string",
+                    "renamed"   : "StarSystem",
                     "minLength" : 1
                 },
                 "stationName": {
                     "type"      : "string",
+                    "renamed"   : "StationName",
                     "minLength" : 1
                 },                
                 "marketId": {
-                    "type"      : "integer"
+                    "type"      : "integer",
+                    "renamed"   : "MarketID"
                 },
                 "horizons": {
                     "type"      : "boolean",
@@ -59,6 +62,7 @@
                 },
                 "modules": {
                     "type"          : "array",
+                    "renamed"       : "Items",
                     "minItems"      : 1,
                     "uniqueItems"   : true,
                     "items"         : {
