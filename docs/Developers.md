@@ -236,69 +236,36 @@ EDDN service should always be using
 So, be sure you're checking the live versions and not, e.g. those in the
 `master` or other branches.
 
-1. Each `message` object must have, at bare minimum:
+Please consult the
+[general README for Schemas](../schemas/README-EDDN-schemas.md#general-eddn-message-outline)
+for more detailed information about a message's content.
 
-    1. `timestamp` - string date and time in ISO8601 format. Whilst this
-       technically allows for any timezone to be cited you SHOULD provide this in
-       UTC, aka 'Zulu Time' as in the example above. You MUST ensure that you are
-       doing this properly. Do not claim 'Z' whilst actually using a local time
-       that is offset from UTC.
+EDDN is intended to transport generic data not specific to any particular Cmdr
+and to reflect only the data that every player would see in-game in station
+services or the local map. To that end:
+1. Uploading applications MUST ensure that messages do not contain any
+   Cmdr-specific data (other than "uploaderID", the "horizons" flag, and
+   the "odyssey" flag).
+2. Uploading applications MUST remove any data where the name of the
+   relevant key has a `_Localised` suffix.
 
-       If you are only utilising Journal-sourced data then simply using the
-       value from there should be sufficient as the PC game client is meant to
-       always be correctly citing UTC for this.  Indeed it has been observed,
-       in the Odyssey 4.0.0.1002 client, that with the Windows clock behind UTC
-       by 21 seconds both the in-game UI clock *and* the Journal event
-       timestamps are still properly UTC to the nearest second.
-
-       Listeners MAY make decisions on accepting data based on this time stamp,
-       i.e. "too old".
-    2. Where the data is sourced from a Journal event please do preserve the
-       `event` key and value.  Yes, where we use an event-specific Schema this
-       might seem redundant, but it might aid an EDDN listener in streamlining
-       their code, and it does no harm.
-
-       Any new Schema based on Journal data **MUST** make `event` a required
-       property of the `message` dictionary.
-    3. At least one other key/value pair representing the data. In general there
-       will be much more than this. Consult the
-       [Schemas and their documentation](./).
-
-   Please consult the advice pertaining to
-   [horizons and odyssey flags](#horizons-and-odyssey-flags) and include them
-   whenever possible.
-
-2. Because the first versions of some Schemas were defined when only the CAPI
-   data was available, before Journal files existed, many of the key names chosen
-   in the Schemas are based on the equivalent in CAPI data, not Journal events.
-   This means you MUST rename many of the keys from Journal events to match the
-   Schemas.
-
-3. EDDN is intended to transport generic data not specific to any particular Cmdr
-   and to reflect only the data that every player would see in-game in station
-   services or the local map. To that end:
-    1. Uploading applications MUST ensure that messages do not contain any
-       Cmdr-specific data (other than "uploaderID", the "horizons" flag, and
-       the "odyssey" flag).
-    2. Uploading applications MUST remove any data where the name of the
-       relevant key has a `_Localised` suffix.
-
-   The individual Schemas will instruct you on various elisions (removals) to
-   be made to comply with this.
+The individual Schemas will instruct you on various elisions (removals) to
+be made to comply with this.
 
 Some of these requirements are also enforced by the Schemas, and some things
-the Schemas enforce might not be explicitly called out here.  So, **do**
-check what you're sending against the relevant Schema(s) when making any
+the Schemas enforce might not be explicitly called out in documentation.  So,
+**do** check what you're sending against the relevant Schema(s) when making any
 changes to your code.
 
-It is also advisable to Watch this repository on GitHub so that you are aware
-of any changes to Schemas.
+It is also advisable to Watch this repository
+[on GitHub](https://github.io/EDCD/EDDN/)
+so that you are aware of any changes to Schemas.
 
 #### `horizons` and `odyssey` flags
 
-Where the Schema allows for them, add the `horizons` and `odyssey`
-keys with boolean values.  `null` is not allowed in the values, so **if
-you cannot determine a value do not include that key at all**.
+Where the Schema allows for them, `horizons` and `odyssey` keys SHOULD be
+added with appropriate boolean values.  `null` is not allowed in the values,
+so **if you cannot determine a value do not include that key at all**.
 
 The only source of these is the `LoadGame` event from journals.  It's present
 both in the PC local files and the CAPI journal data.  If you're
