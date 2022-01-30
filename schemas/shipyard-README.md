@@ -7,34 +7,36 @@ Event and properly structure it for sending to EDDN.
 Please consult [EDDN Schemas README](./README-EDDN-schemas.md) for general
 documentation for a schema such as this.
 
+If you find any discrepancies between what this document says and what is
+defined in the relevant Schema file, then you should, in the first instance,
+assume that it is the Schema file that is correct.
+**PLEASE open
+[an issue on GitHub](https://github.com/EDCD/EDDN/issues/new/choose)
+to report any such anomalies you find so that we can check and resolve the
+discrepancy.**
+
 ## Senders
 The primary data source for this schema is the ED Journal event
 `Shipyard`.
 
 You MAY also source this data from the CAPI `/shipyard` endpoint.
 Please read
-[the guidance on checking for CAPI lag](README-EDDN-schemas.md#detecting-capi-data-lag)
+[the guidance on checking for CAPI lag](../docs/Developers.md#detecting-capi-data-lag)
 before utilising CAPI data for EDDN messages.
 
- You only need the `name` key's value for each member of the `PriceList` 
-array (if using Journal, it will be from the `ships` array if using CAPI 
-data).
+The `ships` array is built from *only* the `name` values of either the Journal
+`PriceList` array in the `Shipyard.json` file, or from the `ships` array of
+CAPI `/shipyard` data.
 
 When using CAPI data *include* ships listed in the `"unavailable_list"` 
 property (i.e. available at this station, but not to this Cmdr).
 
-This list of ship names will go in the `ships` array in the EDDN message.
-
 ### Key Renames
-Many of the key names have a different case defined in this schema, make
-sure you are renaming them as appropriate.
-
-### Elisions
-There are no elisions in this schema.
+Some key names in this Schema are different from how they appear in the source
+Journal data.  Look for keys where the object contains a `renamed` key - the
+value is what the name would have been in the source Journal data.
 
 ### Augmentations
-#### horizons flag
-You SHOULD add this key/value pair, using the value from the `LoadGame` event.
-
-#### odyssey flag
-You SHOULD add this key/value pair, using the value from the `LoadGame` event.
+#### horizons and odyssey flags
+Please read [horizons and odyssey flags](../../docs/Developers.md#horizons-and-odyssey-flags)
+in the Developers' documentation.
