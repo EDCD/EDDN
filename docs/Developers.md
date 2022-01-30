@@ -11,6 +11,7 @@ EDDN accepts HTTP POST uploads in
 representing this game data and then passes it on to any interested listeners.
 
 ---
+
 ## Sources
 
 There are two sources of game data, both provided by the publisher of the game,
@@ -63,7 +64,8 @@ by Athanasius.
 
 It is *not* recommended to use CAPI data as the source as it's fraught with
 additional issues.  EDMarketConnector does so in order to facilitate
-obtaining data without the player needing to open the commodities screen.
+obtaining station data without the player needing to, e.g. open the commodities
+screen.
 
 #### Detecting CAPI data lag
 
