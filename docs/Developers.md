@@ -114,8 +114,10 @@ Alternatively you could attempt
 ### Sending data
 Messages sent to EDDN **MUST**:
 
-- Use the URL: `https://eddn.edcd.io:4430/upload/`.  Note the use of
-  TLS-encrypted HTTPS.  A plain HTTP request will elicit a `400 Bad
+- Use the URL: `https://eddn.edcd.io:4430/upload/`
+   - Note the non-standard port `4430`.
+   - Yes, the trailing `/` is required.
+   - Note the use of TLS-encrypted HTTPS.  A plain HTTP request will elicit a `400 Bad
   Request` response.
 - Use the HTTP 1.1 protocol.  HTTP/2 is not supported at this time.
 - Use a **POST** request, with the body containing the EDDN message.  No
