@@ -24,18 +24,12 @@ See [Using CAPI data](#using-capi-data) below.
 So, as per the schema, do include it if available.
 
 ### Key Renames
-Many of the key names have a different case defined in this schema, make 
-sure you are renaming them as appropriate.
-
-#### StarSystem to systemName
-Rename the `StarSystem` key name to `systemName`.
+Some key names in this Schema are different from how they appear in source
+Journal data.  Look for keys where the object contains a `renamed` key - the
+value is what the name would have been in the source Journal data.  The names
+used are as found in the CAPI source data.
 
 ### Elisions
-#### Remove _Localised key/values
-All keys whose name ends with `_Localised`, i.e. the `Name_Localised`
-key/values in Items.
-
-#### Other Elisions
 You MUST remove the following key/value pairs from the data:
 
 - `StationType` key/value.
@@ -50,15 +44,13 @@ In the list of commodites:
   string (not normally traded at this station market).
 
 #### Item Category
-Remove not only the `Category_Localised` key/value, as above, but also the
-`Category` key/value pair from each Item.
+Remove not only the `Category_Localised` key:values, but also the
+`Category` key:value pair from each Item.
 
 ### Augmentations
-#### horizons flag
-You SHOULD add this key/value pair, using the value from the `LoadGame` event.
-
-#### odyssey flag
-You SHOULD add this key/value pair, using the value from the `LoadGame` event.
+#### horizons and odyssey flags
+Please read [horizons and odyssey flags](../../docs/Developers.md#horizons-and-odyssey-flags)
+over in the Developers' documentation.
 
 ### Using CAPI data
 It is *not* recommended to use CAPI data as the source as it's fraught with 
@@ -66,10 +58,10 @@ additional issues.  EDMarketConnector does so in order to facilitate
 obtaining data without the player needing to open the commodities screen.
 
 Please read
-[the guidance on checking for CAPI lag](README-EDDN-schemas.md#detecting-capi-data-lag)
+[the guidance on checking for CAPI lag](../docs/Developers.md#detecting-capi-data-lag)
 before utilising CAPI data for EDDN messages.
 
-Note that CAPI `/market` data will sometimes have the `StatusFlasg` per 
+Note that CAPI `/market` data will sometimes have the `statusFlasg` per 
 item, which are defined as optional in this schema (because they're not in 
 the Market.json data).  You SHOULD include this data in your message if 
 using CAPI as the source.

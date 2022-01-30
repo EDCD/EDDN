@@ -40,10 +40,12 @@
                 },
                 "stationName": {
                     "type"      : "string",
+                    "renamed"   : "StarSystem",
                     "minLength" : 1
                 },                
                 "marketId": {
-                    "type"      : "integer"
+                    "type"      : "integer",
+                    "renamed"   : "MarketID"
                 },
                 "horizons": {
                     "type"      : "boolean",
@@ -67,31 +69,39 @@
                         "properties"            : {
                             "name": {
                                 "type"          : "string",
+                                "renamed"       : "Name",
                                 "minLength"     : 1,
                                 "description"   : "Symbolic name as returned by the Companion API"
                             },
                             "meanPrice": {
-                                "type"          : "integer"
+                                "type"          : "integer",
+                                "renamed"       : "MeanPrice"
                             },
                             "buyPrice": {
                                 "type"          : "integer",
+                                "renaamed"      : "BuyPrice",
                                 "description"   : "Price to buy from the market"
                             },
                             "stock": {
-                                "type"          : "integer"
+                                "type"          : "integer",
+                                "renamed"       : "Stock"
                             },
                             "stockBracket": {
-                                "$ref"          : "#/definitions/levelType"
+                                "$ref"          : "#/definitions/levelType",
+                                "renamed"       : "StockBracket"
                             },
                             "sellPrice": {
                                 "type"          : "integer",
+                                "renamed"       : "SellPrice",
                                 "description"   : "Price to sell to the market"
                             },
                             "demand": {
-                                "type"          : "integer"
+                                "type"          : "integer",
+                                "renamed"       : "Demand"
                             },
                             "demandBracket": {
-                                "$ref"          : "#/definitions/levelType"
+                                "$ref"          : "#/definitions/levelType",
+                                "renamed"       : "DemandBracket"
                             },
                             "statusFlags": {
                                 "type"          : "array",
@@ -101,6 +111,18 @@
                                     "type"          : "string",
                                     "minLength"     : 1
                                 }
+                            },
+                            "Producer": {
+                                "$ref"          : "#/definitions/disallowed",
+                                "description"   : "Not present in CAPI data, so removed from Journal-sourced data"
+                            },
+                            "Rare" : {
+                                "$ref"          : "#/definitions/disallowed",
+                                "description"   : "Not present in CAPI data, so removed from Journal-sourced data"
+                            },
+                            "id": {
+                                "$ref"          : "#/definitions/disallowed",
+                                "description"   : "Not wanted for historical reasons?"
                             }
                         }
                     }
@@ -130,11 +152,16 @@
                         "type"          : "string",
                         "minLength"     : 1
                     }
+                },
+                "StationType": {
+                    "$ref"          : "#/definitions/disallowed",
+                    "description"   : "Not present in CAPI data, so removed from Journal-sourced data"
                 }
             }
         }
     },
     "definitions": {
+        "disallowed" : { "not" : { "type": [ "array", "boolean", "integer", "number", "null", "object", "string" ] } },
         "levelType": {
             "enum"          : [0, 1, 2, 3, ""],
             "description"   : "Note: A value of \"\" indicates that the commodity is not normally sold/purchased at this station, but is currently temporarily for sale/purchase"
