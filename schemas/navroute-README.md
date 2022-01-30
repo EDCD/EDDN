@@ -7,6 +7,14 @@ Event and properly structure it for sending to EDDN.
 Please consult [EDDN Schemas README](./README-EDDN-schemas.md) for general
 documentation for a schema such as this.
 
+If you find any discrepancies between what this document says and what is
+defined in the relevant Schema file, then you should, in the first instance,
+assume that it is the Schema file that is correct.
+**PLEASE open
+[an issue on GitHub](https://github.com/EDCD/EDDN/issues/new/choose)
+to report any such anomalies you find so that we can check and resolve the
+discrepancy.**
+
 ## Senders
 The primary data source for this schema is the `NavRoute.json` file.  That 
 it has been freshly written is signalled by the ED Journal event `NavRoute`.
@@ -18,12 +26,8 @@ data you got from reading this file, not merely the Journal event.
 The primary data to be sent is the `Route` array from the contents of the 
 separate file.
 
-### Elisions
-There are no elisions in this schema.
-
 ### Augmentations
-#### horizons flag
-You SHOULD add this key/value pair, using the value from the `LoadGame` event.
+#### horizons and odyssey flags
+Please read [horizons and odyssey flags](../../docs/Developers.md#horizons-and-odyssey-flags)
+over in the Developers' documentation.
 
-#### odyssey flag
-You SHOULD add this key/value pair, using the value from the `LoadGame` event.
