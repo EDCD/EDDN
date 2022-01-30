@@ -35,7 +35,7 @@ You MUST remove the following key/value pairs from the data:
 ### Augmentations
 #### horizons and odyssey flags
 Please read [horizons and odyssey flags](../README-EDDN-schemas.md#horizons-and-odyssey-flags)
-over in the main Schema documentation.
+in the main Schema documentation.
 
 #### systemName
 The star system name for where this market is.   Use the `StarSystem` value

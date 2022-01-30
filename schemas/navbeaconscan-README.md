@@ -22,7 +22,7 @@ The primary data source for this schema is the ED Journal event
 ### Augmentations
 #### horizons and odyssey flags
 Please read [horizons and odyssey flags](../../docs/Developers.md#horizons-and-odyssey-flags)
-over in the Developers' documentation.
+in the Developers' documentation.
 
 #### StarSystem
 You MUST add a `StarSystem` key/value pair representing the name of the

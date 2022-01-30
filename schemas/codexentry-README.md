@@ -21,7 +21,7 @@ The primary data source for this schema is the ED Journal event `CodexEntry`.
 ### Augmentations
 #### horizons and odyssey flags
 Please read [horizons and odyssey flags](../README-EDDN-schemas.md#horizons-and-odyssey-flags)
-over in the main Schema documentation.
+in the main Schema documentation.
 
 #### StarPos
 You MUST add a `StarPos` array containing the system co-ordinates from the
