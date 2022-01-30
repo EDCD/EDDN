@@ -109,7 +109,7 @@ ones.  Ask on the `#eddn` channel of the
 link).
 
 Alternatively you could attempt
-[running your own test instance of EDDN](../docs/Running-this-software.md).
+[running your own test instance of EDDN](./Running-this-software.md).
 
 ### Sending data
 Messages sent to EDDN **MUST**:
