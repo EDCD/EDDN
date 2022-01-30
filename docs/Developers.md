@@ -218,9 +218,9 @@ For example, a shipyard message, version 2, might look like:
 
 ### Contents of `message`
 Every message MUST comply with the Schema its `$schemaRef` value cites.  Each
-Schema file should have a matching `<schema>-README.md` file in the project
-root `schemas/` directory.  Always consult this so that you're aware of any
-Schema-specific requirements.
+Schema file should have a matching `<schema>-README.md` file in the
+[project root schemas/ directory](../schemas/)
+.  Always consult this so that you're aware of any Schema-specific requirements.
 
 The Schema file, `<schema>-v<version>.json`, is considered the authority on
 the format of messages for that Schema.  If anything in the accompanying
@@ -261,9 +261,10 @@ So, be sure you're checking the live versions and not, e.g. those in the
     3. At least one other key/value pair representing the data. In general there
        will be much more than this. Consult the
        [Schemas and their documentation](./).
-    4. Include
-       [horizons and odyssey flags](#horizons-and-odyssey-flags) where the
-       Schema requires them.
+
+   Please consult the advice pertaining to
+   [horizons and odyssey flags](#horizons-and-odyssey-flags) and include them
+   whenever possible.
 
 2. Because the first versions of some Schemas were defined when only the CAPI
    data was available, before Journal files existed, many of the key names chosen
