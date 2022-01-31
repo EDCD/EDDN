@@ -1,5 +1,5 @@
 {
-    "$schemaRef": "https://eddn.edcd.io/schemas/codexentry-v1.0.json",
+    "$schemaRef": "https://eddn.edcd.io/schemas/codexentry/1",
     "header": {
         "uploaderID": "Ath Testing",
         "softwareName": "Athanasius test code",
