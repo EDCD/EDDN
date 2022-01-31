@@ -52,7 +52,8 @@
                 },
                 "StarSystem": {
                     "type"          : "string",
-                    "minLength"     : 1
+                    "minLength"     : 1,
+                    "description"   : "Should be added by the sender if not present in the journal event"
                 },
                 "StarPos": {
                     "type"          : "array",
@@ -63,7 +64,6 @@
                 },
                 "SystemAddress": {
                     "type"          : "integer",
-                    "description"   : "Should be added by the sender if not present in the journal event"
                 },
                 "NumBodies"         : {
                     "type"          : "integer"
