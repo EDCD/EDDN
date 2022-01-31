@@ -63,7 +63,7 @@
                     "description"   : "Must be added by the sender if not present in the journal event"
                 },
                 "SystemAddress": {
-                    "type"          : "integer",
+                    "type"          : "integer"
                 },
                 "NumBodies"         : {
                     "type"          : "integer"
