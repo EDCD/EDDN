@@ -1,1 +1,26 @@
-{ "timestamp":"2021-09-24T14:29:39Z", "event":"CodexEntry", "EntryID":1400414, "Name":"$Codex_Ent_Gas_Vents_SilicateVapourGeysers_Name;", "Name_Localised":"Silicate Vapour Gas Vent", "SubCategory":"$Codex_SubCategory_Geology_and_Anomalies;", "SubCategory_Localised":"Geology and anomalies", "Category":"$Codex_Category_Biology;", "Category_Localised":"Biological and Geological", "Region":"$Codex_RegionName_18;", "Region_Localised":"Inner Orion Spur", "System":"Bestia", "SystemAddress":147916327267, "Latitude":23.197777, "Longitude":51.803349, "IsNewEntry":true, "VoucherAmount":50000 }
+{
+    "$schemaRef": "https://eddn.edcd.io/schemas/codexentry-v1.0.json",
+    "header": {
+        "uploaderID": "Ath Testing",
+        "softwareName": "Athanasius test code",
+        "softwareVersion": "v0.0.1"
+    },
+    "message": {
+        "timestamp":"2021-09-24T14:29:39Z",
+        "event":"CodexEntry",
+        "EntryID":1400414,
+        "Name":"$Codex_Ent_Gas_Vents_SilicateVapourGeysers_Name;",
+        "SubCategory":"$Codex_SubCategory_Geology_and_Anomalies;",
+        "Category":"$Codex_Category_Biology;",
+        "Region":"$Codex_RegionName_18;",
+        "System":"Bestia",
+        "SystemAddress":147916327267,
+        "StarPos": [
+            1.000,
+            2.000,
+            3.000
+        ],
+        "Latitude":23.197777,
+        "Longitude":51.803349
+    }
+}
