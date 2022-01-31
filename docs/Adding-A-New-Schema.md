@@ -1,10 +1,15 @@
 # Adding A New Schema
 
 ## Introduction
+
 As of September 2021 it was decided that all new Journal events will be
 added to their own, new, schemas.  This better facilitates defining any
 values that should be elided, or augmentations added, without twisting
 schema definitions into knots.
+
+Consult
+[Contributing.md#adding-a-new-schema](./Contributing.md#adding-a-new-schema)
+for guidelines on the specifics of proposing and designing a new Scema.
 
 In the future we will likely migrate all of the events currently
 supported in the journal schema into their own schemas, and later still
