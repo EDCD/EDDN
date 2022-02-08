@@ -15,6 +15,10 @@ archive or "current state" available to anyone.  What it provides is a
 stream of live data to any interested parties.  Some of those then make 
 aggregated data available for general use.
 
+If you want an archive of messages, or a dump of the current known state of
+the game galaxy, check ["Archives and data dumps"](#archives-and-data-dumps)
+below.
+
 ---
 ---
 
@@ -72,6 +76,28 @@ intended.
 - [Spansh](https://www.spansh.co.uk/plotter) - originally this had one tool,
   a 'Neutron Star' route plotter, but has since expanded into offering many 
   other route plotting tools and general data searching.
+
+##### Archives and data dumps
+
+Alternatively if you want an archive of past EDDN messages, or a data dump to
+use:
+
+- [edgalaxydata](https://edgalaxydata.space/) has various data captures,
+    including 'all' (some listener downtime is inevitable) EDDN messages for
+    many years.
+
+- [spansh dumps](https://www.spansh.co.uk/dumps) are a "whole galaxy" data set,
+    of systems, bodies and stations.  The full `galaxy.json.gz` is **very**
+    large, but is currently the only source of an "all known bodies" dump.
+    Pay attention to the 'Generated' "time ago" column.
+
+- [EDDB dumps](https://eddb.io/api) represent a snapshot of the data EDDB uses.
+    NB: There has been no "bodies" data for years now, EDDB itself stopped
+    updating or adding to this.
+
+- [EDSM nightly dumps](https://www.edsm.net/en/nightly-dumps) represent a
+    snapshot of the data EDSM uses.  NB: there's only a "last 7 days" bodies
+    dump as the full data proved too large to dump in a timely manner.
 
 ---
 
