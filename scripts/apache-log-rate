@@ -3,6 +3,7 @@
 """Process Apache access.log lines to find highest rate of /upload/."""
 
 import argparse
+from collections import deque
 import datetime
 import dateutil.parser
 import fileinput
@@ -30,7 +31,7 @@ def process_log_file(
 
     window_time_delta = datetime.timedelta(seconds=window_size)
     window_count = 0
-    window_dts = []
+    window_dts = deque()
     line_count = 0
     for line in f:
       matches = apache_re.search(line)
@@ -47,13 +48,8 @@ def process_log_file(
 
         # Find the oldest entry that is still within the window:
         oldest_of_interest = this_dt - window_time_delta
-        dti = 0
-        for dt in window_dts:
-          if dt >= oldest_of_interest:
-            break
-          dti += 1
-
-        window_dts = window_dts[dti:]
+        while window_dts[0] < oldest_of_interest:
+          window_dts.popleft()
 
         # Now we need to expire any of the oldest stored timestamps that
         # are outside the window relative to this
@@ -61,6 +57,7 @@ def process_log_file(
 
         if len(window_dts) > window_count:
           window_count = len(window_dts)
+          # print(f'Largest window count     : {window_count:>9} ({window_count / window_size:>9}/s)')
 
         # print()
 
