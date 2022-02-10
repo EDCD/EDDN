@@ -1,0 +1,98 @@
+#!/usr/bin/env python3
+# vim: wrapmargin=0 textwidth=0 smarttab expandtab tabstop=2 shiftwidth=2
+"""Process Apache access.log lines to find highest rate of /upload/."""
+
+import argparse
+import datetime
+import dateutil.parser
+import fileinput
+import re
+
+
+def process_log_file(
+  input_file: str ='-',
+  request_text: str = '/upload/',
+  window_size: int = 1,
+) -> None:
+  """
+  Process the indicated log file to determine peak rate of interesting lines.
+
+  :param input_file: Name of input file, `-` for stdin
+  :param request_text: The text that denotes an interesting line
+  :param window_size: Time, in seconds, for the window to assess
+  """
+  print(f'With:\n\tinput_file: "{input_file}"\n\trequest_text: "{request_text}"')
+  with fileinput.FileInput(files=(input_file)) as f:
+    apache_re = re.compile(r'^(?P<host>[.:0-9a-fA-F]{3,39}) - - \[(?P<datetime>[^\]]+)\] (?P<logtext>.*' + request_text + '.*)$')
+    apache_datetime_re = re.compile(
+      r'^(?P<d>[0-9]{2})/(?P<mon>[^/]{3})/(?P<YYYY>[0-9]{4}):(?P<time>[0-9]{2}:[0-9]{2}:[0-9]{2} \+[0-9]{4})$'
+    )
+
+    window_time_delta = datetime.timedelta(seconds=window_size)
+    window_count = 0
+    window_dts = []
+    line_count = 0
+    for line in f:
+      matches = apache_re.search(line)
+      if matches:
+        line_count += 1
+        # print(f'\nMatches:\n{line}')
+        # This will be referenced so many times we want a short name
+        m = apache_datetime_re.search(matches.group('datetime'))
+        this_dt_iso8601 = f'{m.group("YYYY")}-{m.group("mon")}-{m.group("d")} {m.group("time")}'
+
+        this_dt = dateutil.parser.parse(this_dt_iso8601)
+        # print(f'Timestamp: {this_dt}')
+        window_dts.append(this_dt)
+
+        # Now we need to expire any of the oldest stored timestamps that
+        # are outside the window relative to this
+        window_dts = list(filter(lambda dt: dt >= this_dt - window_time_delta, window_dts))
+        if len(window_dts) > window_count:
+          window_count = len(window_dts)
+
+        # print()
+
+      else:
+        # print(f'\nNo matches:\n{line}\n')
+        pass
+
+    print(f'With window size         : {window_size:>9}')
+    print(f'Total line matching lines: {line_count:>9}')
+    print(f'Largest window count     : {window_count:>9} ({window_count / window_size:>9}/s)')
+    
+
+def main():
+  parser = argparse.ArgumentParser(
+    description='Process Apache web server access.log lines, counting the number of a specific request per a unit of time.',
+  )
+  
+  parser.add_argument(
+    '--window-length',
+    metavar='<window size in seconds>',
+    required=False,
+    default=1,
+    help='The time period in which the max rate will be.',
+  )
+
+  parser.add_argument(
+    'input_file',
+    metavar='<input file name>',
+    help='Name of an Apache access.log file.  You may use "-" for standard input.',
+  )
+
+  parser.add_argument(
+    'request_text',
+    metavar='<per-request text selector>',
+    help='Text that appears in the log lines of interest.  Defaults to "/upload/"',
+    nargs='?',
+    default='/upload/',
+  )
+
+  args = parser.parse_args()
+
+  process_log_file(input_file=args.input_file, request_text=args.request_text, window_size=int(args.window_length))
+
+
+if __name__ == '__main__':
+  main()
