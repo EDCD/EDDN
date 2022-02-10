@@ -25,12 +25,15 @@ def process_log_file(
   print(f'With:\n\tinput_file: "{input_file}"\n\trequest_text: "{request_text}"')
   with fileinput.FileInput(files=(input_file)) as f:
     apache_re = re.compile(r'^(?P<host>[.:0-9a-fA-F]{3,39}) - - \[(?P<datetime>[^\]]+)\] (?P<logtext>.*' + request_text + '.*)$')
+    print(f'Apache RE:\n{apache_re}\n')
     apache_datetime_re = re.compile(
       r'^(?P<d>[0-9]{2})/(?P<mon>[^/]{3})/(?P<YYYY>[0-9]{4}):(?P<time>[0-9]{2}:[0-9]{2}:[0-9]{2} \+[0-9]{4})$'
     )
 
     window_time_delta = datetime.timedelta(seconds=window_size)
     window_count = 0
+    last_dt = None
+    window_end_longest_count = None
     window_dts = deque()
     line_count = 0
     for line in f:
@@ -42,22 +45,31 @@ def process_log_file(
         m = apache_datetime_re.search(matches.group('datetime'))
         this_dt_iso8601 = f'{m.group("YYYY")}-{m.group("mon")}-{m.group("d")} {m.group("time")}'
 
+        ###############################################################
+        # This code absolutely assumes that the apache log lines are
+        # in strictly increasing time sequence order.
+        #
+        # That's not necessarily true.  It has been observed that e.g.
+        # a long line for 00:24:39 can occur in the middle of lines for
+        # 00:24:40.
+        #
+        # Hopefully this doesn't happen too much.
+        ###############################################################
         this_dt = dateutil.parser.parse(this_dt_iso8601)
         # print(f'Timestamp: {this_dt}')
         window_dts.append(this_dt)
 
         # Find the oldest entry that is still within the window:
         oldest_of_interest = this_dt - window_time_delta
-        while window_dts[0] < oldest_of_interest:
+        while window_dts[0] <= oldest_of_interest:
           window_dts.popleft()
-
-        # Now we need to expire any of the oldest stored timestamps that
-        # are outside the window relative to this
-        # window_dts = list(filter(lambda dt: dt >= this_dt - window_time_delta, window_dts))
 
         if len(window_dts) > window_count:
           window_count = len(window_dts)
+          window_end_longest_count = last_dt
           # print(f'Largest window count     : {window_count:>9} ({window_count / window_size:>9}/s)')
+
+        last_dt = this_dt
 
         # print()
 
@@ -68,6 +80,7 @@ def process_log_file(
     print(f'With window size         : {window_size:>9}')
     print(f'Total line matching lines: {line_count:>9}')
     print(f'Largest window count     : {window_count:>9} ({window_count / window_size:>9}/s)')
+    print(f'Busiest window ended at: {window_end_longest_count.strftime("%d/%b/%Y:%H:%M:%S")}')
     
 
 def main():
