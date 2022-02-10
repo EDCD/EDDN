@@ -45,9 +45,20 @@ def process_log_file(
         # print(f'Timestamp: {this_dt}')
         window_dts.append(this_dt)
 
+        # Find the oldest entry that is still within the window:
+        oldest_of_interest = this_dt - window_time_delta
+        dti = 0
+        for dt in window_dts:
+          if dt >= oldest_of_interest:
+            break
+          dti += 1
+
+        window_dts = window_dts[dti:]
+
         # Now we need to expire any of the oldest stored timestamps that
         # are outside the window relative to this
-        window_dts = list(filter(lambda dt: dt >= this_dt - window_time_delta, window_dts))
+        # window_dts = list(filter(lambda dt: dt >= this_dt - window_time_delta, window_dts))
+
         if len(window_dts) > window_count:
           window_count = len(window_dts)
 
