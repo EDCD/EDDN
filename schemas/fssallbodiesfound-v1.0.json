@@ -1,6 +1,6 @@
 {
     "$schema"               : "http://json-schema.org/draft-04/schema#",
-    "id"                    : "https://eddn.edcd.io/schemas/fssdiscoveryscan/1#",
+    "id"                    : "https://eddn.edcd.io/schemas/fssallbodiesfound/1#",
     "type"                  : "object",
     "additionalProperties"  : false,
     "required": [ "$schemaRef", "header", "message" ],
@@ -31,16 +31,16 @@
         },
         "message": {
             "type"                  : "object",
-            "description"           : "Contains all properties from the listed events in the client's journal minus Localised strings and the properties marked below as 'disallowed'",
+            "description"           : "Contains all properties from the listed events in the client's journal, minus the Localised strings and the properties marked below as 'disallowed'",
             "additionalProperties"  : false,
-            "required"              : [ "timestamp", "event", "SystemName", "StarPos", "SystemAddress", "BodyCount", "NonBodyCount" ],
+            "required"              : [ "timestamp", "event", "SystemName", "StarPos", "SystemAddress", "Count" ],
             "properties"            : {
                 "timestamp": {
                     "type"          : "string",
                     "format"        : "date-time"
                 },
                 "event" : {
-                    "enum"          : [ "FSSDiscoveryScan" ]
+                    "enum"          : [ "FSSAllBodiesFound" ]
                 },
                 "horizons": {
                     "type"          : "boolean",
@@ -64,15 +64,9 @@
                 "SystemAddress": {
                     "type"          : "integer"
                 },
-                "Progress"            : {
-                    "$ref" : "#/definitions/disallowed",
-                    "description": "Contains personal data"
-                },
-                "BodyCount"           : {
-                    "type"          : "integer"
-                },
-                "NonBodyCount"           : {
-                    "type"          : "integer"
+                "Count"             : {
+                    "type"          : "integer",
+                    "description"   : "Number of bodies in this system"
                 }
             }
         }

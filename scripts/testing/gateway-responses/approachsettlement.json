@@ -1,0 +1,23 @@
+{
+  "$schemaRef": "https://eddn.edcd.io/schemas/approachsettlement/1",
+  "header": {
+    "uploaderID": "from Athanasius Testing",
+    "softwareName": "Athanasius Testing script",
+    "softwareVersion": "v0.0.1"
+  },
+  "message": {
+    "timestamp":"2021-10-14T12:37:54Z",
+    "event":"ApproachSettlement",
+    "Name":"Arnold Defence Base",
+    "MarketID":3915738368,
+    "SystemAddress":2381282543963,
+    "StarSystem": "Ix",
+    "BodyID":32,
+    "BodyName":"Ix 5 a a",
+    "Latitude":17.090912,
+    "Longitude":160.236679,
+    "StarPos": [
+         -65.21875 , 7.75 , -111.03125 
+    ]
+  }
+}
