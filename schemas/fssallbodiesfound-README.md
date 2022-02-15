@@ -1,7 +1,7 @@
-# EDDN NavBeaconScan Schema
+# EDDN FSSAllBodiesFound Schema
 
 ## Introduction
-Here we document how to take data from an ED `NavBeaconScan` Journal
+Here we document how to take data from an ED `FSSAllBodiesFound` Journal 
 Event and properly structure it for sending to EDDN.
 
 Please consult [EDDN Schemas README](./README-EDDN-schemas.md) for general
@@ -16,19 +16,14 @@ to report any such anomalies you find so that we can check and resolve the
 discrepancy.**
 
 ## Senders
-The primary data source for this schema is the ED Journal event
-`NavBeaconScan`.
+The primary data source for this schema is the ED Journal event 
+`FSSAllBodiesFound`.
 
 ### Augmentations
 #### horizons and odyssey flags
 Please read [horizons and odyssey flags](../docs/Developers.md#horizons-and-odyssey-flags)
 in the Developers' documentation.
 
-#### StarSystem
-You MUST add a `StarSystem` key/value pair representing the name of the
-system this event occurred in.  Source this from either `Location`,
-`FSDJump` or `CarrierJump` as appropriate.
-
 #### StarPos
-You MUST add a `StarPos` array containing the system co-ordinates from the
+You MUST add a `StarPos` array containing the system co-ordinates from the 
 last `FSDJump`, `CarrierJump`, or `Location` event.

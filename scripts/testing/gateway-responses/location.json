@@ -1,0 +1,154 @@
+{
+    "$schemaRef": "https://eddn.edcd.io/schemas/journal/1",
+    "header": {
+        "uploaderID": "Ath Testing",
+        "softwareName": "Athanasius test code",
+        "softwareVersion": "v0.0.1"
+    },
+    "message": {
+	"timestamp":"2022-02-03T14:40:26Z",
+        "event":"Location",
+        "DistFromStarLS":11225.915347,
+        "Docked":true,
+        "StationName":"X3F-N5Z",
+        "StationType":"FleetCarrier",
+        "MarketID":3706433792,
+        "StationFaction":{ "Name":"FleetCarrier" },
+        "StationGovernment":"$government_Carrier;",
+        "StationServices":[ "dock",
+            "autodock",
+            "blackmarket",
+            "commodities",
+            "contacts",
+            "exploration",
+            "outfitting",
+            "crewlounge",
+            "rearm",
+            "refuel",
+            "repair",
+            "shipyard",
+            "engineer",
+            "flightcontroller",
+            "stationoperations",
+            "stationMenu",
+            "carriermanagement",
+            "carrierfuel",
+            "livery",
+            "voucherredemption"
+        ],
+        "StationEconomy":"$economy_Carrier;",
+        "StationEconomies":[
+            {
+                "Name":"$economy_Carrier;",
+                "Proportion":1.000000
+            }
+        ],
+        "Taxi":false,
+        "Multicrew":false,
+        "StarSystem":"Nuenets",
+        "SystemAddress":3240309557611,
+        "StarPos":[48.00000,17.65625,28.31250],
+        "SystemAllegiance":"Federation",
+        "SystemEconomy":"$economy_Industrial;",
+        "SystemSecondEconomy":"$economy_Extraction;",
+        "Population":70078377,
+        "Body":"Nuenets C 2",
+        "BodyID":26,
+        "BodyType":"Planet",
+        "Factions":[
+            {
+                "Name":"V886 Centauri Future",
+                "FactionState":"Boom",
+                "Government":"Democracy",
+                "Influence":0.305305,
+                "Allegiance":"Federation",
+                "Happiness":"$Faction_HappinessBand2;",
+                "ActiveStates":[ { "State":"Boom" } ]
+            },
+            {
+                "Name":"Revolutionary Party of Nuenets",
+                "FactionState":"Election",
+                "Government":"Democracy",
+                "Influence":0.155155,
+                "Allegiance":"Federation",
+                "Happiness":"$Faction_HappinessBand2;",
+                "ActiveStates":[ { "State":"Election" } ]
+            },
+            {
+                "Name":"Nuenets Jet State Limited",
+                "FactionState":"Election",
+                "Government":"Corporate",
+                "Influence":0.125125,
+                "Allegiance":"Independent",
+                "Happiness":"$Faction_HappinessBand2;",
+                "ActiveStates":[ { "State":"Election" } ]
+            },
+            {
+                "Name":"Constitution Party of Nuenets",
+                "FactionState":"None",
+                "Government":"Dictatorship",
+                "Influence":0.124124,
+                "Allegiance":"Independent",
+                "Happiness":"$Faction_HappinessBand2;"
+            },
+            { "Name":"Nuenets Blue Crew",
+                "FactionState":"None",
+                "Government":"Anarchy",
+                "Influence":0.010010,
+                "Allegiance":"Independent",
+                "Happiness":"$Faction_HappinessBand2;"
+            },
+            { "Name":"Collective of Independent Agents",
+                "FactionState":"Election",
+                "Government":"Corporate",
+                "Influence":0.155155,
+                "Allegiance":"Federation",
+                "Happiness":"$Faction_HappinessBand2;",
+                "PendingStates":[ { "State":"Expansion",
+                "Trend":0 } ],
+                "ActiveStates":[ { "State":"Outbreak" },
+                { "State":"Election" } ]
+            },
+            { "Name":"Nuenets Corp.",
+                "FactionState":"Election",
+                "Government":"Corporate",
+                "Influence":0.125125,
+                "Allegiance":"Federation",
+                "Happiness":"$Faction_HappinessBand2;",
+                "ActiveStates":[ { "State":"Election" } ]
+            }
+        ],
+        "SystemFaction":{ "Name":"V886 Centauri Future",
+        "FactionState":"Boom" },
+        "Conflicts":[
+            {
+                "WarType":"election",
+                "Status":"active",
+                "Faction1":{
+                    "Name":"Revolutionary Party of Nuenets",
+                    "Stake":"Sibanda Industrial Works",
+                    "WonDays":0
+                },
+                "Faction2":{
+                    "Name":"Collective of Independent Agents",
+                    "Stake":"Harbaugh Port",
+                    "WonDays":0
+                }
+            },
+            {
+	        "WarType":"election",
+                "Status":"active",
+                "Faction1":{
+                    "Name":"Nuenets Jet State Limited",
+                    "Stake":"Bellegrade's Nook",
+                    "WonDays":0
+                },
+                "Faction2":{
+                    "Name":"Nuenets Corp.",
+                    "Stake":"Watson's Shelter",
+                    "WonDays":0
+                }
+            }
+        ]
+    }
+}
