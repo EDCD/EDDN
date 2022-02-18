@@ -3,6 +3,7 @@
 """Produce a report on the provided EDDN Gateway log file's ERRORs."""
 
 import argparse
+import fileinput
 import re
 
 import semantic_version
@@ -45,7 +46,7 @@ def process_file(input_file: str) -> None:
     r' from (?P<sender_ip>.+)$'
   )
   # TODO: Make this handle gzipped files
-  with open(input_file, 'r') as input:
+  with fileinput.FileInput(files=(input_file), mode='r') as input:
     line = input.readline()
     while line:
       line = line.strip()
@@ -87,9 +88,21 @@ def process_file(input_file: str) -> None:
               'https://eddn.edcd.io/schemas/shipyard/2',
               'https://eddn.edcd.io/schemas/outfitting/2',
             ):
-              # Reported via Discord PM to Robby 2022-01-07
-              if matches.group('err_msg') != 'Failed Validation "[<ValidationError: \'[] is too short\'>]"':
+              # Failed Validation "[<ValidationError: "'2022-02-17T14.25.19Z' is not a 'date-time'">]"
+              if (
+                matches.group('err_msg').startswith('Failed Validation "[<ValidationError: "') and
+                matches.group('err_msg').endswith('\' is not a \'date-time\'">]"')
+              ):
+                # <https://github.com/EDDiscovery/EDDLite/issues/8>
+                pass
+
+              elif matches.group('err_msg') == 'Failed Validation "[<ValidationError: \'[] is too short\'>]"':
+                # Reported via Discord PM to Robby 2022-01-07
+                pass
+
+              else:
                 print(line)
+
 
             else:
               print(line)
@@ -127,6 +140,15 @@ def process_file(input_file: str) -> None:
             elif matches.group('schema_ref') == 'https://eddn.edcd.io/schemas/fssdiscoveryscan/1':
               if matches.group('err_msg') == 'Failed Validation "[<ValidationError: "None is not of type \'boolean\'">]"':
                 # <https://github.com/EDCD/EDMarketConnector/issues/1403>
+                pass
+
+            elif matches.group('schema_ref') == 'https://eddn.edcd.io/schemas/approachsettlement/1':
+              if matches.group('err_msg') == 'Failed Validation "[<ValidationError: "\'MarketID\' is a required property">]"':
+                # <https://github.com/EDCD/EDDN/issues/181>
+                pass
+
+              elif matches.group('err_msg') == 'Failed Validation "[<ValidationError: "\'Latitude\' is a required property">]"':
+                # <https://github.com/EDCD/EDMarketConnector/issues/1476>
                 pass
 
             else:
