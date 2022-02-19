@@ -1,0 +1,22 @@
+{
+  "$schemaRef": "https://eddn.edcd.io/schemas/approachsettlement/1",
+  "header": {
+    "uploaderID": "from Athanasius Testing",
+    "softwareName": "Athanasius Testing script",
+    "softwareVersion": "v0.0.1"
+  },
+  "message": {
+    "timestamp":"2022-02-18T14:33:35Z",
+    "event":"ApproachSettlement",
+    "Name":"Battlegroup's Disappearance",
+    "StarSystem": "Alioth",
+    "BodyID":8,
+    "BodyName":"Alioth 1 a",
+    "Latitude":59.972752,
+    "Longitude":-84.506294,
+    "SystemAddress":1109989017963,
+    "StarPos": [
+         -33.65625, 72.46875, -20.65625
+    ]
+  }
+}
