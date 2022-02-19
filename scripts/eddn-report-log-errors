@@ -3,7 +3,10 @@
 """Produce a report on the provided EDDN Gateway log file's ERRORs."""
 
 import argparse
+import fileinput
 import re
+
+import semantic_version
 
 
 def parse_cl_args() -> str:
@@ -43,7 +46,7 @@ def process_file(input_file: str) -> None:
     r' from (?P<sender_ip>.+)$'
   )
   # TODO: Make this handle gzipped files
-  with open(input_file, 'r') as input:
+  with fileinput.FileInput(files=(input_file), mode='r') as input:
     line = input.readline()
     while line:
       line = line.strip()
@@ -59,13 +62,14 @@ def process_file(input_file: str) -> None:
         # print(matches.group('sender_ip'))
         # print('')
 
+        software_version = semantic_version.Version.coerce(matches.group('software_version'))
         ###################################################################
         # Issues we know about and HAVE already alerted their
         # developers to.
         ###################################################################
         if matches.group('software_name') == 'EDDiscovery':
           # https://github.com/EDDiscovery/EDDiscovery/releases/latest
-          if matches.group('software_version') == '12.1.7.0':
+          if software_version >= semantic_version.Version.coerce('12.1.7.0'):
             if matches.group('schema_ref') in (
               'https://eddn.edcd.io/schemas/shipyard/2',
               'https://eddn.edcd.io/schemas/outfitting/2',
@@ -79,26 +83,38 @@ def process_file(input_file: str) -> None:
 
         elif matches.group('software_name') == 'EDDLite':
           # https://github.com/EDDiscovery/EDDLite/releases/tag/latest
-          if matches.group('software_version') == '2.0.0':
+          if software_version >= semantic_version.Version.coerce('2.0.0'):
             if matches.group('schema_ref') in (
               'https://eddn.edcd.io/schemas/shipyard/2',
               'https://eddn.edcd.io/schemas/outfitting/2',
             ):
-              # Reported via Discord PM to Robby 2022-01-07
-              if matches.group('err_msg') != 'Failed Validation "[<ValidationError: \'[] is too short\'>]"':
+              # Failed Validation "[<ValidationError: "'2022-02-17T14.25.19Z' is not a 'date-time'">]"
+              if (
+                matches.group('err_msg').startswith('Failed Validation "[<ValidationError: "') and
+                matches.group('err_msg').endswith('\' is not a \'date-time\'">]"')
+              ):
+                # <https://github.com/EDDiscovery/EDDLite/issues/8>
+                pass
+
+              elif matches.group('err_msg') == 'Failed Validation "[<ValidationError: \'[] is too short\'>]"':
+                # Reported via Discord PM to Robby 2022-01-07
+                pass
+
+              else:
                 print(line)
+
 
             else:
               print(line)
 
         elif matches.group('software_name') == 'EDDI':
           # https://github.com/EDCD/EDDI/releases/latest
-          if matches.group('software_version') == '4.0.1':
+          if software_version >= semantic_version.Version.coerce('4.0.1'):
             print(line)
 
-        elif matches.group('software_name') == 'E:D Market Connector [Windows]':
+        elif matches.group('software_name').startswith('E:D Market Connector'):
           # https://github.com/EDCD/EDMarketConnector/releases/latest
-          if matches.group('software_version') == '5.2.4':
+          if software_version >= semantic_version.Version.coerce('5.2.4'):
             if matches.group('schema_ref') == 'https://eddn.edcd.io/schemas/codexentry/1':
               # <https://github.com/EDCD/EDMarketConnector/issues/1393>
               if matches.group('err_msg') != 'Failed Validation "[<ValidationError: "\'\' is too short">]"':
@@ -117,9 +133,22 @@ def process_file(input_file: str) -> None:
                 # <https://github.com/EDCD/EDMarketConnector/issues/1403>
                 pass
 
+              else:
+                print(matches.group('err_msg'))
+                print(line)
+
             elif matches.group('schema_ref') == 'https://eddn.edcd.io/schemas/fssdiscoveryscan/1':
               if matches.group('err_msg') == 'Failed Validation "[<ValidationError: "None is not of type \'boolean\'">]"':
                 # <https://github.com/EDCD/EDMarketConnector/issues/1403>
+                pass
+
+            elif matches.group('schema_ref') == 'https://eddn.edcd.io/schemas/approachsettlement/1':
+              if matches.group('err_msg') == 'Failed Validation "[<ValidationError: "\'MarketID\' is a required property">]"':
+                # <https://github.com/EDCD/EDDN/issues/181>
+                pass
+
+              elif matches.group('err_msg') == 'Failed Validation "[<ValidationError: "\'Latitude\' is a required property">]"':
+                # <https://github.com/EDCD/EDMarketConnector/issues/1476>
                 pass
 
             else:
@@ -127,7 +156,7 @@ def process_file(input_file: str) -> None:
 
         elif matches.group('software_name') == 'Elite G19s Companion App':
           # <https://edcodex.info/?m=tools&entry=212>
-          if matches.group('software_version') == '3.7.7888.21039':
+          if software_version >= semantic_version.Version.coerce('3.7.7888.21039'):
             if matches.group('schema_ref') == 'https://eddn.edcd.io/schemas/commodity/3':
               # Reported via Frontier forums: <https://forums.frontier.co.uk/threads/elite-g19s-companion-app-with-simulated-space-traffic-control.226782/post-9690204>
               if matches.group('err_msg') != 'Failed Validation "[<ValidationError: "Additional properties are not allowed (\'Proportion\', \'Name\' were unexpected)">]"':
@@ -136,7 +165,7 @@ def process_file(input_file: str) -> None:
 
         elif matches.group('software_name') == 'EDSM':
           # It's in-browser, no public source/releases
-          if matches.group('software_version') == '1.0.1':
+          if software_version >= semantic_version.Version.coerce('1.0.1'):
             if matches.group('schema_ref') == 'https://eddn.edcd.io/schemas/journal/1':
               if matches.group('journal_event') == 'Scan':
                 # <https://github.com/EDSM-NET/FrontEnd/issues/466>
@@ -154,7 +183,7 @@ def process_file(input_file: str) -> None:
 
         elif matches.group('software_name') == 'EDSM - Console':
           # It's in-browser, no public source/releases
-          if matches.group('software_version') == '1.0':
+          if software_version >= semantic_version.Version.coerce('1.0'):
             if matches.group('schema_ref') == 'https://eddn.edcd.io/schemas/journal/1':
               if matches.group('journal_event') == 'Scan':
                 # <https://github.com/EDSM-NET/FrontEnd/issues/466>
@@ -172,7 +201,7 @@ def process_file(input_file: str) -> None:
 
         elif matches.group('software_name') == 'EDAOS':
           # Apparently a Barry Carylon project, but no home page ?
-          if matches.group('software_version') == '1.2.3':
+          if software_version >= semantic_version.Version.coerce('1.2.3'):
             if matches.group('schema_ref') == 'https://eddn.edcd.io/schemas/journal/1':
               if matches.group('journal_event') == 'Docked':
                 # <https://discord.com/channels/164411426939600896/205369618284544000/929102478954340372>
@@ -190,7 +219,7 @@ def process_file(input_file: str) -> None:
 
         elif matches.group('software_name') == 'EliteLogAgent':
           # <https://github.com/DarkWanderer/Elite-Log-Agent>
-          if matches.group('software_version') == '2.0.0.660':
+          if software_version >= semantic_version.Version.coerce('2.0.0.660'):
             print(line)
 
         # <https://edcodex.info/?m=tools&entry=440>
