@@ -1,0 +1,22 @@
+{
+  "$schemaRef": "https://eddn.edcd.io/schemas/approachsettlement/1",
+  "header": {
+    "uploaderID": "from Athanasius Testing",
+    "softwareName": "Athanasius Testing script",
+    "softwareVersion": "v0.0.1"
+  },
+  "message": {
+    "timestamp": "2022-02-18T15:02:04Z",
+    "event": "ApproachSettlement",
+    "Name": "$Ancient:#index=1;",
+    "SystemAddress": 3515254557027,
+	"StarSystem": "Synuefe XR-H d11-102",
+    "BodyID": 13,
+    "BodyName": "Synuefe XR-H d11-102 1 b",
+    "Latitude": -46.576923,
+    "Longitude": 133.985107,
+    "StarPos": [
+         357.34375, -49.34375, -74.75
+    ]
+  }
+}
