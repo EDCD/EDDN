@@ -163,9 +163,6 @@ def process_file(input_file: str) -> None:
                 print(matches.group('err_msg'))
                 print(line)
 
-          else:
-            print(line)
-
         elif matches.group('software_name') == 'EDSM':
           # It's in-browser, no public source/releases
           if software_version >= semantic_version.Version.coerce('1.0.1'):
