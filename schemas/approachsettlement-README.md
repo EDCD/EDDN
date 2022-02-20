@@ -19,6 +19,40 @@ discrepancy.**
 The primary data source for this schema is the ED Journal event 
 `ApproachSettlement`.
 
+### MarketID
+Whilst the `MarketID` property is not in the required list **YOU MUST
+ABSOLUTELY SEND THIS WHEN IT IS PRESENT IN THE SOURCE DATA**.
+
+The only reason it is optional is that there are `ApproachSettlement`
+Journal events for things like visitor beacons that do not have a market, and
+thus no MarketID.
+
+Examples:
+
+```json
+{
+    "timestamp":"2022-02-18T14:33:35Z",
+    "event":"ApproachSettlement",
+    "Name":"Battlegroup's Disappearance",
+    "SystemAddress":1109989017963,
+    "BodyID":8,
+    "BodyName":"Alioth 1 a",
+    "Latitude":59.972752,
+    "Longitude":-84.506294
+},
+{
+    "timestamp": "2022-02-18T15:02:04Z",
+    "event": "ApproachSettlement",
+    "Name": "$Ancient:#index=1;",
+    "Name_Localised": "Ancient Ruins (1)",
+    "SystemAddress": 3515254557027,
+    "BodyID": 13,
+    "BodyName": "Synuefe XR-H d11-102 1 b",
+    "Latitude": -46.576923,
+    "Longitude": 133.985107
+},
+```
+
 ### Augmentations
 #### horizons and odyssey flags
 Please read [horizons and odyssey flags](../docs/Developers.md#horizons-and-odyssey-flags)
