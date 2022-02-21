@@ -177,17 +177,18 @@ def process_file(input_file: str) -> None:
 
         elif matches.group('software_name') == 'EDSM':
           # It's in-browser, no public source/releases
-          if software_version >= semantic_version.Version.coerce('1.0.1'):
+          if software_version >= semantic_version.Version.coerce('1.0.3'):
             if matches.group('schema_ref') == 'https://eddn.edcd.io/schemas/journal/1':
               if matches.group('journal_event') == 'Scan':
-                # <https://github.com/EDSM-NET/FrontEnd/issues/466>
-                if not matches.group('err_msg').startswith(
-                    'Failed Validation "[<ValidationError: "{\'type\': [\'array\', \'boolean\', \'integer\', \'number\', \'null\', \'object\', \'string\']} is not allowed for '
+                # <https://github.com/EDSM-NET/FrontEnd/issues/472>
+                if matches.group('err_msg').startswith(
+                    'Failed Validation "[<ValidationError: "None is not of type \'integer\'">]"'
                   ):
                   pass
 
-                print(matches.group('err_msg'))
-                print(line)
+                else:
+                  print(matches.group('err_msg'))
+                  print(line)
 
               else:
                 print(line)
