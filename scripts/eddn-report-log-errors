@@ -186,6 +186,13 @@ def process_file(input_file: str) -> None:
                   ):
                   pass
 
+                elif (
+                    matches.group('err_msg').startswith('Failed Validation "[<ValidationError: "{') and 
+                    matches.group('err_msg').endswith('} is not of type \'array\'">]"')
+                ):
+                  # <https://github.com/EDSM-NET/FrontEnd/issues/473>
+                  pass
+
                 else:
                   print(matches.group('err_msg'))
                   print(line)
