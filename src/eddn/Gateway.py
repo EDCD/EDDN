@@ -55,8 +55,8 @@ validator = Validator()
 # This import must be done post-monkey-patching!
 from eddn.core.StatsCollector import StatsCollector  # noqa: E402
 
-statsCollector = StatsCollector()
-statsCollector.start()
+stats_collector = StatsCollector()
+stats_collector.start()
 
 
 def parse_cl_args():
@@ -118,8 +118,8 @@ def configure():
     for binding in Settings.GATEWAY_SENDER_BINDINGS:
         sender.bind(binding)
 
-    for schemaRef, schemaFile in Settings.GATEWAY_JSON_SCHEMAS.iteritems():
-        validator.addSchemaResource(schemaRef, resource_string('eddn.Gateway', schemaFile))
+    for schema_ref, schema_file in Settings.GATEWAY_JSON_SCHEMAS.iteritems():
+        validator.addSchemaResource(schema_ref, resource_string('eddn.Gateway', schema_file))
 
 
 def push_message(parsed_message, topic):
@@ -137,7 +137,7 @@ def push_message(parsed_message, topic):
     send_message = "%s |-| %s" % (str(topic), compressed_msg)
     
     sender.send(send_message)
-    statsCollector.tally("outbound")
+    stats_collector.tally("outbound")
 
 
 def get_remote_address():
@@ -244,13 +244,13 @@ def parse_and_error_handle(data):
     # Here we check if an outdated schema has been passed
     if parsed_message["$schemaRef"] in Settings.GATEWAY_OUTDATED_SCHEMAS:
         response.status = '426 Upgrade Required'  # Bottle (and underlying httplib) don't know this one
-        statsCollector.tally("outdated")
+        stats_collector.tally("outdated")
         return "FAIL: Outdated Schema: The schema you have used is no longer supported. Please check for an updated " \
                "version of your application."
 
-    validationResults = validator.validate(parsed_message)
+    validation_results = validator.validate(parsed_message)
 
-    if validationResults.severity <= ValidationSeverity.WARN:
+    if validation_results.severity <= ValidationSeverity.WARN:
         parsed_message['header']['gatewayTimestamp']    = datetime.utcnow().isoformat() + 'Z'
         parsed_message['header']['uploaderIP']          = get_remote_address()        
 
@@ -286,7 +286,7 @@ def parse_and_error_handle(data):
             pass
 
         response.status = 400
-        statsCollector.tally("invalid")
+        stats_collector.tally("invalid")
         return "FAIL: Schema Validation: " + str(validationResults.messages)
 
 
@@ -325,7 +325,7 @@ def upload():
 
         return 'FAIL: Malformed Upload: ' + exc.message
 
-    statsCollector.tally("inbound")
+    stats_collector.tally("inbound")
     return parse_and_error_handle(message_body)
 
 
@@ -341,7 +341,7 @@ def health_check():
 
 @app.route('/stats/', method=['OPTIONS', 'GET'])
 def stats():
-    stats = statsCollector.getSummary()
+    stats = stats_collector.getSummary()
     stats["version"] = Settings.EDDN_VERSION
     return simplejson.dumps(stats)
 
