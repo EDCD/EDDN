@@ -156,9 +156,9 @@ def load_config(cl_args) -> None:
     Load in a commandline-specified settings file, if applicable.
 
     A convenience method if you don't need other things specified as commandline
-    options. Otherwise, point the filename to Settings.loadFrom().
+    options. Otherwise, point the filename to Settings.load_from().
 
     :param cl_args: An `argparse.parse_args()` return.
     """
     if cl_args.config:
-        Settings.loadFrom(cl_args.config)
+        Settings.load_from(cl_args.config)
