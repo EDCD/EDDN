@@ -6,7 +6,6 @@ import re
 import shutil
 import subprocess
 import sys
-from setuptools import setup, find_packages
 
 from setuptools import find_packages, setup
 
@@ -51,7 +50,7 @@ if setup_env.EDDN_ENV == 'live':
         out, err = git_cmd.communicate()
 
     except Exception as e:
-        print("Couldn't run git command to check branch: %s" % (e))
+        print(f"Couldn't run git command to check branch: {e}")
 
     else:
         branch = out.decode().rstrip('\n')
@@ -60,7 +59,7 @@ if setup_env.EDDN_ENV == 'live':
         # - For any 'detached HEAD' (i.e. specific commit ID, or tag) it
         #   will be empty.
         if branch != 'live':
-            print("EDDN_ENV is '%s' (and CWD is %s), but branch is '%s', aborting!" % (setup_env.EDDN_ENV, cwd, branch))
+            print(f"EDDN_ENV is '{setup_env.EDDN_ENV}' (and CWD is '{cwd}'), but branch is '{branch}', aborting!")
             sys.exit(-1)
 
 ###########################################################################
