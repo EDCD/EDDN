@@ -1,0 +1,1 @@
+"""EDDN core library code."""
