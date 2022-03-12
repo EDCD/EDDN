@@ -248,7 +248,7 @@ def parse_and_error_handle(data: bytes) -> str:
         try:
             (uploader_id, software_name, software_version, schema_ref, journal_event,) = extract_message_details(
                 parsed_message
-            )  # noqa: E501
+            )
             logger.info(
                 "Accepted (%d, '%s', '%s', '%s', '%s', '%s') from %s",
                 request.content_length,
@@ -271,7 +271,7 @@ def parse_and_error_handle(data: bytes) -> str:
         try:
             (uploader_id, software_name, software_version, schema_ref, journal_event,) = extract_message_details(
                 parsed_message
-            )  # noqa: E501
+            )
             logger.error(
                 "Failed Validation '%s' (%d, '%s', '%s', '%s', '%s', '%s') from %s",
                 str(validation_results.messages),
