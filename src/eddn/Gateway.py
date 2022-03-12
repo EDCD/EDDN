@@ -27,7 +27,7 @@ from eddn.core.Validator import ValidationSeverity, Validator
 
 monkey.patch_all()
 import bottle
-from bottle import Bottle, get, post, request, response, run
+from bottle import Bottle, request, response
 bottle.BaseRequest.MEMFILE_MAX = 1024 * 1024 # 1MiB, default is/was 100KiB
 
 app = Bottle()
