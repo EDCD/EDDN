@@ -7,26 +7,29 @@ Contains the necessary ZeroMQ socket and a helper function to publish
 market data to the Announcer daemons.
 """
 import argparse
-import gevent
 import hashlib
 import logging
-import simplejson
-import urlparse
 import zlib
-import zmq.green as zmq
 from datetime import datetime
 
+import gevent
+import simplejson
+import urlparse
+import zmq.green as zmq
+from gevent import monkey
 from pkg_resources import resource_string
-# import os
 
 from eddn.conf.Settings import Settings, loadConfig
-from eddn.core.Validator import Validator, ValidationSeverity
+from eddn.core.Validator import ValidationSeverity, Validator
 
-from gevent import monkey
+# import os
+
+
 monkey.patch_all()
 import bottle
-from bottle import Bottle, run, request, response, get, post
+from bottle import Bottle, get, post, request, response, run
 bottle.BaseRequest.MEMFILE_MAX = 1024 * 1024 # 1MiB, default is/was 100KiB
+
 app = Bottle()
 
 logger = logging.getLogger(__name__)
@@ -50,6 +53,7 @@ validator = Validator()
 
 # This import must be done post-monkey-patching!
 from eddn.core.StatsCollector import StatsCollector
+
 statsCollector = StatsCollector()
 statsCollector.start()
 
