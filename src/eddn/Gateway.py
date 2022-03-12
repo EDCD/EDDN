@@ -21,6 +21,7 @@ import zmq.green as zmq
 from bottle import Bottle, request, response
 from gevent import monkey
 from pkg_resources import resource_string
+from zmq import PUB as ZMQ_PUB
 
 from eddn.conf.Settings import Settings, load_config
 from eddn.core.Validator import ValidationSeverity, Validator
@@ -47,7 +48,7 @@ logger.info('Made logger')
 
 # This socket is used to push market data out to the Announcers over ZeroMQ.
 zmq_context = zmq.Context()
-sender = zmq_context.socket(zmq.PUB)
+sender = zmq_context.socket(ZMQ_PUB)
 
 validator = Validator()
 
