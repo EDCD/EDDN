@@ -13,6 +13,8 @@ import simplejson
 import zmq.green as zmq
 from bottle import Bottle, request, response
 from gevent import monkey
+from zmq import SUB as ZMQ_SUB
+from zmq import SUBSCRIBE as ZMQ_SUBSCRIBE
 
 from eddn.conf.Settings import Settings, load_config
 
@@ -197,8 +199,8 @@ class Monitor(Thread):
         """Handle receiving Gateway messages and recording stats."""
         context = zmq.Context()
 
-        receiver = context.socket(zmq.SUB)
-        receiver.setsockopt_string(zmq.SUBSCRIBE, '')
+        receiver = context.socket(ZMQ_SUB)
+        receiver.setsockopt_string(ZMQ_SUBSCRIBE, '')
 
         for binding in Settings.MONITOR_RECEIVER_BINDINGS:
             receiver.connect(binding)
