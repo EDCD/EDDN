@@ -46,18 +46,26 @@ def parse_cl_args():
 
     return parser.parse_args()
 
-def date(__format):
+def date(__format) -> datetime.datetime:
+    """
+    Make a 'now' datetime as per the supplied format.
+
+    :param __format:
+    :return:
+    """
     d = datetime.datetime.utcnow()
     return d.strftime(__format)
 
 
 @app.route('/ping', method=['OPTIONS', 'GET'])
 def ping():
+    """Respond to a ping request."""
     return 'pong'
 
 
 @app.route('/getTotalSoftwares/', method=['OPTIONS', 'GET'])
 def get_total_softwares():
+    """Respond with data about total uploading software counts."""
     response.set_header("Access-Control-Allow-Origin", "*")
     db = mariadb.connect(
         user=Settings.MONITOR_DB['user'],
@@ -88,6 +96,7 @@ def get_total_softwares():
 
 @app.route('/getSoftwares/', method=['OPTIONS', 'GET'])
 def get_softwares():
+    """Respond with hit stats for all uploading software."""
     response.set_header("Access-Control-Allow-Origin", "*")
     db = mariadb.connect(
         user=Settings.MONITOR_DB['user'],
@@ -121,6 +130,7 @@ def get_softwares():
 
 @app.route('/getTotalSchemas/', method=['OPTIONS', 'GET'])
 def get_total_schemas():
+    """Respond with total hit stats for all schemas."""
     response.set_header("Access-Control-Allow-Origin", "*")
     db = mariadb.connect(
         user=Settings.MONITOR_DB['user'],
@@ -147,6 +157,7 @@ def get_total_schemas():
 
 @app.route('/getSchemas/', method=['OPTIONS', 'GET'])
 def get_schemas():
+    """Respond with schema hit stats between given datetimes."""
     response.set_header("Access-Control-Allow-Origin", "*")
     db = mariadb.connect(
         user=Settings.MONITOR_DB['user'],
@@ -179,8 +190,10 @@ def get_schemas():
 
 
 class Monitor(Thread):
+    """Monitor thread class."""
 
     def run(self):
+        """Handle receiving Gateway messages and recording stats."""
         context = zmq.Context()
 
         receiver = context.socket(zmq.SUB)
@@ -290,6 +303,7 @@ class EnableCors(object):
         return _enable_cors
 
 def main() -> None:
+    """Handle setting up and running the bottle app."""
     cl_args = parse_cl_args()
     loadConfig(cl_args)
 
