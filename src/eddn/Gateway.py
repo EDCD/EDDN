@@ -1,4 +1,3 @@
-
 # coding: utf8
 
 """
@@ -35,9 +34,7 @@ app = Bottle()
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 __logger_channel = logging.StreamHandler()
-__logger_formatter = logging.Formatter(
-    "%(asctime)s - %(levelname)s - %(module)s:%(lineno)d: %(message)s"
-)
+__logger_formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(module)s:%(lineno)d: %(message)s")
 __logger_formatter.default_time_format = "%Y-%m-%d %H:%M:%S"
 __logger_formatter.default_msec_format = "%s.%03d"
 __logger_channel.setFormatter(__logger_formatter)
@@ -71,7 +68,8 @@ def parse_cl_args():
     )
 
     parser.add_argument(
-        "-c", "--config",
+        "-c",
+        "--config",
         metavar="config filename",
         nargs="?",
         default=None,
@@ -200,7 +198,7 @@ def get_decompressed_message() -> bytes:
             except (KeyError, IndexError):
                 logger.error(
                     "form-encoded, compressed, upload did not contain a 'data' key. From %s",
-                    get_remote_address()
+                    get_remote_address(),
                 )
                 raise MalformedUploadError(
                     "No 'data' POST key/value found. Check your POST key "
@@ -252,7 +250,7 @@ def parse_and_error_handle(data: bytes) -> str:
                 "<<UNKNOWN>>",
                 "<<UNKNOWN>>",
                 get_remote_address(),
-                data[:512]
+                data[:512],
             )
 
         except Exception as e:
@@ -268,8 +266,10 @@ def parse_and_error_handle(data: bytes) -> str:
     if parsed_message["$schemaRef"] in Settings.GATEWAY_OUTDATED_SCHEMAS:
         response.status = "426 Upgrade Required"  # Bottle (and underlying httplib) don't know this one
         stats_collector.tally("outdated")
-        return "FAIL: Outdated Schema: The schema you have used is no longer supported. Please check for an updated " \
-               "version of your application."
+        return (
+            "FAIL: Outdated Schema: The schema you have used is no longer supported. Please check for an updated "
+            "version of your application."
+        )
 
     validation_results = validator.validate(parsed_message)
 
@@ -281,12 +281,18 @@ def parse_and_error_handle(data: bytes) -> str:
         gevent.spawn(push_message, parsed_message, parsed_message["$schemaRef"])
 
         try:
-            uploader_id, software_name, software_version, schema_ref, journal_event = extract_message_details(parsed_message)  # noqa: E501
+            (uploader_id, software_name, software_version, schema_ref, journal_event,) = extract_message_details(
+                parsed_message
+            )  # noqa: E501
             logger.info(
                 "Accepted (%d, '%s', '%s', '%s', '%s', '%s') from %s",
                 request.content_length,
-                uploader_id, software_name, software_version, schema_ref, journal_event,
-                get_remote_address()
+                uploader_id,
+                software_name,
+                software_version,
+                schema_ref,
+                journal_event,
+                get_remote_address(),
             )
 
         except Exception as e:
@@ -298,13 +304,19 @@ def parse_and_error_handle(data: bytes) -> str:
 
     else:
         try:
-            uploader_id, software_name, software_version, schema_ref, journal_event = extract_message_details(parsed_message)  # noqa: E501
+            (uploader_id, software_name, software_version, schema_ref, journal_event,) = extract_message_details(
+                parsed_message
+            )  # noqa: E501
             logger.error(
                 "Failed Validation '%s' (%d, '%s', '%s', '%s', '%s', '%s') from %s",
                 str(validation_results.messages),
                 request.content_length,
-                uploader_id, software_name, software_version, schema_ref, journal_event,
-                get_remote_address()
+                uploader_id,
+                software_name,
+                software_version,
+                schema_ref,
+                journal_event,
+                get_remote_address(),
             )
 
         except Exception as e:
@@ -335,8 +347,8 @@ def upload() -> str:
         response.status = 400
         try:
             logger.error(
-                f"gzip error ({request.content_length}, "<<UNKNOWN>>", "<<UNKNOWN>>", "<<UNKNOWN>>","
-                " "<<UNKNOWN>>", "<<UNKNOWN>>") from {get_remote_address()}"
+                f"gzip error ({request.content_length}, '<<UNKNOWN>>', '<<UNKNOWN>>', '<<UNKNOWN>>'"
+                ", '<<UNKNOWN>>', '<<UNKNOWN>>') from {get_remote_address()}"
             )
 
         except Exception as e:
@@ -404,17 +416,11 @@ def apply_cors() -> None:
     :param context:
     :return:
     """
-    response.set_header(
-        "Access-Control-Allow-Origin",
-        "*"
-    )
-    response.set_header(
-        "Access-Control-Allow-Methods",
-        "GET, POST, PUT, OPTIONS"
-    )
+    response.set_header("Access-Control-Allow-Origin", "*")
+    response.set_header("Access-Control-Allow-Methods", "GET, POST, PUT, OPTIONS")
     response.set_header(
         "Access-Control-Allow-Headers",
-        "Origin, Accept, Content-Type, X-Requested-With, X-CSRF-Token"
+        "Origin, Accept, Content-Type, X-Requested-With, X-CSRF-Token",
     )
 
 
@@ -433,7 +439,7 @@ def main() -> None:
         port=Settings.GATEWAY_HTTP_PORT,
         server="gevent",
         certfile=Settings.CERT_FILE,
-        keyfile=Settings.KEY_FILE
+        keyfile=Settings.KEY_FILE,
     )
 
 
