@@ -1,7 +1,6 @@
 # coding: utf8
 """EDDN default Settings."""
 
-import argparse
 from typing import Dict
 
 import simplejson
@@ -76,13 +75,13 @@ class _Settings(object):
         "https://eddn.edcd.io/schemas/navbeaconscan/1":               "schemas/navbeaconscan-v1.0.json",
         "https://eddn.edcd.io/schemas/navbeaconscan/1/test":          "schemas/navbeaconscan-v1.0.json",
 
-        "https://eddn.edcd.io/schemas/navroute/1"                    : "schemas/navroute-v1.0.json",
-        "https://eddn.edcd.io/schemas/navroute/1/test"               : "schemas/navroute-v1.0.json",
+        "https://eddn.edcd.io/schemas/navroute/1":                    "schemas/navroute-v1.0.json",
+        "https://eddn.edcd.io/schemas/navroute/1/test":               "schemas/navroute-v1.0.json",
 
-        "https://eddn.edcd.io/schemas/approachsettlement/1"                    : "schemas/approachsettlement-v1.0.json",
-        "https://eddn.edcd.io/schemas/approachsettlement/1/test"               : "schemas/approachsettlement-v1.0.json",
-        "https://eddn.edcd.io/schemas/fssallbodiesfound/1"                    : "schemas/fssallbodiesfound-v1.0.json",
-        "https://eddn.edcd.io/schemas/fssallbodiesfound/1/test"               : "schemas/fssallbodiesfound-v1.0.json",
+        "https://eddn.edcd.io/schemas/approachsettlement/1":          "schemas/approachsettlement-v1.0.json",
+        "https://eddn.edcd.io/schemas/approachsettlement/1/test":     "schemas/approachsettlement-v1.0.json",
+        "https://eddn.edcd.io/schemas/fssallbodiesfound/1":           "schemas/fssallbodiesfound-v1.0.json",
+        "https://eddn.edcd.io/schemas/fssallbodiesfound/1/test":      "schemas/fssallbodiesfound-v1.0.json",
     }
 
     GATEWAY_OUTDATED_SCHEMAS                = [  # noqa: E221
