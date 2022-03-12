@@ -49,13 +49,13 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 __logger_channel = logging.StreamHandler()
 __logger_formatter = logging.Formatter(
-    '%(asctime)s - %(levelname)s - %(module)s:%(lineno)d: %(message)s'
+    "%(asctime)s - %(levelname)s - %(module)s:%(lineno)d: %(message)s"
     )
-__logger_formatter.default_time_format = '%Y-%m-%d %H:%M:%S'
-__logger_formatter.default_msec_format = '%s.%03d'
+__logger_formatter.default_time_format = "%Y-%m-%d %H:%M:%S"
+__logger_formatter.default_msec_format = "%s.%03d"
 __logger_channel.setFormatter(__logger_formatter)
 logger.addHandler(__logger_channel)
-logger.info('Made logger')
+logger.info("Made logger")
 
 
 # This import must be done post-monkey-patching!
@@ -68,19 +68,19 @@ stats_collector.start()
 def parse_cl_args():
     """Parse command-line arguments."""
     parser = argparse.ArgumentParser(
-        prog='Gateway',
-        description='EDDN Gateway server',
+        prog="Gateway",
+        description="EDDN Gateway server",
     )
 
     parser.add_argument(
-        '--loglevel',
-        help='Logging level to output at',
+        "--loglevel",
+        help="Logging level to output at",
     )
 
     parser.add_argument(
-        '-c', '--config',
-        metavar='config filename',
-        nargs='?',
+        "-c", "--config",
+        metavar="config filename",
+        nargs="?",
         default=None,
     )
 
@@ -102,11 +102,11 @@ def push_message(message_body: str) -> None:
         )
 
     except Exception as e:
-        logger.error('Failed sending message on', exc_info=e)
+        logger.error("Failed sending message on", exc_info=e)
 
     else:
         if r.status_code != requests.codes.ok:
-            logger.error(f'Response from {Settings.BOUNCER_LIVE_GATEWAY_URL}:\n{r.text}\n')
+            logger.error(f"Response from {Settings.BOUNCER_LIVE_GATEWAY_URL}:\n{r.text}\n")
 
         else:
             stats_collector.tally("outbound")
@@ -120,7 +120,7 @@ def get_remote_address() -> str:
     request.remote_addr.
     :returns: Best attempt at remote address.
     """
-    return request.headers.get('X-Forwarded-For', request.remote_addr)
+    return request.headers.get("X-Forwarded-For", request.remote_addr)
 
 
 def get_decompressed_message() -> bytes:
@@ -130,9 +130,9 @@ def get_decompressed_message() -> bytes:
     For upload formats that support it.
     :returns: The de-compressed request body.
     """
-    content_encoding = request.headers.get('Content-Encoding', '')
+    content_encoding = request.headers.get("Content-Encoding", "")
 
-    if content_encoding in ['gzip', 'deflate']:
+    if content_encoding in ["gzip", "deflate"]:
         # Compressed request. We have to decompress the body, then figure out
         # if it's form-encoded.
         try:
@@ -150,7 +150,7 @@ def get_decompressed_message() -> bytes:
             # This is a form-encoded POST. The value of the data attrib will
             # be the body we're looking for.
             try:
-                message_body = form_enc_parsed['data'][0]
+                message_body = form_enc_parsed["data"][0]
             except (KeyError, IndexError):
                 raise MalformedUploadError(
                     "No 'data' POST key/value found. Check your POST key "
@@ -159,7 +159,7 @@ def get_decompressed_message() -> bytes:
     else:
         # Uncompressed request. Bottle handles all of the parsing of the
         # POST key/vals, or un-encoded body.
-        data_key = request.forms.get('data')
+        data_key = request.forms.get("data")
         if data_key:
             # This is a form-encoded POST. Support the silly people.
             message_body = data_key
@@ -175,16 +175,16 @@ def forward_message(message_body: bytes) -> str:
     Send the parsed message to the Relay/Monitor as compressed JSON.
 
     :param message_body: Incoming message.
-    :returns: 'OK' assuming it is.
+    :returns: "OK" assuming it is.
     """
     # TODO: This instead needs to send the message to remote Gateway
     gevent.spawn(push_message, message_body)
-    logger.info(f'Accepted upload from {get_remote_address()}')
+    logger.info(f"Accepted upload from {get_remote_address()}")
 
-    return 'OK'
+    return "OK"
 
 
-@app.route('/upload/', method=['OPTIONS', 'POST'])
+@app.route("/upload/", method=["OPTIONS", "POST"])
 def upload() -> str:
     """
     Handle an /upload/ request.
@@ -200,25 +200,25 @@ def upload() -> str:
         # at least some kind of feedback for them to try to get pointed in
         # the correct direction.
         response.status = 400
-        logger.error(f'gzip error with {get_remote_address()}: {exc}')
+        logger.error(f"gzip error with {get_remote_address()}: {exc}")
 
-        return f'{exc}'
+        return f"{exc}"
 
     except MalformedUploadError as exc:
         # They probably sent an encoded POST, but got the key/val wrong.
         response.status = 400
-        logger.error(f'Error to {get_remote_address()}: {exc}')
+        logger.error(f"Error to {get_remote_address()}: {exc}")
 
-        return f'{exc}'
+        return f"{exc}"
 
     stats_collector.tally("inbound")
     return forward_message(message_body)
 
 
-@app.route('/health_check/', method=['OPTIONS', 'GET'])
+@app.route("/health_check/", method=["OPTIONS", "GET"])
 def health_check() -> str:
     """
-    Return our version string in as an 'am I awake' signal.
+    Return our version string in as an "am I awake" signal.
 
     This should only be used by the gateway monitoring script. It is used
     to detect whether the gateway is still alive, and whether it should remain
@@ -229,7 +229,7 @@ def health_check() -> str:
     return Settings.EDDN_VERSION
 
 
-@app.route('/stats/', method=['OPTIONS', 'GET'])
+@app.route("/stats/", method=["OPTIONS", "GET"])
 def stats() -> str:
     """
     Return some stats about the Gateway's operation so far.
@@ -257,7 +257,7 @@ class MalformedUploadError(Exception):
 class EnableCors(object):
     """Handle enabling CORS headers in all responses."""
 
-    name = 'enable_cors'
+    name = "enable_cors"
     api = 2
 
     def apply(self, fn: Callable):
@@ -270,12 +270,12 @@ class EnableCors(object):
         """
         def _enable_cors(*args, **kwargs):
             # set CORS headers
-            response.headers['Access-Control-Allow-Origin'] = '*'
-            response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, OPTIONS'
-            response.headers['Access-Control-Allow-Headers'] = \
-                'Origin, Accept, Content-Type, X-Requested-With, X-CSRF-Token'
+            response.headers["Access-Control-Allow-Origin"] = "*"
+            response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, OPTIONS"
+            response.headers["Access-Control-Allow-Headers"] = \
+                "Origin, Accept, Content-Type, X-Requested-With, X-CSRF-Token"
 
-            if request.method != 'OPTIONS':
+            if request.method != "OPTIONS":
                 # actual request; reply with the actual response
                 return fn(*args, **kwargs)
 
@@ -285,7 +285,7 @@ class EnableCors(object):
 class CustomLogging(object):
     """Wrap a Bottle request so that a log line is emitted after it's handled."""
 
-    name = 'custom_logging'
+    name = "custom_logging"
     api = 2
 
     def apply(self, fn: Callable):
@@ -300,14 +300,14 @@ class CustomLogging(object):
             request_time = datetime.utcnow()
             actual_response = fn(*args, **kwargs)
 
-            # logger.info('Request:\n%s\n' % (request ) )
+            # logger.info("Request:\n%s\n", request)
             if len(request.remote_route) > 1:
                 remote_addr = request.remote_route[1]
 
             else:
                 remote_addr = request.remote_addr
 
-            logger.info(f'{remote_addr} {request_time} {request.method} {request.url} {response.status}')
+            logger.info(f"{remote_addr} {request_time} {request.method} {request.url} {response.status}")
 
             return actual_response
 
@@ -320,23 +320,23 @@ def main() -> None:
     if cl_args.loglevel:
         logger.setLevel(cl_args.loglevel)
 
-    logger.info('Loading config...')
+    logger.info("Loading config...")
     load_config(cl_args)
 
-    logger.info('Installing EnableCors ...')
+    logger.info("Installing EnableCors ...")
     app.install(EnableCors())
-    logger.info('Installing CustomLogging ...')
+    logger.info("Installing CustomLogging ...")
     app.install(CustomLogging())
-    logger.info('Running bottle app ...')
+    logger.info("Running bottle app ...")
     app.run(
         host=Settings.BOUNCER_HTTP_BIND_ADDRESS,
         port=Settings.BOUNCER_HTTP_PORT,
-        server='gevent',
+        server="gevent",
         certfile=Settings.CERT_FILE,
         keyfile=Settings.KEY_FILE,
         quiet=True,
     )
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
