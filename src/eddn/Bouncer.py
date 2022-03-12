@@ -61,7 +61,12 @@ logger.info('Made logger')
 # This import must be done post-monkey-patching!
 from eddn.core.StatsCollector import StatsCollector  # noqa: E402
 
+stats_collector = StatsCollector()
+stats_collector.start()
+
+
 def parse_cl_args():
+    """Parse command-line arguments."""
     parser = argparse.ArgumentParser(
         prog='Gateway',
         description='EDDN Gateway server',
@@ -80,9 +85,6 @@ def parse_cl_args():
     )
 
     return parser.parse_args()
-
-stats_collector = StatsCollector()
-stats_collector.start()
 
 
 def push_message(message_body: str) -> None:
@@ -310,6 +312,7 @@ class CustomLogging(object):
             return actual_response
 
         return _log_to_logger
+
 
 def main() -> None:
     """Handle setting up and running the bottle app."""
