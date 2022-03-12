@@ -16,8 +16,8 @@ class _Settings(object):
     # Local installation settings
     ###############################################################################
 
-    CERT_FILE                               = '/etc/letsencrypt/live/eddn.edcd.io/fullchain.pem'  # noqa: E221
-    KEY_FILE                                = '/etc/letsencrypt/live/eddn.edcd.io/privkey.pem'  # noqa: E221
+    CERT_FILE                               = "/etc/letsencrypt/live/eddn.edcd.io/fullchain.pem"  # noqa: E221
+    KEY_FILE                                = "/etc/letsencrypt/live/eddn.edcd.io/privkey.pem"  # noqa: E221
 
     ###############################################################################
     # Relay settings
@@ -134,10 +134,10 @@ class _Settings(object):
     BOUNCER_HTTP_BIND_ADDRESS               = "127.0.0.1"  # noqa: E221
     BOUNCER_HTTP_PORT                       = 8081  # noqa: E221
 
-    BOUNCER_LIVE_GATEWAY_URL = 'https://eddn.edcd.io:4430/upload/'
+    BOUNCER_LIVE_GATEWAY_URL = "https://eddn.edcd.io:4430/upload/"
 
     def load_from(self, file_name: str) -> None:
-        f = open(file_name, 'r')
+        f = open(file_name, "r")
         conf = simplejson.load(f)
         for key, value in conf.items():
             if key in dir(self):
