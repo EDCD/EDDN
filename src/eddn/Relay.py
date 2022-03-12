@@ -27,6 +27,10 @@ import simplejson
 import zmq.green as zmq
 from bottle import Bottle, response
 from gevent import monkey
+from zmq import PUB as ZMQ_PUB
+from zmq import SUB as ZMQ_SUB
+from zmq import SNDHWM as ZMQ_SNDHWM
+from zmq import SUBSCRIBE as ZMQ_SUBSCRIBE
 
 from eddn.conf.Settings import Settings, load_config
 
@@ -113,15 +117,15 @@ class Relay(Thread):
         # These form the connection to the Gateway daemon(s) upstream.
         context = zmq.Context()
 
-        receiver = context.socket(zmq.SUB)
-        receiver.setsockopt_string(zmq.SUBSCRIBE, '')
+        receiver = context.socket(ZMQ_SUB)
+        receiver.setsockopt_string(ZMQ_SUBSCRIBE, '')
 
         for binding in Settings.RELAY_RECEIVER_BINDINGS:
             # Relays bind upstream to an Announcer, or another Relay.
             receiver.connect(binding)
 
-        sender = context.socket(zmq.PUB)
-        sender.setsockopt(zmq.SNDHWM, 500)
+        sender = context.socket(ZMQ_PUB)
+        sender.setsockopt(ZMQ_SNDHWM, 500)
 
         for binding in Settings.RELAY_SENDER_BINDINGS:
             # End users, or other relays, may attach here.
