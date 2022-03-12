@@ -139,7 +139,7 @@ def push_message(parsed_message, topic):
     # announcers with schema as topic
     compressed_msg = zlib.compress(string_message)
 
-    send_message = "%s |-| %s" % (str(topic), compressed_msg)
+    send_message = f"{str(topic)} |-| {compressed_msg}"
 
     sender.send(send_message)
     stats_collector.tally("outbound")
@@ -253,6 +253,8 @@ def parse_and_error_handle(data):
             pass
 
         response.status = 400
+        logger.error(f"Error to {get_remote_address()}: {exc.message}")
+        return str(exc)
         return 'FAIL: JSON parsing: ' + str(exc)
 
     # Here we check if an outdated schema has been passed
@@ -321,15 +323,7 @@ def upload():
         # the correct direction.
         response.status = 400
         try:
-            logger.error('gzip error (%d, "%s", "%s", "%s", "%s", "%s") from %s' % (
-                    request.content_length,
-                    '<<UNKNOWN>>',
-                    '<<UNKNOWN>>',
-                    '<<UNKNOWN>>',
-                    '<<UNKNOWN>>',
-                    '<<UNKNOWN>>',
-                    get_remote_address()
-            ))
+            logger.error(f'gzip error ({request.content_length}, "<<UNKNOWN>>", "<<UNKNOWN>>", "<<UNKNOWN>>", "<<UNKNOWN>>", "<<UNKNOWN>>") from {get_remote_address()}')
 
         except Exception as e:
             print('Logging of "gzip error" failed: %s' % (e.message))
@@ -340,7 +334,7 @@ def upload():
     except MalformedUploadError as exc:
         # They probably sent an encoded POST, but got the key/val wrong.
         response.status = 400
-        logger.error("MalformedUploadError from %s: %s" % (get_remote_address(), exc.message))
+        logger.error(f"MalformedUploadError from {get_remote_address()}: {exc.message}")
 
         return 'FAIL: Malformed Upload: ' + exc.message
 
