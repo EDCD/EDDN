@@ -73,9 +73,9 @@ class StatsCollector(Thread):
             summary[key] = {
                 "1min": self.get_count(key, 1),
                 "5min": self.get_count(key, 5),
-                "60min": self.get_count(key, 60)
+                "60min": self.get_count(key, 60),
             }
 
-        summary['uptime'] = int((datetime.utcnow() - self.start_time).total_seconds())
+        summary["uptime"] = int((datetime.utcnow() - self.start_time).total_seconds())
 
         return summary
