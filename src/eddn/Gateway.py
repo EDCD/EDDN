@@ -16,6 +16,7 @@ import gevent
 import simplejson
 import urlparse
 import zmq.green as zmq
+from bottle import Bottle, request, response
 from gevent import monkey
 from pkg_resources import resource_string
 
@@ -52,7 +53,7 @@ sender = context.socket(zmq.PUB)
 validator = Validator()
 
 # This import must be done post-monkey-patching!
-from eddn.core.StatsCollector import StatsCollector
+from eddn.core.StatsCollector import StatsCollector  # noqa: E402
 
 statsCollector = StatsCollector()
 statsCollector.start()
