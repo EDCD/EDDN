@@ -2,6 +2,9 @@
 # Using legacy 'setup.py install' for flake8-annotations-coverage, since package 'wheel' is not installed.
 wheel
 
+# Code formatting
+black==22.1.0
+
 # Static analysis tools
 flake8==4.0.1
 flake8-annotations-coverage==0.0.5
