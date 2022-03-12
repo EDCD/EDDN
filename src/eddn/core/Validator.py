@@ -12,9 +12,9 @@ from jsonschema import validate as json_validate
 class ValidationSeverity(IntEnum):
     """Enum of validation status."""
 
-    OK = 0,
-    WARN = 1,
-    ERROR = 2,
+    OK = 0
+    WARN = 1
+    ERROR = 2
     FATAL = 3
 
 
@@ -63,7 +63,7 @@ class Validator(object):
             self.schemas[schema_ref] = schema
 
         except simplejson.JSONDecodeError:
-            raise Exception(f'SCHEMA: Failed to load: {schema_ref}')
+            raise Exception(f"SCHEMA: Failed to load: {schema_ref}")
 
     def validate(self, json_object: Dict) -> ValidationResults:
         """
@@ -83,7 +83,7 @@ class Validator(object):
             #  We don't want to go out to the Internet and retrieve unknown schemas.
             results.add(
                 ValidationSeverity.FATAL,
-                JsonValidationException(f'Schema {schema_ref} is unknown, unable to validate.')
+                JsonValidationException(f"Schema {schema_ref} is unknown, unable to validate."),
             )
             return results
 
