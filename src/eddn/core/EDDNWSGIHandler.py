@@ -51,6 +51,6 @@ class EDDNWSGIHandler(gevent.pywsgi.WSGIHandler):
             delta = '-'
 
         # This differs from the super-class version in not having a datestamp
-        return f"{client_address or '-'} - - \"{self.requestline or '-'}\"" \
+        return f"[{client_address or '-'}] - - \"{self.requestline or '-'}\"" \
                f" {(self._orig_status or self.status or '000').split()[0]}" \
                f" {length} {delta}"
