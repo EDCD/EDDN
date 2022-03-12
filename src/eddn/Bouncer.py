@@ -48,9 +48,7 @@ app = Bottle()
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 __logger_channel = logging.StreamHandler()
-__logger_formatter = logging.Formatter(
-    "%(asctime)s - %(levelname)s - %(module)s:%(lineno)d: %(message)s"
-    )
+__logger_formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(module)s:%(lineno)d: %(message)s")
 __logger_formatter.default_time_format = "%Y-%m-%d %H:%M:%S"
 __logger_formatter.default_msec_format = "%s.%03d"
 __logger_channel.setFormatter(__logger_formatter)
@@ -78,7 +76,8 @@ def parse_cl_args():
     )
 
     parser.add_argument(
-        "-c", "--config",
+        "-c",
+        "--config",
         metavar="config filename",
         nargs="?",
         default=None,
@@ -268,12 +267,14 @@ class EnableCors(object):
         :param context:
         :return:
         """
+
         def _enable_cors(*args, **kwargs):
             # set CORS headers
             response.headers["Access-Control-Allow-Origin"] = "*"
             response.headers["Access-Control-Allow-Methods"] = "GET, POST, PUT, OPTIONS"
-            response.headers["Access-Control-Allow-Headers"] = \
-                "Origin, Accept, Content-Type, X-Requested-With, X-CSRF-Token"
+            response.headers[
+                "Access-Control-Allow-Headers"
+            ] = "Origin, Accept, Content-Type, X-Requested-With, X-CSRF-Token"
 
             if request.method != "OPTIONS":
                 # actual request; reply with the actual response
@@ -296,6 +297,7 @@ class CustomLogging(object):
         :param context:
         :return:
         """
+
         def _log_to_logger(*args, **kwargs):
             request_time = datetime.utcnow()
             actual_response = fn(*args, **kwargs)
