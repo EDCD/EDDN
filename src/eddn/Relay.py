@@ -28,7 +28,7 @@ import zmq.green as zmq
 from bottle import Bottle, request, response
 from gevent import monkey
 
-from eddn.conf.Settings import Settings, loadConfig
+from eddn.conf.Settings import Settings, load_config
 
 monkey.patch_all()
 
@@ -214,14 +214,13 @@ class EnableCors(object):
         return _enable_cors
 
 
-<<<<<<< HEAD
 def main() -> None:
     """Handle setting up and running the bottle app."""
     cl_args = parse_cl_args()
     if cl_args.loglevel:
         logger.setLevel(cl_args.loglevel)
 
-    loadConfig(cl_args)
+    load_config(cl_args)
 
     r = Relay()
     r.start()

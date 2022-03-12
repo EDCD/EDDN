@@ -21,7 +21,7 @@ from bottle import Bottle, request, response
 from gevent import monkey
 from pkg_resources import resource_string
 
-from eddn.conf.Settings import Settings, loadConfig
+from eddn.conf.Settings import Settings, load_config
 from eddn.core.Validator import ValidationSeverity, Validator
 
 monkey.patch_all()
@@ -412,7 +412,7 @@ def main() -> None:
     if cl_args.loglevel:
         logger.setLevel(cl_args.loglevel)
 
-    loadConfig(cl_args)
+    load_config(cl_args)
     configure()
 
     app.install(EnableCors())
