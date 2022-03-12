@@ -316,12 +316,6 @@ Default application configuration is in the file `src/eddn/conf/Settings.py`.
 Do **not** change anything in this file, see below about overriding using
 another file.
 
-1. You will need to obtain a TLS certificate from, e.g. LetsEncrypt.  The
-   application will need access to this and its private key file.
-
-       CERT_FILE = '/etc/letsencrypt/live/YOUROWN.eddn.edcd.io/fullchain.pem'
-       KEY_FILE  = '/etc/letsencrypt/live/YOUROWN.eddn.edcd.io/privkey.pem'
-
 1. Network configuration
     1. `RELAY_HTTP_BIND_ADDRESS` and `RELAY_HTTP_PORT` define the IP and port
        on which the Relay listens for, e.g. `/stats/` requests.
@@ -384,7 +378,6 @@ There is an **example** of this in
 [eddn-settings-overrides-EXAMPLE.json](./eddn-settings-overrides-EXAMPLE.json).
 It sets:
 
-  1. The TLS CERT and KEY files.
   1. The gateway to listen on `0.0.0.0` rather than localhost (necessary
     when testing in a VM).
   1. Configures the database connection and credentials.
@@ -533,14 +526,13 @@ proxying:
 If using Apache on a Debian server then you need some ProxyPass directives:
 
         <IfModule mod_proxy.c>
-                SSLProxyEngine On
-                SSLProxyVerify none
                 ProxyPreserveHost On
+                ProxyRequests Off
 
-                # Pass through 'gateway' upload URL to Debian VM
-                ProxyPass "/eddn/upload/" "https://VM_HOST:8081/upload/"
-                # Pass through 'monitor' URLs to Debian VM
-                ProxyPass "/eddn/" "https://VM_HOST/"
+                # Pass through anything with path prefix /eddn
+                <Location "/eddn/">
+                        ProxPass "http://127.0.0.1:8081/"
+                </Location>
         </IfModule>
 
 This assumes you don't have a dedicated virtual host in this case, hence the
