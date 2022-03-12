@@ -112,9 +112,12 @@ def extract_message_details(parsed_message):
     return uploader_id, software_name, software_version, schema_ref, journal_event
 
 def configure():
-    # Get the list of transports to bind from settings. This allows us to PUB
-    # messages to multiple announcers over a variety of socket types
-    # (UNIX sockets and/or TCP sockets).
+    """
+    Get the list of transports to bind from settings.
+
+    This allows us to PUB messages to multiple announcers over a variety of
+    socket types (UNIX sockets and/or TCP sockets).
+    """
     for binding in Settings.GATEWAY_SENDER_BINDINGS:
         sender.bind(binding)
 
@@ -124,26 +127,30 @@ def configure():
 
 def push_message(parsed_message, topic):
     """
+    Push a message our to subscribed listeners.
+
     Spawned as a greenlet to push messages (strings) through ZeroMQ.
-    This is a dumb method that just pushes strings; it assumes you've already validated
-    and serialised as you want to.
+    This is a dumb method that just pushes strings; it assumes you've already
+    validated and serialised as you want to.
     """
     string_message = simplejson.dumps(parsed_message, ensure_ascii=False).encode('utf-8')
 
     # Push a zlib compressed JSON representation of the message to
     # announcers with schema as topic
     compressed_msg = zlib.compress(string_message)
-    
+
     send_message = "%s |-| %s" % (str(topic), compressed_msg)
-    
+
     sender.send(send_message)
     stats_collector.tally("outbound")
 
 
 def get_remote_address():
     """
-    Determines the address of the uploading client. First checks the for
-    proxy-forwarded headers, then falls back to request.remote_addr.
+    Determine the address of the uploading client.
+
+    First checks the for proxy-forwarded headers, then falls back to
+    request.remote_addr.
     :rtype: str
     """
     return request.headers.get('X-Forwarded-For', request.remote_addr)
@@ -151,8 +158,9 @@ def get_remote_address():
 
 def get_decompressed_message():
     """
-    For upload formats that support it, detect gzip Content-Encoding headers
-    and de-compress on the fly.
+    Detect gzip Content-Encoding headers and de-compress on the fly.
+
+    For upload formats that support it.
     :rtype: str
     :returns: The de-compressed request body.
     """
@@ -183,6 +191,12 @@ def get_decompressed_message():
 
 
 def parse_and_error_handle(data):
+    """
+    Parse an incoming message and handle errors.
+
+    :param data:
+    :return: The decoded message, or an error message.
+    """
     try:
         parsed_message = simplejson.loads(data)
     except (
@@ -260,6 +274,11 @@ def parse_and_error_handle(data):
 
 @app.route('/upload/', method=['OPTIONS', 'POST'])
 def upload():
+    """
+    Handle an /upload/ request.
+
+    :return: The processed message, else error string.
+    """
     try:
         # Body may or may not be compressed.
         message_body = get_decompressed_message()
@@ -300,6 +319,8 @@ def upload():
 @app.route('/health_check/', method=['OPTIONS', 'GET'])
 def health_check():
     """
+    Return our version string in as an 'am I awake' signal.
+
     This should only be used by the gateway monitoring script. It is used
     to detect whether the gateway is still alive, and whether it should remain
     in the DNS rotation.
@@ -309,6 +330,11 @@ def health_check():
 
 @app.route('/stats/', method=['OPTIONS', 'GET'])
 def stats():
+    """
+    Return some stats about the Gateway's operation so far.
+
+    :return: JSON stats data
+    """
     stats = stats_collector.getSummary()
     stats["version"] = Settings.EDDN_VERSION
     return simplejson.dumps(stats)
@@ -316,18 +342,30 @@ def stats():
 
 class MalformedUploadError(Exception):
     """
+    Exception for malformed upload.
+
     Raise this when an upload is structurally incorrect. This isn't so much
     to do with something like a bogus region ID, this is more like "You are
     missing a POST key/val, or a body".
     """
+
     pass
 
 
 class EnableCors(object):
+    """Handle enabling CORS headers in all responses."""
+
     name = 'enable_cors'
     api = 2
 
     def apply(self, fn, context):
+        """
+        Apply CORS headers to the calling bottle app.
+
+        :param fn:
+        :param context:
+        :return:
+        """
         def _enable_cors(*args, **kwargs):
             # set CORS headers
             response.headers['Access-Control-Allow-Origin'] = '*'
@@ -342,7 +380,7 @@ class EnableCors(object):
 
 
 def main():
-
+    """Handle setting up and running the bottle app."""
     cl_args = parse_cl_args()
     if cl_args.loglevel:
         logger.setLevel(cl_args.loglevel)
