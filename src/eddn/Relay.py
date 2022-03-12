@@ -9,6 +9,16 @@ import uuid
 import zlib
 from threading import Thread
 
+import gevent
+import simplejson
+import zmq.green as zmq
+from bottle import Bottle, response
+from gevent import monkey
+from zmq import PUB as ZMQ_PUB
+from zmq import SNDHWM as ZMQ_SNDHWM
+from zmq import SUB as ZMQ_SUB
+from zmq import SUBSCRIBE as ZMQ_SUBSCRIBE
+
 # Logging has to be configured first before we do anything.
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
@@ -22,17 +32,7 @@ __logger_channel.setFormatter(__logger_formatter)
 logger.addHandler(__logger_channel)
 logger.info('Made logger')
 
-import gevent
-import simplejson
-import zmq.green as zmq
-from bottle import Bottle, response
-from gevent import monkey
-from zmq import PUB as ZMQ_PUB
-from zmq import SUB as ZMQ_SUB
-from zmq import SNDHWM as ZMQ_SNDHWM
-from zmq import SUBSCRIBE as ZMQ_SUBSCRIBE
-
-from eddn.conf.Settings import Settings, load_config
+from eddn.conf.Settings import Settings, load_config  # noqa: E402
 
 monkey.patch_all()
 
@@ -51,7 +51,8 @@ if Settings.RELAY_DUPLICATE_MAX_MINUTES:
     duplicate_messages.start()
 
 
-def parse_cl_args():
+def parse_cl_args() -> argparse.Namespace:
+    """Parse command-line arguments."""
     parser = argparse.ArgumentParser(
         prog='Gateway',
         description='EDDN Gateway server',
@@ -70,6 +71,7 @@ def parse_cl_args():
     )
 
     return parser.parse_args()
+
 
 @app.route('/stats/', method=['OPTIONS', 'GET'])
 def stats() -> str:
