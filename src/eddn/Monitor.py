@@ -1,3 +1,4 @@
+"""EDDN Monitor, which records stats about incoming messages."""
 # coding: utf8
 
 import argparse
@@ -30,6 +31,7 @@ if Settings.RELAY_DUPLICATE_MAX_MINUTES:
 
 
 def parse_cl_args():
+    """Parse command-line arguments."""
     parser = argparse.ArgumentParser(
         prog='Gateway',
         description='EDDN Gateway server',
@@ -49,12 +51,13 @@ def parse_cl_args():
 
     return parser.parse_args()
 
-def date(__format) -> datetime.datetime:
+
+def date(__format) -> str:
     """
     Make a 'now' datetime as per the supplied format.
 
     :param __format:
-    :return:
+    :return: String representation of 'now'
     """
     d = datetime.datetime.utcnow()
     return d.strftime(__format)
@@ -288,6 +291,7 @@ def apply_cors() -> None:
         'Access-Control-Allow-Headers',
         'Origin, Accept, Content-Type, X-Requested-With, X-CSRF-Token'
     )
+
 
 def main() -> None:
     """Handle setting up and running the bottle app."""
