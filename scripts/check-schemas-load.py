@@ -13,14 +13,16 @@ root_dir = script_path.parent.parent
 schemas_dir = root_dir / "schemas"
 failures = 0
 for schema_file in schemas_dir.glob("*-v*.*.json"):
-    print(f"Schema: {schema_file}")
     with open(schema_file, "r") as sf:
         try:
             json = simplejson.load(sf)
 
         except simplejson.JSONDecodeError as e:
-            print(f"Failed to load {schema_file}:\n{e!r}")
+            print(f"{schema_file}: Failed to load:\n{e!r}\n")
             failures += 1
+
+        else:
+            print(f"{schema_file}: OK")
 
 if failures > 0:
     exit(-1)
