@@ -220,7 +220,7 @@ def get_decompressed_message() -> bytes:
     return message_body
 
 
-def parse_and_error_handle(data: str) -> str:
+def parse_and_error_handle(data: bytes) -> str:
     """
     Parse an incoming message and handle errors.
 
@@ -304,7 +304,7 @@ def parse_and_error_handle(data: str) -> str:
 
 
 @app.route('/upload/', method=['OPTIONS', 'POST'])
-def upload():
+def upload() -> str:
     """
     Handle an /upload/ request.
 
