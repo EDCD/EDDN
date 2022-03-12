@@ -438,8 +438,6 @@ def main() -> None:
         host=Settings.GATEWAY_HTTP_BIND_ADDRESS,
         port=Settings.GATEWAY_HTTP_PORT,
         server="gevent",
-        certfile=Settings.CERT_FILE,
-        keyfile=Settings.KEY_FILE,
     )
 
 
