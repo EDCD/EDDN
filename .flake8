@@ -1,15 +1,12 @@
 [flake8]
 # Show exactly where in a line the error happened
-#show-source = True
+show-source = True
 
 max-line-length = 120
-# Add _ as a builtin for localisation stuff
-builtins = _
 
 # check syntax in doctests
 doctests = True 
 max-complexity = 15
-per-file-ignores = ./EDMC.py:E402
 
 # Plugin configs
 # required plugins:
