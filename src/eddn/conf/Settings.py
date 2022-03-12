@@ -151,7 +151,7 @@ class _Settings(object):
 Settings = _Settings()
 
 
-def loadConfig(cl_args) -> None:
+def load_config(cl_args) -> None:
     """
     Load in a commandline-specified settings file, if applicable.
 
