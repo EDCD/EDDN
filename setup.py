@@ -9,7 +9,9 @@ import sys
 
 from setuptools import find_packages, setup
 
+# isort: off
 import setup_env
+# isort: on
 
 VERSIONFILE = "src/eddn/conf/Version.py"
 verstr = "unknown"
