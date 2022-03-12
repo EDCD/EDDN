@@ -5,6 +5,7 @@ import collections
 import datetime
 import zlib
 from threading import Thread
+from typing import OrderedDict
 
 import gevent
 import mysql.connector as mariadb
@@ -58,13 +59,13 @@ def date(__format) -> datetime.datetime:
 
 
 @app.route('/ping', method=['OPTIONS', 'GET'])
-def ping():
+def ping() -> str:
     """Respond to a ping request."""
     return 'pong'
 
 
 @app.route('/getTotalSoftwares/', method=['OPTIONS', 'GET'])
-def get_total_softwares():
+def get_total_softwares() -> str:
     """Respond with data about total uploading software counts."""
     response.set_header("Access-Control-Allow-Origin", "*")
     db = mariadb.connect(
@@ -95,7 +96,7 @@ def get_total_softwares():
 
 
 @app.route('/getSoftwares/', method=['OPTIONS', 'GET'])
-def get_softwares():
+def get_softwares() -> str:
     """Respond with hit stats for all uploading software."""
     response.set_header("Access-Control-Allow-Origin", "*")
     db = mariadb.connect(
@@ -103,7 +104,7 @@ def get_softwares():
         password=Settings.MONITOR_DB['password'],
         database=Settings.MONITOR_DB['database']
     )
-    softwares = collections.OrderedDict()
+    softwares: OrderedDict = collections.OrderedDict()
 
     date_start = request.GET.get('dateStart', str(date('%Y-%m-%d'))).strip()
     date_end = request.GET.get('dateEnd', str(date('%Y-%m-%d'))).strip()
@@ -129,7 +130,7 @@ def get_softwares():
 
 
 @app.route('/getTotalSchemas/', method=['OPTIONS', 'GET'])
-def get_total_schemas():
+def get_total_schemas() -> str:
     """Respond with total hit stats for all schemas."""
     response.set_header("Access-Control-Allow-Origin", "*")
     db = mariadb.connect(
@@ -156,7 +157,7 @@ def get_total_schemas():
 
 
 @app.route('/getSchemas/', method=['OPTIONS', 'GET'])
-def get_schemas():
+def get_schemas() -> str:
     """Respond with schema hit stats between given datetimes."""
     response.set_header("Access-Control-Allow-Origin", "*")
     db = mariadb.connect(
@@ -164,7 +165,7 @@ def get_schemas():
         password=Settings.MONITOR_DB['password'],
         database=Settings.MONITOR_DB['database']
     )
-    schemas = collections.OrderedDict()
+    schemas: OrderedDict = collections.OrderedDict()
 
     date_start = request.GET.get('dateStart', str(date('%Y-%m-%d'))).strip()
     date_end = request.GET.get('dateEnd', str(date('%Y-%m-%d'))).strip()
@@ -192,7 +193,7 @@ def get_schemas():
 class Monitor(Thread):
     """Monitor thread class."""
 
-    def run(self):
+    def run(self) -> None:
         """Handle receiving Gateway messages and recording stats."""
         context = zmq.Context()
 
@@ -202,7 +203,7 @@ class Monitor(Thread):
         for binding in Settings.MONITOR_RECEIVER_BINDINGS:
             receiver.connect(binding)
 
-        def monitor_worker(message):
+        def monitor_worker(message: bytes) -> None:
             db = mariadb.connect(
                 user=Settings.MONITOR_DB['user'],
                 password=Settings.MONITOR_DB['password'],
@@ -210,16 +211,16 @@ class Monitor(Thread):
             )
 
             # Separate topic from message
-            message = message.split(' |-| ')
+            message_split = message.split(b' |-| ')
 
             # Handle gateway not sending topic
-            if len(message) > 1:
-                message = message[1]
+            if len(message_split) > 1:
+                message = message_split[1]
             else:
-                message = message[0]
+                message = message_split[0]
 
-            message = zlib.decompress(message)
-            json = simplejson.loads(message)
+            message_text = zlib.decompress(message)
+            json = simplejson.loads(message_text)
 
             # Default variables
             schema_id = json['$schemaRef']
