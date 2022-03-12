@@ -1,0 +1,1 @@
+"""EDDN configuration module."""
