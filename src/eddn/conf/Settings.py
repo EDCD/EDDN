@@ -16,9 +16,6 @@ class _Settings(object):
     # Local installation settings
     ###############################################################################
 
-    CERT_FILE                               = "/etc/letsencrypt/live/eddn.edcd.io/fullchain.pem"  # noqa: E221
-    KEY_FILE                                = "/etc/letsencrypt/live/eddn.edcd.io/privkey.pem"  # noqa: E221
-
     ###############################################################################
     # Relay settings
     ###############################################################################
