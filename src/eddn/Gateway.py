@@ -190,7 +190,7 @@ def get_decompressed_message() -> bytes:
         # body. If it's not form-encoded, this will return an empty dict.
         form_enc_parsed = parse_qs(message_body)
         if form_enc_parsed:
-            logger.info("Request is form-encoded, compressed, from %s", get_remote_address())
+            logger.info("Request is form-encoded, compressed, from [%s]", get_remote_address())
             # This is a form-encoded POST. The value of the data attrib will
             # be the body we're looking for.
             try:
@@ -216,7 +216,7 @@ def get_decompressed_message() -> bytes:
         # POST key/vals, or un-encoded body.
         data_key = request.forms.get("data")
         if data_key:
-            logger.info("Request is form-encoded, uncompressed, from %s", get_remote_address())
+            logger.info("Request is form-encoded, uncompressed, from [%s]", get_remote_address())
             # This is a form-encoded POST. Support the silly people.
             message_body = data_key
 
@@ -243,7 +243,7 @@ def parse_and_error_handle(data: bytes) -> str:
         # semi-useful error message, so do so.
         try:
             logger.error(
-                "Error - JSON parse failed (%d, '%s', '%s', '%s', '%s', '%s') from %s:\n%s\n",
+                "Error - JSON parse failed (%d, '%s', '%s', '%s', '%s', '%s') from [%s]:\n%s\n",
                 request.content_length,
                 "<<UNKNOWN>>",
                 "<<UNKNOWN>>",
@@ -286,7 +286,7 @@ def parse_and_error_handle(data: bytes) -> str:
                 parsed_message
             )
             logger.info(
-                "Accepted (%d, '%s', '%s', '%s', '%s', '%s') from %s",
+                "Accepted (%d, '%s', '%s', '%s', '%s', '%s') from [%s]",
                 request.content_length,
                 uploader_id,
                 software_name,
@@ -309,7 +309,7 @@ def parse_and_error_handle(data: bytes) -> str:
                 parsed_message
             )
             logger.error(
-                "Failed Validation '%s' (%d, '%s', '%s', '%s', '%s', '%s') from %s",
+                "Failed Validation '%s' (%d, '%s', '%s', '%s', '%s', '%s') from [%s]",
                 str(validation_results.messages),
                 request.content_length,
                 uploader_id,
@@ -349,7 +349,7 @@ def upload() -> str:
         try:
             logger.error(
                 f"gzip error ({request.content_length}, '<<UNKNOWN>>', '<<UNKNOWN>>', '<<UNKNOWN>>'"
-                ", '<<UNKNOWN>>', '<<UNKNOWN>>') from {get_remote_address()}"
+                ", '<<UNKNOWN>>', '<<UNKNOWN>>') from [{get_remote_address()}]"
             )
 
         except Exception as e:
@@ -363,7 +363,7 @@ def upload() -> str:
         # They probably sent an encoded POST, but got the key/val wrong.
         response.status = 400
         # TODO: Maybe just `{exc}` ?
-        logger.error("MalformedUploadError from %s: %s", get_remote_address(), str(exc))
+        logger.error("MalformedUploadError from [%s]: %s", get_remote_address(), str(exc))
 
         return "FAIL: Malformed Upload: " + str(exc)
 
