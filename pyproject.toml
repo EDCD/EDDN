@@ -1,2 +1,8 @@
 [tool.black]
 line-length = 120
+extend-exclude = """
+(src/eddn/conf/Settings.py
+|contrib/
+|examples/
+|scripts/)
+"""
