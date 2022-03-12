@@ -23,14 +23,12 @@ from zmq import SUBSCRIBE as ZMQ_SUBSCRIBE
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 __logger_channel = logging.StreamHandler()
-__logger_formatter = logging.Formatter(
-    '%(asctime)s - %(levelname)s - %(module)s:%(lineno)d: %(message)s'
-    )
-__logger_formatter.default_time_format = '%Y-%m-%d %H:%M:%S'
-__logger_formatter.default_msec_format = '%s.%03d'
+__logger_formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(module)s:%(lineno)d: %(message)s")
+__logger_formatter.default_time_format = "%Y-%m-%d %H:%M:%S"
+__logger_formatter.default_msec_format = "%s.%03d"
 __logger_channel.setFormatter(__logger_formatter)
 logger.addHandler(__logger_channel)
-logger.info('Made logger')
+logger.info("Made logger")
 
 from eddn.conf.Settings import Settings, load_config  # noqa: E402
 
@@ -47,6 +45,7 @@ stats_collector.start()
 # This import must be done post-monkey-patching!
 if Settings.RELAY_DUPLICATE_MAX_MINUTES:
     from eddn.core.DuplicateMessages import DuplicateMessages
+
     duplicate_messages = DuplicateMessages()
     duplicate_messages.start()
 
@@ -54,26 +53,27 @@ if Settings.RELAY_DUPLICATE_MAX_MINUTES:
 def parse_cl_args() -> argparse.Namespace:
     """Parse command-line arguments."""
     parser = argparse.ArgumentParser(
-        prog='Gateway',
-        description='EDDN Gateway server',
+        prog="Gateway",
+        description="EDDN Gateway server",
     )
 
     parser.add_argument(
-        '--loglevel',
-        help='Logging level to output at',
+        "--loglevel",
+        help="Logging level to output at",
     )
 
     parser.add_argument(
-        '-c', '--config',
-        metavar='config filename',
-        nargs='?',
+        "-c",
+        "--config",
+        metavar="config filename",
+        nargs="?",
         default=None,
     )
 
     return parser.parse_args()
 
 
-@app.route('/stats/', method=['OPTIONS', 'GET'])
+@app.route("/stats/", method=["OPTIONS", "GET"])
 def stats() -> str:
     """
     Return some stats about the Relay's operation so far.
@@ -112,7 +112,7 @@ class Relay(Thread):
         if now - self.uploader_nonce_timestamp > self.REGENERATE_UPLOADER_NONCE_INTERVAL:
             self.generate_uploader_nonce()
 
-        return hashlib.sha1(f"{self.uploader_nonce!r}-{uploader.encode}".encode('utf8')).hexdigest()
+        return hashlib.sha1(f"{self.uploader_nonce!r}-{uploader.encode}".encode("utf8")).hexdigest()
 
     def run(self) -> None:
         """Handle receiving messages from Gateway and passing them on."""
@@ -120,7 +120,7 @@ class Relay(Thread):
         context = zmq.Context()
 
         receiver = context.socket(ZMQ_SUB)
-        receiver.setsockopt_string(ZMQ_SUBSCRIBE, '')
+        receiver.setsockopt_string(ZMQ_SUBSCRIBE, "")
 
         for binding in Settings.RELAY_RECEIVER_BINDINGS:
             # Relays bind upstream to an Announcer, or another Relay.
@@ -151,18 +151,18 @@ class Relay(Thread):
 
             # Mask the uploader with a randomised nonce but still make it unique
             # for each uploader
-            if 'uploaderID' in json['header']:
-                json['header']['uploaderID'] = self.scramble_uploader(json['header']['uploaderID'])
+            if "uploaderID" in json["header"]:
+                json["header"]["uploaderID"] = self.scramble_uploader(json["header"]["uploaderID"])
 
             # Remove IP to end consumer
-            if 'uploaderIP' in json['header']:
-                del json['header']['uploaderIP']
+            if "uploaderIP" in json["header"]:
+                del json["header"]["uploaderIP"]
 
             # Convert message back to JSON
             message_json = simplejson.dumps(json, sort_keys=True)
 
             # Recompress message
-            message = zlib.compress(message_json.encode('utf8'))
+            message = zlib.compress(message_json.encode("utf8"))
 
             # Send message
             sender.send(message)
@@ -182,18 +182,9 @@ def apply_cors():
 
     Ref: <https://stackoverflow.com/a/17262900>
     """
-    response.set_header(
-        'Access-Control-Allow-Origin',
-        '*'
-    )
-    response.set_header(
-        'Access-Control-Allow-Methods',
-        'GET, POST, PUT, OPTIONS'
-    )
-    response.set_header(
-        'Access-Control-Allow-Headers',
-        'Origin, Accept, Content-Type, X-Requested-With, X-CSRF-Token'
-    )
+    response.set_header("Access-Control-Allow-Origin", "*")
+    response.set_header("Access-Control-Allow-Methods", "GET, POST, PUT, OPTIONS")
+    response.set_header("Access-Control-Allow-Headers", "Origin, Accept, Content-Type, X-Requested-With, X-CSRF-Token")
 
 
 def main() -> None:
@@ -207,15 +198,15 @@ def main() -> None:
     r = Relay()
     r.start()
 
-    app.add_hook('after_request', apply_cors)
+    app.add_hook("after_request", apply_cors)
     app.run(
         host=Settings.RELAY_HTTP_BIND_ADDRESS,
         port=Settings.RELAY_HTTP_PORT,
-        server='gevent',
+        server="gevent",
         certfile=Settings.CERT_FILE,
-        keyfile=Settings.KEY_FILE
+        keyfile=Settings.KEY_FILE,
     )
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
