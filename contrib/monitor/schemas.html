@@ -122,13 +122,13 @@
     	return finishedslug.toLowerCase();
     }
     var makeName =  function(str) {
-        var match = /^https:\/\/' + eddn_config.eddn_host + '\/schemas\/(\w)(\w*)\/(\d+)$/.exec(str);
+        var match = /^https:\/\/eddn.edcd.io\/schemas\/(\w)(\w*)\/(\d+)$/.exec(str);
         if(match)
         {
             return match[1].toUpperCase() + match[2] + " v" + match[3];
         }
         
-        var match = /^https:\/\/' + eddn_config.eddn_host + '\/schemas\/(\w)(\w*)\/(\d+)\/test$/.exec(str);
+        var match = /^https:\/\/eddn.edcd.io\/schemas\/(\w)(\w*)\/(\d+)\/test$/.exec(str);
         if(match)
         {
             return match[1].toUpperCase() + match[2] + " v" + match[3] + " [TEST]";
