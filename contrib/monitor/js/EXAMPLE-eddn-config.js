@@ -3,8 +3,8 @@
 var eddn_config = {
 	updateInterval: 60000,
 
-    eddn_host:          'eddn.miggy.org',
-	monitorEndPoint: 'https://eddn.miggy.org/dev/monitor/',
+    eddn_host:          'eddn.edcd.io',
+	monitorEndPoint: 'https://eddn.edcd.io/dev/monitor/',
 
 	gatewayStats: '/dev/stats/',
 
@@ -12,11 +12,11 @@ var eddn_config = {
 	relayBottlePort: 9110,
 
 	gateways: [
-    	'eddn.miggy.org'
+    	'eddn.edcd.io'
 	], //TODO: Must find a way to bind them to monitor
 
 	relays: [
-    	'eddn.miggy.org'
+    	'eddn.edcd.io'
 	] //TODO: Must find a way to bind them to monitor
 
 };
