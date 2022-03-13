@@ -447,7 +447,7 @@ You should now have:
 
 1. `~/.local/share/eddn/dev` - with the monitor and schema files, along
   with an example config override file if you didn't already have a
-  `config.json` here.
+  `config.json here.
 
 ### Using systemd to run the live service
 `systemd/` contains two systemd unit files to enable starting the services
@@ -463,9 +463,9 @@ via system, including at boot time.
   of:
 
     ```
-    eddn@eddn-relay.service
-    eddn@eddn-monitor.service
-    eddn@eddn-gateway.service
+    eddn@relay.service
+    eddn@monitor.service
+    eddn@gateway.service
     ```
 To get them working:
 
@@ -473,24 +473,24 @@ To get them working:
 
   1. Enable the target and services:
     1. `systemctl enable eddn.target`
-    1. `systemctl enable eddn@eddn-gateway.service`
-    1. `systemctl enable eddn@eddn-monitor.service`
-    1. `systemctl enable eddn@eddn-relay.service`
+    1. `systemctl enable eddn@gateway.service`
+    1. `systemctl enable eddn@monitor.service`
+    1. `systemctl enable eddn@relay.service`
 
 ### Post-installation steps
 If you're not using the `live` environment then there are some edits you
 need to make.
 
-All of the `contrib/monitor` files have the hostname `eddn.edcd.io`
- hard-coded.  You will need to perform search and replace on the
- installed/live files to use a test host.  The files in question are:
+The monitor has its own configuration file, notably for specifying the
+hostname you're running under.  This is `monitor/js/eddn-config.json` *but
+only an example as `monitor/js/EXAMPLE-eddn-config.json` will have been
+installed*.
 
-    monitor/js/eddn.js
-    monitor/schemas.html
+You will need to copy the example file to the live name and edit to suit.
 
-Replace the string `eddn.edcd.io` with the hostname you're using.
-You'll need to perform similar substitutions if you change the
-configuration to use any different port numbers.
+In addition there's also `monitor/schemas.html` which has the hostname
+`eddn.edcd.io` hard-coded into it.  So you'll need to do a search and
+replace on it.
 
 ---
 
