@@ -1,21 +1,5 @@
 /* vim: wrapmargin=0 textwidth=0 tabstop=4 softtabstop=4 expandtab shiftwidth=4
  */
-var updateInterval      = 60000,
-
-    monitorEndPoint     = 'https://eddn.edcd.io:9091/',
-
-    //gatewayBottlePort   = 8080,
-    gatewayBottlePort   = 4430,
-    relayBottlePort     = 9090,
-
-    gateways            = [
-        'eddn.edcd.io'
-    ], //TODO: Must find a way to bind them to monitor
-
-    relays              = [
-        'eddn.edcd.io'
-    ]; //TODO: Must find a way to bind them to monitor
-
 var stats = {
     'gateways' : {},
     'relays'   : {}
@@ -435,11 +419,11 @@ var doUpdateSoftwares = function()
      */
     $.ajax({
         dataType: "json",
-        url: monitorEndPoint + 'getSoftwares/?dateStart=' + yesterday + '&dateEnd = ' + today,
+        url: eddn_config.monitorEndPoint + 'getSoftwares/?dateStart=' + yesterday + '&dateEnd = ' + today,
         success: function(softwaresTodayYesterday){
             $.ajax({
                 dataType: "json",
-                url: monitorEndPoint + 'getTotalSoftwares/',
+                url: eddn_config.monitorEndPoint + 'getTotalSoftwares/',
                 success: function(softwaresTotals){
                     // Might happen when nothing is received...
                     if(softwaresTodayYesterday[yesterday] == undefined)
@@ -524,7 +508,7 @@ var doUpdateSchemas = function()
 
     $.ajax({
         dataType: "json",
-        url: monitorEndPoint + 'getSchemas/?dateStart=' + yesterday + '&dateEnd = ' + today,
+        url: eddn_config.monitorEndPoint + 'getSchemas/?dateStart=' + yesterday + '&dateEnd = ' + today,
         success: function(schemasTodayYesterday){
             // Might happen when nothing is received...
             if(schemasTodayYesterday[yesterday] == undefined)
@@ -534,7 +518,7 @@ var doUpdateSchemas = function()
 
             $.ajax({
                 dataType: "json",
-                url: monitorEndPoint + 'getTotalSchemas/',
+                url: eddn_config.monitorEndPoint + 'getTotalSchemas/',
                 success: function(schemasTotals){
                     var chart   = $('#schemas .chart').highcharts(),
                         series  = chart.get('schemas');
@@ -807,12 +791,12 @@ var start       = function(){
 
     // Grab gateways
     //gateways = gateways.sort();
-    $.each(gateways, function(k, gateway){
+    $.each(eddn_config.gateways, function(k, gateway){
         gateway = gateway.replace('tcp://', '');
         gateway = gateway.replace(':8500', '');
 
         $("select[name=gateways]").append($('<option>', {
-            value: 'https://' + gateway + ':' + gatewayBottlePort + '/stats/',
+            value: eddn_config.gatewayStats,
             text : gateway
         }));
 
@@ -853,13 +837,13 @@ var start       = function(){
     doUpdates('gateways');
     setInterval(function(){
         doUpdates('gateways');
-    }, updateInterval);
+    }, eddn_config.updateInterval);
 
     // Grab relays
     //relays = relays.sort();
-    $.each(relays, function(k, relay){
+    $.each(eddn_config.relays, function(k, relay){
         $("select[name=relays]").append($('<option>', {
-            value: 'https://' + relay + ':' + relayBottlePort + '/stats/',
+            value: eddn_config.relayStats,
             text : relay
         }));
 
@@ -903,7 +887,7 @@ var start       = function(){
     doUpdates('relays');
     setInterval(function(){
         doUpdates('relays');
-    }, updateInterval);
+    }, eddn_config.updateInterval);
 
     // Grab software from monitor
     $('#software .chart').highcharts({
@@ -926,7 +910,7 @@ var start       = function(){
     doUpdateSoftwares();
     setInterval(function(){
         doUpdateSoftwares();
-    }, updateInterval);
+    }, eddn_config.updateInterval);
 
     // Grab uploader from monitor
     $('#uploaders .chart').highcharts({
@@ -965,7 +949,7 @@ var start       = function(){
     doUpdateSchemas();
     setInterval(function(){
         doUpdateSchemas();
-    }, updateInterval);
+    }, eddn_config.updateInterval);
 
     // Attach events
     $("select[name=gateways]").change(function(){
