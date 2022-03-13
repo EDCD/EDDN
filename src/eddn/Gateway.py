@@ -400,13 +400,18 @@ def main() -> None:
     configure()
 
     app.add_hook("after_request", apply_cors)
-    # app.install(custom_logging)
+
+    # Build arg dict for args
+    argsd = {
+        'host': Settings.GATEWAY_HTTP_BIND_ADDRESS,
+        'port': Settings.GATEWAY_HTTP_PORT,
+        'server': "gevent",
+        'log': gevent.pywsgi.LoggingLogAdapter(logger),
+        'handler_class': EDDNWSGIHandler,
+    }
+
     app.run(
-        host=Settings.GATEWAY_HTTP_BIND_ADDRESS,
-        port=Settings.GATEWAY_HTTP_PORT,
-        server="gevent",
-        log=gevent.pywsgi.LoggingLogAdapter(logger),
-        handler_class=EDDNWSGIHandler,
+        **argsd
     )
 
 
