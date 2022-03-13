@@ -26,7 +26,7 @@ class _Settings(object):
     # Relay settings
     ###############################################################################
 
-    RELAY_HTTP_BIND_ADDRESS                 = "0.0.0.0"  # noqa: E221
+    RELAY_HTTP_BIND_ADDRESS                 = "127.0.0.1"  # noqa: E221
     RELAY_HTTP_PORT                         = 9090  # noqa: E221
 
     RELAY_RECEIVER_BINDINGS                 = ["tcp://127.0.0.1:8500"]  # noqa: E221
@@ -112,7 +112,7 @@ class _Settings(object):
     #  Monitor settings
     ###############################################################################
 
-    MONITOR_HTTP_BIND_ADDRESS               = "0.0.0.0"  # noqa: E221
+    MONITOR_HTTP_BIND_ADDRESS               = "127.0.0.1"  # noqa: E221
     MONITOR_HTTP_PORT                       = 9091  # noqa: E221
 
     MONITOR_RECEIVER_BINDINGS               = ["tcp://127.0.0.1:8500"]  # noqa: E221
