@@ -38,6 +38,7 @@ app = Bottle()
 
 # This import must be done post-monkey-patching!
 from eddn.core.StatsCollector import StatsCollector  # noqa: E402
+from eddn.core.EDDNWSGIHandler import EDDNWSGIHandler
 
 stats_collector = StatsCollector()
 stats_collector.start()
@@ -199,12 +200,23 @@ def main() -> None:
     r.start()
 
     app.add_hook("after_request", apply_cors)
+
+    # Build arg dict for args
+    argsd = {
+        'host': Settings.RELAY_HTTP_BIND_ADDRESS,
+        'port': Settings.RELAY_HTTP_PORT,
+        'server': "gevent",
+        'log': gevent.pywsgi.LoggingLogAdapter(logger),
+        'handler_class': EDDNWSGIHandler,
+    }
+
+    # Empty CERT_FILE or KEY_FILE means don't put them in
+    if Settings.CERT_FILE != "" and Settings.KEY_FILE != "":
+        argsd["certfile"] = Settings.CERT_FILE
+        argsd["keyfile"] = Settings.KEY_FILE
+
     app.run(
-        host=Settings.RELAY_HTTP_BIND_ADDRESS,
-        port=Settings.RELAY_HTTP_PORT,
-        server="gevent",
-        certfile=Settings.CERT_FILE,
-        keyfile=Settings.KEY_FILE,
+        **argsd,
     )
 
 
