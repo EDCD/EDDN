@@ -416,7 +416,7 @@ def main() -> None:
         argsd["keyfile"] = Settings.KEY_FILE
 
     app.run(
-        **argsd
+        **argsd,
     )
 
 

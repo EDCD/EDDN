@@ -531,9 +531,14 @@ config.json.  See `contrib/apache-eddn.conf` for how to use TLS instead:
                 ProxyPreserveHost On
                 ProxyRequests Off
 
-                # Pass through anything with path prefix /eddn
+                # Pass through anything with path prefix /eddn to the Gateway
                 <Location "/eddn/">
                         ProxPass "http://127.0.0.1:8081/"
+                </Location>
+
+                # Anything with /monitor/ is for the Monitor
+                <Location "/eddn/monitor/">
+                        ProxPass "http://127.0.0.1:9091/"
                 </Location>
         </IfModule>
 
