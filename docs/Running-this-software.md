@@ -523,7 +523,9 @@ proxying:
 
   Internet -> existing server -> VM -> nginx -> EDDN scripts
 
-If using Apache on a Debian server then you need some ProxyPass directives:
+If using Apache on a Debian server then you need some ProxyPass directives.
+These assume you using an empty CERT_FILE and KEY_FILE in the override
+config.json.  See `contrib/apache-eddn.conf` for how to use TLS instead:
 
         <IfModule mod_proxy.c>
                 ProxyPreserveHost On
