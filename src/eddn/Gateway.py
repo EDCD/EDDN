@@ -445,6 +445,11 @@ def main() -> None:
         'handler_class': EDDNWSGIHandler,
     }
 
+    # Empty CERT_FILE or KEY_FILE means don't put them in
+    if Settings.CERT_FILE != "" and Settings.KEY_FILE != "":
+        argsd["certfile"] = Settings.CERT_FILE
+        argsd["keyfile"] = Settings.KEY_FILE
+
     app.run(
         **argsd
     )
