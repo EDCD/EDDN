@@ -3,6 +3,7 @@ import glob
 import os
 import pathlib
 import re
+import tempfile
 import shutil
 import subprocess
 import sys
@@ -170,6 +171,19 @@ print(
 Ensuring latest monitor files are in place...
 """
 )
+# We need to preserve any js/eddn-config.js file
+backup_fh, backup_filename = tempfile.mkstemp(prefix="eddn-config.js", dir=".")
+os.close(backup_fh)
+
+try:
+    shutil.copy2(
+        SHARE_EDDN_FILES / "monitor/js/eddn-config.js",
+        backup_filename,
+    )
+
+except FileNotFoundError:
+    backup_filename = None
+
 # Copy the monitor (Web page) files
 try:
     shutil.rmtree(SHARE_EDDN_FILES / "monitor")
@@ -182,6 +196,16 @@ shutil.copytree(
     SHARE_EDDN_FILES / "monitor",
     copy_function=shutil.copyfile,  # type: ignore
 )
+
+# Restore the backed-up eddn-config.js
+if backup_filename is not None:
+    shutil.copy2(
+        backup_filename,
+        SHARE_EDDN_FILES / "monitor/js/eddn-config.js",
+    )
+
+    os.unlink(backup_filename)
+
 # And a copy of the schemas too
 print(
     """
