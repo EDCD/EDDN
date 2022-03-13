@@ -114,6 +114,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
     <script src="https://code.highcharts.com/5.0.12/highcharts.js"></script>
     
+    <script src="./js/eddn-config.js"></script>
     <script type="text/javascript">
     var makeSlug = function(str) {
     	var slugcontent_hyphens = str.replace(/\s/g,'-');
@@ -121,13 +122,13 @@
     	return finishedslug.toLowerCase();
     }
     var makeName =  function(str) {
-        var match = /^https:\/\/eddn.edcd.io\/schemas\/(\w)(\w*)\/(\d+)$/.exec(str);
+        var match = /^https:\/\/' + eddn_config.eddn_host + '\/schemas\/(\w)(\w*)\/(\d+)$/.exec(str);
         if(match)
         {
             return match[1].toUpperCase() + match[2] + " v" + match[3];
         }
         
-        var match = /^https:\/\/eddn.edcd.io\/schemas\/(\w)(\w*)\/(\d+)\/test$/.exec(str);
+        var match = /^https:\/\/' + eddn_config.eddn_host + '\/schemas\/(\w)(\w*)\/(\d+)\/test$/.exec(str);
         if(match)
         {
             return match[1].toUpperCase() + match[2] + " v" + match[3] + " [TEST]";
@@ -137,8 +138,6 @@
     }
 
     $(document).ready(function(){
-        var monitorEndPoint     = 'https://eddn.edcd.io:9091/';
-        
         var chartContainer = $('#schemas .charts');
         
         chartContainer.highcharts({
@@ -218,7 +217,7 @@
     
         $.ajax({
             dataType: "json",
-            url: monitorEndPoint + 'getSchemas/?dateStart=' + day60 + '&dateEnd = ' + yesterday,
+            url: eddn_config.monitorEndPoint + 'getSchemas/?dateStart=' + day60 + '&dateEnd = ' + yesterday,
             success: function(schemas){
                 var chart = chartContainer.highcharts();
                 var chartStacked = chartStackedContainer.highcharts();
@@ -231,7 +230,7 @@
                     // Convert old schemas and sum them to new schemas
                     schemasCount = {};
                     $.each(schemasCountTmp, function(schema, hits){
-                        schema = schema.replace('http://schemas.elite-markets.net/eddn/', 'https://eddn.edcd.io/schemas/');
+                        schema = schema.replace('http://schemas.elite-markets.net/eddn/', eddn_config.schemasURL);
                         hits   = parseInt(hits);
                         
                         if(schemasCount[schema]){ schemasCount[schema] += hits; }
