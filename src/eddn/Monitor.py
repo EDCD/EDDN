@@ -4,6 +4,7 @@
 import argparse
 import collections
 import datetime
+import logging
 import zlib
 from threading import Thread
 from typing import OrderedDict
@@ -23,12 +24,24 @@ monkey.patch_all()
 
 app = Bottle()
 
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+__logger_channel = logging.StreamHandler()
+__logger_formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(module)s:%(lineno)d: %(message)s")
+__logger_formatter.default_time_format = "%Y-%m-%d %H:%M:%S"
+__logger_formatter.default_msec_format = "%s.%03d"
+__logger_channel.setFormatter(__logger_formatter)
+logger.addHandler(__logger_channel)
+logger.info("Made logger")
+
 # This import must be done post-monkey-patching!
 if Settings.RELAY_DUPLICATE_MAX_MINUTES:
     from eddn.core.DuplicateMessages import DuplicateMessages
 
     duplicate_messages = DuplicateMessages()
     duplicate_messages.start()
+
+from eddn.core.EDDNWSGIHandler import EDDNWSGIHandler
 
 
 def parse_cl_args():
@@ -286,12 +299,23 @@ def main() -> None:
     m = Monitor()
     m.start()
     app.add_hook("after_request", apply_cors)
+
+    # Build arg dict for args
+    argsd = {
+        'host': Settings.MONITOR_HTTP_BIND_ADDRESS,
+        'port': Settings.MONITOR_HTTP_PORT,
+        'server': "gevent",
+        'log': gevent.pywsgi.LoggingLogAdapter(logger),
+        'handler_class': EDDNWSGIHandler,
+    }
+
+    # Empty CERT_FILE or KEY_FILE means don't put them in
+    if Settings.CERT_FILE != "" and Settings.KEY_FILE != "":
+        argsd["certfile"] = Settings.CERT_FILE
+        argsd["keyfile"] = Settings.KEY_FILE
+
     app.run(
-        host=Settings.MONITOR_HTTP_BIND_ADDRESS,
-        port=Settings.MONITOR_HTTP_PORT,
-        server="gevent",
-        certfile=Settings.CERT_FILE,
-        keyfile=Settings.KEY_FILE,
+        **argsd,
     )
 
 
