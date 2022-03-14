@@ -5,7 +5,7 @@ from typing import Dict
 
 import simplejson
 
-from conf.Version import __version__ as version
+from eddn.conf.Version import __version__ as version
 
 
 class _Settings(object):
