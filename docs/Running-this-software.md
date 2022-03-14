@@ -253,15 +253,11 @@ anything else it's best to use a Python virtual environment (venv).  You
 will have installed the Debian package 'virtualenv' [above](#as-root) for
 this purpose.
 
-We'll put the venv in `${HOME}/dev/python2.7-venv` with the following
+We'll put the venv in `${HOME}/dev/python-venv` with the following
 command:
 
     cd ${HOME}/dev
-    virtualenv -p /usr/bin/python2.7 ${HOME}/dev/python2.7-venv
-
-And for future ease of changing python versions:
-
-    ln -s python2.7-venv python-venv
+    virtualenv ${HOME}/dev/python-venv
 
 And now start using this venv:
 
