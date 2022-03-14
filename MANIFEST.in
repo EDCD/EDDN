@@ -1,0 +1,1 @@
+include src/eddn/schemas/*-v*.0.json
