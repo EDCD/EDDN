@@ -87,8 +87,6 @@ setup(
     # This includes them for the running code, but that doesn't help
     # serve them up for reference.
     data_files=[("schemas", glob.glob("src/schemas/*.json"))],
-    # Yes, we pin versions.  With python2.7 the latest pyzmq will NOT
-    # work, for instance.
     install_requires=[
         "argparse",
         "bottle",
