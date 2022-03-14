@@ -84,7 +84,7 @@ setup(
     package_dir={"": "src"},
     # This includes them for the running code, but that doesn't help
     # serve them up for reference.
-    data_files=[("eddn/schemas", glob.glob("schemas/*.json"))],
+    data_files=[("eddn/src/schemas", glob.glob("src/schemas/*.json"))],
     # Yes, we pin versions.  With python2.7 the latest pyzmq will NOT
     # work, for instance.
     install_requires=[
@@ -99,10 +99,10 @@ setup(
     ],
     entry_points={
         "console_scripts": [
-            "eddn-gateway = eddn.Gateway:main",
-            "eddn-relay = eddn.Relay:main",
-            "eddn-monitor = eddn.Monitor:main",
-            "eddn-bouncer = eddn.Bouncer:main",
+            "eddn-gateway = Gateway:main",
+            "eddn-relay = Relay:main",
+            "eddn-monitor = Monitor:main",
+            "eddn-bouncer = Bouncer:main",
         ],
     },
 )
@@ -220,7 +220,7 @@ except OSError:
     pass
 
 shutil.copytree(
-    "schemas",
+    "src/schemas",
     SHARE_EDDN_FILES / "schemas",
     copy_function=shutil.copyfile,  # type: ignore
 )
