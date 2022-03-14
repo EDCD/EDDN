@@ -132,7 +132,7 @@ deprecated and no new software should attempt this method**.  We
 purposefully do not further document the exact format for this.
 
 You *MAY* use gzip compression on the body of the message, but it is not
-required.  If you do compress the body then you **MUST* send a `Content-Type`
+required.  If you do compress the body then you **MUST** send a `Content-Type`
 header of `gzip` instead of `application/json`.
 
 You should be prepared to handle all scenarios where sending of a message
@@ -339,11 +339,11 @@ make a valid request" responses you might experience the following:
    To verify the current limit check for the line that looks like:
 
       ```
-      bottle.BaseRequest.MEMFILE_MAX = 1024 * 1024 # 1MiB, default is/was 100KiB
+      bottle.BaseRequest.MEMFILE_MAX = 1024 * 1024  # 1MiB, default is/was 100KiB
       ```
 
    in
-   [src/eddn/Gateway.py](https://github.com/EDCD/EDDN/blob/live/src/eddn/Gateway.py),
+   [src/EDDN_Gateway.py](https://github.com/EDCD/EDDN/blob/live/src/EDDN_Gateway.py),
    as added in
    [commit  0e80c76cb564771465f61825e694227dcc3be312](https://github.com/EDCD/EDDN/commit/0e80c76cb564771465f61825e694227dcc3be312).
 

@@ -1,8 +1,6 @@
 {
-        "CERT_FILE": "/home/eddn/etc/fullchain.pem",
-        "KEY_FILE": "/home/eddn/etc/privkey.pem",
-
-        "GATEWAY_HTTP_BIND_ADDRESS": "0.0.0.0",
+        "CERT_FILE": "",
+        "KEY_FILE": "",
 
         "MONITOR_DB": {
                 "database": "eddn",

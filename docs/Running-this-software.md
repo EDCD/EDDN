@@ -364,7 +364,7 @@ To change anything from the defaults create an override config file, which
 must be in valid JSON format (so no comments, no dangling commas etc).
 You can then pass this file to the application scripts, e.g.:
 
-    python Gateway.py --config some/other/configfile.json
+    python EDDN_Gateway.py --config some/other/configfile.json
 
 You only need to define the settings that you need to change from defaults,
 e.g. certificate files and database credentials, without worrying about the
@@ -374,8 +374,9 @@ There is an **example** of this in
 [eddn-settings-overrides-EXAMPLE.json](./eddn-settings-overrides-EXAMPLE.json).
 It sets:
 
-  1. The gateway to listen on `0.0.0.0` rather than localhost (necessary
-    when testing in a VM).
+  1. Sets CERT_FILE and KEY_FILE to empty strings to that no TLS termination
+    happens in the EDDN components.  This necessitates using a reverse proxy
+    for *all* of the endpoints, including the various statistics URLs.
   1. Configures the database connection and credentials.
   1. Turns off the relay duplicate check.
 
@@ -386,14 +387,12 @@ You have some choices for how to run the application components:
 
 ## Running scripts from source
 If you are just testing out code changes then you can choose to run
-this application directly from the source using the script
-`systemd/start-eddn-service`. You'll need to run it as, e.g.
+this application directly from the source:
 
-    systemd/start-eddn-service dev gateway --from-source
-
-When using `--from-source` you can also supply a `--background` argument to
-put the process into the background with a `.pid` file written in the logs
-directory.
+```
+cd <eddn files>/src
+python EDDN_Gateway.py --config <full path to config.json>
+```
 
 Check the `systemd/eddn_<environment>_config` files for the location of
 the logs directory.
@@ -417,11 +416,13 @@ environment:
 
 1. As we're using a python venv we can now just run:
 
-    `python setup.py install`
+    `python setup.py bdist_wheel`
 
-    to install it all.  This will install a python egg into the python
-    venv, and then also ensure that the monitor and schema files are in
-    place, along with support scripts.
+    to build a .whl file into the `dist/` directory.  This also ensures that
+    the monitor and schema files are in place, along with support scripts.
+    You will then need to install the wheel:
+
+    `pip install dist/eddn-<version>-py3-none-any.whl`
 
     There is an example systemd setup in `systemd` that assumes
     this local installation.
@@ -453,7 +454,7 @@ via system, including at boot time.
   to start/stop any of the EDDN services **in the live environment**.
   You would invoke it like:
 
-    `systemctl start eddn@eddn-gateway.service`
+    `systemctl start eddn@gateway.service`
 
 1. `systemd/eddn.target` - a system target until file which will start all
   of:
@@ -483,10 +484,6 @@ only an example as `monitor/js/EXAMPLE-eddn-config.json` will have been
 installed*.
 
 You will need to copy the example file to the live name and edit to suit.
-
-In addition there's also `monitor/schemas.html` which has the hostname
-`eddn.edcd.io` hard-coded into it.  So you'll need to do a search and
-replace on it.
 
 ---
 
