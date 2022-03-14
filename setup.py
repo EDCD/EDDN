@@ -82,7 +82,7 @@ setup(
     url="https://github.com/EDCD/EDDN",
 
     # <https://packaging.python.org/en/latest/guides/distributing-packages-using-setuptools/#py-modules>
-    py_modules=["Gateway", "Monitor", "Relay", "Bouncer"],
+    py_modules=["EDDN_Gateway", "EDDN_Monitor", "EDDN_Relay", "EDDN_Bouncer"],
     packages=find_packages("src"),
     package_dir={"": "src"},
     # Should mean it picks up src/eddn/schemas/ files
@@ -103,10 +103,10 @@ setup(
     ],
     entry_points={
         "console_scripts": [
-            "eddn-gateway = Gateway:main",
-            "eddn-relay = Relay:main",
-            "eddn-monitor = Monitor:main",
-            "eddn-bouncer = Bouncer:main",
+            "eddn-gateway = EDDN_Gateway:main",
+            "eddn-relay = EDDN_Relay:main",
+            "eddn-monitor = EDDN_Monitor:main",
+            "eddn-bouncer = EDDN_Bouncer:main",
         ],
     },
 )
