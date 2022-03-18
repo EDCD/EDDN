@@ -19,7 +19,16 @@ repos:
     rev: '3.9.2'
     hooks:
       - id: flake8
-        additional_dependencies: [ flake8-isort ]
+        additional_dependencies: [
+          flake8-annotations-coverage,
+          flake8-cognitive-complexity,
+          flake8-comprehensions,
+          flake8-docstrings,
+          flake8-isort,
+          flake8-json,
+          flake8-noqa,
+          flake8-use-fstring
+        ]
 
 # Try using local flake8
 ### - repo: local
