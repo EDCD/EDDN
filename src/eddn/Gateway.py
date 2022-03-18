@@ -6,12 +6,32 @@ EDDN Gateway, which receives message from uploaders.
 Contains the necessary ZeroMQ socket and a helper function to publish
 market data to the Announcer daemons.
 """
+
 import argparse
-import logging
+import sys
 import zlib
 from datetime import datetime
 from typing import Dict
 from urllib.parse import parse_qs
+
+if sys.path[0].endswith('/eddn'):
+    print(sys.path)
+    print(
+        '''
+You're not running this script correctly.
+
+Do not do:
+
+    python <path to>/Gateway.py <other arguments>
+
+instead do:
+
+    cd <src directory>
+    python -m eddn.Gateway <other arguments>
+'''
+    )
+    sys.exit(-1)
+
 
 import gevent
 import simplejson
@@ -21,12 +41,16 @@ from pkg_resources import resource_string
 from zmq import PUB as ZMQ_PUB
 
 from eddn.conf.Settings import Settings, load_config
-from eddn.core.Validator import ValidationSeverity, Validator
 from eddn.core.logger import logger
+from eddn.core.Validator import ValidationSeverity, Validator
 
 monkey.patch_all()
 import bottle  # noqa: E402
 from bottle import Bottle, request, response  # noqa: E402
+
+from eddn.core.EDDNWSGIHandler import EDDNWSGIHandler  # noqa: E402
+# This import must be done post-monkey-patching!
+from eddn.core.StatsCollector import StatsCollector  # noqa: E402
 
 bottle.BaseRequest.MEMFILE_MAX = 1024 * 1024  # 1MiB, default is/was 100KiB
 
@@ -38,10 +62,6 @@ zmq_context = zmq.Context()
 sender = zmq_context.socket(ZMQ_PUB)
 
 validator = Validator()
-
-# This import must be done post-monkey-patching!
-from eddn.core.StatsCollector import StatsCollector  # noqa: E402
-from eddn.core.EDDNWSGIHandler import EDDNWSGIHandler
 
 stats_collector = StatsCollector()
 stats_collector.start()
