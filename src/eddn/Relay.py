@@ -4,10 +4,30 @@
 import argparse
 import hashlib
 import logging
+import sys
 import time
 import uuid
 import zlib
 from threading import Thread
+
+if sys.path[0].endswith('/eddn'):
+    print(sys.path)
+    print(
+        '''
+You're not running this script correctly.
+
+Do not do:
+
+    python <path to>/Relay.py <other arguments>
+
+instead do:
+
+    cd <src directory>
+    python -m eddn.Relay <other arguments>
+'''
+    )
+    sys.exit(-1)
+
 
 import gevent
 import simplejson
@@ -36,9 +56,9 @@ monkey.patch_all()
 
 app = Bottle()
 
+from eddn.core.EDDNWSGIHandler import EDDNWSGIHandler  # noqa: E402
 # This import must be done post-monkey-patching!
 from eddn.core.StatsCollector import StatsCollector  # noqa: E402
-from eddn.core.EDDNWSGIHandler import EDDNWSGIHandler
 
 stats_collector = StatsCollector()
 stats_collector.start()
@@ -54,8 +74,8 @@ if Settings.RELAY_DUPLICATE_MAX_MINUTES:
 def parse_cl_args() -> argparse.Namespace:
     """Parse command-line arguments."""
     parser = argparse.ArgumentParser(
-        prog="Gateway",
-        description="EDDN Gateway server",
+        prog="Relay",
+        description="EDDN Relay server",
     )
 
     parser.add_argument(
