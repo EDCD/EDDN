@@ -5,9 +5,29 @@ import argparse
 import collections
 import datetime
 import logging
+import sys
 import zlib
 from threading import Thread
 from typing import OrderedDict
+
+if sys.path[0].endswith('/eddn'):
+    print(sys.path)
+    print(
+        '''
+You're not running this script correctly.
+
+Do not do:
+
+    python <path to>/Monitor.py <other arguments>
+
+instead do:
+
+    cd <src directory>
+    python -m eddn.Monitor <other arguments>
+'''
+    )
+    sys.exit(-1)
+
 
 import gevent
 import mysql.connector as mariadb
@@ -19,6 +39,7 @@ from zmq import SUB as ZMQ_SUB
 from zmq import SUBSCRIBE as ZMQ_SUBSCRIBE
 
 from eddn.conf.Settings import Settings, load_config
+from eddn.core.EDDNWSGIHandler import EDDNWSGIHandler
 
 monkey.patch_all()
 
@@ -41,14 +62,12 @@ if Settings.RELAY_DUPLICATE_MAX_MINUTES:
     duplicate_messages = DuplicateMessages()
     duplicate_messages.start()
 
-from eddn.core.EDDNWSGIHandler import EDDNWSGIHandler
-
 
 def parse_cl_args():
     """Parse command-line arguments."""
     parser = argparse.ArgumentParser(
-        prog="Gateway",
-        description="EDDN Gateway server",
+        prog="Monitor",
+        description="EDDN Monitor server",
     )
 
     parser.add_argument(
