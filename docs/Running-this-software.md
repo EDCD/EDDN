@@ -391,7 +391,7 @@ this application directly from the source:
 
 ```
 cd <eddn files>/src
-python EDDN_Gateway.py --config <full path to config.json>
+python -m eddn.Gateway --config <full path to config.json>
 ```
 
 Check the `systemd/eddn_<environment>_config` files for the location of
