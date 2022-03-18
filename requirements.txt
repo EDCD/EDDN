@@ -1,10 +1,11 @@
-# Versions that installed under Python 3.9.7 Thu Nov  4 12:03:41 GMTST 2021
-argparse==1.4.0
+# Versions known to work under Python 3.9.2 on Debian bullseye
+# Fri 18 Mar 12:01:52 GMT 2022
+argparse  # Just take the 'system' version
 bottle==0.12.19
 enum34==1.1.10
-gevent==21.8.0
-jsonschema==4.2.0
+gevent==21.12.0
+jsonschema==4.4.0
+mysql-connector-python==8.0.28
 pyzmq==22.3.0
-requests==2.25.1
-simplejson==3.16.0
-mysql-connector-python==8.0.27
+requests==2.27.1
+simplejson==3.17.6
