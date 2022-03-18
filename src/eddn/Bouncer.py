@@ -28,9 +28,29 @@ Architecture:
 """
 import argparse
 import logging
+import sys
 import zlib
 from datetime import datetime
 from typing import Callable
+
+if sys.path[0].endswith('/eddn'):
+    print(sys.path)
+    print(
+        '''
+You're not running this script correctly.
+
+Do not do:
+
+    python <path to>/Bouncer.py <other arguments>
+
+instead do:
+
+    cd <src directory>
+    python -m eddn.Bouncer <other arguments>
+'''
+    )
+    sys.exit(-1)
+
 
 import gevent
 import requests
