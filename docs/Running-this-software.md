@@ -387,15 +387,20 @@ You have some choices for how to run the application components:
 
 ## Running scripts from source
 If you are just testing out code changes then you can choose to run
-this application directly from the source:
+this application directly from the source.  To do so you need to reference
+the correct module with `-m` rather than specifying the file directly:
 
-```
+```sh
 cd <eddn files>/src
 python -m eddn.Gateway --config <full path to config.json>
 ```
+If running in an environment with a POSIX 'Bourne' shell then there are
+helper scripts:
 
-Check the `systemd/eddn_<environment>_config` files for the location of
-the logs directory.
+```sh
+cd <eddn files>
+./Gateway.sh --config <full path to config.json>
+```
 
 ## Running from installation
 Otherwise you will want to  utilise the `setup.py` file to build and
