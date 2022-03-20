@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/en
 # vim: wrapmargin=0 textwidth=0 smarttab expandtab tabstop=2 shiftwidth=2
 """Produce a report on the provided EDDN Gateway log file's ERRORs."""
 
@@ -250,6 +250,16 @@ def process_file(input_file: str) -> None:
 
                 print(matches.group('err_msg'))
                 print(line)
+
+              else:
+                print(line)
+
+            elif matches.group('schema_ref') == 'https://eddn.edcd.io/schemas/shipyard/2':
+              # <https://discord.com/channels/164411426939600896/205369618284544000/955030485791285258>
+              if matches.group('err_msg').startswith(
+                'Failed Validation "[<ValidationError: \'[] is too short\'>]"'
+              ):
+                pass
 
               else:
                 print(line)
