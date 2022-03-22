@@ -241,7 +241,7 @@
                     // Loop results
                     $.each(schemasCount, function(schema, hits){
                         // IF TEST CONTINUE
-                        if(schema.substr(schema.length - 4) == 'test')
+                        if(schema.slice(-4) == 'test')
                             return;
 
                         var slug = makeSlug(schema);
