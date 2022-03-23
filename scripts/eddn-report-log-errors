@@ -1,4 +1,4 @@
-#!/usr/bin/en
+#!/usr/bin/env python3
 # vim: wrapmargin=0 textwidth=0 smarttab expandtab tabstop=2 shiftwidth=2
 """Produce a report on the provided EDDN Gateway log file's ERRORs."""
 
