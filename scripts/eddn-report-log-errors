@@ -62,7 +62,13 @@ def process_file(input_file: str) -> None:
         # print(matches.group('sender_ip'))
         # print('')
 
-        software_version = semantic_version.Version.coerce(matches.group('software_version'))
+        try:
+          software_version = semantic_version.Version.coerce(matches.group('software_version'))
+
+        except ValueError as e:
+          print(f"Error parsing sofwareVersion for:\n{matches.group('software_version')}\n{line}\n")
+          next
+
         ###################################################################
         # Issues we know about and HAVE already alerted their
         # developers to.
