@@ -62,20 +62,45 @@ def process_file(input_file: str) -> None:
         # print(matches.group('sender_ip'))
         # print('')
 
-        software_version = semantic_version.Version.coerce(matches.group('software_version'))
+        try:
+          software_version = semantic_version.Version.coerce(matches.group('software_version'))
+
+        except ValueError as e:
+          print(f"Error parsing sofwareVersion for:\n{matches.group('software_version')}\n{line}\n")
+          next
+
         ###################################################################
         # Issues we know about and HAVE already alerted their
         # developers to.
         ###################################################################
         if matches.group('software_name') == 'EDDiscovery':
           # https://github.com/EDDiscovery/EDDiscovery/releases/latest
-          if software_version >= semantic_version.Version.coerce('12.1.7.0'):
+          if software_version >= semantic_version.Version.coerce('15.0.0.0'):
+            if matches.group('schema_ref') == 'https://eddn.edcd.io/schemas/approachsettlement/1':
+              if matches.group('err_msg') == 'Failed Validation "[<ValidationError: "\'Latitude\' is a required property">]"':
+                # <https://github.com/EDDiscovery/EDDiscovery/issues/3236>
+                pass
+              
+              elif matches.group('err_msg') == 'Failed Validation "[<ValidationError: "Additional properties are not allowed (\'Name_Localised\' was unexpected)">]"':
+                # <https://github.com/EDDiscovery/EDDiscovery/issues/3237>
+                pass
+
+              else:
+                print(line)
+
+            else:
+              print(line)
+
+          elif software_version >= semantic_version.Version.coerce('12.1.7.0'):
             if matches.group('schema_ref') in (
               'https://eddn.edcd.io/schemas/shipyard/2',
               'https://eddn.edcd.io/schemas/outfitting/2',
             ):
               # Reported via Discord PM to Robby 2022-01-07
-              if matches.group('err_msg') != 'Failed Validation "[<ValidationError: \'[] is too short\'>]"':
+              if matches.group('err_msg') == 'Failed Validation "[<ValidationError: \'[] is too short\'>]"':
+                pass
+
+              else:
                 print(line)
 
             else:
@@ -103,7 +128,6 @@ def process_file(input_file: str) -> None:
               else:
                 print(line)
 
-
             else:
               print(line)
 
@@ -114,10 +138,13 @@ def process_file(input_file: str) -> None:
 
         elif matches.group('software_name').startswith('E:D Market Connector'):
           # https://github.com/EDCD/EDMarketConnector/releases/latest
-          if software_version >= semantic_version.Version.coerce('5.2.4'):
+          if software_version >= semantic_version.Version.coerce('5.3.0'):
             if matches.group('schema_ref') == 'https://eddn.edcd.io/schemas/codexentry/1':
               # <https://github.com/EDCD/EDMarketConnector/issues/1393>
-              if matches.group('err_msg') != 'Failed Validation "[<ValidationError: "\'\' is too short">]"':
+              if matches.group('err_msg') == 'Failed Validation "[<ValidationError: "\'\' is too short">]"':
+                pass
+
+              else:
                 print(matches.group('err_msg'))
                 print(line)
 
@@ -142,14 +169,16 @@ def process_file(input_file: str) -> None:
                 # <https://github.com/EDCD/EDMarketConnector/issues/1403>
                 pass
 
-            elif matches.group('schema_ref') == 'https://eddn.edcd.io/schemas/approachsettlement/1':
-              if matches.group('err_msg') == 'Failed Validation "[<ValidationError: "\'MarketID\' is a required property">]"':
-                # <https://github.com/EDCD/EDDN/issues/181>
-                pass
+              else:
+                print(line)
 
-              elif matches.group('err_msg') == 'Failed Validation "[<ValidationError: "\'Latitude\' is a required property">]"':
+            elif matches.group('schema_ref') == 'https://eddn.edcd.io/schemas/approachsettlement/1':
+              if matches.group('err_msg') == 'Failed Validation "[<ValidationError: "\'Latitude\' is a required property">]"':
                 # <https://github.com/EDCD/EDMarketConnector/issues/1476>
                 pass
+            
+              else:
+                print(line)
 
             else:
               print(line)
@@ -158,20 +187,35 @@ def process_file(input_file: str) -> None:
           # <https://edcodex.info/?m=tools&entry=212>
           if software_version >= semantic_version.Version.coerce('3.7.7888.21039'):
             if matches.group('schema_ref') == 'https://eddn.edcd.io/schemas/commodity/3':
+              if matches.group('err_msg') == 'Failed Validation "[<ValidationError: "Additional properties are not allowed (\'Proportion\', \'Name\' were unexpected)">]"':
               # Reported via Frontier forums: <https://forums.frontier.co.uk/threads/elite-g19s-companion-app-with-simulated-space-traffic-control.226782/post-9690204>
-              if matches.group('err_msg') != 'Failed Validation "[<ValidationError: "Additional properties are not allowed (\'Proportion\', \'Name\' were unexpected)">]"':
-                print(matches.group('err_msg'))
+                pass
+
+              else:
                 print(line)
+            
+            else:
+              print(line)
 
         elif matches.group('software_name') == 'EDSM':
           # It's in-browser, no public source/releases
-          if software_version >= semantic_version.Version.coerce('1.0.1'):
+          if software_version >= semantic_version.Version.coerce('1.0.3'):
             if matches.group('schema_ref') == 'https://eddn.edcd.io/schemas/journal/1':
               if matches.group('journal_event') == 'Scan':
-                # <https://github.com/EDSM-NET/FrontEnd/issues/466>
-                if not matches.group('err_msg').startswith(
-                    'Failed Validation "[<ValidationError: "{\'type\': [\'array\', \'boolean\', \'integer\', \'number\', \'null\', \'object\', \'string\']} is not allowed for '
+                # <https://github.com/EDSM-NET/FrontEnd/issues/472>
+                if matches.group('err_msg').startswith(
+                    'Failed Validation "[<ValidationError: "None is not of type \'integer\'">]"'
                   ):
+                  pass
+
+                elif (
+                    matches.group('err_msg').startswith('Failed Validation "[<ValidationError: "{') and 
+                    matches.group('err_msg').endswith('} is not of type \'array\'">]"')
+                ):
+                  # <https://github.com/EDSM-NET/FrontEnd/issues/473>
+                  pass
+
+                else:
                   print(matches.group('err_msg'))
                   print(line)
 
@@ -205,11 +249,23 @@ def process_file(input_file: str) -> None:
             if matches.group('schema_ref') == 'https://eddn.edcd.io/schemas/journal/1':
               if matches.group('journal_event') == 'Docked':
                 # <https://discord.com/channels/164411426939600896/205369618284544000/929102478954340372>
-                if not matches.group('err_msg').startswith(
+                if matches.group('err_msg').startswith(
                     'Failed Validation "[<ValidationError: "{\'type\': [\'array\', \'boolean\', \'integer\', \'number\', \'null\', \'object\', \'string\']} is not allowed for '
                   ):
-                  print(matches.group('err_msg'))
-                  print(line)
+                  pass
+
+                print(matches.group('err_msg'))
+                print(line)
+
+              else:
+                print(line)
+
+            elif matches.group('schema_ref') == 'https://eddn.edcd.io/schemas/shipyard/2':
+              # <https://discord.com/channels/164411426939600896/205369618284544000/955030485791285258>
+              if matches.group('err_msg').startswith(
+                'Failed Validation "[<ValidationError: \'[] is too short\'>]"'
+              ):
+                pass
 
               else:
                 print(line)
