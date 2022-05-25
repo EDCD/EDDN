@@ -62,8 +62,7 @@
                     "description"   : "Must be added by the sender if not present in the journal event"
                 },
                 "SystemAddress": {
-                    "type"          : "integer",
-                    "description"   : "Should be added by the sender if not present in the journal event"
+                    "type"          : "integer"
                 },
                 "Progress"            : {
                     "$ref" : "#/definitions/disallowed",

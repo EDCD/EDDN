@@ -1,6 +1,6 @@
 {
     "$schema"               : "http://json-schema.org/draft-04/schema#",
-    "id"                    : "https://eddn.edcd.io/schemas/fssallbodiesfound/1#",
+    "id"                    : "https://eddn.edcd.io/schemas/fssbodysignals/1#",
     "type"                  : "object",
     "additionalProperties"  : false,
     "required": [ "$schemaRef", "header", "message" ],
@@ -33,14 +33,14 @@
             "type"                  : "object",
             "description"           : "Contains all properties from the listed events in the client's journal, minus the Localised strings and the properties marked below as 'disallowed'",
             "additionalProperties"  : false,
-            "required"              : [ "timestamp", "event", "SystemName", "StarPos", "SystemAddress", "Count" ],
+            "required"              : [ "timestamp", "event", "SystemName", "StarPos", "SystemAddress", "BodyID", "Signals" ],
             "properties"            : {
                 "timestamp": {
                     "type"          : "string",
                     "format"        : "date-time"
                 },
                 "event" : {
-                    "enum"          : [ "FSSAllBodiesFound" ]
+                    "enum"          : [ "FSSBodySignals" ]
                 },
                 "horizons": {
                     "type"          : "boolean",
@@ -64,9 +64,24 @@
                 "SystemAddress": {
                     "type"          : "integer"
                 },
-                "Count"             : {
-                    "type"          : "integer",
-                    "description"   : "Number of bodies in this system"
+                "BodyID"             : {
+                    "type"          : "integer"
+                },
+                "Signals": {
+                    "type"          : "array",
+                    "items"         : {
+                        "type"          : "object",
+                        "additionalProperties"  : false,
+                        "required"              : [ "Type", "Count" ],
+                        "properties"            : {
+                            "Type"             : {
+                                "type"          : "string"
+                            },
+                            "Count"             : {
+                                "type"          : "integer"
+                            }
+                        }
+                    }
                 }
             }
         }

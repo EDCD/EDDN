@@ -1,7 +1,7 @@
 # EDDN FSSAllBodiesFound Schema
 
 ## Introduction
-Here we document how to take data from an ED `FSSAllBodiesFound` Journal 
+Here we document how to take data from an ED `FSSBodySignals` Journal 
 Event and properly structure it for sending to EDDN.
 
 Please consult [EDDN Schemas README](./README-EDDN-schemas.md) for general
@@ -17,7 +17,7 @@ discrepancy.**
 
 ## Senders
 The primary data source for this schema is the ED Journal event 
-`FSSAllBodiesFound`.
+`FSSBodySignals`.
 
 ### Augmentations
 #### horizons and odyssey flags
@@ -27,3 +27,13 @@ in the Developers' documentation.
 #### StarPos
 You MUST add a `StarPos` array containing the system co-ordinates from the 
 last `FSDJump`, `CarrierJump`, or `Location` event.
+
+#### Remove _Localised key/values
+All keys whose name ends with `_Localised`, i.e. the `Type_Localised`
+key/values in Signals.
+
+#### Examples:
+
+```json
+{ "timestamp":"2022-05-18T00:10:57Z", "event":"FSSBodySignals", "BodyName":"Phoi Auwsy ZY-Z d132 7 a", "BodyID":37, "SystemAddress":4546986398603, "Signals":[ { "Type":"$SAA_SignalType_Geological;", "Type_Localised":"Geological", "Count":2 } ] }
+```
