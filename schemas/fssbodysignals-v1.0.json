@@ -67,6 +67,10 @@
                 "BodyID"             : {
                     "type"          : "integer"
                 },
+                "BodyName": {
+                    "type"          : "string",
+                    "minLength"     : 1
+                },
                 "Signals": {
                     "type"          : "array",
                     "items"         : {
