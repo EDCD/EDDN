@@ -30,3 +30,6 @@ in the Developers' documentation.
 #### StarPos
 You MUST add a `StarPos` array containing the system co-ordinates from the
 last `FSDJump`, `CarrierJump`, or `Location` event.
+
+**You MUST apply a location cross-check, as per
+[Other data augmentations](../docs/Developers.md#other-data-augmentations).**
