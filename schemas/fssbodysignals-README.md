@@ -24,8 +24,8 @@ The primary data source for this schema is the ED Journal event
 Please read [horizons and odyssey flags](../docs/Developers.md#horizons-and-odyssey-flags)
 in the Developers' documentation.
 
-#### SystemName
-You MUST add a `SystemName` string containing the name of the system from the 
+#### StarSystem
+You MUST add a `StarSystem` string containing the name of the system from the 
 last `FSDJump`, `CarrierJump`, or `Location` event.
 
 #### StarPos

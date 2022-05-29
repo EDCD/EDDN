@@ -33,7 +33,7 @@
             "type"                  : "object",
             "description"           : "Contains all properties from the listed events in the client's journal, minus the Localised strings and the properties marked below as 'disallowed'",
             "additionalProperties"  : false,
-            "required"              : [ "timestamp", "event", "SystemName", "StarPos", "SystemAddress", "BodyID", "Signals" ],
+            "required"              : [ "timestamp", "event", "StarSystem", "StarPos", "SystemAddress", "BodyID", "Signals" ],
             "properties"            : {
                 "timestamp": {
                     "type"          : "string",
@@ -50,7 +50,7 @@
                     "type"      : "boolean",
                     "description" : "Whether the sending Cmdr has an Odyssey expansion."
                 },
-                "SystemName": {
+                "StarSystem": {
                     "type"          : "string",
                     "minLength"     : 1
                 },
