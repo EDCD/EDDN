@@ -28,9 +28,15 @@ in the Developers' documentation.
 You MUST add a `StarSystem` string containing the name of the system from the 
 last `FSDJump`, `CarrierJump`, or `Location` event.
 
+**You MUST apply a location cross-check, as per
+[Other data augmentations](../docs/Developers.md#other-data-augmentations).**
+
 #### StarPos
 You MUST add a `StarPos` array containing the system co-ordinates from the 
 last `FSDJump`, `CarrierJump`, or `Location` event.
+
+**You MUST apply a location cross-check, as per
+[Other data augmentations](../docs/Developers.md#other-data-augmentations).**
 
 #### Remove _Localised key/values
 All keys whose name ends with `_Localised`, i.e. the `Type_Localised`
