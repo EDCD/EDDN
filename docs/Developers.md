@@ -435,7 +435,11 @@ data you will first need to zlib-decompress each message.  Then you will
 have a textual JSON object as per the Schemas.
 
 In general, check the guidance for [Uploading messages](#uploading-messages)
-for the expected format of the messages.
+for the expected format of the messages.  **Pay particular attention to any
+schema-specific Augmentations**.  Whilst Senders MUST make every effort to
+ensure such data is correct it is possible that bugs in either their code, or
+the game itself, could mean it is incorrect.  Listeners use such data at
+their own risk.
 
 Consumers can utilise the `$schemaRef` value to determine which Schema a
 particular message is for.  There is no need to validate the messages
