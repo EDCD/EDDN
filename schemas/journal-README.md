@@ -76,11 +76,6 @@ You MUST add a `StarSystem` key/value pair representing the name of the
 system this event occurred in.  Source this from either `Location`, 
 `FSDJump` or `CarrierJump` as appropriate.
 
-#### SystemAddress
-You MUST add a `SystemAddress` key/value pair representing the numerical ID 
-of the system this event occurred in.  Source this from either `Location`,
-`FSDJump` or `CarrierJump` as appropriate.
-
 #### StarPos
 You MUST add a `StarPos` array containing the system co-ordinates from the
 last `FSDJump`, `CarrierJump`, or `Location` event.
