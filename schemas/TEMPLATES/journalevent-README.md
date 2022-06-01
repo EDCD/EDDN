@@ -106,9 +106,19 @@ value is what the name would have been in the source Journal data.
 Please read [horizons and odyssey flags](../docs/Developers.md#horizons-and-odyssey-flags)
 in the Developers' documentation.
 
+#### StarSystem
+You MUST add a `StarSystem` string containing the name of the system from the 
+last `FSDJump`, `CarrierJump`, or `Location` event.
+
+**You MUST apply a location cross-check, as per
+[Other data augmentations](../docs/Developers.md#other-data-augmentations).**
+
 #### StarPos
 You MUST add a `StarPos` array containing the system co-ordinates from the 
 last `FSDJump`, `CarrierJump`, or `Location` event.
+
+**You MUST apply a location cross-check, as per
+[Other data augmentations](../docs/Developers.md#other-data-augmentations).**
 
 ## Listeners
 The advice above for [Senders](#senders), combined with the actual Schema file
