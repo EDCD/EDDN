@@ -27,6 +27,9 @@ in the Developers' documentation.
 You MUST add a `StarPos` array containing the system co-ordinates from the
 last `FSDJump`, `CarrierJump`, or `Location` event.
 
+**You MUST apply a location cross-check, as per
+[Other data augmentations](../docs/Developers.md#other-data-augmentations).**
+
 #### BodyID and BodyName
 You SHOULD attempt to track the BodyName and BodyID where the player is 
 and add keys/values for these.

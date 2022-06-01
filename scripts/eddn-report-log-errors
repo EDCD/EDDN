@@ -62,14 +62,36 @@ def process_file(input_file: str) -> None:
         # print(matches.group('sender_ip'))
         # print('')
 
-        software_version = semantic_version.Version.coerce(matches.group('software_version'))
+        try:
+          software_version = semantic_version.Version.coerce(matches.group('software_version'))
+
+        except ValueError as e:
+          print(f"Error parsing sofwareVersion for:\n{matches.group('software_version')}\n{line}\n")
+          next
+
         ###################################################################
         # Issues we know about and HAVE already alerted their
         # developers to.
         ###################################################################
         if matches.group('software_name') == 'EDDiscovery':
           # https://github.com/EDDiscovery/EDDiscovery/releases/latest
-          if software_version >= semantic_version.Version.coerce('12.1.7.0'):
+          if software_version >= semantic_version.Version.coerce('15.0.0.0'):
+            if matches.group('schema_ref') == 'https://eddn.edcd.io/schemas/approachsettlement/1':
+              if matches.group('err_msg') == 'Failed Validation "[<ValidationError: "\'Latitude\' is a required property">]"':
+                # <https://github.com/EDDiscovery/EDDiscovery/issues/3236>
+                pass
+              
+              elif matches.group('err_msg') == 'Failed Validation "[<ValidationError: "Additional properties are not allowed (\'Name_Localised\' was unexpected)">]"':
+                # <https://github.com/EDDiscovery/EDDiscovery/issues/3237>
+                pass
+
+              else:
+                print(line)
+
+            else:
+              print(line)
+
+          elif software_version >= semantic_version.Version.coerce('12.1.7.0'):
             if matches.group('schema_ref') in (
               'https://eddn.edcd.io/schemas/shipyard/2',
               'https://eddn.edcd.io/schemas/outfitting/2',
@@ -234,6 +256,16 @@ def process_file(input_file: str) -> None:
 
                 print(matches.group('err_msg'))
                 print(line)
+
+              else:
+                print(line)
+
+            elif matches.group('schema_ref') == 'https://eddn.edcd.io/schemas/shipyard/2':
+              # <https://discord.com/channels/164411426939600896/205369618284544000/955030485791285258>
+              if matches.group('err_msg').startswith(
+                'Failed Validation "[<ValidationError: \'[] is too short\'>]"'
+              ):
+                pass
 
               else:
                 print(line)

@@ -72,15 +72,20 @@ You SHOULD add this key/value pair, using the value from the `LoadGame` event.
 You SHOULD add this key/value pair, using the value from the `LoadGame` event.
 
 #### StarSystem
-You MUST add a `StarSystem` key/value pair representing the name of the 
-system this event occurred in.  Source this from either `Location`, 
-`FSDJump` or `CarrierJump` as appropriate.
+If not already present, you MUST add a `StarSystem` string containing the
+name of the system from the last `FSDJump`, `CarrierJump`, or `Location` event.
 
-#### SystemAddress
-You MUST add a `SystemAddress` key/value pair representing the numerical ID 
-of the system this event occurred in.  Source this from either `Location`,
-`FSDJump` or `CarrierJump` as appropriate.
+**You MUST apply a location cross-check, as per
+[Other data augmentations](../docs/Developers.md#other-data-augmentations).**
+
+This should only apply to `SAASignalsFound` events.
 
 #### StarPos
-You MUST add a `StarPos` array containing the system co-ordinates from the
-last `FSDJump`, `CarrierJump`, or `Location` event.
+If not already present, you  MUST add a `StarPos` array containing the
+system co-ordinates from the last `FSDJump`, `CarrierJump`, or `Location`
+event.
+
+**You MUST apply a location cross-check, as per
+[Other data augmentations](../docs/Developers.md#other-data-augmentations).**
+
+This should only apply to `Docked`, `Scan` and `SAASignalsFound` events.
