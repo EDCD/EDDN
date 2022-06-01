@@ -29,6 +29,12 @@ You MUST add a `StarSystem` key/value pair representing the name of the
 system this event occurred in.  Source this from either `Location`,
 `FSDJump` or `CarrierJump` as appropriate.
 
+**You MUST apply a location cross-check, as per
+[Other data augmentations](../docs/Developers.md#other-data-augmentations).**
+
 #### StarPos
 You MUST add a `StarPos` array containing the system co-ordinates from the
 last `FSDJump`, `CarrierJump`, or `Location` event.
+
+**You MUST apply a location cross-check, as per
+[Other data augmentations](../docs/Developers.md#other-data-augmentations).**
