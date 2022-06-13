@@ -1,7 +1,7 @@
 ## Introduction
 
 EDDN is a
-[zermoq](https://zeromq.org/) service which allows players of the game
+[zeromq](https://zeromq.org/) service which allows players of the game
 [Elite Dangerous](https://www.elitedangerous.com/), published
 by [Frontier Developments](https://www.frontier.co.uk/), to upload game data so
 that interested listeners can receive a copy.
@@ -15,7 +15,7 @@ representing this game data and then passes it on to any interested listeners.
 ## Sources
 
 There are two sources of game data, both provided by the publisher of the game,
-Frontier Developerments.  They are both explicitly approved for use by
+Frontier Developments.  They are both explicitly approved for use by
 third-party software.
 
 ### Journal Files
