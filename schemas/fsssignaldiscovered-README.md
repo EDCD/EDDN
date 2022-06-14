@@ -69,6 +69,9 @@ You MUST drop the whole `FSSSignalDiscovered` event if `USSType` key
 has `$USS_Type_MissionTarget;` value.  Only the Cmdr with the mission has any
 use of these.  There's not even a statistical use.
 
+Because we only have a `message` level `timestamp` and `SystemAddress` these
+should be removed from each member of the `signals` array.
+
 ### Augmentations
 #### horizons flag
 You SHOULD add this key/value pair, using the value from the `LoadGame` event.
