@@ -49,7 +49,8 @@
                 },
                 "timestamp": {
                     "type"          : "string",
-                    "format"        : "date-time"
+                    "format"        : "date-time",
+                    "description"   : "Duplicate of the first signal's timestamp, for commonality with other schemas."
                 },
                 "SystemAddress": {
                     "type": "integer"
@@ -63,6 +64,10 @@
                         "required": ["SignalName"],
                         "description": "Single FSSSignalDiscovered event",
                         "properties": {
+                            "timestamp": {
+                                "type"          : "string",
+                                "format"        : "date-time"
+                            },
                             "SignalName": { "type":  "string" },
                             "IsStation": { "type": "boolean" },
                             "USSType": {

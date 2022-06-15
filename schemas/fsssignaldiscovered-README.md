@@ -12,11 +12,12 @@ The only data source for this schema is the ED Journal event
 `FSSSignalDiscovered`.
 
 ### Batching
-You MUST coalesce contiguouys runs of `FSSSignalDiscovered` events into a
+You MUST coalesce contiguous runs of `FSSSignalDiscovered` events into a
 single `signals` array in the message. Minimum size of `signals` is 1 item.
 
 Do not make a request for every single event other than where they occur
-singly (such as when a player utilises the FSS to zoom into USS individually).
+singly (such as when a player utilises the FSS to zoom into USS individually,
+if there is a different following event).
 
 Suggested algorithm for batching:
 
@@ -29,18 +30,16 @@ Suggested algorithm for batching:
 2. If the event is `FSSSignalDiscovered`, store it to the temporal list.
 3. If the event is any other, then:
     1. check if it is `Location`, `FSDJump` or `CarrierJump` - if so you should
-      use this new location in the message.
+      use this new location in the message for the augmentations.
     2. If it is not one of those events then you should use the tracked
-      location from the prior such event.
+      location from the prior such event for the augmentations.
    
     Now construct the full `fsssignaldiscovered` schema message using the
     tracked location and the stored list of events.  *You **MUST** check that
     the `SystemAddress` for each `FSSSignalDiscovered` event matches the
     tracked location.*  If there is a mis-match then drop that event.
-4. Each batch of signals will be contiguous and thus should have the same
-   timestamp, perhaps +/- 1 second at the ends.  As such you only need one
-   single `timestamp` in the `message` and should use that of the first event
-   you include.
+4. Use the `timestamp` of the first signal in the batch as the top-level
+   `timestamp` in the `message` object.
 
 Point 3i/ii above are because in the current (3.8.0.406) Horizons client the
 `FSSSignalDiscovered` events arrive after `Location`/`FSDJump`/`CarrierJump`,
@@ -60,6 +59,10 @@ This batching is more concerned with not causing an EDDN message per event
 upon entry into a system.
 
 ### Elisions
+Remove the `event` key/pair from each member of the `signals` array.  Including
+this would be redundant as by definition we're sending `FSSSignalDiscovered`
+events on this schema.
+
 You MUST remove the following key/value pairs from the data:
 
   - `TimeRemaining` key/value pair (will be present on USS).  This has a slight
@@ -69,8 +72,13 @@ You MUST drop the whole `FSSSignalDiscovered` event if `USSType` key
 has `$USS_Type_MissionTarget;` value.  Only the Cmdr with the mission has any
 use of these.  There's not even a statistical use.
 
-Because we only have a `message` level `timestamp` and `SystemAddress` these
-should be removed from each member of the `signals` array.
+Because of the location cross-check the `SystemAddress` is in the top-level
+`message` object, and thus you **MUST** remove such from each signal in the
+array.
+
+Do **NOT** remove the `timestamp` from each signal in the array.  Whilst these
+should be identical for a "just logged in or arrived in system" set of signals,
+this is not true of manually FSS scanned USS signals.
 
 ### Augmentations
 #### horizons flag
@@ -93,7 +101,7 @@ drop the event.
 
 ## Receivers
 ### Augmentations are 'SHOULD', not 'MUST'
-Receivers should remember that  `horizons`, `odyssey`, `StarSystem`, `StarPos`
+Receivers should remember that  `horizons` and  `odyssey` augmentations
 are optional key/value pairs.  You **SHOULD NOT** rely on them being present
 in any given event.
 
@@ -122,6 +130,7 @@ This is a few example of messages that passes current `FSSSignalDiscovered` sche
       "SystemAddress":1774711381,
       "signals":[
          {
+            "timestamp":"2021-11-06T22:48:42Z",
             "SignalName":"EXPLORER-CLASS X2X-74M",
             "IsStation":true
          }
@@ -150,11 +159,13 @@ This is a few example of messages that passes current `FSSSignalDiscovered` sche
       "SystemAddress":1350507186531,
       "signals":[
          {
+            "timestamp":"2021-11-06T22:48:42Z",
             "event":"FSSSignalDiscovered",
             "SignalName":"EXPLORER-CLASS X2X-74M",
             "IsStation":true
          },
-         { 
+         {
+            "timestamp":"2021-11-06T22:48:42Z",
             "event":"FSSSignalDiscovered", 
             "SignalName":"$USS_NonHumanSignalSource;", 
             "USSType":"$USS_Type_NonHuman;",
