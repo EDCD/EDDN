@@ -34,7 +34,7 @@
             "type"                  : "object",
             "description"           : "Contains all properties from the listed events in the client's journal minus Localised strings and the properties marked below as 'disallowed'",
             "additionalProperties"  : false,
-            "required"              : [ "event", "signals"],
+            "required"              : [ "event", "timestamp", "SystemAddress", "StarSystem", "StarPos", "signals"],
             "properties"            : {
                 "event": {
                     "enum"          : [ "FSSSignalDiscovered" ]
@@ -47,16 +47,23 @@
                     "type"      : "boolean",
                     "description" : "Whether the sending Cmdr has an Odyssey expansion."
                 },
+                "timestamp": {
+                    "type"          : "string",
+                    "format"        : "date-time",
+                    "description"   : "Duplicate of the first signal's timestamp, for commonality with other schemas."
+                },
+                "SystemAddress": {
+                    "type": "integer"
+                },
                 "signals": {
                     "type": "array",
                     "description": "Array of FSSSignalDiscovered events",
                     "minItems": 1,
                     "items": {
                         "type": "object",
-                        "required": ["SystemAddress", "timestamp", "SignalName"],
+                        "required": ["timestamp", "SignalName"],
                         "description": "Single FSSSignalDiscovered event",
                         "properties": {
-                            "SystemAddress": { "type": "integer" },
                             "timestamp": {
                                 "type"          : "string",
                                 "format"        : "date-time"
@@ -80,7 +87,7 @@
                         }
                     }
                 },
-                "systemName": {
+                "StarSystem": {
                     "type"          : "string",
                     "minLength"     : 1,
                     "description": "Should be added by the sender"

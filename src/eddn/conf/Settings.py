@@ -82,8 +82,8 @@ class _Settings(object):
         "https://eddn.edcd.io/schemas/fssbodysignals/1"             : "schemas/fssbodysignals-v1.0.json",
         "https://eddn.edcd.io/schemas/fssbodysignals/1/test"        : "schemas/fssbodysignals-v1.0.json",
 
-        "https://eddn.edcd.io/schemasfsssignaldiscovered/1"            : "schemas/fsssignaldiscovered-v1.0.json",
-        "https://eddn.edcd.io/schemasfsssignaldiscovered/1/test"       : "schemas/fsssignaldiscovered-v1.0.json",
+        "https://eddn.edcd.io/schemas/fsssignaldiscovered/1"            : "schemas/fsssignaldiscovered-v1.0.json",
+        "https://eddn.edcd.io/schemas/fsssignaldiscovered/1/test"       : "schemas/fsssignaldiscovered-v1.0.json",
     }
 
     GATEWAY_OUTDATED_SCHEMAS                = [
