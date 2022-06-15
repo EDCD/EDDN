@@ -61,7 +61,7 @@
                     "minItems": 1,
                     "items": {
                         "type": "object",
-                        "required": ["SignalName"],
+                        "required": ["timestamp", "SignalName"],
                         "description": "Single FSSSignalDiscovered event",
                         "properties": {
                             "timestamp": {
