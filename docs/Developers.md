@@ -127,13 +127,12 @@ The body of an EDDN message is a JSON object in UTF-8 encoding.  If you do not
 compress this body then you MUST set a `Content-Type` header of
 `applicaton/json`.
 
-For historical reasons URL form-encoded data *is* supported, **but this is
-deprecated and no new software should attempt this method**.  We
-purposefully do not further document the exact format for this.
-
 You *MAY* use gzip compression on the body of the message, but it is not
 required.  If you do compress the body then you **MUST* send a `Content-Type`
 header of `gzip` instead of `application/json`.
+
+**Due to issues when messages are compressed, form-encoded data is NO LONGER
+SUPPORTED as of 2022-06-16.**
 
 You should be prepared to handle all scenarios where sending of a message
 fails:
