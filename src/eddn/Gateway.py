@@ -9,7 +9,6 @@ import gevent
 import hashlib
 import logging
 import simplejson
-import urlparse
 import zlib
 import zmq.green as zmq
 from datetime import datetime
@@ -167,42 +166,10 @@ def get_decompressed_message():
             message_body = zlib.decompress(request.body.read(), -15)
             logger.debug('Resulting message_body:\n%s\n' % (message_body))
 
-        # At this point, we're not sure whether we're dealing with a straight
-        # un-encoded POST body, or a form-encoded POST. Attempt to parse the
-        # body. If it's not form-encoded, this will return an empty dict.
-        form_enc_parsed = urlparse.parse_qs(message_body)
-        if form_enc_parsed:
-            logger.info('Request is form-encoded, compressed, from %s' % (get_remote_address()))
-            # This is a form-encoded POST. The value of the data attrib will
-            # be the body we're looking for.
-            try:
-                message_body = form_enc_parsed['data'][0]
-
-            except (KeyError, IndexError):
-                logger.error('form-encoded, compressed, upload did not contain a "data" key. From %s', get_remote_address())
-                raise MalformedUploadError(
-                    "No 'data' POST key/value found. Check your POST key "
-                    "name for spelling, and make sure you're passing a value."
-                )
-
-        else:
-            logger.debug('Request is *NOT* form-encoded')
-
     else:
         logger.debug('Content-Encoding indicates *not* compressed...')
 
-        # Uncompressed request. Bottle handles all of the parsing of the
-        # POST key/vals, or un-encoded body.
-        data_key = request.forms.get('data')
-        if data_key:
-            logger.info('Request is form-encoded, uncompressed, from %s' % (get_remote_address()))
-            # This is a form-encoded POST. Support the silly people.
-            message_body = data_key
-
-        else:
-            logger.debug('Plain POST request detected...')
-            # This is a non form-encoded POST body.
-            message_body = request.body.read()
+        message_body = request.body.read()
 
     return message_body
 
