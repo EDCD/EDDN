@@ -80,7 +80,7 @@ def process_file(input_file: str) -> None:
 
         elif matches.group('software_name') == 'EDDLite':
           # https://github.com/EDDiscovery/EDDLite/releases/tag/latest
-          if software_version >= semantic_version.Version.coerce('2.0.0'):
+          if software_version >= semantic_version.Version.coerce('2.2.0'):
             if matches.group('schema_ref') in (
               'https://eddn.edcd.io/schemas/shipyard/2',
               'https://eddn.edcd.io/schemas/outfitting/2',
