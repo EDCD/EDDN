@@ -77,11 +77,7 @@ def process_file(input_file: str) -> None:
           # https://github.com/EDDiscovery/EDDiscovery/releases/latest
           if software_version >= semantic_version.Version.coerce('15.0.4.0'):
             if matches.group('schema_ref') == 'https://eddn.edcd.io/schemas/approachsettlement/1':
-              if matches.group('err_msg') == 'Failed Validation "[<ValidationError: "\'Latitude\' is a required property">]"':
-                # <https://github.com/EDDiscovery/EDDiscovery/issues/3236>
-                pass
-              
-              elif matches.group('err_msg') == 'Failed Validation "[<ValidationError: "Additional properties are not allowed (\'Name_Localised\' was unexpected)">]"':
+              if matches.group('err_msg') == 'Failed Validation "[<ValidationError: "Additional properties are not allowed (\'Name_Localised\' was unexpected)">]"':
                 # <https://github.com/EDDiscovery/EDDiscovery/issues/3237>
                 pass
 
