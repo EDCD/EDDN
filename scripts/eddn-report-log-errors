@@ -81,27 +81,7 @@ def process_file(input_file: str) -> None:
         elif matches.group('software_name') == 'EDDLite':
           # https://github.com/EDDiscovery/EDDLite/releases/tag/latest
           if software_version >= semantic_version.Version.coerce('2.2.0'):
-            if matches.group('schema_ref') in (
-              'https://eddn.edcd.io/schemas/shipyard/2',
-              'https://eddn.edcd.io/schemas/outfitting/2',
-            ):
-              # Failed Validation "[<ValidationError: "'2022-02-17T14.25.19Z' is not a 'date-time'">]"
-              if (
-                matches.group('err_msg').startswith('Failed Validation "[<ValidationError: "') and
-                matches.group('err_msg').endswith('\' is not a \'date-time\'">]"')
-              ):
-                # <https://github.com/EDDiscovery/EDDLite/issues/8>
-                pass
-
-              elif matches.group('err_msg') == 'Failed Validation "[<ValidationError: \'[] is too short\'>]"':
-                # Reported via Discord PM to Robby 2022-01-07
-                pass
-
-              else:
-                print(line)
-
-            else:
-              print(line)
+            print(line)
 
         elif matches.group('software_name') == 'EDDI':
           # https://github.com/EDCD/EDDI/releases/latest
