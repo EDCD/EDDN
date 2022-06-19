@@ -137,7 +137,7 @@ def process_file(input_file: str) -> None:
 
         elif matches.group('software_name') == 'EDSM - Console':
           # It's in-browser, no public source/releases
-          if software_version >= semantic_version.Version.coerce('1.0'):
+          if software_version >= semantic_version.Version.coerce('1.0.2'):
             if matches.group('schema_ref') == 'https://eddn.edcd.io/schemas/journal/1':
               if matches.group('journal_event') == 'Scan':
                 # <https://github.com/EDSM-NET/FrontEnd/issues/466>
