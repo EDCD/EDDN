@@ -210,7 +210,10 @@ def process_file(input_file: str) -> None:
         # Abandoned/unmaintained project
         # <https://forums.frontier.co.uk/threads/release-eva-elite-virtual-assistant-for-iphone-ipad-no-longer-working-jan-2020.245900/page-18>
         # <https://apps.apple.com/gb/app/eva/id1098763533>
-        elif matches.group('software_name') == 'EVA [iPhone]':
+        elif (
+          matches.group('software_name') == 'EVA [iPhone]'
+          or matches.group('software_name') == 'EVA [Android]'
+        ):
           pass
 
         ####################################################################
