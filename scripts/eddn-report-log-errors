@@ -139,15 +139,7 @@ def process_file(input_file: str) -> None:
         elif matches.group('software_name').startswith('E:D Market Connector'):
           # https://github.com/EDCD/EDMarketConnector/releases/latest
           if software_version >= semantic_version.Version.coerce('5.4.1'):
-            if matches.group('schema_ref') == 'https://eddn.edcd.io/schemas/fssdiscoveryscan/1':
-              if matches.group('err_msg') == 'Failed Validation "[<ValidationError: "None is not of type \'boolean\'">]"':
-                # <https://github.com/EDCD/EDMarketConnector/issues/1403>
-                pass
-
-              else:
-                print(line)
-
-            elif matches.group('schema_ref') == 'https://eddn.edcd.io/schemas/approachsettlement/1':
+            if matches.group('schema_ref') == 'https://eddn.edcd.io/schemas/approachsettlement/1':
               if matches.group('err_msg') == 'Failed Validation "[<ValidationError: "\'Latitude\' is a required property">]"':
                 # <https://github.com/EDCD/EDMarketConnector/issues/1476>
                 pass
