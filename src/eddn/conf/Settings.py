@@ -15,12 +15,11 @@ class _Settings(object):
     ###############################################################################
     # Local installation settings
     ###############################################################################
-    # If these are set to non-empty strings then you reverse proxt setup
+    # If these are set to non-empty strings then your reverse proxy setup
     # **MUST** pass TLS through properly, including to a https URL, not a
     # plain http one.
     CERT_FILE                               = "/etc/letsencrypt/live/eddn.edcd.io/fullchain.pem"  # noqa: E221
     KEY_FILE                                = "/etc/letsencrypt/live/eddn.edcd.io/privkey.pem"  # noqa: E221
-
 
     ###############################################################################
     # Relay settings
