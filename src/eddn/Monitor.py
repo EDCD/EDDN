@@ -5,7 +5,7 @@ import collections
 import datetime
 import zlib
 from threading import Thread
-from typing import OrderedDict
+from typing import Callable, OrderedDict
 
 import gevent
 import mysql.connector as mariadb
@@ -285,7 +285,7 @@ class EnableCors(object):
     api = 2
 
     @staticmethod
-    def apply(fn, context):
+    def apply(self, fn: Callable, context: str):
         """
         Apply a CORS handler.
 
