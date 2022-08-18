@@ -9,3 +9,4 @@ mysql-connector-python==8.0.28
 pyzmq==22.3.0
 requests==2.27.1
 simplejson==3.17.6
+strict-rfc3339==0.7
