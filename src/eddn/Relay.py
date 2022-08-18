@@ -49,7 +49,6 @@ __logger_formatter.default_time_format = "%Y-%m-%d %H:%M:%S"
 __logger_formatter.default_msec_format = "%s.%03d"
 __logger_channel.setFormatter(__logger_formatter)
 logger.addHandler(__logger_channel)
-logger.info("Made logger")
 
 from eddn.conf.Settings import Settings, load_config  # noqa: E402
 
@@ -236,6 +235,7 @@ def main() -> None:
         argsd["certfile"] = Settings.CERT_FILE
         argsd["keyfile"] = Settings.KEY_FILE
 
+    logger.info('Starting bottle app...')
     app.run(
         **argsd,
     )

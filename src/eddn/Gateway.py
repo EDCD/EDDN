@@ -55,7 +55,6 @@ from eddn.core.StatsCollector import StatsCollector  # noqa: E402
 bottle.BaseRequest.MEMFILE_MAX = 1024 * 1024  # 1MiB, default is/was 100KiB
 
 app = Bottle()
-logger.info("Made logger")
 
 # This socket is used to push market data out to the Announcers over ZeroMQ.
 zmq_context = zmq.Context()
@@ -426,6 +425,7 @@ def main() -> None:
         argsd["certfile"] = Settings.CERT_FILE
         argsd["keyfile"] = Settings.KEY_FILE
 
+    logger.info('Starting bottle app...')
     app.run(
         **argsd,
     )

@@ -54,7 +54,6 @@ __logger_formatter.default_time_format = "%Y-%m-%d %H:%M:%S"
 __logger_formatter.default_msec_format = "%s.%03d"
 __logger_channel.setFormatter(__logger_formatter)
 logger.addHandler(__logger_channel)
-logger.info("Made logger")
 
 # This import must be done post-monkey-patching!
 if Settings.RELAY_DUPLICATE_MAX_MINUTES:
@@ -334,6 +333,7 @@ def main() -> None:
         argsd["certfile"] = Settings.CERT_FILE
         argsd["keyfile"] = Settings.KEY_FILE
 
+    logger.info('Starting bottle app...')
     app.run(
         **argsd,
     )
