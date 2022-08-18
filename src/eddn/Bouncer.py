@@ -56,7 +56,6 @@ instead do:
 import gevent
 import requests
 import simplejson
-import urlparse
 from bottle import Bottle, request, response
 from gevent import monkey
 
@@ -162,30 +161,8 @@ def get_decompressed_message() -> bytes:
             # Negative wbits suppresses adler32 checksumming.
             message_body = zlib.decompress(request.body.read(), -15)
 
-        # At this point, we're not sure whether we're dealing with a straight
-        # un-encoded POST body, or a form-encoded POST. Attempt to parse the
-        # body. If it's not form-encoded, this will return an empty dict.
-        form_enc_parsed = urlparse.parse_qs(message_body)
-        if form_enc_parsed:
-            # This is a form-encoded POST. The value of the data attrib will
-            # be the body we're looking for.
-            try:
-                message_body = form_enc_parsed["data"][0]
-            except (KeyError, IndexError):
-                raise MalformedUploadError(
-                    "No 'data' POST key/value found. Check your POST key "
-                    "name for spelling, and make sure you're passing a value."
-                )
     else:
-        # Uncompressed request. Bottle handles all of the parsing of the
-        # POST key/vals, or un-encoded body.
-        data_key = request.forms.get("data")
-        if data_key:
-            # This is a form-encoded POST. Support the silly people.
-            message_body = data_key
-        else:
-            # This is a non form-encoded POST body.
-            message_body = request.body.read()
+        message_body = request.body.read()
 
     return message_body
 
