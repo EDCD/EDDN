@@ -35,7 +35,6 @@ instead do:
 
 import gevent
 import simplejson
-import urlparse
 import zmq.green as zmq
 from gevent import monkey
 from pkg_resources import resource_string
