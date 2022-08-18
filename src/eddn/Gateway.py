@@ -11,6 +11,7 @@ import hashlib
 import logging
 import zlib
 from datetime import datetime
+from typing import Dict
 
 import gevent
 import simplejson
@@ -22,9 +23,6 @@ from pkg_resources import resource_string
 
 from eddn.conf.Settings import Settings, loadConfig
 from eddn.core.Validator import ValidationSeverity, Validator
-
-# import os
-
 
 monkey.patch_all()
 import bottle
@@ -111,7 +109,7 @@ def extract_message_details(parsed_message):
 
     return uploader_id, software_name, software_version, schema_ref, journal_event
 
-def configure():
+def configure() -> None:
     """
     Get the list of transports to bind from settings.
 
@@ -125,7 +123,7 @@ def configure():
         validator.addSchemaResource(schema_ref, resource_string('eddn.Gateway', schema_file))
 
 
-def push_message(parsed_message, topic):
+def push_message(parsed_message: Dict, topic: str) -> None:
     """
     Push a message our to subscribed listeners.
 
@@ -139,7 +137,7 @@ def push_message(parsed_message, topic):
     # announcers with schema as topic
     compressed_msg = zlib.compress(string_message)
 
-    send_message = f"{str(topic)} |-| {compressed_msg}"
+    send_message = f"{str(topic)!r} |-| {compressed_msg!r}"
 
     sender.send(send_message)
     stats_collector.tally("outbound")
@@ -199,9 +197,8 @@ def parse_and_error_handle(data):
     """
     try:
         parsed_message = simplejson.loads(data)
-    except (
-        TypeError, ValueError
-    ) as exc:
+
+    except (MalformedUploadError, TypeError, ValueError) as exc:
         # Something bad happened. We know this will return at least a
         # semi-useful error message, so do so.
         try:
