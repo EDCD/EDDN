@@ -1,3 +1,4 @@
+
 # coding: utf8
 
 """
@@ -11,7 +12,7 @@ import hashlib
 import logging
 import zlib
 from datetime import datetime
-from typing import Callable, Dict
+from typing import Dict
 
 import gevent
 import simplejson
@@ -353,8 +354,8 @@ def apply_cors() -> None:
     """
     response.set_header(
         'Access-Control-Allow-Origin',
-         '*'
-        )
+        '*'
+    )
     response.set_header(
         'Access-Control-Allow-Methods',
         'GET, POST, PUT, OPTIONS'
@@ -363,6 +364,7 @@ def apply_cors() -> None:
         'Access-Control-Allow-Headers',
         'Origin, Accept, Content-Type, X-Requested-With, X-CSRF-Token'
     )
+
 
 def main() -> None:
     """Handle setting up and running the bottle app."""

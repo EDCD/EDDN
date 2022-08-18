@@ -5,7 +5,7 @@ import collections
 import datetime
 import zlib
 from threading import Thread
-from typing import Callable, OrderedDict
+from typing import OrderedDict
 
 import gevent
 import mysql.connector as mariadb
