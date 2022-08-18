@@ -80,13 +80,17 @@ setup(
     author="EDCD (https://edcd.github.io/)",
     author_email="edcd@miggy.org",
     url="https://github.com/EDCD/EDDN",
-    packages=find_packages("src"),
-    package_dir={"": "src"},
+
     # <https://packaging.python.org/en/latest/guides/distributing-packages-using-setuptools/#py-modules>
     py_modules=["Gateway", "Monitor", "Relay", "Bouncer"],
+    packages=find_packages("src"),
+    package_dir={"": "src"},
+    # Should mean it picks up src/eddn/schemas/ files
+    include_package_data=True,
+
     # This includes them for the running code, but that doesn't help
     # serve them up for reference.
-    data_files=[("schemas", glob.glob("src/schemas/*.json"))],
+    # data_files=[("schemas": glob.glob("src/schemas/*.json"))],
     install_requires=[
         "argparse",
         "bottle",
@@ -220,7 +224,7 @@ except OSError:
     pass
 
 shutil.copytree(
-    "src/schemas",
+    "src/eddn/schemas",
     SHARE_EDDN_FILES / "schemas",
     copy_function=shutil.copyfile,  # type: ignore
 )

@@ -118,7 +118,7 @@ def configure() -> None:
         sender.bind(binding)
 
     for schema_ref, schema_file in Settings.GATEWAY_JSON_SCHEMAS.items():
-        validator.add_schema_resource(schema_ref, resource_string("Gateway", schema_file))
+        validator.add_schema_resource(schema_ref, resource_string("eddn", schema_file))
 
 
 def push_message(parsed_message: Dict, topic: str) -> None:
