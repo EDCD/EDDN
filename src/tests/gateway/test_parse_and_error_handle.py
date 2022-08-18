@@ -6,6 +6,17 @@ sys.path.append(os.getcwd())
 
 import eddn.Gateway
 
+###########################################################################
+# Mock up a cl_args enough to get the configuration loaded
+###########################################################################
+class CLArgs:
+    config = False
+
+cl_args = CLArgs()
+eddn.Gateway.load_config(cl_args)
+eddn.Gateway.configure()
+###########################################################################
+
 def test_bad_json():
     msg = "{not real json"
     res = eddn.Gateway.parse_and_error_handle(msg.encode(encoding="utf-8"))
@@ -26,3 +37,18 @@ def test_outdated_schema():
     """
     res = eddn.Gateway.parse_and_error_handle(msg.encode(encoding="utf-8"))
     assert res.startswith("FAIL: Outdated Schema: The schema you have used is no longer supported. Please check for an updated version of your application.")
+
+def test_fail_validation_no_softwarename():
+    msg = """
+{
+    "$schemaRef": "https://eddn.edcd.io/schemas/journal/1",
+    "header": {
+        "uploaderID": "no softwareName",
+        "softwareVersion": "v0.0.1"
+    },
+    "message": {
+	}
+}
+    """
+    res = eddn.Gateway.parse_and_error_handle(msg.encode(encoding="utf-8"))
+    assert res.startswith("FAIL: Schema Validation: [<ValidationError: \"'softwareName' is a required property\">]")
