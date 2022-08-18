@@ -143,18 +143,18 @@ def push_message(parsed_message: Dict, topic: str) -> None:
     stats_collector.tally("outbound")
 
 
-def get_remote_address():
+def get_remote_address() -> str:
     """
     Determine the address of the uploading client.
 
     First checks the for proxy-forwarded headers, then falls back to
     request.remote_addr.
-    :rtype: str
+    :returns: Best attempt at remote address.
     """
     return request.headers.get('X-Forwarded-For', request.remote_addr)
 
 
-def get_decompressed_message():
+def get_decompressed_message() -> bytes:
     """
     Detect gzip Content-Encoding headers and de-compress on the fly.
 
