@@ -4,13 +4,14 @@
 import argparse
 import hashlib
 import logging
+import pathlib
 import sys
 import time
 import uuid
 import zlib
 from threading import Thread
 
-if sys.path[0].endswith('/eddn'):
+if pathlib.Path(sys.path[0]).as_posix().endswith('/eddn'):
     print(sys.path)
     print(
         '''

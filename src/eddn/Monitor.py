@@ -5,12 +5,13 @@ import argparse
 import collections
 import datetime
 import logging
+import pathlib
 import sys
 import zlib
 from threading import Thread
 from typing import OrderedDict
 
-if sys.path[0].endswith('/eddn'):
+if pathlib.Path(sys.path[0]).as_posix().endswith('/eddn'):
     print(sys.path)
     print(
         '''

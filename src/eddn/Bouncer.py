@@ -28,12 +28,13 @@ Architecture:
 """
 import argparse
 import logging
+import pathlib
 import sys
 import zlib
 from datetime import datetime
 from typing import Callable
 
-if sys.path[0].endswith('/eddn'):
+if pathlib.Path(sys.path[0]).as_posix().endswith('/eddn'):
     print(sys.path)
     print(
         '''
