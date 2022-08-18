@@ -8,7 +8,6 @@ Contains the necessary ZeroMQ socket and a helper function to publish
 market data to the Announcer daemons.
 """
 import argparse
-import hashlib
 import logging
 import zlib
 from datetime import datetime
@@ -18,7 +17,6 @@ import gevent
 import simplejson
 import urlparse
 import zmq.green as zmq
-from bottle import Bottle, request, response
 from gevent import monkey
 from pkg_resources import resource_string
 from zmq import PUB as ZMQ_PUB
@@ -27,9 +25,10 @@ from eddn.conf.Settings import Settings, load_config
 from eddn.core.Validator import ValidationSeverity, Validator
 
 monkey.patch_all()
-import bottle
-from bottle import Bottle, request, response
-bottle.BaseRequest.MEMFILE_MAX = 1024 * 1024 # 1MiB, default is/was 100KiB
+import bottle  # noqa: E402
+from bottle import Bottle, request, response  # noqa: E402
+
+bottle.BaseRequest.MEMFILE_MAX = 1024 * 1024  # 1MiB, default is/was 100KiB
 
 app = Bottle()
 
@@ -60,6 +59,7 @@ stats_collector.start()
 
 
 def parse_cl_args():
+    """Parse command-line arguments."""
     parser = argparse.ArgumentParser(
         prog='Gateway',
         description='EDDN Gateway server',
@@ -80,7 +80,13 @@ def parse_cl_args():
     return parser.parse_args()
 
 
-def extract_message_details(parsed_message):
+def extract_message_details(parsed_message):  # noqa: CCR001
+    """
+    Extract the details of an EDDN message.
+
+    :param parsed_message: The message to process
+    :return: Tuple of (uploader_id, software_name, software_version, schema_ref, journal_event)
+    """
     uploader_id = '<<UNKNOWN>>'
     software_name = '<<UNKNOWN>>'
     software_version = '<<UNKNOWN>>'
@@ -100,7 +106,6 @@ def extract_message_details(parsed_message):
     if '$schemaRef' in parsed_message:
         schema_ref = parsed_message['$schemaRef']
 
-
         if '/journal/' in schema_ref:
             if 'message' in parsed_message:
                 if 'event' in parsed_message['message']:
@@ -110,6 +115,7 @@ def extract_message_details(parsed_message):
             journal_event = '-'
 
     return uploader_id, software_name, software_version, schema_ref, journal_event
+
 
 def configure() -> None:
     """
@@ -178,7 +184,7 @@ def get_decompressed_message() -> bytes:
             logger.error('zlib.error, trying zlib.decompress (-15)')
             # Negative wbits suppresses adler32 checksumming.
             message_body = zlib.decompress(request.body.read(), -15)
-            logger.debug('Resulting message_body:\n%s\n' % (message_body))
+            logger.debug('Resulting message_body:\n%s\n', message_body)
 
     else:
         logger.debug('Content-Encoding indicates *not* compressed...')
@@ -202,24 +208,25 @@ def parse_and_error_handle(data: bytes) -> str:
         # Something bad happened. We know this will return at least a
         # semi-useful error message, so do so.
         try:
-            logger.error('Error - JSON parse failed (%d, "%s", "%s", "%s", "%s", "%s") from %s:\n%s\n' % (
-                    request.content_length,
-                    '<<UNKNOWN>>',
-                    '<<UNKNOWN>>',
-                    '<<UNKNOWN>>',
-                    '<<UNKNOWN>>',
-                    '<<UNKNOWN>>',
-                    get_remote_address(),
-                    data[:512]
-            ))
+            logger.error(
+                'Error - JSON parse failed (%d, "%s", "%s", "%s", "%s", "%s") from %s:\n%s\n',
+                request.content_length,
+                '<<UNKNOWN>>',
+                '<<UNKNOWN>>',
+                '<<UNKNOWN>>',
+                '<<UNKNOWN>>',
+                '<<UNKNOWN>>',
+                get_remote_address(),
+                data[:512]
+            )
 
         except Exception as e:
-            print('Logging of "JSON parse failed" failed: %s' % (e.message))
+            # TODO: Maybe just `{e}` ?
+            print(f"Logging of 'JSON parse failed' failed: {str(e)}")
             pass
 
         response.status = 400
         logger.error(f"Error to {get_remote_address()}: {exc}")
-        return str(exc)
         return 'FAIL: JSON parsing: ' + str(exc)
 
     # Here we check if an outdated schema has been passed
@@ -239,36 +246,40 @@ def parse_and_error_handle(data: bytes) -> str:
         gevent.spawn(push_message, parsed_message, parsed_message['$schemaRef'])
 
         try:
-            uploader_id, software_name, software_version, schema_ref, journal_event = extract_message_details(parsed_message)
-            logger.info('Accepted (%d, "%s", "%s", "%s", "%s", "%s") from %s' % (
+            uploader_id, software_name, software_version, schema_ref, journal_event = extract_message_details(parsed_message)  # noqa: E501
+            logger.info(
+                'Accepted (%d, "%s", "%s", "%s", "%s", "%s") from %s',
                 request.content_length,
                 uploader_id, software_name, software_version, schema_ref, journal_event,
                 get_remote_address()
-            ))
+            )
 
         except Exception as e:
-            print('Logging of Accepted request failed: %s' % (e.message))
+            # TODO: Maybe just `{e}` ?
+            print(f"Logging of Accepted request failed: {str(e)}")
             pass
 
         return 'OK'
 
     else:
         try:
-            uploader_id, software_name, software_version, schema_ref, journal_event = extract_message_details(parsed_message)
-            logger.error('Failed Validation "%s" (%d, "%s", "%s", "%s", "%s", "%s") from %s' % (
-                    str(validationResults.messages),
-                    request.content_length,
-                    uploader_id, software_name, software_version, schema_ref, journal_event,
-                    get_remote_address()
-            ))
+            uploader_id, software_name, software_version, schema_ref, journal_event = extract_message_details(parsed_message)  # noqa: E501
+            logger.error(
+                'Failed Validation "%s" (%d, "%s", "%s", "%s", "%s", "%s") from %s',
+                str(validation_results.messages),
+                request.content_length,
+                uploader_id, software_name, software_version, schema_ref, journal_event,
+                get_remote_address()
+            )
 
         except Exception as e:
-            print('Logging of Failed Validation failed: %s' % (e.message))
+            # TODO: Maybe just `{e}` ?
+            print(f"Logging of Failed Validation failed: {str(e)}")
             pass
 
         response.status = 400
         stats_collector.tally("invalid")
-        return "FAIL: Schema Validation: " + str(validationResults.messages)
+        return "FAIL: Schema Validation: " + str(validation_results.messages)
 
 
 @app.route('/upload/', method=['OPTIONS', 'POST'])
@@ -288,20 +299,25 @@ def upload() -> str:
         # the correct direction.
         response.status = 400
         try:
-            logger.error(f'gzip error ({request.content_length}, "<<UNKNOWN>>", "<<UNKNOWN>>", "<<UNKNOWN>>", "<<UNKNOWN>>", "<<UNKNOWN>>") from {get_remote_address()}')
+            logger.error(
+                f'gzip error ({request.content_length}, "<<UNKNOWN>>", "<<UNKNOWN>>", "<<UNKNOWN>>",'
+                ' "<<UNKNOWN>>", "<<UNKNOWN>>") from {get_remote_address()}'
+            )
 
         except Exception as e:
-            print('Logging of "gzip error" failed: %s' % (e.message))
+            # TODO: Maybe just `{e}` ?
+            print(f"Logging of 'gzip error' failed: {str(e)}")
             pass
 
-        return 'FAIL: zlib.error: ' + exc.message
+        return 'FAIL: zlib.error: ' + str(exc)
 
     except MalformedUploadError as exc:
         # They probably sent an encoded POST, but got the key/val wrong.
         response.status = 400
-        logger.error(f"MalformedUploadError from {get_remote_address()}: {exc.message}")
+        # TODO: Maybe just `{exc}` ?
+        logger.error("MalformedUploadError from %s: %s", get_remote_address(), str(exc))
 
-        return 'FAIL: Malformed Upload: ' + exc.message
+        return 'FAIL: Malformed Upload: ' + str(exc)
 
     stats_collector.tally("inbound")
     return parse_and_error_handle(message_body)
