@@ -80,11 +80,13 @@ setup(
     author="EDCD (https://edcd.github.io/)",
     author_email="edcd@miggy.org",
     url="https://github.com/EDCD/EDDN",
-    packages=find_packages("src", exclude=["*.tests"]),
+    packages=find_packages("src"),
     package_dir={"": "src"},
+    # <https://packaging.python.org/en/latest/guides/distributing-packages-using-setuptools/#py-modules>
+    py_modules=["Gateway", "Monitor", "Relay", "Bouncer"],
     # This includes them for the running code, but that doesn't help
     # serve them up for reference.
-    data_files=[("eddn/schemas", glob.glob("src/eddn/schemas/*.json"))],
+    data_files=[("schemas", glob.glob("src/schemas/*.json"))],
     # Yes, we pin versions.  With python2.7 the latest pyzmq will NOT
     # work, for instance.
     install_requires=[
@@ -99,10 +101,10 @@ setup(
     ],
     entry_points={
         "console_scripts": [
-            "eddn-gateway = eddn.Gateway:main",
-            "eddn-relay = eddn.Relay:main",
-            "eddn-monitor = eddn.Monitor:main",
-            "eddn-bouncer = eddn.Bouncer:main",
+            "eddn-gateway = Gateway:main",
+            "eddn-relay = Relay:main",
+            "eddn-monitor = Monitor:main",
+            "eddn-bouncer = Bouncer:main",
         ],
     },
 )
@@ -220,7 +222,7 @@ except OSError:
     pass
 
 shutil.copytree(
-    "src/eddn/schemas",
+    "src/schemas",
     SHARE_EDDN_FILES / "schemas",
     copy_function=shutil.copyfile,  # type: ignore
 )

@@ -20,9 +20,9 @@ from gevent import monkey
 from pkg_resources import resource_string
 from zmq import PUB as ZMQ_PUB
 
-from conf.Settings import Settings, load_config
-from core.Validator import ValidationSeverity, Validator
-from core.logger import logger
+from eddn.conf.Settings import Settings, load_config
+from eddn.core.Validator import ValidationSeverity, Validator
+from eddn.core.logger import logger
 
 monkey.patch_all()
 import bottle  # noqa: E402
@@ -40,8 +40,8 @@ sender = zmq_context.socket(ZMQ_PUB)
 validator = Validator()
 
 # This import must be done post-monkey-patching!
-from core.StatsCollector import StatsCollector  # noqa: E402
-from core.EDDNWSGIHandler import EDDNWSGIHandler
+from eddn.core.StatsCollector import StatsCollector  # noqa: E402
+from eddn.core.EDDNWSGIHandler import EDDNWSGIHandler
 
 stats_collector = StatsCollector()
 stats_collector.start()
