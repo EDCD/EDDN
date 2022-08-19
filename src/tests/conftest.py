@@ -18,7 +18,7 @@ test_messages = {
         }
     }''',
 
-	'plain_no_softwarename': '''{
+    'plain_no_softwarename': '''{
         "$schemaRef": "https://eddn.edcd.io/schemas/journal/1",
         "header": {
             "uploaderID": "no softwareName",
@@ -26,7 +26,7 @@ test_messages = {
         },
         "message": {
         }
-	}''',
+    }''',
 
     'plain_journal_scan_valid': '''{
         "$schemaRef": "https://eddn.edcd.io/schemas/journal/1",
@@ -43,8 +43,6 @@ test_messages = {
             "SystemAddress":3932076118738
         }
     }''',
-
-    
 }
 
 
