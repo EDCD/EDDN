@@ -7,6 +7,17 @@ import pytest
 test_messages = {
     'invalid_json': '{not real json',
 
+    'plain_outdated_schema': '''{
+        "$schemaRef": "http://schemas.elite-markets.net/eddn/journal/1",
+        "header": {
+            "uploaderID": "outdated schema",
+            "softwareName": "pytest:Gateway.parse_and_error_handle",
+            "softwareVersion": "v0.0.1"
+        },
+        "message": {
+        }
+    }''',
+
     'plain_journal_scan_valid': '''{
         "$schemaRef": "https://eddn.edcd.io/schemas/journal/1",
         "header": {
@@ -21,7 +32,9 @@ test_messages = {
             "StarPos":[-30.12500,8.18750,-17.00000],
             "SystemAddress":3932076118738
         }
-    }'''
+    }''',
+
+    
 }
 
 

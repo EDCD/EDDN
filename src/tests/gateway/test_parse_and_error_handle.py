@@ -37,20 +37,12 @@ def test_invalid_json(fix_sys_path, eddn_gateway, eddn_message: Callable) -> Non
 
 def test_outdated_schema(fix_sys_path, eddn_gateway, eddn_message: Callable) -> None:
     """Test attempt to use an outdated schema."""
-    msg = """
-{
-    "$schemaRef": "http://schemas.elite-markets.net/eddn/journal/1",
-    "header": {
-        "uploaderID": "outdated schema",
-        "softwareName": "pytest:Gateway.parse_and_error_handle",
-        "softwareVersion": "v0.0.1"
-    },
-    "message": {
-	}
-}
-    """
+    msg = eddn_message('plain_outdated_schema')
     res = eddn_gateway.parse_and_error_handle(msg.encode(encoding="utf-8"))
-    assert res.startswith("FAIL: Outdated Schema: The schema you have used is no longer supported. Please check for an updated version of your application.")
+    assert res.startswith(
+        "FAIL: Outdated Schema: The schema you have used is no longer supported."
+        " Please check for an updated version of your application."
+    )
 
 
 def test_fail_validation_no_softwarename(fix_sys_path, eddn_gateway, eddn_message: Callable) -> None:
