@@ -47,17 +47,7 @@ def test_outdated_schema(fix_sys_path, eddn_gateway, eddn_message: Callable) -> 
 
 def test_fail_validation_no_softwarename(fix_sys_path, eddn_gateway, eddn_message: Callable) -> None:
     """Test detecting a message with no softwareName in the message."""
-    msg = """
-{
-    "$schemaRef": "https://eddn.edcd.io/schemas/journal/1",
-    "header": {
-        "uploaderID": "no softwareName",
-        "softwareVersion": "v0.0.1"
-    },
-    "message": {
-	}
-}
-    """
+    msg = eddn_message('plain_no_softwarename')
     res = eddn_gateway.parse_and_error_handle(msg.encode(encoding="utf-8"))
     assert res.startswith("FAIL: Schema Validation: [<ValidationError: \"'softwareName' is a required property\">]")
 
