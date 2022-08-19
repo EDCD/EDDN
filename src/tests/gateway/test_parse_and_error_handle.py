@@ -18,10 +18,8 @@ def eddn_gateway():
     """Set up an eddn.Gateway import."""
     import eddn.Gateway
 
-
     class CLArgs:
         config = False
-
 
     cl_args = CLArgs()
     eddn.Gateway.load_config(cl_args)
@@ -39,7 +37,6 @@ def test_invalid_json(fix_sys_path, eddn_gateway, eddn_message: Callable) -> Non
 
 def test_outdated_schema(fix_sys_path, eddn_gateway, eddn_message: Callable) -> None:
     """Test attempt to use an outdated schema."""
-
     msg = """
 {
     "$schemaRef": "http://schemas.elite-markets.net/eddn/journal/1",
