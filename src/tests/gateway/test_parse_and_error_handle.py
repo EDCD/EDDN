@@ -7,7 +7,7 @@ import pytest
 
 
 @pytest.fixture
-def fix_sys_path():
+def fix_sys_path() -> None:
     """Set up an eddn.Gateway import."""
     # Tests don't include the directory that `pytest` is run from on sys.path
     sys.path.append(os.getcwd())
@@ -54,22 +54,6 @@ def test_fail_validation_no_softwarename(fix_sys_path, eddn_gateway, eddn_messag
 
 def test_valid_journal_scan(fix_sys_path, eddn_gateway, eddn_message: Callable) -> None:
     """Test a valid journal/1, `event == 'Scan'` message."""
-    msg = """
-{
-    "$schemaRef": "https://eddn.edcd.io/schemas/journal/1",
-    "header": {
-        "uploaderID": "valid journal message",
-        "softwareName": "pytest:Gateway.parse_and_error_handle",
-        "softwareVersion": "v0.0.1"
-    },
-    "message": {
-        "timestamp":"2021-11-05T15:46:28Z",
-        "event":"Scan",
-        "StarSystem":"Elphin",
-        "StarPos":[-30.12500,8.18750,-17.00000],
-        "SystemAddress":3932076118738
-	}
-}
-    """
+    msg = eddn_message('plain_journal_scan_valid')
     res = eddn_gateway.parse_and_error_handle(msg.encode(encoding="utf-8"))
     assert res == "OK"
