@@ -169,7 +169,7 @@ def get_remote_address() -> str:
     return request.headers.get("X-Forwarded-For", request.remote_addr)
 
 
-def get_decompressed_message() -> bytes:
+def get_decompressed_message(headers: dict, input: bytes) -> bytes:
     """
     Detect gzip Content-Encoding headers and de-compress on the fly.
 
@@ -177,7 +177,7 @@ def get_decompressed_message() -> bytes:
     :rtype: str
     :returns: The de-compressed request body.
     """
-    content_encoding = request.headers.get("Content-Encoding", "")
+    content_encoding = headers.get("Content-Encoding", "")
     logger.debug("Content-Encoding: %s", content_encoding)
 
     if content_encoding in ["gzip", "deflate"]:
@@ -187,18 +187,18 @@ def get_decompressed_message() -> bytes:
         try:
             # Auto header checking.
             logger.debug("Trying zlib.decompress (15 + 32)...")
-            message_body = zlib.decompress(request.body.read(), 15 + 32)
+            message_body = zlib.decompress(input, 15 + 32)
 
         except zlib.error:
             logger.error("zlib.error, trying zlib.decompress (-15)")
             # Negative wbits suppresses adler32 checksumming.
-            message_body = zlib.decompress(request.body.read(), -15)
+            message_body = zlib.decompress(input, -15)
             logger.debug("Resulting message_body:\n%s\n", message_body)
 
     else:
         logger.debug("Content-Encoding indicates *not* compressed...")
 
-        message_body = request.body.read()
+        message_body = input
 
     return message_body
 
@@ -314,7 +314,7 @@ def upload() -> str:
     """
     try:
         # Body may or may not be compressed.
-        message_body = get_decompressed_message()
+        message_body = get_decompressed_message(request.headers, request.body.read())
 
     except zlib.error as exc:
         # Some languages and libs do a crap job zlib compressing stuff. Provide
