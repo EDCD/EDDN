@@ -27,4 +27,4 @@ def test_plain_message(eddn_message: Callable) -> None:
         },
     )
 
-    assert dc_msg == 'OK'
+    assert dc_msg.body == b'OK'
