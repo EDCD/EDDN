@@ -1,28 +1,34 @@
+"""Tests for eddn.Gateway.parse_and_error_handle."""
 import os
-import sys
 
-# Tests don't include the directory that `pytest` is run from on sys.path
-sys.path.append(os.getcwd())
+import pytest
 
-import eddn.Gateway
 
-###########################################################################
-# Mock up a cl_args enough to get the configuration loaded
-###########################################################################
-class CLArgs:
-    config = False
+@pytest.fixture
+def fix_sys_path(monkeypatch):
+    """Prepend CWD to sys.path."""
+    # Tests don't include the directory that `pytest` is run from on sys.path
+    print(f'{os.getcwd()=}')
+    monkeypatch.syspath_prepend(os.getcwd())
 
-cl_args = CLArgs()
-eddn.Gateway.load_config(cl_args)
-eddn.Gateway.configure()
-###########################################################################
 
-def test_bad_json():
+def test_invalid_json(fix_sys_path) -> None:
+    """Test invalid JSON input."""
+    import eddn.Gateway
+
+    eddn.Gateway.setup_bottle_app()
+
     msg = "{not real json"
     res = eddn.Gateway.parse_and_error_handle(msg.encode(encoding="utf-8"))
     assert res.startswith("FAIL: JSON parsing: ")
 
-def test_outdated_schema():
+
+def test_outdated_schema(fix_sys_path) -> None:
+    """Test attempt to use an outdated schema."""
+    import eddn.Gateway
+
+    eddn.Gateway.setup_bottle_app()
+
     msg = """
 {
     "$schemaRef": "http://schemas.elite-markets.net/eddn/journal/1",
@@ -38,7 +44,13 @@ def test_outdated_schema():
     res = eddn.Gateway.parse_and_error_handle(msg.encode(encoding="utf-8"))
     assert res.startswith("FAIL: Outdated Schema: The schema you have used is no longer supported. Please check for an updated version of your application.")
 
-def test_fail_validation_no_softwarename():
+
+def test_fail_validation_no_softwarename(fix_sys_path) -> None:
+    """Test detecting a message with no softwareName in the message."""
+    import eddn.Gateway
+
+    eddn.Gateway.setup_bottle_app()
+
     msg = """
 {
     "$schemaRef": "https://eddn.edcd.io/schemas/journal/1",
@@ -53,7 +65,13 @@ def test_fail_validation_no_softwarename():
     res = eddn.Gateway.parse_and_error_handle(msg.encode(encoding="utf-8"))
     assert res.startswith("FAIL: Schema Validation: [<ValidationError: \"'softwareName' is a required property\">]")
 
-def test_valid_journal_scan():
+
+def test_valid_journal_scan(fix_sys_path) -> None:
+    """Test a valid journal/1, `event == 'Scan'` message."""
+    import eddn.Gateway
+
+    eddn.Gateway.setup_bottle_app()
+
     msg = """
 {
     "$schemaRef": "https://eddn.edcd.io/schemas/journal/1",
@@ -73,4 +91,3 @@ def test_valid_journal_scan():
     """
     res = eddn.Gateway.parse_and_error_handle(msg.encode(encoding="utf-8"))
     assert res == "OK"
-
