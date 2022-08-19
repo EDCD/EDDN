@@ -5,6 +5,8 @@ import pytest
 
 """A dictionary of test messages, all in string form."""
 test_messages = {
+    'invalid_json': '{not real json',
+
     'plain_journal_scan_valid': '''{
         "$schemaRef": "https://eddn.edcd.io/schemas/journal/1",
         "header": {
