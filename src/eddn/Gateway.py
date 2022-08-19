@@ -400,15 +400,8 @@ def apply_cors() -> None:
     )
 
 
-def main() -> None:
-    """Handle setting up and running the bottle app."""
-    cl_args = parse_cl_args()
-    if cl_args.loglevel:
-        logger.setLevel(cl_args.loglevel)
-
-    load_config(cl_args)
-    configure()
-
+def setup_bottle_app() -> dict:
+    """Handle setup of the bottle app."""
     app.add_hook("after_request", apply_cors)
 
     # Build arg dict for args
@@ -424,6 +417,20 @@ def main() -> None:
     if Settings.CERT_FILE != "" and Settings.KEY_FILE != "":
         argsd["certfile"] = Settings.CERT_FILE
         argsd["keyfile"] = Settings.KEY_FILE
+
+    return argsd
+
+
+def main() -> None:
+    """Take note of configuration and start bottle app."""
+    cl_args = parse_cl_args()
+    if cl_args.loglevel:
+        logger.setLevel(cl_args.loglevel)
+
+    load_config(cl_args)
+    configure()
+
+    argsd = setup_bottle_app()
 
     logger.info('Starting bottle app...')
     app.run(
