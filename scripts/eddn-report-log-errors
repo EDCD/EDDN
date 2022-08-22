@@ -91,7 +91,7 @@ def process_file(input_file: str) -> None:
 
         elif matches.group('software_name') == 'EDDLite':
           # https://github.com/EDDiscovery/EDDLite/releases/tag/latest
-          if software_version >= semantic_version.Version.coerce('2.2.0'):
+          if software_version >= semantic_version.Version.coerce('2.3.0'):
             print(line)
 
         elif matches.group('software_name') == 'EDDI':
