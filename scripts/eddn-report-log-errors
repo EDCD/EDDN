@@ -78,7 +78,7 @@ def process_file(input_file: str) -> None:
           if software_version >= semantic_version.Version.coerce('15.1.1.0'):
             if matches.group('schema_ref') == 'https://eddn.edcd.io/schemas/outfitting/2':
               if matches.group('err_msg').startswith(
-                'Failed Validation "[<ValidationError: "u\'\\\\u0131nt_dockingcomputer_standard\' does not match \'(^Hpt_|^hpt_|^Int_|^int_|_Armour_|_armour_)\'">]'
+                'Failed Validation "[<ValidationError: "u\'\\\\u0131nt_.+\' does not match \'(^Hpt_|^hpt_|^Int_|^int_|_Armour_|_armour_)\'">]'
               ):
                 # <https://github.com/EDDiscovery/EDDiscovery/issues/3304>
                 pass
