@@ -77,8 +77,10 @@ def process_file(input_file: str) -> None:
           # https://github.com/EDDiscovery/EDDiscovery/releases/latest
           if software_version >= semantic_version.Version.coerce('15.1.1.0'):
             if matches.group('schema_ref') == 'https://eddn.edcd.io/schemas/outfitting/2':
-              if matches.group('err_msg').startswith(
-                'Failed Validation "[<ValidationError: "u\'\\\\u0131nt_.+\' does not match \'(^Hpt_|^hpt_|^Int_|^int_|_Armour_|_armour_)\'">]'
+              err_msg = matches.group('err_msg')
+              if (
+                err_msg.startswith('Failed Validation "[<ValidationError: "u\'\\\\u0131nt_') and
+                err_msg.find('\' does not match \'(^Hpt_|^hpt_|^Int_|^int_|_Armour_|_armour_)\'">]') != -1
               ):
                 # <https://github.com/EDDiscovery/EDDiscovery/issues/3304>
                 pass
