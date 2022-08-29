@@ -1,0 +1,37 @@
+{]
+  "$schemaRef": "https://eddn.edcd.io/schemas/journal/1",
+  "header": {
+    "uploaderID": "Athanasius Testing",
+    "softwareName": "Athanasius Testing",
+    "softwareVersion": "v0.0.1"
+  },
+  "message": {
+    "timestamp":"2021-11-05T15:46:28Z",
+    "event":"Scan",
+    "ScanType":"AutoScan",
+    "BodyName":"Elphin",
+    "BodyID":1,
+    "Parents":[ {"Null":0} ],
+    "StarSystem":"Elphin",
+    "StarPos":[-30.12500,8.18750,-17.00000],
+    "SystemAddress":3932076118738,
+    "DistanceFromArrivalLS":0.000000,
+    "StarType":"K",
+    "Subclass":3,
+    "StellarMass":0.769531,
+    "Radius":587464832.000000,
+    "AbsoluteMagnitude":6.294067,
+    "Age_MY":9558,
+    "SurfaceTemperature":4796.000000,
+    "Luminosity":"V",
+    "SemiMajorAxis":1704360246658.325195,
+    "Eccentricity":0.348740,
+    "OrbitalInclination":-72.647343,
+    "Periapsis":86.347190,
+    "OrbitalPeriod":7189218699.932098,
+    "AscendingNode":0.000000,
+    "MeanAnomaly":351.262353,
+    "RotationPeriod":248957.736717,
+    "AxialTilt":-0.126915
+  }
+}
