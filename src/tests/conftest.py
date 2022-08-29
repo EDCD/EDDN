@@ -7,6 +7,9 @@ import pytest
 
 """A dictionary of test messages, all in string form."""
 test_messages = {
+    ######################################################################
+    # Examples of invalid messages.
+    ######################################################################
     'invalid_json': '{not real json',
 
     'plain_outdated_schema': '''{
@@ -29,7 +32,12 @@ test_messages = {
         "message": {
         }
     }''',
+    ######################################################################
 
+    ######################################################################
+    # journal/1 'scan' messages
+    ######################################################################
+    # Example journal/1 'scan' valid message.
     'plain_journal_scan_valid': '''{
         "$schemaRef": "https://eddn.edcd.io/schemas/journal/1",
         "header": {
@@ -45,7 +53,12 @@ test_messages = {
             "SystemAddress":3932076118738
         }
     }''',
+    ######################################################################
 
+    ######################################################################
+    # commodity/3 messages
+    ######################################################################
+    # Example commodity/3 valid message.
     'plain_commodity_valid': '''{
         "$schemaRef": "https://eddn.edcd.io/schemas/commodity/3",
         "header": {
@@ -72,6 +85,7 @@ test_messages = {
             ]
         }
     }''',
+    ######################################################################
 }
 
 
