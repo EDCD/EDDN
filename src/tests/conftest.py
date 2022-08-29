@@ -1,5 +1,6 @@
 """General pytest configuration, including fixtures."""
 import os
+import pathlib
 import sys
 from typing import Callable, Optional
 
@@ -87,6 +88,17 @@ test_messages = {
     }''',
     ######################################################################
 }
+
+
+@pytest.fixture()
+def eddn_message_from_file() -> Callable:
+    """Load and supply a test message from the on-disk collection."""
+    def _method(msg_type: str) -> Optional[str]:
+        path = pathlib.Path('tests/eddn_message/' + msg_type)
+        with open(path, 'r') as eddn_message:
+            return eddn_message.read()
+
+    return _method
 
 
 @pytest.fixture

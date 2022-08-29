@@ -26,9 +26,9 @@ def test_fail_validation_no_softwarename(fix_sys_path, eddn_gateway, eddn_messag
     assert res.startswith("FAIL: Schema Validation: [<ValidationError: \"'softwareName' is a required property\">]")
 
 
-def test_valid_journal_scan(fix_sys_path, eddn_gateway, eddn_message: Callable) -> None:
+def test_valid_journal_scan(fix_sys_path, eddn_gateway, eddn_message_from_file: Callable) -> None:
     """Test a valid journal/1, `event == 'Scan'` message."""
-    msg = eddn_message('plain_journal_scan_valid')
+    msg = eddn_message_from_file('journal/1/scan/valid.json')
     res = eddn_gateway.parse_and_error_handle(msg.encode(encoding="utf-8"))
     assert res == "OK"
 
