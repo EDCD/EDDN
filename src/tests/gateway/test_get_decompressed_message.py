@@ -13,7 +13,7 @@ def test_plain_message(eddn_message: Callable, monkeypatch) -> None:
     eddn.Gateway.setup_bottle_app()
     print(f'{eddn.Gateway.app.__dict__=}')
 
-    msg = eddn_message('plain_journal_scan_valid')
+    msg = eddn_message('journal/1/scan/valid')
 
     dc_msg = eddn.Gateway.get_decompressed_message(
         {

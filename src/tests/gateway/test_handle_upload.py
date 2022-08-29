@@ -16,7 +16,7 @@ def test_valid_plain_message(
         status: int = 200
     ####################################################################
 
-    msg = eddn_message("plain_journal_scan_valid")
+    msg = eddn_message("journal/1/scan/valid")
     resp_str = eddn_gateway.handle_upload(
         headers={
             "Content-Type": "application/json"
@@ -43,7 +43,7 @@ def test_invalid_message(
         status: int = 200
     ####################################################################
 
-    msg = eddn_message("invalid_json")
+    msg = eddn_message("invalid/invalid-JSON")
     resp_str = eddn_gateway.handle_upload(
         headers={
             "Content-Type": "application/json"
@@ -70,7 +70,7 @@ def test_outdated_schema(
         status: int = 200
     ####################################################################
 
-    msg = eddn_message("plain_outdated_schema")
+    msg = eddn_message("invalid/invalid-outdated-schema")
     resp_str = eddn_gateway.handle_upload(
         headers={
             "Content-Type": "application/json"
@@ -97,7 +97,7 @@ def test_no_softwarename(
         status: int = 200
     ####################################################################
 
-    msg = eddn_message("plain_no_softwarename")
+    msg = eddn_message("invalid/scan-invalid-no-softwarename")
     resp_str = eddn_gateway.handle_upload(
         headers={
             "Content-Type": "application/json"

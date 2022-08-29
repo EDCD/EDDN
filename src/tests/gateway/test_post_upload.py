@@ -21,7 +21,7 @@ def test_plain_message(eddn_message: Callable) -> None:
 
     dc_msg = test_app.post(
         '/upload/',
-        params=eddn_message('plain_journal_scan_valid'),
+        params=eddn_message('journal/1/scan/valid'),
         headers={
             'Content-Type': 'application/json'
         },

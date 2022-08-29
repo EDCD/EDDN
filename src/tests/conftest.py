@@ -91,21 +91,12 @@ test_messages = {
 
 
 @pytest.fixture()
-def eddn_message_from_file() -> Callable:
+def eddn_message() -> Callable:
     """Load and supply a test message from the on-disk collection."""
     def _method(msg_type: str) -> Optional[str]:
-        path = pathlib.Path('tests/eddn_message/' + msg_type)
+        path = pathlib.Path('tests/eddn_message/' + msg_type + '.json')
         with open(path, 'r') as eddn_message:
             return eddn_message.read()
-
-    return _method
-
-
-@pytest.fixture
-def eddn_message() -> Callable:
-    """Supply the requested test message."""
-    def _method(msg_type: str) -> Optional[str]:
-        return test_messages.get(msg_type)
 
     return _method
 
