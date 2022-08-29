@@ -308,13 +308,25 @@ def parse_and_error_handle(data: bytes) -> str:
 @app.route("/upload/", method=["OPTIONS", "POST"])
 def upload() -> str:
     """
-    Handle an /upload/ request.
+    Process an /upload/ request.
+
+    :return: The processed message, else error string.
+    """
+    return handle_upload(request.headers, request.body.read(), response)
+
+
+def handle_upload(headers, body, response) -> str:
+    """
+    Handle an upload request.
+
+    This is separate from, and called by, the bottle route to more easily
+    enable functional/unit testing.
 
     :return: The processed message, else error string.
     """
     try:
         # Body may or may not be compressed.
-        message_body = get_decompressed_message(request.headers, request.body.read())
+        message_body = get_decompressed_message(headers, body)
 
     except zlib.error as exc:
         # Some languages and libs do a crap job zlib compressing stuff. Provide
