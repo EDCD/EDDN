@@ -13,7 +13,7 @@ test_messages = {
         "$schemaRef": "http://schemas.elite-markets.net/eddn/journal/1",
         "header": {
             "uploaderID": "outdated schema",
-            "softwareName": "pytest:Gateway.parse_and_error_handle",
+            "softwareName": "pytest:src/",
             "softwareVersion": "v0.0.1"
         },
         "message": {
@@ -34,7 +34,7 @@ test_messages = {
         "$schemaRef": "https://eddn.edcd.io/schemas/journal/1",
         "header": {
             "uploaderID": "valid journal message",
-            "softwareName": "pytest:Gateway.parse_and_error_handle",
+            "softwareName": "pytest:src/",
             "softwareVersion": "v0.0.1"
         },
         "message": {
@@ -43,6 +43,33 @@ test_messages = {
             "StarSystem":"Elphin",
             "StarPos":[-30.12500,8.18750,-17.00000],
             "SystemAddress":3932076118738
+        }
+    }''',
+
+    'plain_commodity_valid': '''{
+        "$schemaRef": "https://eddn.edcd.io/schemas/commodity/3",
+        "header": {
+            "uploaderID": "valid journal message",
+            "softwareName": "pytest:src/",
+            "softwareVersion": "v0.0.1"
+        },
+        "message": {
+            "timestamp":"2021-11-05T15:46:28Z",
+            "systemName":"LP 98-132",
+            "stationName":"Freeport",
+            "marketId":128008448,
+            "commodities":[
+                {
+                    "name":"$platinum_name;",
+                    "buyPrice":39557,
+                    "sellPrice":39555,
+                    "meanPrice":58263,
+                    "stockBracket":0,
+                    "demandBracket":0,
+                    "stock":0,
+                    "demand":0
+                }
+            ]
         }
     }''',
 }
