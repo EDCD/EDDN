@@ -2,7 +2,12 @@
 from typing import Callable
 
 
-def test_plain_message(fix_sys_path, eddn_gateway, eddn_message: Callable) -> None:
+def test_valid_plain_message(
+    fix_sys_path,
+    eddn_message: Callable,
+    eddn_gateway,
+    bottle_response
+) -> None:
     """Test eddn.Gateway with a plain message."""
     ####################################################################
     # Mock a bottle 'response' enough to accept setting status
@@ -17,7 +22,7 @@ def test_plain_message(fix_sys_path, eddn_gateway, eddn_message: Callable) -> No
             "Content-Type": "application/json"
         },
         body=msg.encode(encoding="utf-8"),
-        response=BottleResponseMock()
+        response=bottle_response
     )
 
     print(f"{resp_str=}")

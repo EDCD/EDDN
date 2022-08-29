@@ -77,3 +77,12 @@ def eddn_gateway():
     eddn.Gateway.configure()
 
     return eddn.Gateway
+
+
+@pytest.fixture
+def bottle_response() -> object:
+    """Mock a `bottle.response` enough for tests."""
+    class BottleResponseMock:
+        status: int = 200
+
+    return BottleResponseMock()
