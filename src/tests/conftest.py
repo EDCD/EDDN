@@ -1,4 +1,6 @@
 """General pytest configuration, including fixtures."""
+import os
+import sys
 from typing import Callable, Optional
 
 import pytest
@@ -53,3 +55,25 @@ def eddn_message() -> Callable:
         return test_messages.get(msg_type)
 
     return _method
+
+
+@pytest.fixture
+def fix_sys_path() -> None:
+    """Set up an eddn.Gateway import."""
+    # Tests don't include the directory that `pytest` is run from on sys.path
+    sys.path.append(os.getcwd())
+
+
+@pytest.fixture(scope="session")
+def eddn_gateway():
+    """Set up an eddn.Gateway import."""
+    import eddn.Gateway
+
+    class CLArgs:
+        config = False
+
+    cl_args = CLArgs()
+    eddn.Gateway.load_config(cl_args)
+    eddn.Gateway.configure()
+
+    return eddn.Gateway

@@ -1,31 +1,5 @@
 """Tests for eddn.Gateway.parse_and_error_handle."""
-import os
-import sys
 from typing import Callable
-
-import pytest
-
-
-@pytest.fixture
-def fix_sys_path() -> None:
-    """Set up an eddn.Gateway import."""
-    # Tests don't include the directory that `pytest` is run from on sys.path
-    sys.path.append(os.getcwd())
-
-
-@pytest.fixture(scope='module')
-def eddn_gateway():
-    """Set up an eddn.Gateway import."""
-    import eddn.Gateway
-
-    class CLArgs:
-        config = False
-
-    cl_args = CLArgs()
-    eddn.Gateway.load_config(cl_args)
-    eddn.Gateway.configure()
-
-    return eddn.Gateway
 
 
 def test_invalid_json(fix_sys_path, eddn_gateway, eddn_message: Callable) -> None:
