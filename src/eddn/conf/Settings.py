@@ -84,6 +84,9 @@ class _Settings(object):
 
         "https://eddn.edcd.io/schemas/fsssignaldiscovered/1"            : "schemas/fsssignaldiscovered-v1.0.json",
         "https://eddn.edcd.io/schemas/fsssignaldiscovered/1/test"       : "schemas/fsssignaldiscovered-v1.0.json",
+
+        "https://eddn.edcd.io/schemas/fcmaterials/1"                : "schemas/fcmaterials-v1.0.json",
+        "https://eddn.edcd.io/schemas/fcmaterials/1/test"           : "schemas/fcmaterials-v1.0.json",
     }
 
     GATEWAY_OUTDATED_SCHEMAS                = [
