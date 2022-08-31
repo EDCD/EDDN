@@ -33,11 +33,14 @@
             "type"                  : "object",
             "description"           : "Contains all properties from the listed events in the client's journal minus the Localised strings and the properties marked below as 'disallowed'",
             "additionalProperties"  : false,
-            "required"              : [ "timestamp", "event", "MarketID", "CarrierName", "CarrierID", "Items" ],
+            "required"              : [ "timestamp", "data-source", "event", "MarketID", "CarrierID", "Items" ],
             "properties"            : {
                 "timestamp": {
                     "type"          : "string",
                     "format"        : "date-time"
+                },
+                "data-source": {
+                    "enum"          : [ "Journal", "CAPI", "CAPI-Journal" ]
                 },
                 "event" : {
                     "enum"          : [ "FCMaterials" ]
@@ -66,28 +69,10 @@
                 },
 
                 "Items": {
-                    "type"          : "array",
-                    "required"      : [ "id", "Name", "Price", "Stock", "Demand" ],
-                    "properties"    : {
-                        "id" : {
-                            "type"  : "integer"
-                        },
-                        "Name": {
-                            "type"      : "string",
-                            "minLength" : 1
-                        },
-                        "Price": {
-                            "type"      : "integer"
-                        },
-                        "Stock": {
-                            "type"      : "integer"
-                        },
-                        "Demand": {
-                            "type"      : "integer"
-                        }
-                    },
+                    "type"          : [ "array", "object" ],
                     "patternProperties": {
-                        "_Localised$"       : { "$ref" : "#/definitions/disallowed" }
+                        "_Localised$" : { "$ref" : "#/definitions/disallowed" },
+                        "locName"     : { "$ref" : "#/definitions/disallowed" }
                     }
                 }
             }
