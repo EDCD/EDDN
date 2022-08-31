@@ -78,7 +78,7 @@ for service in gateway monitor relay ;
 do
   log "Service: ${service}"
   log "         Expiring old logs..."
-  find . -name "${service}.log.*.gz" -a -atime +${MAX_LOGFILE_AGE} -exec rm -fv {} \;
+  find . -name "${service}.log.*.gz" -a -atime +${MAX_LOGFILE_AGE} -exec rm -f {} \;
   log "         DONE"
 
   log "         Checking if current logfile needs archiving..."
@@ -106,7 +106,7 @@ do
     fi
 
     # Now compress the newly archived log
-    gzip -9v "${ARCHIVED_NAME}"
+    gzip -9 "${ARCHIVED_NAME}"
     log "         DONE"
   else
     log "         No"
