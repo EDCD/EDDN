@@ -15,7 +15,7 @@ those actually running on the Live service.
 
 The Schema files themselves are considered to be the canonical definition of
 the required, and allowed, contents of the relevant EDDN message.  There
-**SHOULD** be an accompanying README file, e.g. for `commodity-v3.0.json` there
+**MUST** be an accompanying README file, e.g. for `commodity-v3.0.json` there
 is also a `commodity-README.md` file in the project root `schemas/` directory.
 
 For more general documentation that all developers wanting to either Upload
