@@ -33,14 +33,11 @@
             "type"                  : "object",
             "description"           : "Contains all properties from the listed events in the client's journal minus the Localised strings and the properties marked below as 'disallowed'",
             "additionalProperties"  : false,
-            "required"              : [ "timestamp", "data-source", "event", "MarketID", "CarrierID", "Items" ],
+            "required"              : [ "timestamp", "event", "MarketID", "CarrierName", "CarrierID", "Items" ],
             "properties"            : {
                 "timestamp": {
                     "type"          : "string",
                     "format"        : "date-time"
-                },
-                "data-source": {
-                    "enum"          : [ "Journal", "CAPI", "CAPI-Journal" ]
                 },
                 "event" : {
                     "enum"          : [ "FCMaterials" ]
@@ -69,10 +66,28 @@
                 },
 
                 "Items": {
-                    "type"          : [ "array", "object" ],
+                    "type"          : "array",
+                    "required"      : [ "id", "Name", "Price", "Stock", "Demand" ],
+                    "properties"    : {
+                        "id" : {
+                            "type"  : "integer"
+                        },
+                        "Name": {
+                            "type"      : "string",
+                            "minLength" : 1
+                        },
+                        "Price": {
+                            "type"      : "integer"
+                        },
+                        "Stock": {
+                            "type"      : "integer"
+                        },
+                        "Demand": {
+                            "type"      : "integer"
+                        }
+                    },
                     "patternProperties": {
-                        "_Localised$" : { "$ref" : "#/definitions/disallowed" },
-                        "locName"     : { "$ref" : "#/definitions/disallowed" }
+                        "_Localised$"       : { "$ref" : "#/definitions/disallowed" }
                     }
                 }
             }
