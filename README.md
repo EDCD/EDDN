@@ -171,5 +171,5 @@ Hosting is currently provided by the
 
 ### Contacting the EDDN team
 
-* [EDCD Discord](https://discord.gg/XBsdCq9) - **Use the `#eddn` channel**.
+* [EDCD Discord - #eddn channel](https://discord.gg/DdqJ8nWVGc)
 * [E:D forum thread](https://forums.frontier.co.uk/threads/elite-dangerous-data-network-eddn.585701/#post-9400060)

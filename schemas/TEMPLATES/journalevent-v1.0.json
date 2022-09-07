@@ -39,7 +39,7 @@
 #    as a result disallow the key.
 {
     "$schema"               : "http://json-schema.org/draft-04/schema#",
-    "id"                    : "https://eddn.edcd.io/schemas/newjournalevent/1#",
+    "id"                    : "https://eddn.edcd.io/schemas/newjournalevent/1",
     "type"                  : "object",
     "additionalProperties"  : false,
     "required": [ "$schemaRef", "header", "message" ],
