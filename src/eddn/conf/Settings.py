@@ -84,6 +84,12 @@ class _Settings(object):
 
         "https://eddn.edcd.io/schemas/fsssignaldiscovered/1"            : "schemas/fsssignaldiscovered-v1.0.json",
         "https://eddn.edcd.io/schemas/fsssignaldiscovered/1/test"       : "schemas/fsssignaldiscovered-v1.0.json",
+
+        "https://eddn.edcd.io/schemas/fcmaterials_journal/1"                : "schemas/fcmaterials_journal-v1.0.json",
+        "https://eddn.edcd.io/schemas/fcmaterials_journal/1/test"           : "schemas/fcmaterials_journal-v1.0.json",
+
+        "https://eddn.edcd.io/schemas/fcmaterials_capi/1"                : "schemas/fcmaterials_capi-v1.0.json",
+        "https://eddn.edcd.io/schemas/fcmaterials_capi/1/test"           : "schemas/fcmaterials_capi-v1.0.json",
     }
 
     GATEWAY_OUTDATED_SCHEMAS                = [
