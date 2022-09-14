@@ -65,6 +65,20 @@ The following keys+values should be removed from `Location` event data:
 - `SquadronFaction` from within the list of `Factions`.
 
 ### Augmentations
+#### gameversion
+You **MUST** always add this field **to the header object**.
+
+1. If you are using Journal files directly then you **MUST** use the value
+  of the `gameversion` element from the`Fileheader` event.
+2. If you are using the CAPI `/journal` endpoint to retrieve and process
+  Journal events then:
+   1. You will not have `Fileheader` available.
+   2. If `gameversion` is present in the `LoadGame` event, as in 4.0 Odyssey
+     clients, use its value.
+   3. If `LoadGame` does not have a `gameversion` element, as with 3.8 Horizons
+     clients (up to at least `3.8.0.407`), you **MUST** set `gameversion`, but 
+     with the value `"CAPI"`.
+
 #### horizons flag
 You SHOULD add this key/value pair, using the value from the `LoadGame` event.
 
