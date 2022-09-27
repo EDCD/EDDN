@@ -251,9 +251,13 @@ so that you are aware of any changes to Schemas.
 
 #### `horizons` and `odyssey` flags
 
-Where the Schema allows for them, `horizons` and `odyssey` keys SHOULD be
+Where the Schema allows for them, `horizons` and `odyssey` keys **MUST** be
 added with appropriate boolean values.  `null` is not allowed in the values,
 so **if you cannot determine a value do not include that key at all**.
+
+To emphasise that, *in the case where there is no `Odyssey` boolean in the
+`LoadGame` event* **DO NOT INCLUDE IT IN THE EDDN MESSAGE**.  No, not with a
+`false` value.  **DO NOT INCLUDE IT**.
 
 The only source of these is the `LoadGame` event from journals.  It's present
 both in the PC local files and the CAPI journal data.  If you're
@@ -263,42 +267,48 @@ possible to synthesise the `horizons` flag.  For now consult the function
 [EDMarketConnector:plugins/eddn.py](https://github.com/EDCD/EDMarketConnector/blob/stable/plugins/eddn.py)
 for a method to achieve this.
 
-As of 2022-01-29 the following was observed for the `LoadGame` events as
+As of 2022-09-27 the following was observed for the `LoadGame` events as
 present in CAPI-sourced Journal files (which were confirmed to match the
 PC-local files for these events):
 
-- PC Odyssey Client, game version `4.0.0.1100`:
+- PC Odyssey Client, game version `4.0.0.1450`:
     ```json
-    { "timestamp":"2022-01-29T16:17:02Z", "event":"LoadGame", "FID":"<elided>", "Commander":"<elided>", "Horizons":true, "Odyssey":true,...
+    { "timestamp":"2022-09-27T09:47:35Z", "event":"LoadGame", "FID":"<elided>", "Commander":"<elided>", "Horizons":true, "Odyssey":true, ...
     ```
-- PC Horizons Client, game version `3.8.0.404`, no `Odyssey` key was
+- PC Horizons 4.0 Client, game version `4.0.0.1450`:
+    ```json
+    { "timestamp":"2022-09-27T11:25:45Z", "event":"LoadGame", "FID":"<elided>", "Commander":"<elided>", "Horizons":true, "Odyssey":false, ...
+    ```
+- PC Horizons Client, game version `3.8.0.407`, no `Odyssey` key was
   present:
     ```json
-    { "timestamp":"2022-01-29T16:15:07Z", "event":"LoadGame", "FID":"<elided>", "Commander":"<elided>", "Horizons":true,...
+    { "timestamp":"2022-09-27T11:28:53Z", "event":"LoadGame", "FID":"<elided>", "Commander":"<elided>", "Horizons":true, ...
     ```
 
-- PC 'base' Client, game version `3.8.0.404`, no `Odyssey` key was
+- PC 'base' Client, game version `i3.8.0.407`, no `Odyssey` key was
   present:
     ```json
-    { "timestamp":"2022-01-29T16:11:54Z", "event":"LoadGame", "FID":"<elided>", "Commander":"<elided>", "Horizons":false,...
+    { "timestamp":"2022-09-27T11:31:32Z", "event":"LoadGame", "FID":"<elided>", "Commander":"<elided>", "Horizons":false, ...
     ```
 
 Do not attempt to use the value(s) from a `Fileheader` event as the semantics
-are different.  With clients 3.8.0.404 and 4.0.0.1100 the following was observed:
+are different.  With clients 3.8.0.407 and 4.0.0.1450 the following was observed:
 
-| Game Client      | Fileheader       | LoadGame                        |
-| ---------------: | ---------------- | ------------------------------: |
-| Base             | "Odyssey":false  | "Horizons":false                |
-| Horizons         | "Odyssey":false  | "Horizons":true                 |
-| Odyssey          | "Odyssey":true   | "Horizons":true, "Odyssey":true |
+| Game Client      | Fileheader      | LoadGame                         |
+| ---------------: |-----------------|---------------------------------:|
+| Base             | "Odyssey":false |                 "Horizons":false |
+| Horizons 3.8     | "Odyssey":false |                  "Horizons":true |
+| Horizons 4.0     | "Odyssey":true  | "Horizons":true, "Odyssey":false |
+| Odyssey          | "Odyssey":true  |  "Horizons":true, "Odyssey":true |
 
 NB: The 'Base' client appears to simply be the Horizons client with any
 Horizons-only features disabled.
 
-- In the `Fileheader` event it's indicating whether it's an Odyssey game client.
-- In the `LoadGame` it's indicating whether Horizons and/or Odyssey features are
-  active, but in the non-Odyssey game client case you only get the Horizons
-  boolean.
+- In the `Fileheader` event the `Odyssey` flag is indicating whether it's a
+  `4.0` game client.
+- In the `LoadGame` event the `Horizons` and `Odyssey` flags indicate if those
+  features are active, but in the `3.8` game client case you only get the
+  `Horizons` boolean.
 
 #### Other data Augmentations
 Some schemas mandate that extra data be added, beyond what is in the source
