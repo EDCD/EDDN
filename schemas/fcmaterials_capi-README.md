@@ -57,6 +57,10 @@ You **MUST NOT** set them otherwise, as e.g. the player could be active in
 the game on another computer, using a different game mode and the CAPI data
 will be for that game mode.
 
+#### gameversion and gamebuild
+You **MUST** always set these as per [the relevant section](../docs/Developers.md#gameversions-and-gamebuild)
+of the Developers' documentation.
+
 ## Listeners
 The advice above for [Senders](#senders), combined with the actual Schema file
 *should* provide all the information you need to process these events.
