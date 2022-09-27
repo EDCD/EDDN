@@ -60,6 +60,34 @@ Remove not only the `Category_Localised` key:values, but also the
 Please read [horizons and odyssey flags](../docs/Developers.md#horizons-and-odyssey-flags)
 in the Developers' documentation.
 
+#### gameversion
+You **MUST** always add this field **to the header object**.
+
+1. If you are using Journal files directly then you **MUST** use the value
+  of the `gameversion` element from the`Fileheader` event.
+2. If you are using the CAPI `/journal` endpoint to retrieve and process
+  Journal events then:
+   1. You will not have `Fileheader` available.
+   2. If `gameversion` is present in the `LoadGame` event, as in 4.0 clients,
+     use its value.
+   3. If `LoadGame` does not have a `gameversion` element, as with 3.8 Horizons
+     clients (up to at least `3.8.0.407`), you **MUST** set `gameversion`, but 
+     with the value `"CAPI"`.
+
+#### gamebuild
+You **MUST** always add this field **to the header object**.
+
+1. If you are using Journal files directly then you **MUST** use the value
+   of the `build` value from the`Fileheader` event.
+2. If you are using the CAPI `/journal` endpoint to retrieve and process
+   Journal events then:
+    1. You will not have `Fileheader` available.
+    2. If `build` is present in the `LoadGame` event, as in 4.0 clients, use
+      its value.
+    3. If `LoadGame` does not have a `build` element, as with 3.8 Horizons
+       clients (up to at least `3.8.0.407`), you **MUST** set `gamebuild`, but
+       with the value `"CAPI"`.
+
 ### Using CAPI data
 It is *not* recommended to use CAPI data as the source as it's fraught with 
 additional issues.  EDMarketConnector does so in order to facilitate 
