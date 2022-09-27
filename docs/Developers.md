@@ -248,9 +248,13 @@ either `Fileheader` or `LoadGame` as outlined below.
      use its value.
    3. If `LoadGame` does not have the field, as with 3.8 Horizons
      clients (up to at least `3.8.0.407`), you **MUST** set the value to
-     `"CAPI"`.
+     `"CAPI-journal"`.
 3. If you are sourcing data from other CAPI endpoints, i.e. for commodity,
-  shipyard or outfitting messages, then simply set the values to `"CAPI"`.
+  shipyard or outfitting messages, then simply set the values appropriately as
+  per the CAPI endpoint the data came from:
+   1. If it's a commodity message then use `"CAPI-market"`.
+   2. If it's a shipyard message then use `"CAPI-shipyard"`.
+   3. If it's an oufitting message then also use `"CAPI-shipyard"`.
 
 ---
 
