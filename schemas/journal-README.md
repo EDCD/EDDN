@@ -94,10 +94,14 @@ You **MUST** always add this field **to the header object**.
        with the value `"CAPI"`.
 
 #### horizons flag
-You SHOULD add this key/value pair, using the value from the `LoadGame` event.
+You **MUST** add this key/value pair, using the value from the `LoadGame` event.
+
+Note caveats in [docs/Developers.md](../docs/Developers.md).
 
 #### odyssey flag
-You SHOULD add this key/value pair, using the value from the `LoadGame` event.
+You **MUST** add this key/value pair, using the value from the `LoadGame` event.
+
+Note caveats in [docs/Developers.md](../docs/Developers.md).
 
 #### StarSystem
 If not already present, you MUST add a `StarSystem` string containing the
