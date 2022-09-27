@@ -285,7 +285,7 @@ PC-local files for these events):
     { "timestamp":"2022-09-27T11:28:53Z", "event":"LoadGame", "FID":"<elided>", "Commander":"<elided>", "Horizons":true, ...
     ```
 
-- PC 'base' Client, game version `i3.8.0.407`, no `Odyssey` key was
+- PC 'base' Client, game version `3.8.0.407`, no `Odyssey` key was
   present:
     ```json
     { "timestamp":"2022-09-27T11:31:32Z", "event":"LoadGame", "FID":"<elided>", "Commander":"<elided>", "Horizons":false, ...
