@@ -175,6 +175,8 @@ For example, a shipyard message, version 2, might look like:
   "$schemaRef": "https://eddn.edcd.io/schemas/shipyard/2",
   "header": {
     "uploaderID": "Bill",
+    "gameversion": "4.0.0.1451", 
+    "gamebuild": "r286916/r0 ",
     "softwareName": "My excellent app",
     "softwareVersion": "0.0.1"
   },
@@ -183,7 +185,8 @@ For example, a shipyard message, version 2, might look like:
     "stationName": "Samson",
     "marketId": 128023552,
     "horizons": true,
-    "timestamp": "2019-01-08T06:39:43Z",
+    "odyssey": true,  
+    "timestamp": "2022-09-27T06:39:43Z",
     "ships": [
       "anaconda",
       "dolphin",
@@ -199,6 +202,57 @@ For example, a shipyard message, version 2, might look like:
   }
 }
 ```
+
+---
+
+### Contents of `header`
+You **MUST** send the `header` component of the message.
+
+#### uploaderID
+The EDDN Relay will obfuscate the `uploaderID` value to prevent long-term
+tracking of individual players.  Please **DO** send a sensible
+`uploaderID` value, preferably simply the relevant in-game Commander name.
+
+#### softwareName
+You **MUST** set a unique, and self-consistent, value of `softwareName` so
+that you can be easily identified should any issues be found with the messages
+you send.
+
+#### softwareVersion
+You **MUST** set a pertinent value for `softwareVersion`.  We would recommend
+using [Semantic Versionining](https://semver.org/#semantic-versioning-specification-semver)
+in your project.
+
+Listeners MAY make decisions on whether to accept data, or to treat it
+differently, based on this.  As such you **MUST** increment your version
+number if you make any changes to the content of messages your software sends
+to EDDN.
+
+#### `gameversions` and `gamebuild`
+To ensure that Listeners can make decisions on how to handle data based on
+the client and feature set it came from there are two mandatory fields in
+the headers of EDDN messages.
+
+The `gameversion` value **MUST** come from the field of that name in either
+`Fileheader` or `LoadGame` as outlined below.
+
+The `gamebuild` value **MUST** come from the value of the `build` field in
+either `Fileheader` or `LoadGame` as outlined below.
+
+1. If you are using Journal files directly then you **MUST** use the value
+  from the`Fileheader` event.
+2. If you are using the CAPI `/journal` endpoint to retrieve and process
+  Journal events then:
+   1. You will not have `Fileheader` available.
+   2. If the field is present in the `LoadGame` event, as in 4.0 clients,
+     use its value.
+   3. If `LoadGame` does not have the field, as with 3.8 Horizons
+     clients (up to at least `3.8.0.407`), you **MUST** set the value to
+     `"CAPI"`.
+3. If you are sourcing data from other CAPI endpoints, i.e. for commodity,
+  shipyard or outfitting messages, then simply set the values to `"CAPI"`.
+
+---
 
 ### Contents of `message`
 Every message MUST comply with the Schema its `$schemaRef` value cites.  Each
