@@ -21,6 +21,11 @@
                     "minLength"     : 1,
                     "description"   : "From Fileheader event if available, else LoadGame if available there."
                 },
+                "gamebuild": {
+                    "type"          : "string",
+                    "minLength"     : 1,
+                    "description"   : "The `build` value from a Fileheader event if available, else LoadGame if available there."
+                },
                 "softwareName": {
                     "type"          : "string"
                 },
