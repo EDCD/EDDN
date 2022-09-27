@@ -251,9 +251,13 @@ so that you are aware of any changes to Schemas.
 
 #### `horizons` and `odyssey` flags
 
-Where the Schema allows for them, `horizons` and `odyssey` keys SHOULD be
+Where the Schema allows for them, `horizons` and `odyssey` keys **MUST** be
 added with appropriate boolean values.  `null` is not allowed in the values,
 so **if you cannot determine a value do not include that key at all**.
+
+To emphasise that, *in the case where there is no `Odyssey` boolean in the
+`LoadGame` event* **DO NOT INCLUDE IT IN THE EDDN MESSAGE**.  No, not with a
+`false` value.  **DO NOT INCLUDE IT**.
 
 The only source of these is the `LoadGame` event from journals.  It's present
 both in the PC local files and the CAPI journal data.  If you're
