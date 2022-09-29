@@ -18,13 +18,11 @@
                 },
                 "gameversion": {
                     "type"          : "string",
-                    "minLength"     : 1,
-                    "description"   : "From Fileheader event if available, else LoadGame if available there."
+                    "description"   : "Fileheader->gameversion, else LoadGame->gameversion, else 'CAPI-market', else ''."
                 },
                 "gamebuild": {
                     "type"          : "string",
-                    "minLength"     : 1,
-                    "description"   : "The `build` value from a Fileheader event if available, else LoadGame if available there."
+                    "description"   : "Fileheader->build, else LoadGame->build, else 'CAPI-market', else ''."
                 },
                 "softwareName": {
                     "type"          : "string"
