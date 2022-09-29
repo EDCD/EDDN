@@ -231,13 +231,16 @@ to EDDN.
 #### `gameversions` and `gamebuild`
 To ensure that Listeners can make decisions on how to handle data based on
 the client and feature set it came from there are two mandatory fields in
-the headers of EDDN messages.
+the headers of EDDN messages.  NB: Initially the *schemas* do not actually
+make these mandatory, **but all Senders should make every effort to include
+them ASAP**.
 
-The `gameversion` value **MUST** come from the field of that name in either
-`Fileheader` or `LoadGame` as outlined below.
+Where present in the data source the `gameversion` value **MUST** come from
+the field of that name in the data source, i.e. from either `Fileheader` or
+`LoadGame` as outlined below.
 
-The `gamebuild` value **MUST** come from the value of the `build` field in
-either `Fileheader` or `LoadGame` as outlined below.
+For `gamebuild` you **MUST** use the value of the `build` field in the data
+source.
 
 1. If you are using Journal files directly then you **MUST** use the value
   from the`Fileheader` event.
@@ -247,14 +250,22 @@ either `Fileheader` or `LoadGame` as outlined below.
    2. If the field is present in the `LoadGame` event, as in 4.0 clients,
      use its value.
    3. If `LoadGame` does not have the field, as with 3.8 Horizons
-     clients (up to at least `3.8.0.407`), you **MUST** set the value to
-     `"CAPI-journal"`.
+     clients (up to at least `3.8.0.407`), you **SHOULD** set the value to
+     `"CAPI-journal"`. If, for reasons of code architecture, you are unable to
+     determine that data was CAPI-sourced then you MAY set it to `""` instead.
 3. If you are sourcing data from other CAPI endpoints, i.e. for commodity,
-  shipyard or outfitting messages, then simply set the values appropriately as
-  per the CAPI endpoint the data came from:
-   1. If it's a commodity message then use `"CAPI-market"`.
-   2. If it's a shipyard message then use `"CAPI-shipyard"`.
-   3. If it's an oufitting message then also use `"CAPI-shipyard"`.
+  shipyard or outfitting messages, then you **SHOULD** set the values
+  appropriately as per the CAPI endpoint the data came from:
+   1. If it's a commodity message, then use `"CAPI-market"`.
+   2. If it's a shipyard message, then use `"CAPI-shipyard"`.
+   3. If it's an oufitting message, then also use `"CAPI-shipyard"`.
+
+   Again, if your code architecture doesn't allow for signalling that the data
+  source was CAPI, then you MAY set it to `""` instead.
+
+For emphasis, **if you cannot set a data-source value, or an appropriate
+`"CAPI-..."` value then you **MUST** still send the field with an empty string
+value.
 
 ---
 
