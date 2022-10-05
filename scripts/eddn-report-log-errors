@@ -82,7 +82,7 @@ def process_file(input_file: str) -> None:
                 err_msg.startswith('Failed Validation "[<ValidationError: "\'paintjob_') and
                 err_msg.find('\' does not match \'(^Hpt_|^hpt_|^Int_|^int_|_Armour_|_armour_)\'">]') != -1
               ):
-                <https://github.com/EDDiscovery/EDDiscovery/issues/3328>
+                # <https://github.com/EDDiscovery/EDDiscovery/issues/3328>
                 pass
 
               else: 
