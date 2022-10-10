@@ -87,6 +87,10 @@ You SHOULD add this key/value pair, using the value from the `LoadGame` event.
 #### odyssey flag
 You SHOULD add this key/value pair, using the value from the `LoadGame` event.
 
+#### gameversion and gamebuild
+You **MUST** always set these as per [the relevant section](../docs/Developers.md#gameversions-and-gamebuild)
+of the Developers' documentation.
+
 #### StarSystem
 You **MUST** add a `StarSystem` string containing the system name from the last
 tracked location.  You **MUST** cross-check each `FSSSignalDiscovered`

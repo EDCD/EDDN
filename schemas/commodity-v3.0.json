@@ -16,6 +16,14 @@
                 "uploaderID": {
                     "type"          : "string"
                 },
+                "gameversion": {
+                    "type"          : "string",
+                    "description"   : "Fileheader->gameversion, else LoadGame->gameversion, else 'CAPI-market', else ''."
+                },
+                "gamebuild": {
+                    "type"          : "string",
+                    "description"   : "Fileheader->build, else LoadGame->build, else 'CAPI-market', else ''."
+                },
                 "softwareName": {
                     "type"          : "string"
                 },

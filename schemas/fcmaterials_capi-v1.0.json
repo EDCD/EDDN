@@ -16,6 +16,14 @@
                 "uploaderID": {
                     "type"          : "string"
                 },
+                "gameversion": {
+                    "type"          : "string",
+                    "description"   : "Value of 'CAPI-market' if possible, else empty string."
+                },
+                "gamebuild": {
+                    "type"          : "string",
+                    "description"   : "Value of 'CAPI-market' if possible, else empty string."
+                },
                 "softwareName": {
                     "type"          : "string"
                 },

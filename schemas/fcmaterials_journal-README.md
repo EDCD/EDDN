@@ -33,6 +33,10 @@ of any augmentations, as noted below.
 Please read [horizons and odyssey flags](../docs/Developers.md#horizons-and-odyssey-flags)
 in the Developers' documentation.
 
+#### gameversion and gamebuild
+You **MUST** always set these as per [the relevant section](../docs/Developers.md#gameversions-and-gamebuild)
+of the Developers' documentation.
+
 ## Listeners
 The advice above for [Senders](#senders), combined with the actual Schema file
 *should* provide all the information you need to process these events.
