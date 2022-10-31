@@ -128,8 +128,8 @@ compress this body then you MUST set a `Content-Type` header of
 `applicaton/json`.
 
 You *MAY* use gzip compression on the body of the message, but it is not
-required.  If you do compress the body then you **MUST* send a `Content-Type`
-header of `gzip` instead of `application/json`.
+required.  If you do compress the body then you **MUST* send a
+`Content-Encoding` header of `gzip`.
 
 **Due to issues when messages are compressed, form-encoded data is NO LONGER
 SUPPORTED as of 2022-06-16.**
