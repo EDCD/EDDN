@@ -1,0 +1,27 @@
+{
+    "$schemaRef":"https://eddn.edcd.io/schemas/fcmaterials_capi/1",
+    "header": {
+        "uploaderID": "Athanasius Testing",
+        "softwareName": "Ath Testing",
+        "softwareVersion": "v0.0.1"
+    },
+    "message": {
+        "timestamp": "2022-08-31T12:40:00Z",
+        "event": "FCMaterials",
+        "horizons": true,
+        "odyssey": true,
+        "MarketID": 3706433792,
+        "CarrierID": "X3F-5NZ",
+        "Items": {
+          "sales": {
+            "128961524": {
+              "id": 128961524,
+              "name": "aerogel",
+              "price": 500,
+              "stock": 5
+            }
+          },
+          "purchases": []
+        }
+    }
+}

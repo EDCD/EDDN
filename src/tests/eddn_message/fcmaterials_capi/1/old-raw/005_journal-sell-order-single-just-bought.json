@@ -1,0 +1,3 @@
+{ "timestamp":"2022-08-31T12:56:46Z", "event":"FCMaterials", "MarketID":3706433792, "CarrierName":"WARD'S OLOGIES", "CarrierID":"X3F-N5Z", "Items":[ 
+{ "id":128961524, "Name":"$aerogel_name;", "Name_Localised":"Aerogel", "Price":500, "Stock":0, "Demand":0 }
+ ] }
