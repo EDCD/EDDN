@@ -60,6 +60,10 @@ Remove not only the `Category_Localised` key:values, but also the
 Please read [horizons and odyssey flags](../docs/Developers.md#horizons-and-odyssey-flags)
 in the Developers' documentation.
 
+#### gameversion and gamebuild
+You **MUST** always set these as per [the relevant section](../docs/Developers.md#gameversions-and-gamebuild)
+of the Developers' documentation.
+
 ### Using CAPI data
 It is *not* recommended to use CAPI data as the source as it's fraught with 
 additional issues.  EDMarketConnector does so in order to facilitate 

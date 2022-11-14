@@ -175,6 +175,8 @@ For example, a shipyard message, version 2, might look like:
   "$schemaRef": "https://eddn.edcd.io/schemas/shipyard/2",
   "header": {
     "uploaderID": "Bill",
+    "gameversion": "4.0.0.1451", 
+    "gamebuild": "r286916/r0 ",
     "softwareName": "My excellent app",
     "softwareVersion": "0.0.1"
   },
@@ -183,7 +185,8 @@ For example, a shipyard message, version 2, might look like:
     "stationName": "Samson",
     "marketId": 128023552,
     "horizons": true,
-    "timestamp": "2019-01-08T06:39:43Z",
+    "odyssey": true,  
+    "timestamp": "2022-09-27T06:39:43Z",
     "ships": [
       "anaconda",
       "dolphin",
@@ -199,6 +202,72 @@ For example, a shipyard message, version 2, might look like:
   }
 }
 ```
+
+---
+
+### Contents of `header`
+You **MUST** send the `header` component of the message.
+
+#### uploaderID
+The EDDN Relay will obfuscate the `uploaderID` value to prevent long-term
+tracking of individual players.  Please **DO** send a sensible
+`uploaderID` value, preferably simply the relevant in-game Commander name.
+
+#### softwareName
+You **MUST** set a unique, and self-consistent, value of `softwareName` so
+that you can be easily identified should any issues be found with the messages
+you send.
+
+#### softwareVersion
+You **MUST** set a pertinent value for `softwareVersion`.  We would recommend
+using [Semantic Versionining](https://semver.org/#semantic-versioning-specification-semver)
+in your project.
+
+Listeners MAY make decisions on whether to accept data, or to treat it
+differently, based on this.  As such you **MUST** increment your version
+number if you make any changes to the content of messages your software sends
+to EDDN.
+
+#### `gameversions` and `gamebuild`
+To ensure that Listeners can make decisions on how to handle data based on
+the client and feature set it came from there are two mandatory fields in
+the headers of EDDN messages.  NB: Initially the *schemas* do not actually
+make these mandatory, **but all Senders should make every effort to include
+them ASAP**.
+
+Where present in the data source the `gameversion` value **MUST** come from
+the field of that name in the data source, i.e. from either `Fileheader` or
+`LoadGame` as outlined below.
+
+For `gamebuild` you **MUST** use the value of the `build` field in the data
+source.
+
+1. If you are using Journal files directly then you **MUST** use the value
+  from the`Fileheader` event.
+2. If you are using the CAPI `/journal` endpoint to retrieve and process
+  Journal events then:
+   1. You will not have `Fileheader` available.
+   2. If the field is present in the `LoadGame` event, as in 4.0 clients,
+     use its value.
+   3. If `LoadGame` does not have the field, as with 3.8 Horizons
+     clients (up to at least `3.8.0.407`), you **SHOULD** set the value to
+     `"CAPI-journal"`. If, for reasons of code architecture, you are unable to
+     determine that data was CAPI-sourced then you MAY set it to `""` instead.
+3. If you are sourcing data from other CAPI endpoints, i.e. for commodity,
+  shipyard or outfitting messages, then you **SHOULD** set the values
+  appropriately as per the CAPI endpoint the data came from:
+   1. If it's a commodity message, then use `"CAPI-market"`.
+   2. If it's a shipyard message, then use `"CAPI-shipyard"`.
+   3. If it's an oufitting message, then also use `"CAPI-shipyard"`.
+
+   Again, if your code architecture doesn't allow for signalling that the data
+  source was CAPI, then you MAY set it to `""` instead.
+
+For emphasis, **if you cannot set a data-source value, or an appropriate
+`"CAPI-..."` value then you **MUST** still send the field with an empty string
+value.
+
+---
 
 ### Contents of `message`
 Every message MUST comply with the Schema its `$schemaRef` value cites.  Each
@@ -285,7 +354,7 @@ PC-local files for these events):
     { "timestamp":"2022-09-27T11:28:53Z", "event":"LoadGame", "FID":"<elided>", "Commander":"<elided>", "Horizons":true, ...
     ```
 
-- PC 'base' Client, game version `i3.8.0.407`, no `Odyssey` key was
+- PC 'base' Client, game version `3.8.0.407`, no `Odyssey` key was
   present:
     ```json
     { "timestamp":"2022-09-27T11:31:32Z", "event":"LoadGame", "FID":"<elided>", "Commander":"<elided>", "Horizons":false, ...

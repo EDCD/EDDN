@@ -24,6 +24,10 @@ The primary data source for this schema is the ED Journal event
 Please read [horizons and odyssey flags](../docs/Developers.md#horizons-and-odyssey-flags)
 in the Developers' documentation.
 
+#### gameversion and gamebuild
+You **MUST** always set these as per [the relevant section](../docs/Developers.md#gameversions-and-gamebuild)
+of the Developers' documentation.
+
 #### StarSystem
 You MUST add a `StarSystem` key/value pair representing the name of the
 system this event occurred in.  Source this from either `Location`,
