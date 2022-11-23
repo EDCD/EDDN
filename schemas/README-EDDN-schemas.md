@@ -54,6 +54,16 @@ contents all Schemas specify a top-level JSON Object with the data:
    relevant README file within this documentation, e.g.
    [codexentry-README.md](./codexentry-README.md).
 
+Whilst currently (2022-11-23) the `gameversion` and `gamebuild` fields in the
+message `header` aren't yet mandatory in the sense of what's in the schema
+definitions, all Senders are **strongly encouraged** to send them.
+
+Indeed, the per-schema documentation, for every schema now states:
+
+#### gameversion and gamebuild
+You **MUST** always set these as per [the relevant section](../docs/Developers.md#gameversions-and-gamebuild)
+of the Developers' documentation.
+
 ### General EDDN message outline
 
 Each `message` object must have, at bare minimum:
