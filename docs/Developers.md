@@ -239,9 +239,6 @@ Where present in the data source the `gameversion` value **MUST** come from
 the field of that name in the data source, i.e. from either `Fileheader` or
 `LoadGame` as outlined below.
 
-For `gamebuild` you **MUST** use the value of the `build` field in the data
-source.
-
 1. If you are using Journal files directly then you **MUST** use the value
   from the`Fileheader` event.
 2. If you are using the CAPI `/journal` endpoint to retrieve and process
@@ -259,9 +256,14 @@ source.
    1. If it's a commodity message, then use `"CAPI-market"`.
    2. If it's a shipyard message, then use `"CAPI-shipyard"`.
    3. If it's an oufitting message, then also use `"CAPI-shipyard"`.
+   4. If it's an fcmaterials_capi message, then use "CAPI-market", as the
+     data comes from that endpoint.
 
    Again, if your code architecture doesn't allow for signalling that the data
   source was CAPI, then you MAY set it to `""` instead.
+
+For `gamebuild` you **MUST** use the value of the `build` field in the data
+source, if available, else send as `""`.
 
 For emphasis, **if you cannot set a data-source value, or an appropriate
 `"CAPI-..."` value then you **MUST** still send the field with an empty string
