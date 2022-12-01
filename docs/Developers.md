@@ -232,42 +232,79 @@ to EDDN.
 To ensure that Listeners can make decisions on how to handle data based on
 the client and feature set it came from there are two mandatory fields in
 the headers of EDDN messages.  NB: Initially the *schemas* do not actually
-make these mandatory, **but all Senders should make every effort to include
+make these mandatory, **but all Senders MUST make every effort to include
 them ASAP**.
 
 Where present in the data source the `gameversion` value **MUST** come from
 the field of that name in the data source, i.e. from either `Fileheader` or
-`LoadGame` as outlined below.
+`LoadGame` as outlined below.  
 
 1. If you are using Journal files directly then you **MUST** use the value
-  from the`Fileheader` event.
+  from the`Fileheader` event.  Values from `LoadGame` are also acceptable, but
+  there are some events before that which might be relevant to EDDN messages,
+  especially as the ordering of 'startup'/login events can change with game
+  patches.
 2. If you are using the CAPI `/journal` endpoint to retrieve and process
   Journal events then:
    1. You will not have `Fileheader` available.
    2. If the field is present in the `LoadGame` event, as in 4.0 clients,
      use its value.
    3. If `LoadGame` does not have the field, as with 3.8 Horizons
-     clients (up to at least `3.8.0.407`), you **SHOULD** set the value to
-     `"CAPI-journal"`. If, for reasons of code architecture, you are unable to
-     determine that data was CAPI-sourced then you MAY set it to `""` instead.
+     clients (up to at least `3.8.0.1400`), you **SHOULD** set the value to
+     `"CAPI-Legacy-journal"`. If, for reasons of code architecture, you are
+     unable to determine that data was CAPI-sourced then you MAY set it to
+     `""` instead, **but this is only a fallback and you should endeavour to
+     send a more useful value**.
 3. If you are sourcing data from other CAPI endpoints, i.e. for commodity,
-  shipyard or outfitting messages, then you **SHOULD** set the values
-  appropriately as per the CAPI endpoint the data came from:
-   1. If it's a commodity message, then use `"CAPI-market"`.
-   2. If it's a shipyard message, then use `"CAPI-shipyard"`.
-   3. If it's an oufitting message, then also use `"CAPI-shipyard"`.
-   4. If it's an fcmaterials_capi message, then use "CAPI-market", as the
-     data comes from that endpoint.
+  shipyard, outfitting or fcmaterials_capi messages, then you **SHOULD** set
+  the values appropriately as per the CAPI host and endpoint the data came
+  from.  You **MUST NOT** use the value from any Journal you are also reading 
+  for the user.  The general form is `"CAPI-(Live|Legacy)-<endpoint>"`.
+   1. If it's a commodity message from the Live CAPI host, then use
+     `"CAPI-Live-market"`.  If it was from the Legacy CAPI host then use
+     `"CAPI-Legacy-market"`.
+   2. If it's a shipyard message, then use `"CAPI-Live-shipyard"` or
+     `"CAPI-Legacy-shipyard"`.
+   3. If it's an oufitting message, then also use `"CAPI-Live-shipyard"` or
+     `"CAPI-Legacy-shipyard"`.
+   4. If it's an fcmaterials_capi message, then use `"CAPI-Live-market`" or
+     `"CAPI-Legacy-market"`, as the data comes from that endpoint.
 
    Again, if your code architecture doesn't allow for signalling that the data
-  source was CAPI, then you MAY set it to `""` instead.
+  source was CAPI, then you MAY set it to `""` instead, **but this is only a
+  fallback and you should endeavour to send a more useful value**.
 
 For `gamebuild` you **MUST** use the value of the `build` field in the data
-source, if available, else send as `""`.
+source, following the same logic as for `gameversion` above, else send as `""`.
+An alternative to the latter is to mirror the `gameversion` value, **but only
+where that has not come from a Journal value**, i.e. `CAPI-...` strings.
+Do **NOT** strip any leading or trailing white space, pass it through as-is.
 
-For emphasis, **if you cannot set a data-source value, or an appropriate
+For emphasis, *if you cannot set a data-source value, or an appropriate
 `"CAPI-..."` value then you **MUST** still send the field with an empty string
-value.
+value.*
+
+Examples of valid values:
+
+| Data Source |     Data Type | Game Galaxy | gameversion         | gamebuild           |
+|------------:|--------------:|:-----------:|:----------------------|:----------------------|
+|     Journal |       Journal |    Live     | `"4.0.0.1475"`          | `"r289563/r0 "`         |
+|     Journal |       Journal |   Legacy    | `"3.8.0.1400"`          | `"r289583/r0 "`         |
+| CAPI |    `/journal` |  Live[^1]   | `"4.0.0.1475"`          | `"r289563/r0 "`         |
+| CAPI |    `/journal` | Legacy[^2]  | `"CAPI-Legacy-journal"` | `""`                    |
+| CAPI |    `/journal` | Legacy[^2]  | `"CAPI-Legacy-journal"` | `"CAPI-Legacy-journal"` |
+| CAPI | `/market`[^3] |    Live     | `"CAPI-Live-market"`    | `""`                    |
+| CAPI | `/market`[^3] |    Live     | `"CAPI-Live-market"`    | `"CAPI-Live-market"`    |
+| CAPI | `/market`[^3] |   Legacy    | `"CAPI-Legacy-market"`    | `""`                    |
+| CAPI | `/market`[^3] |   Legacy    | `"CAPI-Legacy-market"`    | `"CAPI-Legacy-market"`    |
+[^1]: Live is a 4.0 client and has `gameversion` in `LoadGame` which is present
+  in CAPI-sourced journals.
+
+[^2]: Legacy is a 3.8 client and last tested still doesn't have `gameversion`
+  in `LoadGame`, and CAPI-sourced journals don't have `Fileheader`.
+
+[^3]: And similarly for other CAPI endpoints, e.g. `shipyard`.
+
 
 ---
 
