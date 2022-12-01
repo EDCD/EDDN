@@ -276,6 +276,7 @@ the field of that name in the data source, i.e. from either `Fileheader` or
 
 For `gamebuild` you **MUST** use the value of the `build` field in the data
 source, following the same logic as for `gameversion` above, else send as `""`.
+Do **NOT** strip any leading or trailing white space, pass it through as-is.
 An alternative to the latter is to mirror the `gameversion` value, **but only
 where that has not come from a Journal value**, i.e. `CAPI-...` strings.
 
