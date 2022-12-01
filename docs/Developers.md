@@ -280,9 +280,9 @@ An alternative to the latter is to mirror the `gameversion` value, **but only
 where that has not come from a Journal value**, i.e. `CAPI-...` strings.
 Do **NOT** strip any leading or trailing white space, pass it through as-is.
 
-For emphasis, **if you cannot set a data-source value, or an appropriate
+For emphasis, *if you cannot set a data-source value, or an appropriate
 `"CAPI-..."` value then you **MUST** still send the field with an empty string
-value.
+value.*
 
 Examples of valid values:
 
