@@ -75,27 +75,30 @@
 
                 "Items": {
                     "type"          : "array",
-                    "required"      : [ "id", "Name", "Price", "Stock", "Demand" ],
-                    "properties"    : {
-                        "id" : {
-                            "type"  : "integer"
+                    "items": {
+                        "type"          : "object",
+                        "required"      : [ "id", "Name", "Price", "Stock", "Demand" ],
+                        "properties"    : {
+                            "id" : {
+                                "type"  : "integer"
+                            },
+                            "Name": {
+                                "type"      : "string",
+                                "minLength" : 1
+                            },
+                            "Price": {
+                                "type"      : "integer"
+                            },
+                            "Stock": {
+                                "type"      : "integer"
+                            },
+                            "Demand": {
+                                "type"      : "integer"
+                            }
                         },
-                        "Name": {
-                            "type"      : "string",
-                            "minLength" : 1
-                        },
-                        "Price": {
-                            "type"      : "integer"
-                        },
-                        "Stock": {
-                            "type"      : "integer"
-                        },
-                        "Demand": {
-                            "type"      : "integer"
+                        "patternProperties": {
+                            "_Localised$"       : { "$ref" : "#/definitions/disallowed" }
                         }
-                    },
-                    "patternProperties": {
-                        "_Localised$"       : { "$ref" : "#/definitions/disallowed" }
                     }
                 }
             }
