@@ -4,13 +4,15 @@
 import argparse
 import hashlib
 import logging
+import pathlib
 import sys
 import time
 import uuid
 import zlib
 from threading import Thread
+from typing import TYPE_CHECKING
 
-if sys.path[0].endswith('/eddn'):
+if pathlib.Path(sys.path[0]).as_posix().endswith('/eddn'):
     print(sys.path)
     print(
         '''
@@ -40,6 +42,23 @@ from zmq import SUB as ZMQ_SUB
 from zmq import SUBSCRIBE as ZMQ_SUBSCRIBE
 
 # Logging has to be configured first before we do anything.
+# Define a TRACE level
+LEVEL_TRACE = 5
+LEVEL_TRACE_ALL = 3
+logging.addLevelName(LEVEL_TRACE, "TRACE")
+logging.addLevelName(LEVEL_TRACE_ALL, "TRACE_ALL")
+logging.TRACE = LEVEL_TRACE  # type: ignore
+logging.TRACE_ALL = LEVEL_TRACE_ALL  # type: ignore
+logging.Logger.trace = lambda self, message, *args, **kwargs: self._log(  # type: ignore
+    logging.TRACE,  # type: ignore
+    message,
+    args,
+    **kwargs
+)
+# isort: off
+if TYPE_CHECKING:
+    from logging import trace, TRACE  # type: ignore # noqa: F401
+# isort: on
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 __logger_channel = logging.StreamHandler()
@@ -48,7 +67,6 @@ __logger_formatter.default_time_format = "%Y-%m-%d %H:%M:%S"
 __logger_formatter.default_msec_format = "%s.%03d"
 __logger_channel.setFormatter(__logger_formatter)
 logger.addHandler(__logger_channel)
-logger.info("Made logger")
 
 from eddn.conf.Settings import Settings, load_config  # noqa: E402
 
@@ -168,6 +186,7 @@ class Relay(Thread):
                 if duplicate_messages.is_duplicated(json):
                     # We've already seen this message recently. Discard it.
                     stats_collector.tally("duplicate")
+                    logger.trace('Discarding duplicate message')  # type: ignore
                     return
 
             # Mask the uploader with a randomised nonce but still make it unique
@@ -188,6 +207,7 @@ class Relay(Thread):
             # Send message
             sender.send(message)
             stats_collector.tally("outbound")
+            logger.trace('Sent message to Listeners')  # type: ignore
 
         while True:
             # For each incoming message, spawn a greenlet using the relay_worker
@@ -235,6 +255,7 @@ def main() -> None:
         argsd["certfile"] = Settings.CERT_FILE
         argsd["keyfile"] = Settings.KEY_FILE
 
+    logger.info('Starting bottle app...')
     app.run(
         **argsd,
     )

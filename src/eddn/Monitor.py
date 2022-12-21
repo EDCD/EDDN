@@ -5,12 +5,13 @@ import argparse
 import collections
 import datetime
 import logging
+import pathlib
 import sys
 import zlib
 from threading import Thread
 from typing import OrderedDict
 
-if sys.path[0].endswith('/eddn'):
+if pathlib.Path(sys.path[0]).as_posix().endswith('/eddn'):
     print(sys.path)
     print(
         '''
@@ -53,7 +54,6 @@ __logger_formatter.default_time_format = "%Y-%m-%d %H:%M:%S"
 __logger_formatter.default_msec_format = "%s.%03d"
 __logger_channel.setFormatter(__logger_formatter)
 logger.addHandler(__logger_channel)
-logger.info("Made logger")
 
 # This import must be done post-monkey-patching!
 if Settings.RELAY_DUPLICATE_MAX_MINUTES:
@@ -333,6 +333,7 @@ def main() -> None:
         argsd["certfile"] = Settings.CERT_FILE
         argsd["keyfile"] = Settings.KEY_FILE
 
+    logger.info('Starting bottle app...')
     app.run(
         **argsd,
     )

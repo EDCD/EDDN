@@ -1,0 +1,46 @@
+{
+  "$schemaRef": "http://schemas.elite-markets.net/eddn/commodity/2",
+  "message": {
+    "timestamp": "2022-01-06T11:19:27Z",
+    "systemName": "LP 98-132",
+    "stationName": "Freeport",
+    "marketId": 128008448,
+    "commodities": [
+      {
+        "name": "advancedcatalysers",
+        "meanPrice": 3039,
+        "buyPrice": 0,
+        "stock": 0,
+        "stockBracket": 0,
+        "sellPrice": 3756,
+        "demand": 936,
+        "demandBracket": 3
+      },
+      {
+        "name": "advancedmedicines",
+        "meanPrice": 1485,
+        "buyPrice": 0,
+        "stock": 0,
+        "stockBracket": 0,
+        "sellPrice": 1726,
+        "demand": 296,
+        "demandBracket": 3
+      },
+      {
+        "name": "advert1",
+        "meanPrice": 21542,
+        "buyPrice": 15267,
+        "stock": 0,
+        "stockBracket": 0,
+        "sellPrice": 15266,
+        "demand": 0,
+        "demandBracket": 0
+      }
+    ]
+  },
+  "header": {
+    "uploaderID": "Athanasius Testing",
+    "softwareName": "Athanasius Testing",
+    "softwareVersion": "v0.0.1"
+  }
+}

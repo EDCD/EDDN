@@ -49,11 +49,17 @@ contents all Schemas specify a top-level JSON Object with the data:
 
 Each `message` object must have, at bare minimum:
 
-1. `timestamp` - string date and time in ISO8601 format. Whilst this
-   technically allows for any timezone to be cited you SHOULD provide this in
-   UTC, aka 'Zulu Time' as in the example above. You MUST ensure that you are
-   doing this properly. Do not claim 'Z' whilst actually using a local time
-   that is offset from UTC.
+1. `timestamp` - string date and time in ISO8601 format. 
+    1. Whilst this technically allows for any timezone to be cited you SHOULD
+      provide this in UTC, aka 'Zulu Time' as in the example above.
+      You MUST ensure that you are doing this properly. 
+      Do not claim 'Z' whilst actually using a local time that is offset from
+      UTC.
+    2. Historically we had never been explicit about if Senders should include
+      sub-second resolution in the timestamps, or if Listeners should be
+      prepared to accept such.  As of 2022-06-24 we are explicitly stating that
+      Senders **MAY** include sub-second resolution, and Listeners **MUST**
+      be prepared to accept such.
 
    If you are only utilising Journal-sourced data then simply using the
    value from there should be sufficient as the PC game client is meant to

@@ -15,12 +15,11 @@ class _Settings(object):
     ###############################################################################
     # Local installation settings
     ###############################################################################
-    # If these are set to non-empty strings then you reverse proxt setup
+    # If these are set to non-empty strings then your reverse proxy setup
     # **MUST** pass TLS through properly, including to a https URL, not a
     # plain http one.
     CERT_FILE                               = "/etc/letsencrypt/live/eddn.edcd.io/fullchain.pem"  # noqa: E221
     KEY_FILE                                = "/etc/letsencrypt/live/eddn.edcd.io/privkey.pem"  # noqa: E221
-
 
     ###############################################################################
     # Relay settings
@@ -47,7 +46,6 @@ class _Settings(object):
 
     GATEWAY_HTTP_BIND_ADDRESS               = "127.0.0.1"  # noqa: E221
     GATEWAY_HTTP_PORT                       = 8081  # noqa: E221
-
     GATEWAY_SENDER_BINDINGS                 = ["tcp://127.0.0.1:8500"]  # noqa: E221
 
     GATEWAY_JSON_SCHEMAS                    = {  # noqa: E221
@@ -85,6 +83,12 @@ class _Settings(object):
         "https://eddn.edcd.io/schemas/approachsettlement/1/test":     "schemas/approachsettlement-v1.0.json",
         "https://eddn.edcd.io/schemas/fssallbodiesfound/1":           "schemas/fssallbodiesfound-v1.0.json",
         "https://eddn.edcd.io/schemas/fssallbodiesfound/1/test":      "schemas/fssallbodiesfound-v1.0.json",
+
+        "https://eddn.edcd.io/schemas/fssbodysignals/1":              "schemas/fssbodysignals-v1.0.json",
+        "https://eddn.edcd.io/schemas/fssbodysignals/1/test":         "schemas/fssbodysignals-v1.0.json",
+
+        "https://eddn.edcd.io/schemas/fsssignaldiscovered/1":             "schemas/fsssignaldiscovered-v1.0.json",
+        "https://eddn.edcd.io/schemas/fsssignaldiscovered/1/test":        "schemas/fsssignaldiscovered-v1.0.json",
     }
 
     GATEWAY_OUTDATED_SCHEMAS                = [  # noqa: E221

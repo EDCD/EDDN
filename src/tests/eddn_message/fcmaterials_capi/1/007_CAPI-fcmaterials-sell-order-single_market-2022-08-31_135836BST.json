@@ -1,0 +1,39 @@
+{
+    "$schemaRef":"https://eddn.edcd.io/schemas/fcmaterials_capi/1",
+    "header": {
+        "uploaderID": "Athanasius Testing",
+        "softwareName": "Ath Testing",
+        "softwareVersion": "v0.0.1"
+    },
+    "message": {
+        "timestamp": "2022-08-31T12:58:36Z",
+        "event": "FCMaterials",
+        "horizons": true,
+        "odyssey": true,
+        "MarketID": 3706433792,
+        "CarrierID": "X3F-5NZ",
+        "Items": {
+            "sales": {
+              "128961524": {
+                "id": 128961524,
+                "name": "aerogel",
+                "price": 500,
+                "stock": 0
+              },
+              "128972282": {
+                "id": 128972282,
+                "name": "accidentlogs",
+                "price": 4000,
+                "stock": 4
+              },
+              "128962598": {
+                "id": 128962598,
+                "name": "compactlibrary",
+                "price": 10000,
+                "stock": 9
+              }
+            },
+            "purchases": []
+        }
+    }
+}

@@ -73,9 +73,11 @@ repos:
     rev: 'v1.2.4'
     hooks:
       - id: python-safety-dependencies-check 
+        name: safety
         entry: safety
-        args: [check, --bare, -r]
+        args: [check, --bare, --file ]
         language: system
+        files: requirements-dev.txt
 
 default_language_version:
     python: python3.9

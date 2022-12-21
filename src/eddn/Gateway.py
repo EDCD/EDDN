@@ -8,13 +8,13 @@ market data to the Announcer daemons.
 """
 
 import argparse
+import pathlib
 import sys
 import zlib
 from datetime import datetime
 from typing import Dict
-from urllib.parse import parse_qs
 
-if sys.path[0].endswith('/eddn'):
+if pathlib.Path(sys.path[0]).as_posix().endswith('/eddn'):
     print(sys.path)
     print(
         '''
@@ -55,7 +55,6 @@ from eddn.core.StatsCollector import StatsCollector  # noqa: E402
 bottle.BaseRequest.MEMFILE_MAX = 1024 * 1024  # 1MiB, default is/was 100KiB
 
 app = Bottle()
-logger.info("Made logger")
 
 # This socket is used to push market data out to the Announcers over ZeroMQ.
 zmq_context = zmq.Context()
@@ -170,7 +169,7 @@ def get_remote_address() -> str:
     return request.headers.get("X-Forwarded-For", request.remote_addr)
 
 
-def get_decompressed_message() -> bytes:
+def get_decompressed_message(headers: dict, input: bytes) -> bytes:
     """
     Detect gzip Content-Encoding headers and de-compress on the fly.
 
@@ -178,7 +177,7 @@ def get_decompressed_message() -> bytes:
     :rtype: str
     :returns: The de-compressed request body.
     """
-    content_encoding = request.headers.get("Content-Encoding", "")
+    content_encoding = headers.get("Content-Encoding", "")
     logger.debug("Content-Encoding: %s", content_encoding)
 
     if content_encoding in ["gzip", "deflate"]:
@@ -188,53 +187,18 @@ def get_decompressed_message() -> bytes:
         try:
             # Auto header checking.
             logger.debug("Trying zlib.decompress (15 + 32)...")
-            message_body = zlib.decompress(request.body.read(), 15 + 32)
+            message_body = zlib.decompress(input, 15 + 32)
 
         except zlib.error:
             logger.error("zlib.error, trying zlib.decompress (-15)")
             # Negative wbits suppresses adler32 checksumming.
-            message_body = zlib.decompress(request.body.read(), -15)
+            message_body = zlib.decompress(input, -15)
             logger.debug("Resulting message_body:\n%s\n", message_body)
-
-        # At this point, we're not sure whether we're dealing with a straight
-        # un-encoded POST body, or a form-encoded POST. Attempt to parse the
-        # body. If it's not form-encoded, this will return an empty dict.
-        form_enc_parsed = parse_qs(message_body)
-        if form_enc_parsed:
-            logger.info("Request is form-encoded, compressed, from [%s]", get_remote_address())
-            # This is a form-encoded POST. The value of the data attrib will
-            # be the body we're looking for.
-            try:
-                message_body = form_enc_parsed[b"data"][0]
-
-            except (KeyError, IndexError):
-                logger.error(
-                    "form-encoded, compressed, upload did not contain a 'data' key. From %s",
-                    get_remote_address(),
-                )
-                raise MalformedUploadError(
-                    "No 'data' POST key/value found. Check your POST key "
-                    "name for spelling, and make sure you're passing a value."
-                )
-
-        else:
-            logger.debug("Request is *NOT* form-encoded")
 
     else:
         logger.debug("Content-Encoding indicates *not* compressed...")
 
-        # Uncompressed request. Bottle handles all of the parsing of the
-        # POST key/vals, or un-encoded body.
-        data_key = request.forms.get("data")
-        if data_key:
-            logger.info("Request is form-encoded, uncompressed, from [%s]", get_remote_address())
-            # This is a form-encoded POST. Support the silly people.
-            message_body = data_key
-
-        else:
-            logger.debug("Plain POST request detected...")
-            # This is a non form-encoded POST body.
-            message_body = request.body.read()
+        message_body = input
 
     return message_body
 
@@ -344,13 +308,25 @@ def parse_and_error_handle(data: bytes) -> str:
 @app.route("/upload/", method=["OPTIONS", "POST"])
 def upload() -> str:
     """
-    Handle an /upload/ request.
+    Process an /upload/ request.
+
+    :return: The processed message, else error string.
+    """
+    return handle_upload(request.headers, request.body.read(), response)
+
+
+def handle_upload(headers, body, response) -> str:
+    """
+    Handle an upload request.
+
+    This is separate from, and called by, the bottle route to more easily
+    enable functional/unit testing.
 
     :return: The processed message, else error string.
     """
     try:
         # Body may or may not be compressed.
-        message_body = get_decompressed_message()
+        message_body = get_decompressed_message(headers, body)
 
     except zlib.error as exc:
         # Some languages and libs do a crap job zlib compressing stuff. Provide
@@ -436,15 +412,8 @@ def apply_cors() -> None:
     )
 
 
-def main() -> None:
-    """Handle setting up and running the bottle app."""
-    cl_args = parse_cl_args()
-    if cl_args.loglevel:
-        logger.setLevel(cl_args.loglevel)
-
-    load_config(cl_args)
-    configure()
-
+def setup_bottle_app() -> dict:
+    """Handle setup of the bottle app."""
     app.add_hook("after_request", apply_cors)
 
     # Build arg dict for args
@@ -461,6 +430,21 @@ def main() -> None:
         argsd["certfile"] = Settings.CERT_FILE
         argsd["keyfile"] = Settings.KEY_FILE
 
+    return argsd
+
+
+def main() -> None:
+    """Take note of configuration and start bottle app."""
+    cl_args = parse_cl_args()
+    if cl_args.loglevel:
+        logger.setLevel(cl_args.loglevel)
+
+    load_config(cl_args)
+    configure()
+
+    argsd = setup_bottle_app()
+
+    logger.info('Starting bottle app...')
     app.run(
         **argsd,
     )

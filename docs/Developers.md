@@ -1,7 +1,7 @@
 ## Introduction
 
 EDDN is a
-[zermoq](https://zeromq.org/) service which allows players of the game
+[zeromq](https://zeromq.org/) service which allows players of the game
 [Elite Dangerous](https://www.elitedangerous.com/), published
 by [Frontier Developments](https://www.frontier.co.uk/), to upload game data so
 that interested listeners can receive a copy.
@@ -15,7 +15,7 @@ representing this game data and then passes it on to any interested listeners.
 ## Sources
 
 There are two sources of game data, both provided by the publisher of the game,
-Frontier Developerments.  They are both explicitly approved for use by
+Frontier Developments.  They are both explicitly approved for use by
 third-party software.
 
 ### Journal Files
@@ -127,13 +127,12 @@ The body of an EDDN message is a JSON object in UTF-8 encoding.  If you do not
 compress this body then you MUST set a `Content-Type` header of
 `applicaton/json`.
 
-For historical reasons URL form-encoded data *is* supported, **but this is
-deprecated and no new software should attempt this method**.  We
-purposefully do not further document the exact format for this.
-
 You *MAY* use gzip compression on the body of the message, but it is not
 required.  If you do compress the body then you **MUST** send a `Content-Type`
 header of `gzip` instead of `application/json`.
+
+**Due to issues when messages are compressed, form-encoded data is NO LONGER
+SUPPORTED as of 2022-06-16.**
 
 You should be prepared to handle all scenarios where sending of a message
 fails:
@@ -301,6 +300,48 @@ Horizons-only features disabled.
   active, but in the non-Odyssey game client case you only get the Horizons
   boolean.
 
+#### Other data Augmentations
+Some schemas mandate that extra data be added, beyond what is in the source
+data, to aid Listeners.
+
+This is usually related to specifying which system an event took place in, and
+usually means ensuring there is the full set of:
+
+1. `StarSystem` - the name of the system.
+2. `SystemAddress` - the game's unique numerical identifier for the system.
+3. `StarPos` - The system's co-ordinates.
+
+Whilst it can be argued that any Listener should see preceding event(s) that
+give any missing information where at least the system name or `SystemAddress`
+is already in the event data, this might not always be true.  So Senders MUST
+add this data where required.  It helps to fill out basic system information
+(name, SystemAddress and co-ordinates).
+
+However, there is a known game bug that can result in it stopping writing to
+the game journal, and some observed behaviour implies that it might then later
+resume writing to that file, but with events missing.  This means any Sender
+that blindly assumes it knows the current system/location and uses that for
+these Augmentations might send erroneous data.
+
+1. **Senders MUST cross-check available event data with prior 'location'
+  event(s) to be sure the correct extra data is being added.**
+2. **Listeners SHOULD realise that any data added as an Augmentation might be
+  in error.**
+
+For Senders, if the source data only has `SystemAddress` then you MUST check
+that it matches that from the prior `Location`, `FSDJump` or `CarrierJump`
+event before adding `StarSystem` and `StarPos` data to a message.  Drop the
+message entirely if it does not match.  Apply similar logic if it is only
+the system's name that is already present in data.  Do not blindly add
+`SystemAddress` or `StarPos`.  Likewise, do not blindly add `StarPos` if the
+other data is already in the source, without cross-checking the system name
+and `SystemAddress`.
+
+Listeners might be able to apply their own cross-check on received messages,
+and use any mismatch with respect to what they already know to make a decision
+whether to trust the augmented data.  Flagging it for manual review is probably
+wise.
+
 ### Server responses
 There are three possible sources of HTTP responses when sending an upload
 to EDDN.
@@ -435,7 +476,11 @@ data you will first need to zlib-decompress each message.  Then you will
 have a textual JSON object as per the Schemas.
 
 In general, check the guidance for [Uploading messages](#uploading-messages)
-for the expected format of the messages.
+for the expected format of the messages.  **Pay particular attention to any
+schema-specific Augmentations**.  Whilst Senders MUST make every effort to
+ensure such data is correct it is possible that bugs in either their code, or
+the game itself, could mean it is incorrect.  Listeners use such data at
+their own risk.
 
 Consumers can utilise the `$schemaRef` value to determine which Schema a
 particular message is for.  There is no need to validate the messages
