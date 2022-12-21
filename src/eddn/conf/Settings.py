@@ -46,6 +46,7 @@ class _Settings(object):
 
     GATEWAY_HTTP_BIND_ADDRESS               = "127.0.0.1"  # noqa: E221
     GATEWAY_HTTP_PORT                       = 8081  # noqa: E221
+
     GATEWAY_SENDER_BINDINGS                 = ["tcp://127.0.0.1:8500"]  # noqa: E221
 
     GATEWAY_JSON_SCHEMAS                    = {  # noqa: E221
