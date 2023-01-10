@@ -98,17 +98,17 @@ def process_file(input_file: str) -> None:
 
         elif matches.group('software_name') == 'EDDI':
           # https://github.com/EDCD/EDDI/releases/latest
-          if software_version >= semantic_version.Version.coerce('4.0.2-rc1'):
+          if software_version >= semantic_version.Version.coerce('4.0.2'):
 
-            if matches.group('schema_ref') == 'https://eddn.edcd.io/schemas/approachsettlement/1':
-              if matches.group('err_msg').startswith(
-                'Failed Validation "[<ValidationError: "\'Latitude\' is a required property">]"'
-                ):
-                # Reported on Discord: <Failed Validation "[<ValidationError: "'Latitude' is a required property">]">
-                pass
+            # if matches.group('schema_ref') == 'https://eddn.edcd.io/schemas/approachsettlement/1':
+            #   if matches.group('err_msg').startswith(
+            #     'Failed Validation "[<ValidationError: "\'Latitude\' is a required property">]"'
+            #     ):
+            #     # Reported on Discord: <Failed Validation "[<ValidationError: "'Latitude' is a required property">]">
+            #     pass
               
-            else:
-              print(line)
+            # else:
+            print(line)
 
         elif matches.group('software_name').startswith('E:D Market Connector'):
           # https://github.com/EDCD/EDMarketConnector/releases/latest
