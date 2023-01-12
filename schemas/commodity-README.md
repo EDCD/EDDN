@@ -51,6 +51,11 @@ In the list of commodites:
   Limpets - not purchasable in station market) or a *non-empty*`"legality":` 
   string (not normally traded at this station market).
 
+If the data is sourced from the journal folder:
+- Remove the `$` prefix and `_name;` suffix from the `Name` field.
+- As the Journal Market.json doesn't contain `economies` or `prohibited` data, 
+  leave these entirely out of the message.  You **MUST NOT** send empty lists.
+
 #### Item Category
 Remove not only the `Category_Localised` key:values, but also the
 `Category` key:value pair from each Item.
