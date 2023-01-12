@@ -107,6 +107,13 @@ def process_file(input_file: str) -> None:
                 # Reported on Discord: <https://discord.com/channels/164411426939600896/353595704658231299/1062652620986134608>
                 pass
              
+            elif matches.group('schema_ref') == 'https://eddn.edcd.io/schemas/navroute/1':
+              if matches.group('err_msg').startswith(
+                'Failed Validation "[<ValidationError: "\'Route\' is a required property"'
+                ):
+                # Reported on Discord: <https://discord.com/channels/164411426939600896/353595704658231299/1063017819752648775>
+                pass
+             
             else:
               print(line)
 
