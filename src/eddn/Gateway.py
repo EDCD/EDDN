@@ -76,8 +76,14 @@ def extract_message_details(parsed_message):
     uploader_id = '<<UNKNOWN>>'
     software_name = '<<UNKNOWN>>'
     software_version = '<<UNKNOWN>>'
+    game_version = '<<UNKNOWN>>'
+    game_build = '<<UNKNOWN>>'
     schema_ref = '<<UNKNOWN>>'
     journal_event = '<<UNKNOWN>>'
+    system_name = '<<UNKNOWN>>'
+    system_address = '<<UNKNOWN>>'
+    station_name = '<<UNKNOWN>>'
+    station_marketid = '<<UNKNOWN>>'
 
     if 'header' in parsed_message:
         if 'uploaderID' in parsed_message['header']:
@@ -88,6 +94,12 @@ def extract_message_details(parsed_message):
 
         if 'softwareVersion' in parsed_message['header']:
             software_version = parsed_message['header']['softwareVersion']
+
+        if 'gameversion' in parsed_message['header']:
+            game_version = parsed_message['header']['gameversion']
+
+        if 'gamebuild' in parsed_message['header']:
+            game_build = parsed_message['header']['gamebuild']
 
     if '$schemaRef' in parsed_message:
         schema_ref = parsed_message['$schemaRef']
@@ -101,7 +113,44 @@ def extract_message_details(parsed_message):
         else:
             journal_event = '-'
 
-    return uploader_id, software_name, software_version, schema_ref, journal_event
+        if 'systemName' in parsed_message['message']:
+            system_name = parsed_message['message']['systemName']
+
+        elif 'SystemName' in parsed_message['message']:
+            system_name = parsed_message['message']['SystemName']
+
+        elif 'StarSystem' in parsed_message['message']:
+            system_name = parsed_message['message']['StarSystem']
+
+        else:
+            system_name = '-'
+
+        if 'SystemAddress' in parsed_message['message']:
+            system_address = parsed_message['message']['SystemAddress']
+
+        else:
+            system_address = '-'
+
+        if 'stationName' in parsed_message['message']:
+            station_name = parsed_message['message']['stationName']
+        
+        elif 'StationName' in parsed_message['message']:
+            station_name = parsed_message['message']['StationName']
+
+        else:
+            station_name = '-'
+        
+        if 'marketId' in parsed_message['message']:
+            station_marketid = parsed_message['message']['marketId']
+
+        elif 'MarketID' in parsed_message['message']:
+            station_marketid = parsed_message['message']['MarketID']
+
+        else:
+            station_marketid = '-'
+
+    return uploader_id, software_name, software_version, schema_ref, journal_event, game_version, game_build, \
+           system_name, system_address, station_name, station_marketid
 
 def configure():
     # Get the list of transports to bind from settings. This allows us to PUB
@@ -218,10 +267,14 @@ def parse_and_error_handle(data):
         gevent.spawn(push_message, parsed_message, parsed_message['$schemaRef'])
 
         try:
-            uploader_id, software_name, software_version, schema_ref, journal_event = extract_message_details(parsed_message)
-            logger.info('Accepted (%d, "%s", "%s", "%s", "%s", "%s") from %s' % (
+            uploader_id, software_name, software_version, schema_ref, journal_event, game_version, game_build, \
+                system_name, system_address, station_name, station_marketid = extract_message_details(parsed_message)
+            logger.info('Accepted (%d, "%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s") from %s' % (
                 request.content_length,
                 uploader_id, software_name, software_version, schema_ref, journal_event,
+                game_version, game_build,
+                system_name, system_address,
+                station_name, station_marketid,
                 get_remote_address()
             ))
 
@@ -233,11 +286,15 @@ def parse_and_error_handle(data):
 
     else:
         try:
-            uploader_id, software_name, software_version, schema_ref, journal_event = extract_message_details(parsed_message)
-            logger.error('Failed Validation "%s" (%d, "%s", "%s", "%s", "%s", "%s") from %s' % (
+            uploader_id, software_name, software_version, schema_ref, journal_event, game_version, game_build, \
+                system_name, system_address, station_name, station_marketid = extract_message_details(parsed_message)
+            logger.error('Failed Validation "%s" (%d, "%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s", "%s") from %s' % (
                     str(validationResults.messages),
                     request.content_length,
                     uploader_id, software_name, software_version, schema_ref, journal_event,
+                    game_version, game_build,
+                    system_name, system_address,
+                    station_name, station_marketid,
                     get_remote_address()
             ))
 
