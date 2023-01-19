@@ -42,7 +42,13 @@ def process_file(input_file: str) -> None:
     r' "(?P<software_name>[^"]*)",'
     r' "(?P<software_version>[^"]*)",'
     r' "(?P<schema_ref>[^"]*)",'
-    r' "(?P<journal_event>[^"]*)"\)'
+    r' "(?P<journal_event>[^"]*)",'
+    r' "(?P<game_version>[^"]*)",'
+    r' "(?P<game_build>[^"]*)",'
+    r' "(?P<system_name>[^"]*)",'
+    r' "(?P<system_address>[^"]*)",'
+    r' "(?P<station_name>[^"]*)",'
+    r' "(?P<station_marketid>[^"]*)"\)'
     r' from (?P<sender_ip>.+)$'
   )
   # TODO: Make this handle gzipped files
@@ -59,6 +65,12 @@ def process_file(input_file: str) -> None:
         # print(matches.group('software_version'))
         # print(matches.group('schema_ref'))
         # print(matches.group('journal_event'))
+        # print(matches.group('game_version'))
+        # print(matches.group('game_build'))
+        # print(matches.group('system_name'))
+        # print(matches.group('system_address'))
+        # print(matches.group('station_name'))
+        # print(matches.group('station_marketid'))
         # print(matches.group('sender_ip'))
         # print('')
 
