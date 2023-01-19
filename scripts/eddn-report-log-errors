@@ -75,7 +75,7 @@ def process_file(input_file: str) -> None:
         ###################################################################
         if matches.group('software_name') == 'EDDiscovery':
           # https://github.com/EDDiscovery/EDDiscovery/releases/latest
-          if software_version >= semantic_version.Version.coerce('15.1.4.0'):
+          if software_version >= semantic_version.Version.coerce('16.0.5.0'):
             if matches.group('schema_ref') == 'https://eddn.edcd.io/schemas/outfitting/2':
               err_msg = matches.group('err_msg')
               if (
@@ -93,17 +93,33 @@ def process_file(input_file: str) -> None:
 
         elif matches.group('software_name') == 'EDDLite':
           # https://github.com/EDDiscovery/EDDLite/releases/latest
-          if software_version >= semantic_version.Version.coerce('2.3.0'):
+          if software_version >= semantic_version.Version.coerce('2.5.0'):
             print(line)
 
         elif matches.group('software_name') == 'EDDI':
           # https://github.com/EDCD/EDDI/releases/latest
-          if software_version >= semantic_version.Version.coerce('4.0.1'):
-            print(line)
+          if software_version >= semantic_version.Version.coerce('4.0.2'):
+
+            if matches.group('schema_ref') == 'https://eddn.edcd.io/schemas/fsssignaldiscovered/1':
+              if matches.group('err_msg').startswith(
+                'Failed Validation "[<ValidationError: "\'StarPos\' is a required property"'
+                ):
+                # Reported on Discord: <https://discord.com/channels/164411426939600896/353595704658231299/1062652620986134608>
+                pass
+             
+            elif matches.group('schema_ref') == 'https://eddn.edcd.io/schemas/navroute/1':
+              if matches.group('err_msg').startswith(
+                'Failed Validation "[<ValidationError: "\'Route\' is a required property"'
+                ):
+                # Reported on Discord: <https://discord.com/channels/164411426939600896/353595704658231299/1063017819752648775>
+                pass
+             
+            else:
+              print(line)
 
         elif matches.group('software_name').startswith('E:D Market Connector'):
           # https://github.com/EDCD/EDMarketConnector/releases/latest
-          if software_version >= semantic_version.Version.coerce('5.5.0'):
+          if software_version >= semantic_version.Version.coerce('5.7.0'):
             if matches.group('schema_ref') == 'https://eddn.edcd.io/schemas/journal/1':
               if matches.group('err_msg').startswith(
                 'Failed Validation "[<ValidationError: "{\'type\': [\'array\', \'boolean\', \'integer\', \'number\', \'null\', \'object\', \'string\']} is not allowed for'
