@@ -65,14 +65,11 @@ then you're probably looking for one of the sites listed below.  NB: These are
 listed in name-alphabetical order and no particular ranking or endorsement is
 intended.
 
-- [EDDB](https://eddb.io/) - a website which tries to act as a database of all
- the data available in the game. In general EDDB tries to help finding 
- stuff which players are looking for.
 - [EDSM](https://www.edsm.net/) - originally focused on being a 'Star Map', 
   but has since expanded its functionality.  Of particular interest to 
   in-game explorers.
-- [Inara](https://inara.cz/) - a popular alternative to EDDB, with a lot of 
-  its own unique functionality.
+- [Inara](https://inara.cz/) - a popular alternative to the now defunct EDDB, 
+  with a lot of its own unique functionality.
 - [Spansh](https://www.spansh.co.uk/plotter) - originally this had one tool,
   a 'Neutron Star' route plotter, but has since expanded into offering many 
   other route plotting tools and general data searching.
@@ -90,10 +87,6 @@ use:
     of systems, bodies and stations.  The full `galaxy.json.gz` is **very**
     large, but is currently the only source of an "all known bodies" dump.
     Pay attention to the 'Generated' "time ago" column.
-
-- [EDDB dumps](https://eddb.io/api) represent a snapshot of the data EDDB uses.
-    NB: There has been no "bodies" data for years now, EDDB itself stopped
-    updating or adding to this.
 
 - [EDSM nightly dumps](https://www.edsm.net/en/nightly-dumps) represent a
     snapshot of the data EDSM uses.  NB: there's only a "last 7 days" bodies
