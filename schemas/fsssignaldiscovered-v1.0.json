@@ -67,9 +67,9 @@
                     "type": "array",
                     "description": "Array of FSSSignalDiscovered events",
                     "minItems": 1,
-                    "additionalProperties"  : false,
                     "items": {
                         "type": "object",
+                        "additionalProperties"  : false,
                         "required": ["timestamp", "SignalName"],
                         "description": "Single FSSSignalDiscovered event",
                         "properties": {
