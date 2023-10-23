@@ -72,7 +72,10 @@
                 },
                 "StationGovernment": {
                     "type"          : "string"
-                },	
+                },
+                "StationAllegiance": {
+                    "type"          : "string"
+                },
                 "StationEconomies": {
                     "type"          : "array",
                     "items"         : {
@@ -96,6 +99,9 @@
                    "additionalProperties"  : false,
                    "properties": {
                        "Name": {
+                           "type"          : "string"
+                       },
+                       "FactionState": {
                            "type"          : "string"
                        }
                    }
