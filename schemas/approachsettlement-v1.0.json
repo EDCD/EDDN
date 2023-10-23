@@ -72,10 +72,10 @@
                 },
                 "StationGovernment": {
                     "type"          : "string"
-                },	
+                },
                 "StationAllegiance": {
                     "type"          : "string"
-                },	
+                },
                 "StationEconomies": {
                     "type"          : "array",
                     "items"         : {
