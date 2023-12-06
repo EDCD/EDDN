@@ -41,7 +41,7 @@
             "type"                  : "object",
             "description"           : "Contains all properties from the listed events in the client's journal minus the Localised strings and the properties marked below as 'disallowed'",
             "additionalProperties"  : false,
-            "required"              : [ "timestamp", "event", "MarketID", "StationName" ],
+            "required"              : [ "timestamp", "event", "MarketID", "StationName", "Reason" ],
             "properties"            : {
                 "timestamp": {
                     "type"          : "string",
