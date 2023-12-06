@@ -51,6 +51,10 @@
                     "renamed"   : "StarSystem",
                     "minLength" : 1
                 },                
+                "stationType": {
+                    "type"      : "string",
+                    "renamed"   : "StationType"
+                },                
                 "marketId": {
                     "type"      : "integer",
                     "renamed"   : "MarketID"
