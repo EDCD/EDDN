@@ -54,6 +54,10 @@
                 "stationType": {
                     "type"      : "string",
                     "renamed"   : "StationType"
+                },
+                "carrierDockingAccess": {
+                    "type"      : "string",
+                    "renamed"   : "CarrierDockingAccess"
                 },                
                 "marketId": {
                     "type"      : "integer",
@@ -164,10 +168,6 @@
                         "type"          : "string",
                         "minLength"     : 1
                     }
-                },
-                "StationType": {
-                    "$ref"          : "#/definitions/disallowed",
-                    "description"   : "Not present in CAPI data, so removed from Journal-sourced data"
                 }
             }
         }
