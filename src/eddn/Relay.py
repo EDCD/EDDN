@@ -79,7 +79,7 @@ def stats():
 
 class Relay(Thread):
 
-    REGENERATE_UPLOADER_NONCE_INTERVAL = 12 * 60 * 60  # 12 hrs
+    REGENERATE_UPLOADER_NONCE_INTERVAL = 3 * 60  # 3 minutes, was 12 hrs
 
     def __init__(self, **kwargs):
         super(Relay, self).__init__(**kwargs)
