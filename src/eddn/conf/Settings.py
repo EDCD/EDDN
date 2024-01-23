@@ -90,6 +90,11 @@ class _Settings(object):
 
         "https://eddn.edcd.io/schemas/fcmaterials_capi/1"                : "schemas/fcmaterials_capi-v1.0.json",
         "https://eddn.edcd.io/schemas/fcmaterials_capi/1/test"           : "schemas/fcmaterials_capi-v1.0.json",
+
+        "https://eddn.edcd.io/schemas/dockinggranted/1"               : "schemas/dockinggranted-v1.0.json",
+        "https://eddn.edcd.io/schemas/dockinggranted/1/test"          : "schemas/dockinggranted-v1.0.json",
+        "https://eddn.edcd.io/schemas/dockingdenied/1"                : "schemas/dockingdenied-v1.0.json",        
+        "https://eddn.edcd.io/schemas/dockingdenied/1/test"           : "schemas/dockingdenied-v1.0.json",        
     }
 
     GATEWAY_OUTDATED_SCHEMAS                = [
