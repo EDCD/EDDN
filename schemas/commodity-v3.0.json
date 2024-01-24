@@ -44,11 +44,11 @@
             "properties"            : {
                 "systemName": {
                     "type"      : "string",
+                    "renamed"   : "StarSystem",
                     "minLength" : 1
                 },
                 "stationName": {
                     "type"      : "string",
-                    "renamed"   : "StarSystem",
                     "minLength" : 1
                 },                
                 "stationType": {
