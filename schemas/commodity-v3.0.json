@@ -95,7 +95,7 @@
                             },
                             "buyPrice": {
                                 "type"          : "integer",
-                                "renaamed"      : "BuyPrice",
+                                "renamed"       : "BuyPrice",
                                 "description"   : "Price to buy from the market"
                             },
                             "stock": {
