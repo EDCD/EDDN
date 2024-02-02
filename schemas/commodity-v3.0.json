@@ -49,6 +49,7 @@
                 },
                 "stationName": {
                     "type"      : "string",
+                    "renamed"   : "StationName",
                     "minLength" : 1
                 },                
                 "stationType": {
