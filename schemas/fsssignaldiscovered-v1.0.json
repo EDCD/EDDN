@@ -90,6 +90,7 @@
                             "SpawningState": {"type":  "string"},
                             "SpawningFaction" : {"type":  "string"},
                             "SpawningPower" : {"type":  "string"},
+                            "OpposingPower" : {"type":  "string"},
                             "ThreatLevel": {"type": "integer" },
 
                             "patternProperties": {
