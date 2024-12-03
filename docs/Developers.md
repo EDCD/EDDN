@@ -460,6 +460,20 @@ and use any mismatch with respect to what they already know to make a decision
 whether to trust the augmented data.  Flagging it for manual review is probably
 wise.
 
+#### `pledged` flag
+
+Where the schema allows for it, the `pledged` key should be added with an
+appropriate boolean value.  `null` is not allowed in the values, if you
+cannot determine a true/false value do not include that key at all.
+
+In order to determine the value
+
+1. Initially you should have the value unset
+2. Whenever you encounter a `LoadGame` event you should unset the value
+3. Whenever you encounter a `PowerPlay` event you should set the value to `true`
+4. Whenever you encounter a `PowerPlayLeave` event you should set the value to `false`
+5. Whenever you encounter a `PowerPlayJoin` event you should set the value to `true`
+
 ### Server responses
 There are three possible sources of HTTP responses when sending an upload
 to EDDN.

@@ -79,6 +79,10 @@ You **MUST** add this key/value pair, using the value from the `LoadGame` event.
 
 Note caveats in [docs/Developers.md](../docs/Developers.md).
 
+#### pledged flag
+You should add this key/value pair, using the value determined via the notes
+in [docs/Developers.md](../docs/Developers.md).
+
 #### StarSystem
 If not already present, you MUST add a `StarSystem` string containing the
 name of the system from the last `FSDJump`, `CarrierJump`, or `Location` event.

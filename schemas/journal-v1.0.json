@@ -58,6 +58,10 @@
                     "type"      : "boolean",
                     "description" : "Whether the sending Cmdr has an Odyssey expansion."
                 },                 
+                "pledged": {
+                    "type"          : "boolean",
+                    "description"   : "Whether the sending Cmdr is pledged to a superpower."
+                },
                 "StarSystem": {
                     "type"          : "string",
                     "minLength"     : 1,
