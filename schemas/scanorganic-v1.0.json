@@ -33,7 +33,7 @@
             "type"                  : "object",
             "description"           : "Contains all properties from the listed events in the client's journal minus the Localised strings and the properties marked below as 'disallowed'",
             "additionalProperties"  : false,
-            "required"              : [ "timestamp", "event", "ScanType", "Genus", "Species", "SystemAddress", "BodyID", "BodyName"],
+            "required"              : [ "timestamp", "event", "ScanType", "Genus", "Species", "Latitude", "Longitude", "SystemAddress", "BodyID", "BodyName"],
             "properties"            : {
                 "timestamp": {
                     "type"          : "string",
@@ -88,7 +88,16 @@
                     "type"          : "integer"
                 },
                 "BodyName": {
-                    "type"          : "string"
+                    "type"          : "string",
+                    "description"   : "Must be added by the sender to corroborate BodyID"
+                },
+                "Latitude": {
+                    "type"          : "number",
+                    "description"   : "Must be added by the sender, generally from Status.json"
+                },
+                "Longitude": {
+                    "type"          : "number",
+                    "description"   : "Must be added by the sender, generally from Status.json"
                 }
             },
             "patternProperties": {

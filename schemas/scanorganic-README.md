@@ -82,3 +82,9 @@ release, Update 7, plus one patch).
    It will disappear again when they fly back above that altitude, or jump
    away.
 5. If Status.json does **not** have `BodyName` then clear `status_body_name`.
+
+#### Latitude / Longitude
+While latitude and longitude are not reported with the event data, this event
+necessitates being on a planet surface. Pulling the current coordinates from
+the `Status.json` should be sufficient to populate the data. The `Status.json`
+granularity is quite accurate when on-foot.
