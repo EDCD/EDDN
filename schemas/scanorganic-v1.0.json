@@ -33,7 +33,7 @@
             "type"                  : "object",
             "description"           : "Contains all properties from the listed events in the client's journal minus the Localised strings and the properties marked below as 'disallowed'",
             "additionalProperties"  : false,
-            "required"              : [ "timestamp", "event", "ScanType", "Genus", "Species", "Latitude", "Longitude", "SystemAddress", "BodyID", "BodyName"],
+            "required"              : [ "timestamp", "event", "ScanType", "Genus", "Species", "SystemAddress", "BodyID"],
             "properties"            : {
                 "timestamp": {
                     "type"          : "string",
@@ -74,7 +74,7 @@
                 "Variant": {
                     "type"          : "string",
                     "minLength"     : 1,
-                    "description"   : "Internal ID of bio variant string. This mirrors the CodexEntry name."
+                    "description"   : "Internal ID of bio variant string. This mirrors the CodexEntry name. Not present in older journal files."
                 },
                 "SystemAddress": {
                     "type"          : "integer"
@@ -89,15 +89,15 @@
                 },
                 "BodyName": {
                     "type"          : "string",
-                    "description"   : "Must be added by the sender to corroborate BodyID"
+                    "description"   : "Optional. Must be added by the sender, perhaps from Status.json."
                 },
                 "Latitude": {
                     "type"          : "number",
-                    "description"   : "Must be added by the sender, generally from Status.json"
+                    "description"   : "Optional. Must be added by the sender, typically from Status.json."
                 },
                 "Longitude": {
                     "type"          : "number",
-                    "description"   : "Must be added by the sender, generally from Status.json"
+                    "description"   : "Optional. Must be added by the sender, typically from Status.json."
                 }
             },
             "patternProperties": {

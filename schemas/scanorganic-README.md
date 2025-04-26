@@ -57,9 +57,9 @@ last `FSDJump`, `CarrierJump`, or `Location` event.
 BodyID is already present in the form of the 'Body' key. This should be
 renamed to BodyID to mirror many other events.
 
-You MUST track `BodyName` both from Status.json *and* also from some
-Journal events in order to cross-check it before using the `Body` from
-Journal events.
+If proper synchronicity can be achieved, `BodyName` should be reported,
+be it from Status.json or from some Journal events. Please cross-check it
+as possible before using the `Body` from Journal events.
 
 The following is correct as of game version 4.0.0.801 (Odyssey initial
 release, Update 7, plus one patch).
@@ -84,7 +84,16 @@ release, Update 7, plus one patch).
 5. If Status.json does **not** have `BodyName` then clear `status_body_name`.
 
 #### Latitude / Longitude
-While latitude and longitude are not reported with the event data, this event
-necessitates being on a planet surface. Pulling the current coordinates from
-the `Status.json` should be sufficient to populate the data. The `Status.json`
-granularity is quite accurate when on-foot.
+As live `Status.json` data is not always available, this augmentation is
+optional. While latitude and longitude are not reported with the event data,
+this event necessitates being on a planet surface. Pulling the current coordinates
+from the `Status.json` should be sufficient to populate the data. Please ensure
+the data is properly synced with the journal event.
+
+### Use of status.json
+You are encouraged to augment your submission with values from status.json. When status.json is used:
+
+* You must verify that the timestamp from status.json is no more than one minute older than the timestamp from the `ScanOrganic` journal event
+* You must verify that the status.json `Flags2` value `0x00000010` is true (indicating that the commander is on-foot on a planet)
+* You must verify that the `BodyName` from status.json and journal events are in agreement
+* Please augment your submission with `BodyName`, `Latitude`, and `Longitude` values
