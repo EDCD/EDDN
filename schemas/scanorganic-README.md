@@ -29,6 +29,14 @@ it may report incorrect data and is thus excluded from submission.
 Variant should be reported if present. It was not included in older journal
 versions and therefore is not required to facilitate older journal submissions.
 
+### Use of status.json
+You are encouraged to augment your submission with values from status.json. When status.json is used:
+
+* You must verify that the timestamp from status.json is no more than one minute older than the timestamp from the `ScanOrganic` journal event
+* You must verify that the status.json `Flags2` value `0x00000010` is true (indicating that the commander is on-foot on a planet)
+* You must verify that the `BodyName` from status.json and journal events are in agreement
+* Please augment your submission with `BodyName`, `Latitude`, and `Longitude` values
+
 ### Augmentations
 #### horizons and odyssey flags
 Please read [horizons and odyssey flags](../docs/Developers.md#horizons-and-odyssey-flags)
@@ -89,11 +97,3 @@ optional. While latitude and longitude are not reported with the event data,
 this event necessitates being on a planet surface. Pulling the current coordinates
 from the `Status.json` should be sufficient to populate the data. Please ensure
 the data is properly synced with the journal event.
-
-### Use of status.json
-You are encouraged to augment your submission with values from status.json. When status.json is used:
-
-* You must verify that the timestamp from status.json is no more than one minute older than the timestamp from the `ScanOrganic` journal event
-* You must verify that the status.json `Flags2` value `0x00000010` is true (indicating that the commander is on-foot on a planet)
-* You must verify that the `BodyName` from status.json and journal events are in agreement
-* Please augment your submission with `BodyName`, `Latitude`, and `Longitude` values
