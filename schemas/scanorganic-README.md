@@ -54,13 +54,6 @@ CarrierJump as appropriate.
 **You MUST apply a location cross-check, as per
 [Other data augmentations](../docs/Developers.md#other-data-augmentations).**
 
-#### StarPos
-You MUST add a `StarPos` array containing the system co-ordinates from the
-last `FSDJump`, `CarrierJump`, or `Location` event.
-
-**You MUST apply a location cross-check, as per
-[Other data augmentations](../docs/Developers.md#other-data-augmentations).**
-
 #### BodyID and BodyName
 BodyID is already present in the form of the 'Body' key. This should be
 renamed to BodyID to mirror many other events.
