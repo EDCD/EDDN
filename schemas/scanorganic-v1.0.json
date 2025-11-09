@@ -33,7 +33,7 @@
             "type"                  : "object",
             "description"           : "Contains all properties from the listed events in the client's journal minus the Localised strings and the properties marked below as 'disallowed'",
             "additionalProperties"  : false,
-            "required"              : [ "timestamp", "event", "StarSystem", "ScanType", "Genus", "Species", "SystemAddress", "BodyID"],
+            "required"              : [ "timestamp", "event", "StarSystem", "StarPos", "ScanType", "Genus", "Species", "SystemAddress", "BodyID"],
             "properties"            : {
                 "timestamp": {
                     "type"          : "string",
@@ -53,6 +53,13 @@
                 "StarSystem": {
                     "type"          : "string",
                     "minLength"     : 1,
+                    "description"   : "Must be added by the sender"
+                },
+                "StarPos": {
+                    "type"          : "array",
+                    "items"         : { "type": "number" },
+                    "minItems"      : 3,
+                    "maxItems"      : 3,
                     "description"   : "Must be added by the sender"
                 },
                 "ScanType": {
