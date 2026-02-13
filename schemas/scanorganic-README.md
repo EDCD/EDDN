@@ -35,7 +35,7 @@ You are encouraged to augment your submission with values from status.json. When
 * You must verify that the timestamp from status.json is no more than one minute older than the timestamp from the `ScanOrganic` journal event
 * You must verify that the status.json `Flags2` value `0x00000010` is true (indicating that the commander is on-foot on a planet)
 * You must verify that the `BodyName` from status.json and journal events are in agreement
-* Please augment your submission with `BodyName`, `Latitude`, and `Longitude` values
+* Please augment your submission with `BodyName`, `StarSystem`, `StarPos`, and (when available) `Latitude` and `Longitude` values
 
 ### Augmentations
 #### horizons and odyssey flags
