@@ -27,7 +27,7 @@ class _Settings(object):
     RELAY_SENDER_BINDINGS                   = ["tcp://*:9500"]
 
     # If set to False, no deduplicate is made
-    RELAY_DUPLICATE_MAX_MINUTES             = 15
+    RELAY_DUPLICATE_MAX_MINUTES             = False
 
     # If set to false, don't listen to topic and accept all incoming messages
     RELAY_RECEIVE_ONLY_GATEWAY_EXTRA_JSON   = True
