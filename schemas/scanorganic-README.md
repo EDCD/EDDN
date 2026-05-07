@@ -30,12 +30,8 @@ Variant should be reported if present. It was not included in older journal
 versions and therefore is not required to facilitate older journal submissions.
 
 ### Use of status.json
-You are encouraged to augment your submission with values from status.json. When status.json is used:
-
-* You must verify that the timestamp from status.json is no more than one minute older than the timestamp from the `ScanOrganic` journal event
-* You must verify that the status.json `Flags2` value `0x00000010` is true (indicating that the commander is on-foot on a planet)
-* You must verify that the `BodyName` from status.json and journal events are in agreement
-* Please augment your submission with `BodyName`, `StarSystem`, `StarPos`, and (when available) `Latitude` and `Longitude` values
+You are encouraged to augment your submission with latitude and longitude values
+from status.json.
 
 ### Augmentations
 #### horizons and odyssey flags
@@ -67,29 +63,7 @@ renamed to BodyID to mirror many other events.
 
 If proper synchronicity can be achieved, `BodyName` should be reported,
 be it from Status.json or from some Journal events. Please cross-check it
-as possible before using the `Body` from Journal events.
-
-The following is correct as of game version 4.0.0.801 (Odyssey initial
-release, Update 7, plus one patch).
-
-1. Record `journal_body_name` and `journal_body_id` from the
-   `BodyName` and `BodyID` values in `ApproachBody` events.
-
-   This will occur when the player flies below Orbital Cruise altitude
-   around a body.
-2. Also record these from `Location` events to cover logging in already there.
-3. Unset both `journal_body_name` and `journal_body_id` on `LeaveBody` and
-   `FSDJump` events.
-   Do NOT do so for `SupercruiseEntry`, because a player can enter supercruise
-   below max Orbital Cruise altitude and then come back down without a new
-   `ApproachBody` event occurring.
-4. If Status.json has `BodyName` present, record that as `status_body_name`.
-
-   This key and its value will be present whenever the player comes close
-   enough to a body for the Orbital Cruise/Glide HUD elements to appear.
-   It will disappear again when they fly back above that altitude, or jump
-   away.
-5. If Status.json does **not** have `BodyName` then clear `status_body_name`.
+as possible.
 
 #### Latitude / Longitude
 As live `Status.json` data is not always available, this augmentation is
