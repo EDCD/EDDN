@@ -27,7 +27,7 @@ class _Settings(object):
     RELAY_SENDER_BINDINGS                   = ["tcp://*:9500"]
 
     # If set to False, no deduplicate is made
-    RELAY_DUPLICATE_MAX_MINUTES             = 15
+    RELAY_DUPLICATE_MAX_MINUTES             = False
 
     # If set to false, don't listen to topic and accept all incoming messages
     RELAY_RECEIVE_ONLY_GATEWAY_EXTRA_JSON   = True
@@ -90,6 +90,11 @@ class _Settings(object):
 
         "https://eddn.edcd.io/schemas/fcmaterials_capi/1"                : "schemas/fcmaterials_capi-v1.0.json",
         "https://eddn.edcd.io/schemas/fcmaterials_capi/1/test"           : "schemas/fcmaterials_capi-v1.0.json",
+
+        "https://eddn.edcd.io/schemas/dockinggranted/1"               : "schemas/dockinggranted-v1.0.json",
+        "https://eddn.edcd.io/schemas/dockinggranted/1/test"          : "schemas/dockinggranted-v1.0.json",
+        "https://eddn.edcd.io/schemas/dockingdenied/1"                : "schemas/dockingdenied-v1.0.json",        
+        "https://eddn.edcd.io/schemas/dockingdenied/1/test"           : "schemas/dockingdenied-v1.0.json",        
     }
 
     GATEWAY_OUTDATED_SCHEMAS                = [

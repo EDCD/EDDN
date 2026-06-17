@@ -1,4 +1,4 @@
-# EDDN FSSAllBodiesFound Schema
+# EDDN FSSBodySignals Schema
 
 ## Introduction
 Here we document how to take data from an ED `FSSBodySignals` Journal 
