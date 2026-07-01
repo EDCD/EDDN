@@ -33,9 +33,13 @@ value is what the name would have been in the source Journal data.
 
 ### The modules/Items list
 The source data, Journal or CAPI, contains more than just the names of the
-available items.  This Schema is only concerned with the names, so the list
+available items. 
+
+Version 2 Schema is only concerned with the names, so the list
 you build will have only strings as its members, not including other information
 such as id, category, cost/BuyPrice, sku or stock.
+
+Version 3 for Operations sends all the fields given in outfitting.
 
 ### Elisions
 Remove items whose availability depends on the Cmdr's status rather than on the
