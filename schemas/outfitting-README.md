@@ -37,6 +37,8 @@ available items.  This Schema is only concerned with the names, so the list
 you build will have only strings as its members, not including other information
 such as id, category, cost/BuyPrice, sku or stock.
 
+Two arrays are provided, one for normal items, one for modules which are purchased using merc coins
+
 ### Elisions
 Remove items whose availability depends on the Cmdr's status rather than on the
 station. Namely:
