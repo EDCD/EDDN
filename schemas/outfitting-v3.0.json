@@ -73,24 +73,24 @@
                     "renamed"       : "Items",
                     "minItems"      : 1,
                     "uniqueItems"   : true,
-                    "description"   : "Module information, only modules Hpt_ChaffLauncher_Tiny, Int_Engine_Size3_Class5_Fast, Independant_Trader_Armour_Grade1, etc. Modules that depend on the Cmdr's purchases (e.g. bobbleheads, paintjobs) or rank (e.g. decals and PowerPlay faction-specific modules) should be omitted.  If BuyMercCoinsPrice is not present in the outfitting JSON, set it to zero in the entries"
+                    "description"   : "Module information, only modules Hpt_ChaffLauncher_Tiny, Int_Engine_Size3_Class5_Fast, Independant_Trader_Armour_Grade1, etc. Modules that depend on the Cmdr's purchases (e.g. bobbleheads, paintjobs) or rank (e.g. decals and PowerPlay faction-specific modules) should be omitted.  If BuyMercCoinsPrice is not present in the outfitting JSON, set it to zero in the entries",
                     "items"         : {
                         "type"                  : "object",
                         "required"              : [ "id", "Name", "BuyPrice", "BuyMercCoinsPrice"],
                         "properties"            : {
                             "id": {
-                                "type"      : "integer",
+                                "type"      : "integer"
                             },
                             "Name": {
                                 "type"          : "string",
-                                "minLength"     : 1
-                                "pattern"       : "(^Hpt_|^hpt_|^Int_|^int_|_Armour_|_armour_)",
+                                "minLength"     : 1,
+                                "pattern"       : "(^Hpt_|^hpt_|^Int_|^int_|_Armour_|_armour_)"
                             },
                             "BuyPrice": { 
-                                "type"      : "integer",
-                            }
+                                "type"      : "integer"
+                            },
                             "BuyMercCoinsPrice": { 
-                                "type"      : "integer",
+                                "type"      : "integer"
                             }
                         }
                     }
