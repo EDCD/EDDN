@@ -40,7 +40,7 @@ you build will have only strings as its members, not including other information
 such as id, category, cost/BuyPrice, sku or stock.
 
 Version 3 for Operations sends all the fields given in outfitting and requires 
-augmenting each modules with a `BuyMercCoinsPrice` field when not present.
+augmenting each module with a `BuyMercCoinsPrice` field when not present.
 
 ### Elisions
 Remove items whose availability depends on the Cmdr's status rather than on the
