@@ -39,7 +39,8 @@ Version 2 Schema is only concerned with the names, so the list
 you build will have only strings as its members, not including other information
 such as id, category, cost/BuyPrice, sku or stock.
 
-Version 3 for Operations sends all the fields given in outfitting.
+Version 3 for Operations sends all the fields given in outfitting and requires 
+augmenting each modules with a `BuyMercCoinsPrice` field when not present.
 
 ### Elisions
 Remove items whose availability depends on the Cmdr's status rather than on the
@@ -54,6 +55,10 @@ station. Namely:
 - The `"Int_PlanetApproachSuite"` module (for historical reasons).
 
 ### Augmentations
+
+#### merc coins
+You must augment each module with a zero price `BuyMercCoinsPrice` field when it is not already present.
+
 #### horizons and odyssey flags
 Please read [horizons and odyssey flags](../docs/Developers.md#horizons-and-odyssey-flags)
 in the Developers' documentation.
