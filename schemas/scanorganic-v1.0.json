@@ -1,5 +1,5 @@
 ﻿{
-    "$schema"               : "http://json-schema.org/draft-04/scanorganic#",
+    "$schema"               : "http://json-schema.org/draft-04/schema#",
     "id"                    : "https://eddn.edcd.io/schemas/scanorganic/1",
     "type"                  : "object",
     "additionalProperties"  : false,
